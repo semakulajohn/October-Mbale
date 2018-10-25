@@ -20,7 +20,7 @@
         'ui.sortable',               // AngularJS ui-sortable
         'ngTable',
         'checklist-model',          //checkboxes
-        // "kendo.directives",         //Kendo controls
+         "kendo.directives",         //Kendo controls
         "validation.match",
         'ngStorage',
         'ui.grid',                   // Angular ui.grid
