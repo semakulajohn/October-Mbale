@@ -3184,8 +3184,6 @@
     <Content Include="Views\UsersAdmin\Edit.cshtml" />
     <Content Include="Views\UsersAdmin\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutMvc.cshtml" />
-    <Content Include="[Config]\ric\AppSettings.config" />
-    <Content Include="[Config]\ric\ConnectionStrings.config" />
     <Content Include="Views\UsersAdmin\Suppliers.cshtml" />
     <Content Include="Views\UsersAdmin\Customers.cshtml" />
     <Content Include="Views\Excel\Index.cshtml" />
@@ -3197,7 +3195,6 @@
     <Folder Include="bower_components\ng-grid\plugins\" />
     <Folder Include="bower_components\peity\bin\" />
     <Folder Include="bower_components\peity\test\bin\" />
-    <Folder Include="[Config]\nic\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

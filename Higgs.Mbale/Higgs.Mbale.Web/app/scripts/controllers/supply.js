@@ -12,6 +12,7 @@
         var supplierId = $scope.supplierId;
         var supplyId = $scope.supplyId;
         var action = $scope.action;
+        $scope.SupplierName = "";
         $scope.offloadingOptions = ["YES", "NO"];
 
        
@@ -22,9 +23,17 @@
         $http.get('/webapi/StoreApi/GetAllStores').success(function (data, status) {
             $scope.stores = data;
         });
+        var promise = $http.get('/webapi/UserApi/GetUser?userId=' + supplierId, {});
+        promise.then(
+            function (payload) {
+                var c = payload.data;
+                $scope.SupplierName = c.FirstName + " " + c.LastName;
+            }
+
+        );
 
          if (action == 'create') {
-            deliveryId = 0;
+            supplyId = 0;
             var promise = $http.get('/webapi/UserApi/GetLoggedInUser', {});
             promise.then(
                 function (payload) {
@@ -230,6 +239,7 @@ angular
 
             var supplierId = $scope.supplierId;
             $scope.loadingSpinner = true;
+            $scope.SupplierName = "";
             var promise = $http.get('/webapi/SupplyApi/GetAllSuppliesForAParticularSupplier?supplierId='+ supplierId,{});
             promise.then(
                 function (payload) {
@@ -244,6 +254,14 @@ angular
                 enableRowSelection: false
             };
 
+            var promise = $http.get('/webapi/UserApi/GetUser?userId='+supplierId, {});
+            promise.then(
+                function (payload) {
+                    var c = payload.data;
+                    $scope.SupplierName = c.FirstName + " " + c.LastName;
+                }
+
+            );
             var promise = $http.get('/webapi/UserApi/GetLoggedInUser', {});
             promise.then(
                 function (payload) {

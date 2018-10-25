@@ -9,7 +9,7 @@
         var accountId = $scope.accountId;
         var transactionActivityId = $scope.transactionActivityId;
         var action = $scope.action;
-
+        $scope.accountName = "";
         $scope.actions = ["+", "-"];
         
          $http.get('/webapi/TransactionSubTypeApi/GetAllTransactionSubTypes').success(function (data, status) {
@@ -24,6 +24,15 @@
          $http.get('/webapi/SectorApi/GetAllSectors').success(function (data, status) {
              $scope.sectors = data;
          });
+
+         var promise = $http.get('/webapi/UserApi/GetUser?userId=' + accountId, {});
+         promise.then(
+             function (payload) {
+                 var c = payload.data;
+                 $scope.accountName = c.FirstName + " " + c.LastName;
+             }
+
+         );
 
         if (action == 'create') {
             deliveryId = 0;
@@ -205,7 +214,17 @@ angular
         function ($scope, ngTableParams, $http, $filter, $location, Utils, uiGridConstants) {
 
             var accountId = $scope.accountId;
+            $scope.accountName = "";
             $scope.loadingSpinner = true;
+
+            var promise = $http.get('/webapi/UserApi/GetUser?userId=' + accountId, {});
+            promise.then(
+                function (payload) {
+                    var c = payload.data;
+                    $scope.accountName = c.FirstName + " " + c.LastName;
+                }
+
+            );
             var promise = $http.get('/webapi/AccountTransactionActivityApi/GetAllAccountTransactionActivitiesForAParticularAccount?accountId=' + accountId, {});
             promise.then(
                 function (payload) {
@@ -216,6 +235,7 @@ angular
 
                         var lastIndex = $scope.Length - 1;
                         $scope.accountBalance = payload.data[lastIndex].Balance;
+                       
                     }
                     else {
                         $scope.accountBalance = 0;

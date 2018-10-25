@@ -110,6 +110,8 @@ namespace Higgs.Mbale.Web
 
             var bundleApp = new ScriptBundle("~/bundles/app_scripts")
                 .Include("~/app/scripts/homer.js")
+                .Include("~/app/scripts/app.js")
+                .Include("~/app/scripts/config.js")
                 .Include("~/app/scripts/filters/props.js")
                 .Include("~/app/scripts/directives/checklist-model.js")
 

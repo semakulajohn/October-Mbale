@@ -8,7 +8,9 @@
     <div ng-include="'/app/views/_common/Breadcrumb.html'"></div>
 
     <div class="content" ng-controller="SupplyEditController">
-
+        <div class="text-center">
+            <a class="btn btn-danger btn-sm">  {{SupplierName | uppercase}} </a>
+        </div>
         <span us-spinner="{radius:30, width:16, length: 16}" spinner-key="global-spinner"></span>
         <div class="row">
             <div class="col-lg-12">
