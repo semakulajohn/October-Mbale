@@ -282,7 +282,7 @@
           </Key>
           <Property Name="CashId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TransactionSubTypeId" Type="bigint" Nullable="false" />
-          <Property Name="BranchId" Type="bigint" Nullable="false" />
+          <Property Name="BranchId" Type="bigint" />
           <Property Name="SectorId" Type="bigint" Nullable="false" />
           <Property Name="StartAmount" Type="float" Nullable="false" />
           <Property Name="Action" Type="nvarchar" MaxLength="128" Nullable="false" />
@@ -1386,7 +1386,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Cash_BranchId">
-          <End Role="Branch" Type="Self.Branch" Multiplicity="1" />
+          <End Role="Branch" Type="Self.Branch" Multiplicity="0..1" />
           <End Role="Cash" Type="Self.Cash" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Branch">
@@ -5267,18 +5267,18 @@
           <NavigationProperty Name="Debtors1" Relationship="Higgs.MbaleModel.FK_Debtor_CreatedBy" FromRole="AspNetUser" ToRole="Debtor" />
           <NavigationProperty Name="Debtors2" Relationship="Higgs.MbaleModel.FK_Debtor_DeletedBy" FromRole="AspNetUser" ToRole="Debtor" />
           <NavigationProperty Name="Debtors3" Relationship="Higgs.MbaleModel.FK_Debtor_UpdatedBy" FromRole="AspNetUser" ToRole="Debtor" />
-          <NavigationProperty Name="Cashes" Relationship="Higgs.MbaleModel.FK_Cash_CreatedBy" FromRole="AspNetUser" ToRole="Cash" />
-          <NavigationProperty Name="Cashes1" Relationship="Higgs.MbaleModel.FK_Cash_DeletedBy" FromRole="AspNetUser" ToRole="Cash" />
           <NavigationProperty Name="AccountTransactionActivities" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_AspNetUserId" FromRole="AspNetUser" ToRole="AccountTransactionActivity" />
           <NavigationProperty Name="AccountTransactionActivities1" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_CreatedBy" FromRole="AspNetUser" ToRole="AccountTransactionActivity" />
           <NavigationProperty Name="AccountTransactionActivities2" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_DeletedBy" FromRole="AspNetUser" ToRole="AccountTransactionActivity" />
-          <NavigationProperty Name="Transactions" Relationship="Higgs.MbaleModel.FK_Transaction_CreatedBy" FromRole="AspNetUser" ToRole="Transaction" />
-          <NavigationProperty Name="Transactions1" Relationship="Higgs.MbaleModel.FK_Transaction_DeletedBy" FromRole="AspNetUser" ToRole="Transaction" />
-          <NavigationProperty Name="Transactions2" Relationship="Higgs.MbaleModel.FK_Transaction_UpdatedBy" FromRole="AspNetUser" ToRole="Transaction" />
           <NavigationProperty Name="Documents" Relationship="Higgs.MbaleModel.FK_Document_CreatedBy" FromRole="AspNetUser" ToRole="Document" />
           <NavigationProperty Name="Documents1" Relationship="Higgs.MbaleModel.FK_Document_DeletedBy" FromRole="AspNetUser" ToRole="Document" />
           <NavigationProperty Name="Documents2" Relationship="Higgs.MbaleModel.FK_Document_UpdatedBy" FromRole="AspNetUser" ToRole="Document" />
           <NavigationProperty Name="Documents3" Relationship="Higgs.MbaleModel.FK_Document_UserId" FromRole="AspNetUser" ToRole="Document" />
+          <NavigationProperty Name="Transactions" Relationship="Higgs.MbaleModel.FK_Transaction_CreatedBy" FromRole="AspNetUser" ToRole="Transaction" />
+          <NavigationProperty Name="Transactions1" Relationship="Higgs.MbaleModel.FK_Transaction_DeletedBy" FromRole="AspNetUser" ToRole="Transaction" />
+          <NavigationProperty Name="Transactions2" Relationship="Higgs.MbaleModel.FK_Transaction_UpdatedBy" FromRole="AspNetUser" ToRole="Transaction" />
+          <NavigationProperty Name="Cashes" Relationship="Higgs.MbaleModel.FK_Cash_CreatedBy" FromRole="AspNetUser" ToRole="Cash" />
+          <NavigationProperty Name="Cashes1" Relationship="Higgs.MbaleModel.FK_Cash_DeletedBy" FromRole="AspNetUser" ToRole="Cash" />
           </EntityType>
         <EntityType Name="Branch">
           <Key>
@@ -5325,10 +5325,10 @@
           <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_BranchId" FromRole="Branch" ToRole="Delivery" />
           <NavigationProperty Name="Creditors" Relationship="Higgs.MbaleModel.FK_Creditor_BranchId" FromRole="Branch" ToRole="Creditor" />
           <NavigationProperty Name="Debtors" Relationship="Higgs.MbaleModel.FK_Debtor_BranchId" FromRole="Branch" ToRole="Debtor" />
-          <NavigationProperty Name="Cashes" Relationship="Higgs.MbaleModel.FK_Cash_BranchId" FromRole="Branch" ToRole="Cash" />
           <NavigationProperty Name="AccountTransactionActivities" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_BranchId" FromRole="Branch" ToRole="AccountTransactionActivity" />
-          <NavigationProperty Name="Transactions" Relationship="Higgs.MbaleModel.FK_Transaction_BranchId" FromRole="Branch" ToRole="Transaction" />
           <NavigationProperty Name="Documents" Relationship="Higgs.MbaleModel.FK_Document_BranchId" FromRole="Branch" ToRole="Document" />
+          <NavigationProperty Name="Transactions" Relationship="Higgs.MbaleModel.FK_Transaction_BranchId" FromRole="Branch" ToRole="Transaction" />
+          <NavigationProperty Name="Cashes" Relationship="Higgs.MbaleModel.FK_Cash_BranchId" FromRole="Branch" ToRole="Cash" />
         </EntityType>
         <EntityType Name="CasualWorker">
           <Key>
@@ -6851,31 +6851,9 @@
             <End Role="Sector" EntitySet="Sectors" />
             <End Role="Debtor" EntitySet="Debtors" />
           </AssociationSet>
-          <EntitySet Name="Cashes" EntityType="Higgs.MbaleModel.Cash" />
-          <AssociationSet Name="FK_Cash_CreatedBy" Association="Higgs.MbaleModel.FK_Cash_CreatedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Cash" EntitySet="Cashes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Cash_DeletedBy" Association="Higgs.MbaleModel.FK_Cash_DeletedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Cash" EntitySet="Cashes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Cash_BranchId" Association="Higgs.MbaleModel.FK_Cash_BranchId">
-            <End Role="Branch" EntitySet="Branches" />
-            <End Role="Cash" EntitySet="Cashes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Cash_SectorId" Association="Higgs.MbaleModel.FK_Cash_SectorId">
-            <End Role="Sector" EntitySet="Sectors" />
-            <End Role="Cash" EntitySet="Cashes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Cash_TransactionSubTypeId" Association="Higgs.MbaleModel.FK_Cash_TransactionSubTypeId">
-            <End Role="TransactionSubType" EntitySet="TransactionSubTypes" />
-            <End Role="Cash" EntitySet="Cashes" />
-          </AssociationSet>
           <EntitySet Name="Applications" EntityType="Higgs.MbaleModel.Application" />
           <EntitySet Name="DocumentCategories" EntityType="Higgs.MbaleModel.DocumentCategory" />
           <EntitySet Name="AccountTransactionActivities" EntityType="Higgs.MbaleModel.AccountTransactionActivity" />
-          <EntitySet Name="Transactions" EntityType="Higgs.MbaleModel.Transaction" />
           <AssociationSet Name="FK_AccountTransactionActivity_AspNetUserId" Association="Higgs.MbaleModel.FK_AccountTransactionActivity_AspNetUserId">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="AccountTransactionActivity" EntitySet="AccountTransactionActivities" />
@@ -6904,6 +6882,32 @@
             <End Role="TransactionSubType" EntitySet="TransactionSubTypes" />
             <End Role="AccountTransactionActivity" EntitySet="AccountTransactionActivities" />
           </AssociationSet>
+          <EntitySet Name="Documents" EntityType="Higgs.MbaleModel.Document" />
+          <AssociationSet Name="FK_Document_CreatedBy" Association="Higgs.MbaleModel.FK_Document_CreatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Document_DeletedBy" Association="Higgs.MbaleModel.FK_Document_DeletedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Document_UpdatedBy" Association="Higgs.MbaleModel.FK_Document_UpdatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Document_UserId" Association="Higgs.MbaleModel.FK_Document_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Document_BranchId" Association="Higgs.MbaleModel.FK_Document_BranchId">
+            <End Role="Branch" EntitySet="Branches" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Document_DocumentCategoryId" Association="Higgs.MbaleModel.FK_Document_DocumentCategoryId">
+            <End Role="DocumentCategory" EntitySet="DocumentCategories" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <EntitySet Name="Transactions" EntityType="Higgs.MbaleModel.Transaction" />
           <AssociationSet Name="FK_Transaction_CreatedBy" Association="Higgs.MbaleModel.FK_Transaction_CreatedBy">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="Transaction" EntitySet="Transactions" />
@@ -6932,30 +6936,26 @@
             <End Role="TransactionType" EntitySet="TransactionTypes" />
             <End Role="Transaction" EntitySet="Transactions" />
           </AssociationSet>
-          <EntitySet Name="Documents" EntityType="Higgs.MbaleModel.Document" />
-          <AssociationSet Name="FK_Document_CreatedBy" Association="Higgs.MbaleModel.FK_Document_CreatedBy">
+          <EntitySet Name="Cashes" EntityType="Higgs.MbaleModel.Cash" />
+          <AssociationSet Name="FK_Cash_CreatedBy" Association="Higgs.MbaleModel.FK_Cash_CreatedBy">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Document" EntitySet="Documents" />
+            <End Role="Cash" EntitySet="Cashes" />
           </AssociationSet>
-          <AssociationSet Name="FK_Document_DeletedBy" Association="Higgs.MbaleModel.FK_Document_DeletedBy">
+          <AssociationSet Name="FK_Cash_DeletedBy" Association="Higgs.MbaleModel.FK_Cash_DeletedBy">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Document" EntitySet="Documents" />
+            <End Role="Cash" EntitySet="Cashes" />
           </AssociationSet>
-          <AssociationSet Name="FK_Document_UpdatedBy" Association="Higgs.MbaleModel.FK_Document_UpdatedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Document" EntitySet="Documents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Document_UserId" Association="Higgs.MbaleModel.FK_Document_UserId">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Document" EntitySet="Documents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Document_BranchId" Association="Higgs.MbaleModel.FK_Document_BranchId">
+          <AssociationSet Name="FK_Cash_BranchId" Association="Higgs.MbaleModel.FK_Cash_BranchId">
             <End Role="Branch" EntitySet="Branches" />
-            <End Role="Document" EntitySet="Documents" />
+            <End Role="Cash" EntitySet="Cashes" />
           </AssociationSet>
-          <AssociationSet Name="FK_Document_DocumentCategoryId" Association="Higgs.MbaleModel.FK_Document_DocumentCategoryId">
-            <End Role="DocumentCategory" EntitySet="DocumentCategories" />
-            <End Role="Document" EntitySet="Documents" />
+          <AssociationSet Name="FK_Cash_SectorId" Association="Higgs.MbaleModel.FK_Cash_SectorId">
+            <End Role="Sector" EntitySet="Sectors" />
+            <End Role="Cash" EntitySet="Cashes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cash_TransactionSubTypeId" Association="Higgs.MbaleModel.FK_Cash_TransactionSubTypeId">
+            <End Role="TransactionSubType" EntitySet="TransactionSubTypes" />
+            <End Role="Cash" EntitySet="Cashes" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Media">
@@ -7034,9 +7034,9 @@
           <NavigationProperty Name="MachineRepairs" Relationship="Higgs.MbaleModel.FK_MachineRepair_TransactionSubTypeId" FromRole="TransactionSubType" ToRole="MachineRepair" />
           <NavigationProperty Name="Inventories" Relationship="Higgs.MbaleModel.FK_Inventory_TransactionSubTypeId" FromRole="TransactionSubType" ToRole="Inventory" />
           <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_TransactionSubTypeId" FromRole="TransactionSubType" ToRole="Delivery" />
-          <NavigationProperty Name="Cashes" Relationship="Higgs.MbaleModel.FK_Cash_TransactionSubTypeId" FromRole="TransactionSubType" ToRole="Cash" />
           <NavigationProperty Name="AccountTransactionActivities" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_TransactionSubTypeId" FromRole="TransactionSubType" ToRole="AccountTransactionActivity" />
           <NavigationProperty Name="Transactions" Relationship="Higgs.MbaleModel.FK_Transaction_TransactionSubTypeId" FromRole="TransactionSubType" ToRole="Transaction" />
+          <NavigationProperty Name="Cashes" Relationship="Higgs.MbaleModel.FK_Cash_TransactionSubTypeId" FromRole="TransactionSubType" ToRole="Cash" />
         </EntityType>
         <EntityType Name="TransactionType">
           <Key>
@@ -7153,9 +7153,9 @@
           <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_SectorId" FromRole="Sector" ToRole="Delivery" />
           <NavigationProperty Name="Creditors" Relationship="Higgs.MbaleModel.FK_Creditor_SectorId" FromRole="Sector" ToRole="Creditor" />
           <NavigationProperty Name="Debtors" Relationship="Higgs.MbaleModel.FK_Debtor_SectorId" FromRole="Sector" ToRole="Debtor" />
-          <NavigationProperty Name="Cashes" Relationship="Higgs.MbaleModel.FK_Cash_SectorId" FromRole="Sector" ToRole="Cash" />
           <NavigationProperty Name="AccountTransactionActivities" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_SectorId" FromRole="Sector" ToRole="AccountTransactionActivity" />
           <NavigationProperty Name="Transactions" Relationship="Higgs.MbaleModel.FK_Transaction_SectorId" FromRole="Sector" ToRole="Transaction" />
+          <NavigationProperty Name="Cashes" Relationship="Higgs.MbaleModel.FK_Cash_SectorId" FromRole="Sector" ToRole="Cash" />
         </EntityType>
         <Association Name="FK_Sector_CreatedBy">
           <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
@@ -10219,91 +10219,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Cash">
-          <Key>
-            <PropertyRef Name="CashId" />
-          </Key>
-          <Property Name="CashId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TransactionSubTypeId" Type="Int64" Nullable="false" />
-          <Property Name="BranchId" Type="Int64" Nullable="false" />
-          <Property Name="SectorId" Type="Int64" Nullable="false" />
-          <Property Name="StartAmount" Type="Double" Nullable="false" />
-          <Property Name="Action" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Amount" Type="Double" Nullable="false" />
-          <Property Name="Balance" Type="Double" Nullable="false" />
-          <Property Name="Deleted" Type="Boolean" />
-          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Cash_CreatedBy" FromRole="Cash" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Cash_DeletedBy" FromRole="Cash" ToRole="AspNetUser" />
-          <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_Cash_BranchId" FromRole="Cash" ToRole="Branch" />
-          <NavigationProperty Name="Sector" Relationship="Higgs.MbaleModel.FK_Cash_SectorId" FromRole="Cash" ToRole="Sector" />
-          <NavigationProperty Name="TransactionSubType" Relationship="Higgs.MbaleModel.FK_Cash_TransactionSubTypeId" FromRole="Cash" ToRole="TransactionSubType" />
-        </EntityType>
-        <Association Name="FK_Cash_CreatedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Cash" Role="Cash" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Cash">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Cash_DeletedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Cash" Role="Cash" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Cash">
-              <PropertyRef Name="DeletedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Cash_BranchId">
-          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Cash" Role="Cash" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Branch">
-              <PropertyRef Name="BranchId" />
-            </Principal>
-            <Dependent Role="Cash">
-              <PropertyRef Name="BranchId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Cash_SectorId">
-          <End Type="Higgs.MbaleModel.Sector" Role="Sector" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Cash" Role="Cash" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sector">
-              <PropertyRef Name="SectorId" />
-            </Principal>
-            <Dependent Role="Cash">
-              <PropertyRef Name="SectorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Cash_TransactionSubTypeId">
-          <End Type="Higgs.MbaleModel.TransactionSubType" Role="TransactionSubType" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Cash" Role="Cash" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TransactionSubType">
-              <PropertyRef Name="TransactionSubTypeId" />
-            </Principal>
-            <Dependent Role="Cash">
-              <PropertyRef Name="TransactionSubTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Application">
           <Key>
             <PropertyRef Name="ApplicationId" />
@@ -10351,32 +10266,6 @@
           <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_DeletedBy" FromRole="AccountTransactionActivity" ToRole="AspNetUser" />
           <NavigationProperty Name="Sector" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_SectorId" FromRole="AccountTransactionActivity" ToRole="Sector" />
           <NavigationProperty Name="TransactionSubType" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_TransactionSubTypeId" FromRole="AccountTransactionActivity" ToRole="TransactionSubType" />
-        </EntityType>
-        <EntityType Name="Transaction">
-          <Key>
-            <PropertyRef Name="TransactionId" />
-          </Key>
-          <Property Name="TransactionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BranchId" Type="Int64" />
-          <Property Name="SectorId" Type="Int64" Nullable="false" />
-          <Property Name="Amount" Type="Double" Nullable="false" />
-          <Property Name="TransactionTypeId" Type="Int64" Nullable="false" />
-          <Property Name="TransactionSubTypeId" Type="Int64" Nullable="false" />
-          <Property Name="Deleted" Type="Boolean" />
-          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
-          <Property Name="SupplyId" Type="Int64" />
-          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Transaction_CreatedBy" FromRole="Transaction" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Transaction_DeletedBy" FromRole="Transaction" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Transaction_UpdatedBy" FromRole="Transaction" ToRole="AspNetUser" />
-          <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_Transaction_BranchId" FromRole="Transaction" ToRole="Branch" />
-          <NavigationProperty Name="Sector" Relationship="Higgs.MbaleModel.FK_Transaction_SectorId" FromRole="Transaction" ToRole="Sector" />
-          <NavigationProperty Name="TransactionSubType" Relationship="Higgs.MbaleModel.FK_Transaction_TransactionSubTypeId" FromRole="Transaction" ToRole="TransactionSubType" />
-          <NavigationProperty Name="TransactionType" Relationship="Higgs.MbaleModel.FK_Transaction_TransactionTypeId" FromRole="Transaction" ToRole="TransactionType" />
         </EntityType>
         <Association Name="FK_AccountTransactionActivity_AspNetUserId">
           <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
@@ -10459,90 +10348,6 @@
             </Principal>
             <Dependent Role="AccountTransactionActivity">
               <PropertyRef Name="TransactionSubTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Transaction_CreatedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Transaction" Role="Transaction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Transaction">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Transaction_DeletedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Transaction" Role="Transaction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Transaction">
-              <PropertyRef Name="DeletedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Transaction_UpdatedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Transaction" Role="Transaction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Transaction">
-              <PropertyRef Name="UpdatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Transaction_BranchId">
-          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Transaction" Role="Transaction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Branch">
-              <PropertyRef Name="BranchId" />
-            </Principal>
-            <Dependent Role="Transaction">
-              <PropertyRef Name="BranchId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Transaction_SectorId">
-          <End Type="Higgs.MbaleModel.Sector" Role="Sector" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Transaction" Role="Transaction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sector">
-              <PropertyRef Name="SectorId" />
-            </Principal>
-            <Dependent Role="Transaction">
-              <PropertyRef Name="SectorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Transaction_TransactionSubTypeId">
-          <End Type="Higgs.MbaleModel.TransactionSubType" Role="TransactionSubType" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Transaction" Role="Transaction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TransactionSubType">
-              <PropertyRef Name="TransactionSubTypeId" />
-            </Principal>
-            <Dependent Role="Transaction">
-              <PropertyRef Name="TransactionSubTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Transaction_TransactionTypeId">
-          <End Type="Higgs.MbaleModel.TransactionType" Role="TransactionType" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Transaction" Role="Transaction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TransactionType">
-              <PropertyRef Name="TransactionTypeId" />
-            </Principal>
-            <Dependent Role="Transaction">
-              <PropertyRef Name="TransactionTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -10643,6 +10448,201 @@
             </Principal>
             <Dependent Role="Document">
               <PropertyRef Name="DocumentCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Transaction">
+          <Key>
+            <PropertyRef Name="TransactionId" />
+          </Key>
+          <Property Name="TransactionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BranchId" Type="Int64" />
+          <Property Name="SectorId" Type="Int64" Nullable="false" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <Property Name="TransactionTypeId" Type="Int64" Nullable="false" />
+          <Property Name="TransactionSubTypeId" Type="Int64" Nullable="false" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="SupplyId" Type="Int64" />
+          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Transaction_CreatedBy" FromRole="Transaction" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Transaction_DeletedBy" FromRole="Transaction" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Transaction_UpdatedBy" FromRole="Transaction" ToRole="AspNetUser" />
+          <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_Transaction_BranchId" FromRole="Transaction" ToRole="Branch" />
+          <NavigationProperty Name="Sector" Relationship="Higgs.MbaleModel.FK_Transaction_SectorId" FromRole="Transaction" ToRole="Sector" />
+          <NavigationProperty Name="TransactionSubType" Relationship="Higgs.MbaleModel.FK_Transaction_TransactionSubTypeId" FromRole="Transaction" ToRole="TransactionSubType" />
+          <NavigationProperty Name="TransactionType" Relationship="Higgs.MbaleModel.FK_Transaction_TransactionTypeId" FromRole="Transaction" ToRole="TransactionType" />
+        </EntityType>
+        <Association Name="FK_Transaction_CreatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Transaction" Role="Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transaction">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transaction_DeletedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Transaction" Role="Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transaction">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transaction_UpdatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Transaction" Role="Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transaction">
+              <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transaction_BranchId">
+          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Transaction" Role="Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="Transaction">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transaction_SectorId">
+          <End Type="Higgs.MbaleModel.Sector" Role="Sector" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Transaction" Role="Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sector">
+              <PropertyRef Name="SectorId" />
+            </Principal>
+            <Dependent Role="Transaction">
+              <PropertyRef Name="SectorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transaction_TransactionSubTypeId">
+          <End Type="Higgs.MbaleModel.TransactionSubType" Role="TransactionSubType" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Transaction" Role="Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransactionSubType">
+              <PropertyRef Name="TransactionSubTypeId" />
+            </Principal>
+            <Dependent Role="Transaction">
+              <PropertyRef Name="TransactionSubTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transaction_TransactionTypeId">
+          <End Type="Higgs.MbaleModel.TransactionType" Role="TransactionType" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Transaction" Role="Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransactionType">
+              <PropertyRef Name="TransactionTypeId" />
+            </Principal>
+            <Dependent Role="Transaction">
+              <PropertyRef Name="TransactionTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Cash">
+          <Key>
+            <PropertyRef Name="CashId" />
+          </Key>
+          <Property Name="CashId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TransactionSubTypeId" Type="Int64" Nullable="false" />
+          <Property Name="BranchId" Type="Int64" />
+          <Property Name="SectorId" Type="Int64" Nullable="false" />
+          <Property Name="StartAmount" Type="Double" Nullable="false" />
+          <Property Name="Action" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <Property Name="Balance" Type="Double" Nullable="false" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Cash_CreatedBy" FromRole="Cash" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Cash_DeletedBy" FromRole="Cash" ToRole="AspNetUser" />
+          <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_Cash_BranchId" FromRole="Cash" ToRole="Branch" />
+          <NavigationProperty Name="Sector" Relationship="Higgs.MbaleModel.FK_Cash_SectorId" FromRole="Cash" ToRole="Sector" />
+          <NavigationProperty Name="TransactionSubType" Relationship="Higgs.MbaleModel.FK_Cash_TransactionSubTypeId" FromRole="Cash" ToRole="TransactionSubType" />
+        </EntityType>
+        <Association Name="FK_Cash_CreatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Cash" Role="Cash" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cash">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cash_DeletedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Cash" Role="Cash" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cash">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cash_BranchId">
+          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Cash" Role="Cash" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="Cash">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cash_SectorId">
+          <End Type="Higgs.MbaleModel.Sector" Role="Sector" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Cash" Role="Cash" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sector">
+              <PropertyRef Name="SectorId" />
+            </Principal>
+            <Dependent Role="Cash">
+              <PropertyRef Name="SectorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cash_TransactionSubTypeId">
+          <End Type="Higgs.MbaleModel.TransactionSubType" Role="TransactionSubType" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Cash" Role="Cash" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransactionSubType">
+              <PropertyRef Name="TransactionSubTypeId" />
+            </Principal>
+            <Dependent Role="Cash">
+              <PropertyRef Name="TransactionSubTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -11566,27 +11566,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Cashes">
-            <EntityTypeMapping TypeName="Higgs.MbaleModel.Cash">
-              <MappingFragment StoreEntitySet="Cash">
-                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
-                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="Balance" ColumnName="Balance" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="Action" ColumnName="Action" />
-                <ScalarProperty Name="StartAmount" ColumnName="StartAmount" />
-                <ScalarProperty Name="SectorId" ColumnName="SectorId" />
-                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
-                <ScalarProperty Name="TransactionSubTypeId" ColumnName="TransactionSubTypeId" />
-                <ScalarProperty Name="CashId" ColumnName="CashId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Applications">
             <EntityTypeMapping TypeName="Higgs.MbaleModel.Application">
               <MappingFragment StoreEntitySet="Application">
@@ -11630,26 +11609,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Transactions">
-            <EntityTypeMapping TypeName="Higgs.MbaleModel.Transaction">
-              <MappingFragment StoreEntitySet="Transaction">
-                <ScalarProperty Name="SupplyId" ColumnName="SupplyId" />
-                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
-                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="TransactionSubTypeId" ColumnName="TransactionSubTypeId" />
-                <ScalarProperty Name="TransactionTypeId" ColumnName="TransactionTypeId" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="SectorId" ColumnName="SectorId" />
-                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
-                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Documents">
             <EntityTypeMapping TypeName="Higgs.MbaleModel.Document">
               <MappingFragment StoreEntitySet="Document">
@@ -11670,6 +11629,47 @@
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transactions">
+            <EntityTypeMapping TypeName="Higgs.MbaleModel.Transaction">
+              <MappingFragment StoreEntitySet="Transaction">
+                <ScalarProperty Name="SupplyId" ColumnName="SupplyId" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="TransactionSubTypeId" ColumnName="TransactionSubTypeId" />
+                <ScalarProperty Name="TransactionTypeId" ColumnName="TransactionTypeId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="SectorId" ColumnName="SectorId" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cashes">
+            <EntityTypeMapping TypeName="Higgs.MbaleModel.Cash">
+              <MappingFragment StoreEntitySet="Cash">
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="StartAmount" ColumnName="StartAmount" />
+                <ScalarProperty Name="SectorId" ColumnName="SectorId" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="TransactionSubTypeId" ColumnName="TransactionSubTypeId" />
+                <ScalarProperty Name="CashId" ColumnName="CashId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

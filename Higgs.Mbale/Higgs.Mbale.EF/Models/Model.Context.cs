@@ -84,12 +84,12 @@ namespace Higgs.Mbale.EF.Models
         public virtual DbSet<Delivery> Deliveries { get; set; }
         public virtual DbSet<Creditor> Creditors { get; set; }
         public virtual DbSet<Debtor> Debtors { get; set; }
-        public virtual DbSet<Cash> Cashes { get; set; }
         public virtual DbSet<Application> Applications { get; set; }
         public virtual DbSet<DocumentCategory> DocumentCategories { get; set; }
         public virtual DbSet<AccountTransactionActivity> AccountTransactionActivities { get; set; }
-        public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<Document> Documents { get; set; }
+        public virtual DbSet<Transaction> Transactions { get; set; }
+        public virtual DbSet<Cash> Cashes { get; set; }
     
         public virtual int Mark_FactoryExpense_AsDeleted(Nullable<long> inPutFactoryExpenseId, string userId)
         {

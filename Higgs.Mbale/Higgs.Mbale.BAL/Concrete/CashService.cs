@@ -89,9 +89,11 @@ namespace Higgs.Mbale.BAL.Concrete
             double startAmount =0;
             double OldBalance = 0;
             double NewBalance = 0;
-            
-               
-               OldBalance = GetBalanceForLastCash(cash.BranchId);
+
+            if (cash.BranchId != null)
+            {
+
+             OldBalance = GetBalanceForLastCash(Convert.ToInt64(cash.BranchId));
                startAmount = OldBalance;
            
 
@@ -123,8 +125,9 @@ namespace Higgs.Mbale.BAL.Concrete
                 };
 
                  cashId = this._dataService.SaveCash(cashDTO, userId);
-
-                 SaveApplicationCash(cash.Amount, cash.Action);
+            }
+              
+                 SaveApplicationCash(cash,userId);
 
                //var document =new  Document()
                // {
@@ -141,33 +144,11 @@ namespace Higgs.Mbale.BAL.Concrete
                //};
                //var documentId = _documentService.SaveDocument(document, userId);
 
-                 long transactionTypeId = 0;
-                 List<string> transactionSubTypeNames = new List<string>();
-                 var transactionSubType = _transactionSubTypeService.GetTransactionSubType(cash.TransactionSubTypeId);
-
-                 if (transactionSubType != null)
-                 {
-                     transactionTypeId = transactionSubType.TransactionTypeId;
-                   
-                     var transaction = new TransactionDTO()
-                     {
-                         BranchId = Convert.ToInt64(cash.BranchId),
-                         SectorId = cash.SectorId,
-                         Amount = cash.Amount,
-                         TransactionSubTypeId = cash.TransactionSubTypeId,
-                         TransactionTypeId = transactionTypeId,
-                         CreatedOn = DateTime.Now,
-                         TimeStamp = DateTime.Now,
-                         CreatedBy = userId,
-                         Deleted = false,
-
-                     };
-                     var transactionId = _transactionDataService.SaveTransaction(transaction, userId);
-                 }
+                
             return cashId;
                  }
 
-        public void SaveApplicationCash(double amount, string action)
+        public void SaveApplicationCash(Cash cash, string userId)
         {
             var application = _dataService.GetApplicationDetails();
             double startAmount = 0;
@@ -179,13 +160,13 @@ namespace Higgs.Mbale.BAL.Concrete
                 OldBalance = application.TotalCash;
                 startAmount = OldBalance;
 
-                if (action == "-")
+                if (cash.Action == "-")
                 {
-                    newBalance = OldBalance - amount;
+                    newBalance = OldBalance - cash.Amount;
                 }
                 else
                 {
-                    newBalance = OldBalance + amount;
+                    newBalance = OldBalance + cash.Amount;
                 }
 
                 var applicatinDTO = new DTO.ApplicationDTO()
@@ -196,11 +177,38 @@ namespace Higgs.Mbale.BAL.Concrete
                     TimeStamp = application.TimeStamp,
 
                 };
+
                 this._dataService.UpdateApplicationCash(applicatinDTO);
+
+                long transactionTypeId = 0;
+
+                var transactionSubType = _transactionSubTypeService.GetTransactionSubType(cash.TransactionSubTypeId);
+
+                if (transactionSubType != null)
+                {
+                    transactionTypeId = transactionSubType.TransactionTypeId;
+
+                    var transaction = new TransactionDTO()
+                    {
+                        BranchId = Convert.ToInt64(cash.BranchId),
+                        SectorId = cash.SectorId,
+                        Amount = cash.Amount,
+                        TransactionSubTypeId = cash.TransactionSubTypeId,
+                        TransactionTypeId = transactionTypeId,
+                        CreatedOn = DateTime.Now,
+                        TimeStamp = DateTime.Now,
+                        CreatedBy = userId,
+                        Deleted = false,
+
+                    };
+                    var transactionId = _transactionDataService.SaveTransaction(transaction, userId);
+
+
+                }
+
             }
-           
 
-
+                
 
         }
         /// <summary>

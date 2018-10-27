@@ -26,6 +26,7 @@ namespace Higgs.Mbale.Models
         public System.DateTime TimeStamp { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public Nullable<long> SupplyId { get; set; }
+        public long PaymentModeId { get; set; }
 
         public string PaymentMode { get; set; }
 

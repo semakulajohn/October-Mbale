@@ -223,6 +223,29 @@ namespace Higgs.Mbale.BAL.Concrete
                          var creditorId = _creditorDataService.SaveCreditor(creditorDTO, userId);
                         
                      }
+                     else if (transactionSubType.Name == "OffLoading")
+                     {
+                         double offloadingAmount = 0;
+                         if (accountTransactionActivity.Amount > 0)
+                         {
+                             offloadingAmount = accountTransactionActivity.Amount * -1;
+                         }
+                         
+                         var creditorDTO = new DTO.CreditorDTO()
+                         {
+                             AspNetUserId = accountTransactionActivity.AspNetUserId,
+                             Action = false,
+                             Amount = offloadingAmount,
+                             CasualWorkerId = accountTransactionActivity.CasualWorkerId,
+                             BranchId = Convert.ToInt64(accountTransactionActivity.BranchId),
+                             SectorId = accountTransactionActivity.SectorId,
+                             Deleted = accountTransactionActivity.Deleted,
+                             CreatedBy = accountTransactionActivity.CreatedBy,
+                             CreatedOn = accountTransactionActivity.CreatedOn
+
+                         };
+                         var creditorId = _creditorDataService.SaveCreditor(creditorDTO, userId);
+                     }
                      var transaction = new TransactionDTO()
                      {
                          BranchId = Convert.ToInt64(accountTransactionActivity.BranchId),

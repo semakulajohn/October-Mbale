@@ -66,7 +66,10 @@ namespace Higgs.Mbale.Web.Controllers
             [ActionName("Save")]
             public long Save(Cash model)
             {
-
+                //if (model.BranchId == null || model.BranchId == 0)
+                //{
+                //     _cashService.SaveApplicationCash(model, userId);
+                //}
                 var cashId = _cashService.SaveCash(model, userId);
                 return cashId;
             }

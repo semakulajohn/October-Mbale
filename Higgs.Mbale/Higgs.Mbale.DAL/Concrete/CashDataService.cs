@@ -137,6 +137,8 @@ namespace Higgs.Mbale.DAL.Concrete
        {
            return this.UnitOfWork.Get<Application>().AsQueryable().FirstOrDefault();
        }
+
+
        public long UpdateApplicationCash(ApplicationDTO applicationDTO)
        {
            var result = this.UnitOfWork.Get<Application>().AsQueryable()
