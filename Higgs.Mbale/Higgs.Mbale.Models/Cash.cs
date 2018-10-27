@@ -10,7 +10,7 @@ namespace Higgs.Mbale.Models
     {
         public long CashId { get; set; }
         public long TransactionSubTypeId { get; set; }
-        public long BranchId { get; set; }
+        public Nullable<long> BranchId { get; set; }
         public long SectorId { get; set; }
         public double StartAmount { get; set; }
         public string Action { get; set; }

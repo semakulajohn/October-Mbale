@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="428d648bcae94835ac7475bd0c29c19f" Name="Diagram1" ZoomLevel="77">
+      <Diagram DiagramId="428d648bcae94835ac7475bd0c29c19f" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="Higgs.MbaleModel.AspNetRole" Width="1.5" PointX="0.75" PointY="50.25" IsExpanded="true" />
         <EntityTypeShape EntityType="Higgs.MbaleModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="39.625" IsExpanded="true" />
         <EntityTypeShape EntityType="Higgs.MbaleModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="42.5" IsExpanded="true" />
@@ -280,16 +280,9 @@
         <AssociationConnector Association="Higgs.MbaleModel.FK_Creditor_Creditor" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Creditor_SectorId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Debtor_SectorId" />
-        <EntityTypeShape EntityType="Higgs.MbaleModel.Cash" Width="1.5" PointX="21.75" PointY="55.625" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Cash_CreatedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Cash_DeletedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Cash_BranchId" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Cash_SectorId" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Cash_TransactionSubTypeId" />
         <EntityTypeShape EntityType="Higgs.MbaleModel.Application" Width="1.5" PointX="3.375" PointY="5.75" />
         <EntityTypeShape EntityType="Higgs.MbaleModel.DocumentCategory" Width="1.5" PointX="5.375" PointY="5.875" />
         <EntityTypeShape EntityType="Higgs.MbaleModel.AccountTransactionActivity" Width="1.5" PointX="12" PointY="37.25" />
-        <EntityTypeShape EntityType="Higgs.MbaleModel.Transaction" Width="1.5" PointX="12.75" PointY="44.625" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_AccountTransactionActivity_AspNetUserId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_AccountTransactionActivity_BranchId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_AccountTransactionActivity_CasualWorkerId" />
@@ -297,13 +290,6 @@
         <AssociationConnector Association="Higgs.MbaleModel.FK_AccountTransactionActivity_DeletedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_AccountTransactionActivity_SectorId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_AccountTransactionActivity_TransactionSubTypeId" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Transaction_CreatedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Transaction_DeletedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Transaction_UpdatedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Transaction_BranchId" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Transaction_SectorId" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Transaction_TransactionSubTypeId" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Transaction_TransactionTypeId" />
         <EntityTypeShape EntityType="Higgs.MbaleModel.Document" Width="1.5" PointX="12.75" PointY="30.875" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Document_CreatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Document_DeletedBy" />
@@ -311,6 +297,20 @@
         <AssociationConnector Association="Higgs.MbaleModel.FK_Document_UserId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Document_BranchId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Document_DocumentCategoryId" />
+        <EntityTypeShape EntityType="Higgs.MbaleModel.Transaction" Width="1.5" PointX="12.75" PointY="44.625" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Transaction_CreatedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Transaction_DeletedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Transaction_UpdatedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Transaction_BranchId" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Transaction_SectorId" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Transaction_TransactionSubTypeId" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Transaction_TransactionTypeId" />
+        <EntityTypeShape EntityType="Higgs.MbaleModel.Cash" Width="1.5" PointX="9.75" PointY="42.75" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Cash_CreatedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Cash_DeletedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Cash_BranchId" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Cash_SectorId" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Cash_TransactionSubTypeId" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

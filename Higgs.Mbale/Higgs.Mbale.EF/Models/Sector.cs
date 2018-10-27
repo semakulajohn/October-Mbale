@@ -32,9 +32,9 @@ namespace Higgs.Mbale.EF.Models
             this.Deliveries = new HashSet<Delivery>();
             this.Creditors = new HashSet<Creditor>();
             this.Debtors = new HashSet<Debtor>();
-            this.Cashes = new HashSet<Cash>();
             this.AccountTransactionActivities = new HashSet<AccountTransactionActivity>();
             this.Transactions = new HashSet<Transaction>();
+            this.Cashes = new HashSet<Cash>();
         }
     
         public long SectorId { get; set; }
@@ -66,8 +66,8 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Delivery> Deliveries { get; set; }
         public virtual ICollection<Creditor> Creditors { get; set; }
         public virtual ICollection<Debtor> Debtors { get; set; }
-        public virtual ICollection<Cash> Cashes { get; set; }
         public virtual ICollection<AccountTransactionActivity> AccountTransactionActivities { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }
+        public virtual ICollection<Cash> Cashes { get; set; }
     }
 }

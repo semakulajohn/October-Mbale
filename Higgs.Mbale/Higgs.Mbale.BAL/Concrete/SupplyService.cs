@@ -26,17 +26,20 @@ namespace Higgs.Mbale.BAL.Concrete
         private IAccountTransactionActivityService _accountTransactionActivityService;
         private ICreditorService _creditorService;
         private ITransactionService _transactionService;
+        private ICashService _cashService;
         
 
         public SupplyService(ISupplyDataService dataService,IUserService userService,
             IAccountTransactionActivityService accountTransactionActivityService,
-            ICreditorService creditorService, ITransactionService transactionService)
+            ICreditorService creditorService, ITransactionService transactionService,
+            ICashService cashService)
         {
             this._dataService = dataService;
             this._userService = userService;
             this._accountTransactionActivityService = accountTransactionActivityService;
             this._creditorService = creditorService;
             this._transactionService = transactionService;
+            this._cashService = cashService;
         }
 
         /// <summary>
@@ -116,6 +119,40 @@ namespace Higgs.Mbale.BAL.Concrete
                     CreatedOn = accountActivity.CreatedOn
                 };
                 accountActivityId = _accountTransactionActivityService.SaveAccountTransactionActivity(accountActivityObject, userId);
+
+                if (accountActivity.PaymentModeId == 2)
+                {
+                    if (accountActivity.BranchId == 0 || accountActivity.BranchId == null )
+                    {
+
+                        Cash cash = new Cash()
+                        {
+                            Amount = accountActivity.Amount,
+                            Notes = accountActivity.Notes,
+                            Action = accountActivity.Action,
+                            BranchId = Convert.ToInt64(accountActivity.BranchId),
+                            TransactionSubTypeId = accountActivity.TransactionSubTypeId,
+                            SectorId = accountActivity.SectorId,
+
+                        }; 
+                        _cashService.SaveApplicationCash(cash,userId);
+                    }
+                    else
+                    {
+                        Cash cash = new Cash()
+                        {
+                            Amount = accountActivity.Amount,
+                            Notes = accountActivity.Notes,
+                            Action = accountActivity.Action,
+                            BranchId = Convert.ToInt64(accountActivity.BranchId),
+                            TransactionSubTypeId = accountActivity.TransactionSubTypeId,
+                            SectorId = accountActivity.SectorId,
+
+                        };
+                        _cashService.SaveCash(cash,userId);
+                        
+                    }
+                }
             }
             return accountActivityId;
         }
@@ -327,7 +364,6 @@ namespace Higgs.Mbale.BAL.Concrete
            return supplyId;
                       
         }
-
         
         /// <summary>
         /// 

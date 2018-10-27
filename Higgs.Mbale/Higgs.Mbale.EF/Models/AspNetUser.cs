@@ -117,18 +117,18 @@ namespace Higgs.Mbale.EF.Models
             this.Debtors1 = new HashSet<Debtor>();
             this.Debtors2 = new HashSet<Debtor>();
             this.Debtors3 = new HashSet<Debtor>();
-            this.Cashes = new HashSet<Cash>();
-            this.Cashes1 = new HashSet<Cash>();
             this.AccountTransactionActivities = new HashSet<AccountTransactionActivity>();
             this.AccountTransactionActivities1 = new HashSet<AccountTransactionActivity>();
             this.AccountTransactionActivities2 = new HashSet<AccountTransactionActivity>();
-            this.Transactions = new HashSet<Transaction>();
-            this.Transactions1 = new HashSet<Transaction>();
-            this.Transactions2 = new HashSet<Transaction>();
             this.Documents = new HashSet<Document>();
             this.Documents1 = new HashSet<Document>();
             this.Documents2 = new HashSet<Document>();
             this.Documents3 = new HashSet<Document>();
+            this.Transactions = new HashSet<Transaction>();
+            this.Transactions1 = new HashSet<Transaction>();
+            this.Transactions2 = new HashSet<Transaction>();
+            this.Cashes = new HashSet<Cash>();
+            this.Cashes1 = new HashSet<Cash>();
         }
     
         public string Id { get; set; }
@@ -262,17 +262,17 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Debtor> Debtors1 { get; set; }
         public virtual ICollection<Debtor> Debtors2 { get; set; }
         public virtual ICollection<Debtor> Debtors3 { get; set; }
-        public virtual ICollection<Cash> Cashes { get; set; }
-        public virtual ICollection<Cash> Cashes1 { get; set; }
         public virtual ICollection<AccountTransactionActivity> AccountTransactionActivities { get; set; }
         public virtual ICollection<AccountTransactionActivity> AccountTransactionActivities1 { get; set; }
         public virtual ICollection<AccountTransactionActivity> AccountTransactionActivities2 { get; set; }
-        public virtual ICollection<Transaction> Transactions { get; set; }
-        public virtual ICollection<Transaction> Transactions1 { get; set; }
-        public virtual ICollection<Transaction> Transactions2 { get; set; }
         public virtual ICollection<Document> Documents { get; set; }
         public virtual ICollection<Document> Documents1 { get; set; }
         public virtual ICollection<Document> Documents2 { get; set; }
         public virtual ICollection<Document> Documents3 { get; set; }
+        public virtual ICollection<Transaction> Transactions { get; set; }
+        public virtual ICollection<Transaction> Transactions1 { get; set; }
+        public virtual ICollection<Transaction> Transactions2 { get; set; }
+        public virtual ICollection<Cash> Cashes { get; set; }
+        public virtual ICollection<Cash> Cashes1 { get; set; }
     }
 }

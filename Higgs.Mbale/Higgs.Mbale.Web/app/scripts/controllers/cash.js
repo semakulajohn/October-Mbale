@@ -102,7 +102,7 @@
                             $scope.showMessageSave = false;
 
                             if (action == "create") {
-                                $state.go('cash-edit', { 'action': 'edit', 'cashId': cashId });
+                                $state.go('cash.list');
                             }
 
                         }, 1500);

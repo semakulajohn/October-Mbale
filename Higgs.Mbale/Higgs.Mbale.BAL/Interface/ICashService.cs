@@ -17,6 +17,8 @@ namespace Higgs.Mbale.BAL.Interface
         long SaveCash(Cash cash, string userId);
 
         void MarkAsDeleted(long cashId, string userId);
+        void SaveApplicationCash(Cash cash,string userId);
+
        // Cash GetLatestCashForAParticularBranch(long branchId);
     }
 }
