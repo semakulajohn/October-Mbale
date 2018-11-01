@@ -155,5 +155,66 @@ namespace Higgs.Mbale.Web.Controllers
 
             }
         #endregion
+
+         #region batches
+            [HttpPost]
+            [ActionName("GetAllBatchesBetweenTheSpecifiedDates")]
+            public IEnumerable<Batch> GetAllBatchesBetweenTheSpecifiedDates(ReportSearch searchDates)
+            {
+                return _reportService.GetAllBatchesBetweenTheSpecifiedDates(searchDates.FromDate, searchDates.ToDate, searchDates.BranchId);
+            }
+
+            [HttpGet]
+            [ActionName("GenerateBatchCurrentMonthReport")]
+            public IEnumerable<Batch> GenerateBatchCurrentMonthReport()
+            {
+                return _reportService.GenerateBatchCurrentMonthReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateBatchTodaysReport")]
+            public IEnumerable<Batch> GenerateBatchTodaysReport()
+            {
+                return _reportService.GenerateBatchTodaysReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateBatchCurrentWeekReport")]
+            public IEnumerable<Batch> GenerateBatchCurrentWeekReport()
+            {
+                return _reportService.GenerateBatchCurrentWeekReport();
+            }
+            #endregion
+
+         #region deliveries
+            [HttpPost]
+            [ActionName("GetAllDeliveriesBetweenTheSpecifiedDates")]
+            public IEnumerable<Delivery> GetAllDeliveriesBetweenTheSpecifiedDates(ReportSearch searchDates)
+            {
+                return _reportService.GetAllDeliveriesBetweenTheSpecifiedDates(searchDates.FromDate, searchDates.ToDate, searchDates.BranchId, searchDates.CustomerId);
+            }
+
+            [HttpGet]
+            [ActionName("GenerateDeliveryCurrentMonthReport")]
+            public IEnumerable<Delivery> GenerateDeliveryCurrentMonthReport()
+            {
+                return _reportService.GenerateDeliveryCurrentMonthReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateDeliveryTodaysReport")]
+            public IEnumerable<Delivery> GenerateDeliveryTodaysReport()
+            {
+                return _reportService.GenerateDeliveryTodaysReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateDeliveryCurrentWeekReport")]
+            public IEnumerable<Delivery> GenerateDeliveryCurrentWeekReport()
+            {
+                return _reportService.GenerateDeliveryCurrentWeekReport();
+            }
+            #endregion
+
     }
 }

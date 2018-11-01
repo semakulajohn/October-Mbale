@@ -20,17 +20,22 @@ namespace Higgs.Mbale.BAL.Concrete
         private ITransactionService _transactionService;
         private ISupplyService _supplyService;
         private IAccountTransactionActivityService _accountTransactionActivityService;
+        private IBatchService _batchService;
+        private IDeliveryService _deliveryService;
        
 
 
         public ReportService(IReportDataService dataService, IUserService userService, ITransactionService transactionService,
-            ISupplyService supplyService,IAccountTransactionActivityService accountTransactionActivityService)
+            ISupplyService supplyService,IAccountTransactionActivityService accountTransactionActivityService,
+            IBatchService batchService,IDeliveryService deliveryService)
         {
             this._dataService = dataService;
             this._userService = userService;
             this._transactionService = transactionService;
             this._supplyService = supplyService;
             this._accountTransactionActivityService = accountTransactionActivityService;
+            this._batchService = batchService;
+            this._deliveryService = deliveryService;
             
         }
 
@@ -162,6 +167,68 @@ namespace Higgs.Mbale.BAL.Concrete
         }
         #endregion
 
+        #region batches
 
+        public IEnumerable<Batch> GenerateBatchCurrentMonthReport()
+        {
+            var results = this._dataService.GenerateBatchCurrentMonthReport();
+            var batchList = _batchService.MapEFToModel(results.ToList());
+            return batchList;
+        }
+
+        public IEnumerable<Batch> GenerateBatchCurrentWeekReport()
+        {
+            var results = this._dataService.GenerateBatchCurrentWeekReport();
+            var batchList = _batchService.MapEFToModel(results.ToList());
+            return batchList;
+        }
+
+
+        public IEnumerable<Batch> GenerateBatchTodaysReport()
+        {
+            var results = this._dataService.GenerateBatchTodaysReport();
+            var batchList = _batchService.MapEFToModel(results.ToList());
+            return batchList;
+        }
+
+        public IEnumerable<Batch> GetAllBatchesBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId)
+        {
+            var results = this._dataService.GetAllBatchesBetweenTheSpecifiedDates(lowerSpecifiedDate, upperSpecifiedDate, branchId);
+            var batchList = _batchService.MapEFToModel(results.ToList());
+            return batchList;
+        }
+      
+        #endregion
+
+        #region deliveries
+        public IEnumerable<Delivery> GenerateDeliveryCurrentMonthReport()
+        {
+            var results = this._dataService.GenerateDeliveryCurrentMonthReport();
+            var deliveryList = _deliveryService.MapEFToModel(results.ToList());
+            return deliveryList;
+        }
+
+        public IEnumerable<Delivery> GenerateDeliveryCurrentWeekReport()
+        {
+            var results = this._dataService.GenerateDeliveryCurrentWeekReport();
+            var deliveryList = _deliveryService.MapEFToModel(results.ToList());
+            return deliveryList;
+        }
+
+
+        public IEnumerable<Delivery> GenerateDeliveryTodaysReport()
+        {
+            var results = this._dataService.GenerateDeliveryTodaysReport();
+            var deliveryList = _deliveryService.MapEFToModel(results.ToList());
+            return deliveryList;
+        }
+
+        public IEnumerable<Delivery> GetAllDeliveriesBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId, string customerId)
+        {
+            var results = this._dataService.GetAllDeliveriesBetweenTheSpecifiedDates(lowerSpecifiedDate, upperSpecifiedDate, branchId, customerId);
+            var deliveryList = _deliveryService.MapEFToModel(results.ToList());
+            return deliveryList;
+        }
+        #endregion
     }
 }

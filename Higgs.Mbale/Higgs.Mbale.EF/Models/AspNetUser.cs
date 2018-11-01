@@ -83,8 +83,6 @@ namespace Higgs.Mbale.EF.Models
             this.OtherExpenses = new HashSet<OtherExpense>();
             this.OtherExpenses1 = new HashSet<OtherExpense>();
             this.OtherExpenses2 = new HashSet<OtherExpense>();
-            this.Batches = new HashSet<Batch>();
-            this.Batches1 = new HashSet<Batch>();
             this.BatchOutPuts = new HashSet<BatchOutPut>();
             this.BatchOutPuts1 = new HashSet<BatchOutPut>();
             this.BatchOutPuts2 = new HashSet<BatchOutPut>();
@@ -106,9 +104,6 @@ namespace Higgs.Mbale.EF.Models
             this.Requistions1 = new HashSet<Requistion>();
             this.Requistions2 = new HashSet<Requistion>();
             this.Requistions3 = new HashSet<Requistion>();
-            this.Deliveries = new HashSet<Delivery>();
-            this.Deliveries1 = new HashSet<Delivery>();
-            this.Deliveries2 = new HashSet<Delivery>();
             this.Creditors = new HashSet<Creditor>();
             this.Creditors1 = new HashSet<Creditor>();
             this.Creditors2 = new HashSet<Creditor>();
@@ -129,6 +124,11 @@ namespace Higgs.Mbale.EF.Models
             this.Transactions2 = new HashSet<Transaction>();
             this.Cashes = new HashSet<Cash>();
             this.Cashes1 = new HashSet<Cash>();
+            this.Batches = new HashSet<Batch>();
+            this.Batches1 = new HashSet<Batch>();
+            this.Deliveries = new HashSet<Delivery>();
+            this.Deliveries1 = new HashSet<Delivery>();
+            this.Deliveries2 = new HashSet<Delivery>();
         }
     
         public string Id { get; set; }
@@ -228,8 +228,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<OtherExpense> OtherExpenses { get; set; }
         public virtual ICollection<OtherExpense> OtherExpenses1 { get; set; }
         public virtual ICollection<OtherExpense> OtherExpenses2 { get; set; }
-        public virtual ICollection<Batch> Batches { get; set; }
-        public virtual ICollection<Batch> Batches1 { get; set; }
         public virtual ICollection<BatchOutPut> BatchOutPuts { get; set; }
         public virtual ICollection<BatchOutPut> BatchOutPuts1 { get; set; }
         public virtual ICollection<BatchOutPut> BatchOutPuts2 { get; set; }
@@ -251,9 +249,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Requistion> Requistions1 { get; set; }
         public virtual ICollection<Requistion> Requistions2 { get; set; }
         public virtual ICollection<Requistion> Requistions3 { get; set; }
-        public virtual ICollection<Delivery> Deliveries { get; set; }
-        public virtual ICollection<Delivery> Deliveries1 { get; set; }
-        public virtual ICollection<Delivery> Deliveries2 { get; set; }
         public virtual ICollection<Creditor> Creditors { get; set; }
         public virtual ICollection<Creditor> Creditors1 { get; set; }
         public virtual ICollection<Creditor> Creditors2 { get; set; }
@@ -274,5 +269,10 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Transaction> Transactions2 { get; set; }
         public virtual ICollection<Cash> Cashes { get; set; }
         public virtual ICollection<Cash> Cashes1 { get; set; }
+        public virtual ICollection<Batch> Batches { get; set; }
+        public virtual ICollection<Batch> Batches1 { get; set; }
+        public virtual ICollection<Delivery> Deliveries { get; set; }
+        public virtual ICollection<Delivery> Deliveries1 { get; set; }
+        public virtual ICollection<Delivery> Deliveries2 { get; set; }
     }
 }

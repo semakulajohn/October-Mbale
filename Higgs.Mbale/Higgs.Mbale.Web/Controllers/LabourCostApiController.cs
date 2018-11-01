@@ -14,6 +14,7 @@ namespace Higgs.Mbale.Web.Controllers
     {
          private ILabourCostService _labourCostService;
             private IUserService _userService;
+            private IBatchService _batchService;
             ILog logger = log4net.LogManager.GetLogger(typeof(LabourCostApiController));
             private string userId = string.Empty;
 
@@ -21,10 +22,11 @@ namespace Higgs.Mbale.Web.Controllers
             {
             }
 
-            public LabourCostApiController(ILabourCostService labourCostService,IUserService userService)
+            public LabourCostApiController(ILabourCostService labourCostService,IUserService userService,IBatchService batchService)
             {
                 this._labourCostService = labourCostService;
                 this._userService = userService;
+                this._batchService = batchService;
                 userId = Microsoft.AspNet.Identity.IdentityExtensions.GetUserId(RequestContext.Principal.Identity);
             }
 
@@ -47,6 +49,13 @@ namespace Higgs.Mbale.Web.Controllers
             public IEnumerable<LabourCost> GetAllLabourCostsForAParticularBatch(long batchId)
             {
                 return _labourCostService.GetAllLabourCostsForAParticularBatch(batchId);
+            }
+
+            [HttpGet]
+            [ActionName("GenerateLabourCosts")]
+            public IEnumerable<LabourCost> GenerateLabourCosts(long batchId)
+            {
+                return _batchService.GenerateLabourCosts(batchId,userId);
             }
 
             [HttpGet]

@@ -45,10 +45,10 @@ namespace Higgs.Mbale.EF.Models
         public virtual Product Product { get; set; }
         public virtual Sector Sector { get; set; }
         public virtual ICollection<StockGradeSize> StockGradeSizes { get; set; }
-        public virtual Batch Batch { get; set; }
         public virtual ICollection<StockProduct> StockProducts { get; set; }
         public virtual ICollection<StoreStock> StoreStocks { get; set; }
         public virtual Store Store { get; set; }
         public virtual ICollection<DeliveryStock> DeliveryStocks { get; set; }
+        public virtual Batch Batch { get; set; }
     }
 }

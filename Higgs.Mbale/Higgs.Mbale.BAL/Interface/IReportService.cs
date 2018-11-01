@@ -53,5 +53,28 @@ namespace Higgs.Mbale.BAL.Interface
        
          #endregion
 
+          #region batches
+
+          IEnumerable<Batch> GenerateBatchCurrentMonthReport();
+
+          IEnumerable<Batch> GenerateBatchCurrentWeekReport();
+         
+          IEnumerable<Batch> GenerateBatchTodaysReport();
+
+          IEnumerable<Batch> GetAllBatchesBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId);
+         
+          #endregion
+
+          #region deliveries
+          IEnumerable<Delivery> GenerateDeliveryCurrentMonthReport();
+         
+           IEnumerable<Delivery> GenerateDeliveryCurrentWeekReport();
+          
+          IEnumerable<Delivery> GenerateDeliveryTodaysReport();
+
+          IEnumerable<Delivery> GetAllDeliveriesBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId, string customerId);
+         
+          #endregion
+
  }
 }

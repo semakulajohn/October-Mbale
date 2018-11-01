@@ -48,7 +48,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual DbSet<BranchSector> BranchSectors { get; set; }
         public virtual DbSet<Sector> Sectors { get; set; }
         public virtual DbSet<Grade> Grades { get; set; }
-        public virtual DbSet<BatchSupply> BatchSupplies { get; set; }
         public virtual DbSet<UserBranchManager> UserBranchManagers { get; set; }
         public virtual DbSet<ActivityBatchCasual> ActivityBatchCasuals { get; set; }
         public virtual DbSet<Activity> Activities { get; set; }
@@ -63,7 +62,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual DbSet<StockGradeSize> StockGradeSizes { get; set; }
         public virtual DbSet<CasualActivity> CasualActivities { get; set; }
         public virtual DbSet<OtherExpense> OtherExpenses { get; set; }
-        public virtual DbSet<Batch> Batches { get; set; }
         public virtual DbSet<BatchOutPut> BatchOutPuts { get; set; }
         public virtual DbSet<BatchGradeSize> BatchGradeSizes { get; set; }
         public virtual DbSet<StockProduct> StockProducts { get; set; }
@@ -81,7 +79,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual DbSet<InventoryCategory> InventoryCategories { get; set; }
         public virtual DbSet<Requistion> Requistions { get; set; }
         public virtual DbSet<DeliveryGradeSize> DeliveryGradeSizes { get; set; }
-        public virtual DbSet<Delivery> Deliveries { get; set; }
         public virtual DbSet<Creditor> Creditors { get; set; }
         public virtual DbSet<Debtor> Debtors { get; set; }
         public virtual DbSet<Application> Applications { get; set; }
@@ -90,6 +87,9 @@ namespace Higgs.Mbale.EF.Models
         public virtual DbSet<Document> Documents { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<Cash> Cashes { get; set; }
+        public virtual DbSet<Batch> Batches { get; set; }
+        public virtual DbSet<Delivery> Deliveries { get; set; }
+        public virtual DbSet<BatchSupply> BatchSupplies { get; set; }
     
         public virtual int Mark_FactoryExpense_AsDeleted(Nullable<long> inPutFactoryExpenseId, string userId)
         {

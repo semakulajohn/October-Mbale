@@ -524,3 +524,258 @@ angular
 
         }]);
 
+
+angular
+    .module('homer').controller('ReportBatchController', ['$scope', 'ngTableParams', '$http', '$filter', '$location', 'Utils', 'uiGridConstants', '$window',
+        function ($scope, ngTableParams, $http, $filter, $location, Utils, uiGridConstants, $window) {
+            $scope.loadingSpinner = true;
+
+            $scope.reportType = 0;
+            $scope.showDownloadLink = false;
+
+
+            $scope.BatchesForThisMonth = function () {
+                $scope.data = [];
+                var promise = $http.get('/webapi/ReportApi/GenerateBatchCurrentMonthReport', {});
+                $scope.showDownloadLink = false;
+                promise.then(
+                 function (payload) {
+                     $scope.data = payload.data;
+                     $scope.reportType = 2;
+                     if ($scope.data.length > 0) {
+                         $scope.showDownloadLink = true;
+                     }
+                     $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
+                         total: $scope.data.length, getData: function ($defer, params) {
+                             var orderData = params.sorting() ?
+                                                 $filter('orderBy')($scope.data, params.orderBy()) :
+                                                 $scope.data;
+                             $defer.resolve(orderData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                         }
+                     });
+                 });
+            }
+
+            $scope.TodaysBatches = function () {
+                $scope.data = [];
+                var promise = $http.get('/webapi/ReportApi/GenerateBatchTodaysReport', {});
+                $scope.showDownloadLink = false;
+                promise.then(
+                 function (payload) {
+                     $scope.data = payload.data;
+                     $scope.reportType = 1;
+                     if ($scope.data.length > 0) {
+                         $scope.showDownloadLink = true;
+                     }
+                     $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
+                         total: $scope.data.length, getData: function ($defer, params) {
+                             var orderData = params.sorting() ?
+                                                 $filter('orderBy')($scope.data, params.orderBy()) :
+                                                 $scope.data;
+                             $defer.resolve(orderData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                         }
+                     });
+                 });
+            }
+
+            $scope.WeeksBatches = function () {
+                $scope.data = [];
+                var promise = $http.get('/webapi/ReportApi/GenerateBatchCurrentWeekReport', {});
+                $scope.showDownloadLink = false;
+                promise.then(
+                 function (payload) {
+                     $scope.data = payload.data;
+                     $scope.reportType = 3;
+                     if ($scope.data.length > 0) {
+                         $scope.showDownloadLink = true;
+                     }
+                     $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
+                         total: $scope.data.length, getData: function ($defer, params) {
+                             var orderData = params.sorting() ?
+                                                 $filter('orderBy')($scope.data, params.orderBy()) :
+                                                 $scope.data;
+                             $defer.resolve(orderData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                         }
+                     });
+                 });
+            }
+
+
+            $http.get('/webapi/BranchApi/GetAllBranches').success(function (data, status) {
+                $scope.branches = data;
+            });
+
+          
+
+            $scope.SearchBatches = function (batch) {
+                $scope.data = [];
+                var promise = $http.post('/webapi/ReportApi/GetAllBatchesBetweenTheSpecifiedDates',
+                        {
+                            FromDate: batch.FromDate,
+                            ToDate: batch.ToDate,
+                          
+                            BranchId: batch.BranchId,
+
+                        });
+                promise.then(
+                 function (payload) {
+
+                     $scope.data = payload.data;
+                     $scope.reportType = 4;
+
+                     $scope.tableParams = new ngTableParams({
+                         page: 1,
+                         count: 10,
+                         sorting: { CreatedOn: 'desc' }
+                     }, {
+                         getData: function ($defer, params) {
+                             var filteredData = $filter('filter')($scope.data, $scope.filter);
+                             var orderedData = params.sorting() ?
+                                                 $filter('orderBy')(filteredData, params.orderBy()) :
+                                                 filteredData;
+
+                             params.total(orderedData.length);
+                             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                         },
+                         $scope: $scope
+
+                     });
+                 });
+            }
+
+
+            $scope.DownloadExcelFile = function () {
+                $window.open("/Excel/Batch/" + $scope.reportType);
+            };
+
+        }]);
+
+
+
+angular
+    .module('homer').controller('ReportDeliveryController', ['$scope', 'ngTableParams', '$http', '$filter', '$location', 'Utils', 'uiGridConstants', '$window',
+        function ($scope, ngTableParams, $http, $filter, $location, Utils, uiGridConstants, $window) {
+            $scope.loadingSpinner = true;
+
+            $scope.reportType = 0;
+            $scope.showDownloadLink = false;
+
+
+            $scope.DeliveriesForThisMonth = function () {
+                $scope.data = [];
+                var promise = $http.get('/webapi/ReportApi/GenerateDeliveryCurrentMonthReport', {});
+                $scope.showDownloadLink = false;
+                promise.then(
+                 function (payload) {
+                     $scope.data = payload.data;
+                     $scope.reportType = 2;
+                     if ($scope.data.length > 0) {
+                         $scope.showDownloadLink = true;
+                     }
+                     $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
+                         total: $scope.data.length, getData: function ($defer, params) {
+                             var orderData = params.sorting() ?
+                                                 $filter('orderBy')($scope.data, params.orderBy()) :
+                                                 $scope.data;
+                             $defer.resolve(orderData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                         }
+                     });
+                 });
+            }
+
+            $scope.TodaysDeliveries = function () {
+                $scope.data = [];
+                var promise = $http.get('/webapi/ReportApi/GenerateDeliveryTodaysReport', {});
+                $scope.showDownloadLink = false;
+                promise.then(
+                 function (payload) {
+                     $scope.data = payload.data;
+                     $scope.reportType = 1;
+                     if ($scope.data.length > 0) {
+                         $scope.showDownloadLink = true;
+                     }
+                     $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
+                         total: $scope.data.length, getData: function ($defer, params) {
+                             var orderData = params.sorting() ?
+                                                 $filter('orderBy')($scope.data, params.orderBy()) :
+                                                 $scope.data;
+                             $defer.resolve(orderData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                         }
+                     });
+                 });
+            }
+
+            $scope.WeeksDeliveries = function () {
+                $scope.data = [];
+                var promise = $http.get('/webapi/ReportApi/GenerateDeliveryCurrentWeekReport', {});
+                $scope.showDownloadLink = false;
+                promise.then(
+                 function (payload) {
+                     $scope.data = payload.data;
+                     $scope.reportType = 3;
+                     if ($scope.data.length > 0) {
+                         $scope.showDownloadLink = true;
+                     }
+                     $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
+                         total: $scope.data.length, getData: function ($defer, params) {
+                             var orderData = params.sorting() ?
+                                                 $filter('orderBy')($scope.data, params.orderBy()) :
+                                                 $scope.data;
+                             $defer.resolve(orderData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                         }
+                     });
+                 });
+            }
+
+
+            $http.get('/webapi/BranchApi/GetAllBranches').success(function (data, status) {
+                $scope.branches = data;
+            });
+
+            $http.get('/webapi/CustomerApi/GetAllCustomers').success(function (data, status) {
+                $scope.customers = data;
+            });
+
+            $scope.SearchDeliveries = function (delivery) {
+                $scope.data = [];
+                var promise = $http.post('/webapi/ReportApi/GetAllDeliveriesBetweenTheSpecifiedDates',
+                        {
+                            FromDate: delivery.FromDate,
+                            ToDate: delivery.ToDate,
+                            CustomerId: delivery.CustomerId,
+                            BranchId: delivery.BranchId,
+
+                        });
+                promise.then(
+                 function (payload) {
+
+                     $scope.data = payload.data;
+                     $scope.reportType = 4;
+
+                     $scope.tableParams = new ngTableParams({
+                         page: 1,
+                         count: 10,
+                         sorting: { CreatedOn: 'desc' }
+                     }, {
+                         getData: function ($defer, params) {
+                             var filteredData = $filter('filter')($scope.data, $scope.filter);
+                             var orderedData = params.sorting() ?
+                                                 $filter('orderBy')(filteredData, params.orderBy()) :
+                                                 filteredData;
+
+                             params.total(orderedData.length);
+                             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                         },
+                         $scope: $scope
+
+                     });
+                 });
+            }
+
+
+            $scope.DownloadExcelFile = function () {
+                $window.open("/Excel/Batch/" + $scope.reportType);
+            };
+
+        }]);
+

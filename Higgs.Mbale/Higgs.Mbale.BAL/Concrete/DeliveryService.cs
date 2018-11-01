@@ -31,11 +31,13 @@ namespace Higgs.Mbale.BAL.Concrete
         private IStockService _stockService;
         private IStockDataService _stockDataService;
         private IAccountTransactionActivityService _accountTransactionActivityService;
+        private ICashService _cashService;
         
 
         public DeliveryService(IDeliveryDataService dataService,IUserService userService,ITransactionDataService transactionDataService,
             ITransactionSubTypeService transactionSubTypeService,
-            IOrderService orderService,IStockService stockService,IStockDataService stockDataService,IAccountTransactionActivityService accountTransactionActivityService)
+            IOrderService orderService,IStockService stockService,IStockDataService stockDataService,
+            IAccountTransactionActivityService accountTransactionActivityService,ICashService cashService)
         {
             this._dataService = dataService;
             this._userService = userService;
@@ -45,6 +47,7 @@ namespace Higgs.Mbale.BAL.Concrete
             this._stockService = stockService;
             this._stockDataService = stockDataService;
             this._accountTransactionActivityService = accountTransactionActivityService;
+            this._cashService = cashService;
         }
 
         /// <summary>
@@ -642,6 +645,24 @@ namespace Higgs.Mbale.BAL.Concrete
                         var accountActivityId = this._accountTransactionActivityService.SaveAccountTransactionActivity(accountActivity, userId);
 
                     }
+                    else if (paymentModeName == "Cash")
+                    {
+
+                        var cash = new Cash()
+                        {
+                       
+                            Amount = delivery.Amount,
+                            Notes = notes,
+                            Action = "+",
+                            BranchId = Convert.ToInt64(delivery.BranchId),
+                            TransactionSubTypeId = transactionSubTypeId,
+                            SectorId = delivery.SectorId,
+
+                        }; 
+                        _cashService.SaveCash(cash,userId);
+
+                        
+                    }
                    
 
                     if (delivery.Amount == 0)
@@ -724,7 +745,7 @@ namespace Higgs.Mbale.BAL.Concrete
 
         #region Mapping Methods
 
-        private IEnumerable<Delivery> MapEFToModel(IEnumerable<EF.Models.Delivery> data)
+        public IEnumerable<Delivery> MapEFToModel(IEnumerable<EF.Models.Delivery> data)
         {
             var list = new List<Delivery>();
             foreach (var result in data)

@@ -88,7 +88,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group col-sm-6" >
+                                            <div class="form-group col-sm-6" ng-show="batch.BatchId <= 0 " >
                                                 <div class="col-sm-12">
                                                     <label>Store</label>
                                                     <select style="border: none" name="store" class="form-control col-sm-12" data-ng-model="batch.StoreId" required ng-class="{errorinput:form.store.$invalid}"
@@ -269,6 +269,7 @@
                                 <tab>
                                     <tab-heading>
                                         <a ui-sref="labourCost-batch({ batchId: {{batch.BatchId}} })">Labour Costs</a>
+                                       
                                     </tab-heading>
 
                                     <div ng-if="batchId==0">
@@ -281,7 +282,10 @@
                                                 <div class="clear0"></div>
 
                                                 <a ui-sref="labourCost-batch-edit({ action: 'create',labourCostId: 0,batchId: retrievedBatchId })" class="btn btn-info btn-sm"><i class="fa fa-plus"></i> Add Labour Cost</a>
-
+                                               &nbsp;&nbsp;&nbsp;&nbsp;
+                                                 <button  ng-click="Generate(batchId)" class="btn btn-warning2" ng-if="batchId > 0">
+                                                    Generate LabourCosts
+                                                </button>
                                                 <span ng-if="loadingSpinner" class="loadingSpinner">
                                                     <img src="/images/loading-bars.svg" width="45" height="45" /> Loading...
                                                 </span>

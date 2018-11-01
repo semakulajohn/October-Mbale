@@ -133,11 +133,30 @@
 
 
 angular
-    .module('homer').controller('BatchLabourCostController', ['$scope', 'ngTableParams', '$http', '$filter', '$location', 'Utils', 'uiGridConstants',
-        function ($scope, ngTableParams, $http, $filter, $location, Utils, uiGridConstants) {
+    .module('homer').controller('BatchLabourCostController', ['$scope', 'ngTableParams', '$http', '$filter', '$location', 'Utils', 'uiGridConstants', 'usSpinnerService', '$timeout', '$state',
+        function ($scope, ngTableParams, $http, $filter, $location, Utils, uiGridConstants, usSpinnerService,$timeout,$state) {
             $scope.loadingSpinner = true;
 
             var batchId = $scope.batchId;
+
+            $scope.Generate = function (batchId) {
+                  
+                    usSpinnerService.spin('global-spinner');
+                    var promise = $http.get('/webapi/LabourCostApi/GenerateLabourCosts?batchId=' + batchId, {});
+
+                    promise.then(
+                        function (payload) {
+                            $scope.gridData.data = payload.data;
+                           
+                            usSpinnerService.stop('global-spinner');
+                            $timeout(function () {
+                              
+                                    $state.go('labourCost-batch', { 'batchId': $scope.batchId });
+                              
+                            }, 1500);
+                        });
+                
+            }
 
             var promise = $http.get('/webapi/LabourCostApi/GetAllLabourCostsForAParticularBatch?batchId=' + batchId, {});
             promise.then(

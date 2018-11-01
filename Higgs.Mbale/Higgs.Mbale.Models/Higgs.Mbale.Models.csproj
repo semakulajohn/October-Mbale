@@ -50,6 +50,7 @@
     <Compile Include="AspNetRole.cs" />
     <Compile Include="AspNetUser.cs" />
     <Compile Include="Batch.cs" />
+    <Compile Include="BatchFactoryExpense.cs" />
     <Compile Include="BatchGrade.cs" />
     <Compile Include="BatchGradeSize.cs" />
     <Compile Include="BatchOutPut.cs" />

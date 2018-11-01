@@ -15,5 +15,7 @@ namespace Higgs.Mbale.DAL.Interface
         long SaveLabourCost(LabourCostDTO labourCost, string userId);
         void MarkAsDeleted(long labourCostId, string userId);
         IEnumerable<LabourCost> GetAllLabourCostsForAParticularBatch(long batchId);
+
+        LabourCost GetBatchLabourCost(long activityId, long batchId);
     }
 }

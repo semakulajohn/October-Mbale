@@ -178,5 +178,94 @@ namespace Higgs.Mbale.DAL.Concrete
                .Where(p => p.CreatedOn >= startOfWeek && p.CreatedOn <= endDate && p.SupplierId == supplierId);
        }
         #endregion
+
+        #region  batches
+       public IEnumerable<Batch> GetAllBatchesBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId)
+       {
+           if (branchId != 0 )
+           {
+
+               return this.UnitOfWork.Get<Batch>().AsQueryable()
+                   .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate) && m.BranchId == branchId);
+           }
+          
+          
+           return this.UnitOfWork.Get<Batch>().AsQueryable()
+               .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate));
+       }
+
+       public IEnumerable<Batch> GenerateBatchCurrentMonthReport()
+       {
+           return this.UnitOfWork.Get<Batch>().AsQueryable()
+               .Where(p => p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<Batch> GenerateBatchTodaysReport()
+       {
+           return this.UnitOfWork.Get<Batch>().AsQueryable()
+               .Where(p => p.CreatedOn.Day == DateTime.Now.Day && p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<Batch> GenerateBatchCurrentWeekReport()
+       {
+
+           DateTime startOfWeek = DateTime.Today.AddDays((int)DateTime.Today.DayOfWeek * -1);
+           DateTime endDate = DateTime.Now;
+
+           return this.UnitOfWork.Get<Batch>().AsQueryable()
+               .Where(p => p.CreatedOn >= startOfWeek && p.CreatedOn <= endDate);
+       }
+
+        #endregion
+
+
+       #region Deliveries
+       public IEnumerable<Delivery> GetAllDeliveriesBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId, string customerId)
+       {
+           if (branchId != 0 && customerId == null)
+           {
+
+               return this.UnitOfWork.Get<Delivery>().AsQueryable()
+                   .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate) && m.BranchId == branchId);
+           }
+           else if (customerId != null && branchId == 0)
+           {
+
+               return this.UnitOfWork.Get<Delivery>().AsQueryable()
+                   .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate) && m.CustomerId == customerId);
+           }
+           else if (customerId != null && branchId != 0)
+           {
+               return this.UnitOfWork.Get<Delivery>().AsQueryable()
+               .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate) && m.CustomerId == customerId && m.BranchId == branchId);
+           }
+           return this.UnitOfWork.Get<Delivery>().AsQueryable()
+               .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate));
+       }
+
+       public IEnumerable<Delivery> GenerateDeliveryCurrentMonthReport()
+       {
+           return this.UnitOfWork.Get<Delivery>().AsQueryable()
+               .Where(p => p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<Delivery> GenerateDeliveryTodaysReport()
+       {
+           return this.UnitOfWork.Get<Delivery>().AsQueryable()
+               .Where(p => p.CreatedOn.Day == DateTime.Now.Day && p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<Delivery> GenerateDeliveryCurrentWeekReport()
+       {
+
+           DateTime startOfWeek = DateTime.Today.AddDays((int)DateTime.Today.DayOfWeek * -1);
+           DateTime endDate = DateTime.Now;
+
+           return this.UnitOfWork.Get<Delivery>().AsQueryable()
+               .Where(p => p.CreatedOn >= startOfWeek && p.CreatedOn <= endDate);
+       }
+
+       #endregion 
+
     }
 }

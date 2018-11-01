@@ -27,7 +27,11 @@ public    class LabourCostDataService : DataServiceBase,ILabourCostDataService
         {
             return this.UnitOfWork.Get<LabourCost>().AsQueryable().Where(e => e.Deleted == false); 
         }
-
+        public LabourCost GetBatchLabourCost(long activityId, long batchId)
+        {
+            return this.UnitOfWork.Get<LabourCost>().AsQueryable().FirstOrDefault(e => e.Deleted == false
+                && e.ActivityId == activityId && e.BatchId == batchId);
+        }
 
         public IEnumerable<LabourCost> GetAllLabourCostsForAParticularBatch(long batchId)
         {

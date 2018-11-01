@@ -1440,6 +1440,49 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
              $scope.supplierId = $stateParams.supplierId;
          }
      })
+
+         .state('reports.batchlist', {
+             url: "/reports",
+             templateUrl: "/app/views/report/batches.html",
+             data: {
+                 pageTitle: 'Batches',
+             },
+             controller: function ($scope, $stateParams) {
+
+             }
+         })
+         .state('reports.branchBatchlist', {
+             url: "/reports",
+             templateUrl: "/app/views/report/branch-batch.html",
+             data: {
+                 pageTitle: 'Branch Batches',
+             },
+             controller: function ($scope, $stateParams) {
+
+             }
+         })
+
+         .state('reports.deliverylist', {
+             url: "/reports",
+             templateUrl: "/app/views/report/deliveries.html",
+             data: {
+                 pageTitle: 'Deliveries',
+             },
+             controller: function ($scope, $stateParams) {
+
+             }
+         })
+
+         .state('reports.buveralist', {
+             url: "/reports",
+             templateUrl: "/app/views/report/buveras.html",
+             data: {
+                 pageTitle: 'Buveras',
+             },
+             controller: function ($scope, $stateParams) {
+
+             }
+         })
      //Account Transaction Activities
      .state('accounttransactionactivities', {
          abstract: true,

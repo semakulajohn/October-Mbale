@@ -24,7 +24,10 @@
 
                         <button class="btn btn-mint btn-rounded" ng-click="WeeksSupplies()">This Week</button>
                         <button class="btn btn-success btn-rounded" ng-click="SuppliesForThisMonth()">This Month</button>
-                        &nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button onclick="window.focus();window.print();" class="btn btn-primary2">Print</button>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                         <span ng-show="data.length > 0">
                             <span class="fa-hover"><a href="" ng-click="DownloadExcelFile()"><i class="fa fa-download"></i> Download report</a></span>

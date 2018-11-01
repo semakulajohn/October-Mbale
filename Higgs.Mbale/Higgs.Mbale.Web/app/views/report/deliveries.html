@@ -1,0 +1,227 @@
+﻿
+
+<div id="header" ng-include="'/app/views/_common/header.html'"></div>
+
+<aside id="menu" ng-include="'/app/views/_common/navigation.html'"></aside>
+
+<div id="wrapper">
+
+    <div ng-include="'/app/views/_common/Breadcrumb.html'"></div>
+    <div ng-controller="ReportDeliveryController">
+
+
+        <div class="clear0"></div>
+        <hr>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">View Deliveries</h3>
+                    </div>
+                    <div class="panel-body">
+                        <button class="btn btn-primary btn-rounded" ng-click="TodaysDeliveries()">Today</button>
+
+                        <button class="btn btn-mint btn-rounded" ng-click="WeeksDeliveries()">This Week</button>
+                        <button class="btn btn-success btn-rounded" ng-click="DeliveriesForThisMonth()">This Month</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button onclick="window.focus();window.print();" class="btn btn-primary2">Print</button>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <span ng-show="data.length > 0">
+                            <span class="fa-hover"><a href="" ng-click="DownloadExcelFile()"><i class="fa fa-download"></i> Download report</a></span>
+                        </span>
+
+
+                        <hr />
+
+                        <div class="col-md-6">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Search Deliveries by date</h3>
+
+                                </div>
+                                <div class="panel-body">
+                                    <table width="900">
+                                        <tbody>
+                                            <tr>
+                                                <td width="20%">
+                                                    <span class="header-search">
+                                                        From: &nbsp;&nbsp;  <input placeholder="yyyy-mm-dd" name="fromDate" ng-disabled="readOnly" kendo-date-picker="" required ng-model="delivery.FromDate" k-format="'yyyy-MM-dd'" ng-pattern="/^(199\d)|([2-9]\d{3})-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/">
+
+                                                        <span ng-show=" form.fromDate.$invalid">
+                                                            <span ng-show="form.fromDate.$error.required" class="help-block error margin-bottom-00 "><i class="fa fa-warning"></i> From date is required.</span>
+                                                            <span ng-show="form.fromDate.$error.pattern" class="help-block error margin-bottom-00 "><i class="fa fa-warning"></i> Invalid date format, should be yyyy-mm-dd.</span>
+                                                        </span>
+                                                    </span>
+                                                </td>
+                                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                                <td width="20%">
+                                                    <span class="header-search">
+                                                        To: &nbsp;&nbsp;  <input placeholder="yyyy-mm-dd" name="toDate" ng-disabled="readOnly" kendo-date-picker="" ng-model="delivery.ToDate" k-format="'yyyy-MM-dd'" required ng-pattern="/^(199\d)|([2-9]\d{3})-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/">
+
+                                                        <span ng-show=" form.toDate.$invalid">
+                                                            <span ng-show="form.toDate.$error.required" class="help-block error margin-bottom-00 "><i class="fa fa-warning"></i> To date is required.</span>
+                                                            <span ng-show="form.toDate.$error.pattern" class="help-block error margin-bottom-00 "><i class="fa fa-warning"></i> Invalid date format, should be yyyy-mm-dd.</span>
+                                                        </span>
+                                                    </span>
+                                                </td>
+                                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                                <td width="30%">
+                                                    <span class="header-search">
+                                                        Branch : &nbsp;&nbsp;
+                                                        <select style="border: none" name="branch" class="form-control col-sm-12" data-ng-model="delivery.BranchId"
+                                                                data-ng-options="i.BranchId as i.Name for i in branches">
+                                                            <option value="">Please select</option>
+                                                        </select>
+
+                                                    </span>
+                                                </td>
+                                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                                <td width="30%">
+
+                                                    <span class="header-search">
+                                                        Customer : &nbsp;&nbsp;
+                                                        <select style="border: none" name="customer" class="form-control col-sm-12" data-ng-model="delivery.Id"
+                                                                data-ng-options="i.Id as i.FirstName for i in customers">
+                                                            <option value="">Please select</option>
+                                                        </select>
+
+                                                    </span>
+
+                                                </td>
+                                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                                <td><button class="btn btn-primary" ng-click="SearchDeliveries(delivery)">Search</button></td>
+                                            </tr>
+                                    </table>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <div ng-hide="data.length > 0">
+                        <div class="col-md-4">
+                            <div class="error">
+                                No Deliveries found for that period.
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="data.length > 0">
+                        <table ng-table="tableParams" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" ng-class="{
+                                        'sort-asc': tableParams.isSortBy('Location', 'asc'),
+                                        'sort-desc': tableParams.isSortBy('Location', 'desc')
+                                        }"
+                                        ng-click="tableParams.sorting({'Location' : tableParams.isSortBy('Location', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        <div>Destination</div>
+                                    </th>
+                                    <th class="sortable" ng-class="{
+                                        'sort-asc': tableParams.isSortBy('OrderId', 'asc'),
+                                        'sort-desc': tableParams.isSortBy('OrderId', 'desc')
+                                        }"
+                                        ng-click="tableParams.sorting({'OrderId' : tableParams.isSortBy('OrderId', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        <div>Order Number</div>
+                                    </th>
+                                    <th class="sortable" ng-class="{
+                                        'sort-asc': tableParams.isSortBy('DriverName', 'asc'),
+                                        'sort-desc': tableParams.isSortBy('DriverName', 'desc')
+                                        }"
+                                        ng-click="tableParams.sorting({'DriverName' : tableParams.isSortBy('DriverName', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        <div>Driver Name</div>
+                                    </th>
+                                    <th class="sortable"
+                                        ng-click="tableParams.sorting({'DriverNIN' : tableParams.isSortBy('DriverNIN', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        <div> Driver NIN</div>
+                                    </th>
+                                        <th class="sortable"
+                                        ng-click="tableParams.sorting({'Quantity' : tableParams.isSortBy('Quantity', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        <div>Quantity</div>
+                                    </th>
+
+                                    <th class="sortable" ng-class="{
+                                    'sort-asc': tableParams.isSortBy('BranchName', 'asc'),
+                                    'sort-desc': tableParams.isSortBy('BranchName', 'desc')
+                                    }"
+                                        ng-click="tableParams.sorting({'BranchName' : tableParams.isSortBy('BranchName', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        <div>Branch</div>
+                                    </th>
+
+                                    <th class="sortable" ng-class="{
+                                    'sort-asc': tableParams.isSortBy('BatchNumber', 'asc'),
+                                    'sort-desc': tableParams.isSortBy('BatchNumber', 'desc')
+                                    }"
+                                        ng-click="tableParams.sorting({'BatchNumber' : tableParams.isSortBy('BatchNumber', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        <div>BatchNumber</div>
+                                    </th>
+
+                                    <th class="sortable" ng-class="{
+                                    'sort-asc': tableParams.isSortBy('VehicleNumber', 'asc'),
+                                    'sort-desc': tableParams.isSortBy('VehicleNumber', 'desc')
+                                    }"
+                                        ng-click="tableParams.sorting({'VehicleNumber' : tableParams.isSortBy('VehicleNumber', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        <div>TruckNumber</div>
+                                    </th>
+
+                                    <th class="sortable" ng-class="{
+                                    'sort-asc': tableParams.isSortBy('DeliveryCost', 'asc'),
+                                    'sort-desc': tableParams.isSortBy('DeliveryCost', 'desc')
+                                    }"
+                                        ng-click="tableParams.sorting({'DeliveryCost' : tableParams.isSortBy('DeliveryCost', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        <div>Delivery Cost</div>
+                                    </th>
+
+                                    <th class="sortable" ng-class="{
+                                    'sort-asc': tableParams.isSortBy('CustomerName', 'asc'),
+                                    'sort-desc': tableParams.isSortBy('CustomerName', 'desc')
+                                    }"
+                                        ng-click="tableParams.sorting({'CustomerName' : tableParams.isSortBy('CustomerName', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        <div>CustomerName</div>
+                                    </th>
+                                   
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                               
+                                                          
+                                <tr ng-repeat="delivery in data">
+                                    <td width="10%">{{delivery.Location}}</td>
+                                    <td width="5%">{{delivery.OrderId}}</td>
+                                    <td width="10%">{{delivery.DriverName}}</td>
+                                    <td width="10%">{{delivery.DriverNIN}}</td>
+                                    <td width="10%"> {{delivery.Quantity}}</td>
+                                    <td width="7%">{{ delivery.BranchName }}</td>
+                                    <td width="10%">{{ delivery.BatchNumber }}</td>
+                                    <td width="10%">{{delivery.VehicleNumber}}</td>
+                                    <td width="10%">{{ delivery.DeliveryCost }}</td>
+                                    <td width="10%">{{delivery.CustomerName}}</td>
+                                    <td width="10%">{{delivery.CreatedOn | date:"yyyy-MM-dd hh:mm"}}</td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</div>
+

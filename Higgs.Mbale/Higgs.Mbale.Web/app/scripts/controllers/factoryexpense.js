@@ -7,6 +7,7 @@
             $scope.tab.dashboard = true;
         }
 
+        $scope.selectedFactoryExpenses = [];
        // var transactionSubTypeId = 10006;
         var factoryExpenseId = $scope.factoryExpenseId;
         var action = $scope.action;
@@ -94,6 +95,39 @@
 
                             if (action == "create") {
                                 $state.go('factoryExpense-batch-edit', { 'action': 'edit', 'factoryExpenseId': factoryExpenseId, 'batchId': batchId });
+                            }
+
+                        }, 1500);
+
+
+                    });
+            }
+
+        }
+
+        $scope.SaveFactoryExpenses = function (factoryExpenses) {
+            $scope.showMessageSave = false;
+            if ($scope.form.$valid) {
+                usSpinnerService.spin('global-spinner');
+                var promise = $http.post('/webapi/FactoryExpenseApi/SaveFactoryExpenses', {
+                    
+                    BatchId: batchId,
+                    FactoryExpenses:  $scope.selectedFactoryExpenses,
+                    
+                });
+
+                promise.then(
+                    function (payload) {
+
+                        factoryExpenseId = payload.data;
+                        $scope.showMessageSave = true;
+                        usSpinnerService.stop('global-spinner');
+
+                        $timeout(function () {
+                            $scope.showMessageSave = false;
+
+                            if (action == "create") {
+                                $state.go('factoryExpense-batch', { 'batchId': batchId });
                             }
 
                         }, 1500);

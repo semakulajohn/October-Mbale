@@ -53,5 +53,29 @@ namespace Higgs.Mbale.DAL.Interface
         
 
       #endregion
+
+      #region batches
+           IEnumerable<Batch> GetAllBatchesBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId);
+         
+           IEnumerable<Batch> GenerateBatchCurrentMonthReport();
+         
+           IEnumerable<Batch> GenerateBatchTodaysReport();
+
+           IEnumerable<Batch> GenerateBatchCurrentWeekReport(); 
+
+      #endregion
+
+
+      #region Deliveries
+           IEnumerable<Delivery> GetAllDeliveriesBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId, string customerId);
+           
+            IEnumerable<Delivery> GenerateDeliveryCurrentMonthReport();
+         
+            IEnumerable<Delivery> GenerateDeliveryTodaysReport();
+          
+            IEnumerable<Delivery> GenerateDeliveryCurrentWeekReport();
+          
+
+           #endregion
   }
 }

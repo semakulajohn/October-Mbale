@@ -119,7 +119,7 @@ namespace Higgs.Mbale.DAL.Concrete
         }
 
 
-        public void SaveStoreBuveraGradeSize(StoreBuveraGradeSizeDTO storeBuveraGradeSizeDTO, bool inOrOut)
+        public int SaveStoreBuveraGradeSize(StoreBuveraGradeSizeDTO storeBuveraGradeSizeDTO, bool inOrOut)
         {
             double sizeQuantity = 0;
             var result = this.UnitOfWork.Get<StoreBuveraGradeSize>().AsQueryable()
@@ -139,7 +139,7 @@ namespace Higgs.Mbale.DAL.Concrete
                 };
                 this.UnitOfWork.Get<StoreBuveraGradeSize>().AddNew(storeBuveraGradeSize);
                 this.UnitOfWork.SaveChanges();
-
+                return 1;
 
             }
 
@@ -156,10 +156,15 @@ namespace Higgs.Mbale.DAL.Concrete
                     result.TimeStamp = DateTime.Now;
                     this.UnitOfWork.Get<StoreBuveraGradeSize>().Update(result);
                     this.UnitOfWork.SaveChanges();
+                    return 1;
 
                 }
                 else
                 {
+                    if (storeBuveraGradeSizeDTO.Quantity > result.Quantity)
+                    {
+                        return -1;
+                    }
                     sizeQuantity = result.Quantity - storeBuveraGradeSizeDTO.Quantity;
 
                     result.StoreId = storeBuveraGradeSizeDTO.StoreId;
@@ -169,7 +174,7 @@ namespace Higgs.Mbale.DAL.Concrete
                     result.TimeStamp = DateTime.Now;
                     this.UnitOfWork.Get<StoreBuveraGradeSize>().Update(result);
                     this.UnitOfWork.SaveChanges();
-
+                    return 1;
                 }
 
 

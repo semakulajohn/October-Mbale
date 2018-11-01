@@ -18,10 +18,13 @@
                 <div ng-controller="NavController">
                     <a ng-show="isAdmin" ui-sref="account-accounttransactionactivities-edit({ action: 'create', accountId:retrievedAccountId,transactionActivityId: 0})" class="btn btn-info btn-sm"><i class="fa fa-plus"></i> Account Transaction Activities</a>
 
-                    <!-- <a class="btn btn-success btn-sm pull-right" ng-hide="{{accountBalance > 0 }}">Debt  : {{accountBalance}}</a>-->
-                    <a class="btn btn-danger btn-sm pull-right">Account Balance  : {{accountBalance | number}}</a>
+                    <!--<div class="text-center">
+                        <a href="#" onclick="window.focus();window.print();" class="btn btn-primary2">Print</a>
+                        </div>-->
+                        <!-- <a class="btn btn-success btn-sm pull-right" ng-hide="{{accountBalance > 0 }}">Debt  : {{accountBalance}}</a>-->
+                        <a class="btn btn-danger btn-sm pull-right">Account Balance  : {{accountBalance | number}}</a>
 
-                </div>
+                    </div>
                 <span ng-if="loadingSpinner" class="loadingSpinner">
                     <img src="/images/loading-bars.svg" width="45" height="45" /> Loading...
                 </span>

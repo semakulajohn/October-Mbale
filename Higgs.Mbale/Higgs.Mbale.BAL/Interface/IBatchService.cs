@@ -14,5 +14,7 @@ namespace Higgs.Mbale.BAL.Interface
         long SaveBatch(Batch batch, string userId);
         void MarkAsDeleted(long batchId, string userId);
         IEnumerable<Batch> GetAllBatchesForAParticularBranch(long branchId);
+        IEnumerable<Batch> MapEFToModel(IEnumerable<EF.Models.Batch> data);
+        IEnumerable<LabourCost> GenerateLabourCosts(long batchId,string userId);
     }
 }

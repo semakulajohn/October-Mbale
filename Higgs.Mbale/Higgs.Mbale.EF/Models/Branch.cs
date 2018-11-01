@@ -29,7 +29,6 @@ namespace Higgs.Mbale.EF.Models
             this.Stocks = new HashSet<Stock>();
             this.CasualActivities = new HashSet<CasualActivity>();
             this.OtherExpenses = new HashSet<OtherExpense>();
-            this.Batches = new HashSet<Batch>();
             this.BatchOutPuts = new HashSet<BatchOutPut>();
             this.UserBranches = new HashSet<UserBranch>();
             this.StoreStocks = new HashSet<StoreStock>();
@@ -39,13 +38,14 @@ namespace Higgs.Mbale.EF.Models
             this.Utilities = new HashSet<Utility>();
             this.Inventories = new HashSet<Inventory>();
             this.Requistions = new HashSet<Requistion>();
-            this.Deliveries = new HashSet<Delivery>();
             this.Creditors = new HashSet<Creditor>();
             this.Debtors = new HashSet<Debtor>();
             this.AccountTransactionActivities = new HashSet<AccountTransactionActivity>();
             this.Documents = new HashSet<Document>();
             this.Transactions = new HashSet<Transaction>();
             this.Cashes = new HashSet<Cash>();
+            this.Batches = new HashSet<Batch>();
+            this.Deliveries = new HashSet<Delivery>();
         }
     
         public long BranchId { get; set; }
@@ -77,7 +77,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Stock> Stocks { get; set; }
         public virtual ICollection<CasualActivity> CasualActivities { get; set; }
         public virtual ICollection<OtherExpense> OtherExpenses { get; set; }
-        public virtual ICollection<Batch> Batches { get; set; }
         public virtual ICollection<BatchOutPut> BatchOutPuts { get; set; }
         public virtual ICollection<UserBranch> UserBranches { get; set; }
         public virtual ICollection<StoreStock> StoreStocks { get; set; }
@@ -87,12 +86,13 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Utility> Utilities { get; set; }
         public virtual ICollection<Inventory> Inventories { get; set; }
         public virtual ICollection<Requistion> Requistions { get; set; }
-        public virtual ICollection<Delivery> Deliveries { get; set; }
         public virtual ICollection<Creditor> Creditors { get; set; }
         public virtual ICollection<Debtor> Debtors { get; set; }
         public virtual ICollection<AccountTransactionActivity> AccountTransactionActivities { get; set; }
         public virtual ICollection<Document> Documents { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }
         public virtual ICollection<Cash> Cashes { get; set; }
+        public virtual ICollection<Batch> Batches { get; set; }
+        public virtual ICollection<Delivery> Deliveries { get; set; }
     }
 }

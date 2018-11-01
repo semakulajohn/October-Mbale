@@ -13,6 +13,7 @@ namespace Higgs.Mbale.Models
             public DateTime ToDate { get; set; }
             public string SupplierId { get; set; }
             public long BranchId { get; set; }
+            public string CustomerId { get; set; }
             
 
         }

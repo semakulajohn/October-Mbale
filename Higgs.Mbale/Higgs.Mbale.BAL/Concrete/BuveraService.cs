@@ -152,7 +152,7 @@ namespace Higgs.Mbale.BAL.Concrete
                                         Quantity = buveraGradeSize.Quantity,
                                     };
 
-                                    this._dataService.SaveStoreBuveraGradeSize(fromStoreBuveraGradeSize, false);
+                                     this._dataService.SaveStoreBuveraGradeSize(fromStoreBuveraGradeSize, false);
                                 }
                             }
                         }

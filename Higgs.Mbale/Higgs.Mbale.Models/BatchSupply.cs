@@ -12,5 +12,7 @@ namespace Higgs.Mbale.Models
         public long SupplyId { get; set; }
         public double Quantity { get; set; }
         public System.DateTime CreatedOn { get; set; }
+        public double NormalBags { get; set; }
+        public double BagsOfStones { get; set; }
     }
 }

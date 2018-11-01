@@ -186,6 +186,8 @@ namespace Higgs.Mbale.BAL.Concrete
                        BatchId = batchId,
                        SupplyId = batchSupply.SupplyId,
                        Quantity = batchSupply.Quantity,
+                       NormalBags = batchSupply.NormalBags,
+                       BagsOfStones = batchSupply.BagsOfStones,
                    };
                    this._dataService.PurgeBatchSupply(batchId,batchSupply.SupplyId);
                    this._dataService.SaveBatchSupply(batchSupplyDTO);
@@ -255,85 +257,107 @@ namespace Higgs.Mbale.BAL.Concrete
             return supplyBatch;
         }
 
-        private List<LabourCost> AddBatchLabourCostsAutomatically(EF.Models.Batch batchObject)
+        private bool CheckToSeeIfBatchLabourCostExists(long activityId,long batchId)
         {
-            Batch batch = MapEFToModel(batchObject);
-            var supplyBatch = GetSupplyDetailsInABatch(batch);
-            List<LabourCost> labourCostList = new List<LabourCost>();
-            var activities = _activityService.GetAllActivities();
-            foreach (var activity in activities)
+            bool exists = false;
+            var labourCost = _labourCostService.GetBatchLabourCost(activityId, batchId);
+            if (labourCost != null)
             {
-
-                switch (activity.Name)
-                {
-                    case "Stone Sorting" :
-                        LabourCost sortingLabourCost = new LabourCost()
-                        {
-                          LabourCostId = 0,
-                          Quantity =supplyBatch.NoOfStoneBags,
-                         Amount  = (supplyBatch.NoOfStoneBags * activity.Charge),
-                         Rate  = activity.Charge,
-                         BatchId = batch.BatchId,
-                         ActivityId =activity.ActivityId,
-                         SectorId = batch.SectorId,
-                         BranchId = batch.BranchId,
-        
-                        };
-                        labourCostList.Add(sortingLabourCost);
-                        break;
-                    case "Brand packaging" :
-                        LabourCost packagingLabourCost = new LabourCost()
-                        {
-                          LabourCostId = 0,
-                          Quantity = batch.BrandOutPut,
-                         Amount  = (batch.BrandOutPut *(activity.Charge/100)),
-                         Rate  = activity.Charge,
-                         BatchId = batch.BatchId,
-                         ActivityId =activity.ActivityId,
-                         SectorId = batch.SectorId,
-                         BranchId = batch.BranchId,
-        
-                        };
-                        labourCostList.Add(packagingLabourCost);
-                        break;
-                    case "kase sorting":
-                         LabourCost kaseLabourCost = new LabourCost()
-                        {
-                          LabourCostId = 0,
-                          Quantity = batch.BrandOutPut,
-                         Amount  = (supplyBatch.TotalQuantity *activity.Charge),
-                         Rate  = activity.Charge,
-                         BatchId = batch.BatchId,
-                         ActivityId =activity.ActivityId,
-                         SectorId = batch.SectorId,
-                         BranchId = batch.BranchId,
-        
-                        };
-                        labourCostList.Add(kaseLabourCost);
-                        break;
-                    case "Machine Operator Mill":
-                        LabourCost machineLabourCost = new LabourCost()
-                        {
-                            LabourCostId = 0,
-                            Quantity = batch.BrandOutPut,
-                            Amount = batch.FlourOutPut * (activity.Charge/50),
-                            Rate = activity.Charge,
-                            BatchId = batch.BatchId,
-                            ActivityId = activity.ActivityId,
-                            SectorId = batch.SectorId,
-                            BranchId = batch.BranchId,
-
-                        };
-                        labourCostList.Add(machineLabourCost);
-                        break;
-                    default:
-                        break;
-                }
+                exists = true;
             }
-            return labourCostList;
+            return exists;
+        }
 
-        }  
+      public IEnumerable<LabourCost> GenerateLabourCosts(long batchId,string userId){
 
+          bool labourCostExists = false;
+          Batch batch = GetBatch(batchId);
+        
+          var supplyBatch = GetSupplyDetailsInABatch(batch);
+          List<LabourCost> labourCostList = new List<LabourCost>();
+          var activities = _activityService.GetAllActivities();
+          foreach (var activity in activities)
+          {
+              labourCostExists = CheckToSeeIfBatchLabourCostExists(activity.ActivityId, batchId);
+              if (!labourCostExists)
+              {
+                  switch (activity.Name)
+                  {
+                      case "Stone Sorting":
+                          LabourCost sortingLabourCost = new LabourCost()
+                          {
+                              LabourCostId = 0,
+                              Quantity = supplyBatch.NoOfStoneBags,
+                              Amount = (supplyBatch.NoOfStoneBags * activity.Charge),
+                              Rate = activity.Charge,
+                              BatchId = batch.BatchId,
+                              ActivityId = activity.ActivityId,
+                              SectorId = batch.SectorId,
+                              BranchId = batch.BranchId,
+
+                          };
+                          labourCostList.Add(sortingLabourCost);
+                          break;
+                      case "Brand packaging":
+                          LabourCost packagingLabourCost = new LabourCost()
+                          {
+                              LabourCostId = 0,
+                              Quantity = batch.BrandOutPut,
+                              Amount = (batch.BrandOutPut * (activity.Charge / 100)),
+                              Rate = activity.Charge,
+                              BatchId = batch.BatchId,
+                              ActivityId = activity.ActivityId,
+                              SectorId = batch.SectorId,
+                              BranchId = batch.BranchId,
+
+                          };
+                          labourCostList.Add(packagingLabourCost);
+                          break;
+                      case "kase sorting":
+                          LabourCost kaseLabourCost = new LabourCost()
+                          {
+                              LabourCostId = 0,
+                              Quantity = supplyBatch.TotalQuantity,
+                              Amount = (supplyBatch.TotalQuantity * activity.Charge),
+                              Rate = activity.Charge,
+                              BatchId = batch.BatchId,
+                              ActivityId = activity.ActivityId,
+                              SectorId = batch.SectorId,
+                              BranchId = batch.BranchId,
+
+                          };
+                          labourCostList.Add(kaseLabourCost);
+                          break;
+                      case "Machine Operator Mill":
+                          LabourCost machineLabourCost = new LabourCost()
+                          {
+                              LabourCostId = 0,
+                              Quantity = batch.FlourOutPut,
+                              Amount = batch.FlourOutPut * (activity.Charge / 50),
+                              Rate = activity.Charge,
+                              BatchId = batch.BatchId,
+                              ActivityId = activity.ActivityId,
+                              SectorId = batch.SectorId,
+                              BranchId = batch.BranchId,
+
+                          };
+                          labourCostList.Add(machineLabourCost);
+                          break;
+                      default:
+                          break;
+                        }
+              
+              }
+              
+          }
+          foreach (var labourCost in labourCostList)
+          {
+              _labourCostService.SaveLabourCost(labourCost,userId);
+          }
+          return labourCostList;
+      }
+
+      
         /// <summary>
         /// 
         /// </summary>
@@ -347,7 +371,7 @@ namespace Higgs.Mbale.BAL.Concrete
       
         #region Mapping Methods
 
-        private IEnumerable<Batch> MapEFToModel(IEnumerable<EF.Models.Batch> data)
+        public IEnumerable<Batch> MapEFToModel(IEnumerable<EF.Models.Batch> data)
         {
             var list = new List<Batch>();
             foreach (var result in data)
@@ -504,7 +528,7 @@ namespace Higgs.Mbale.BAL.Concrete
             var labourCosts = GetAllLabourCostsForABatch(data.BatchId);
              double totalLabourCosts = 0;
             List<LabourCost> labourCostList = new List<LabourCost>();
-           // labourCostList.AddRange(AddBatchLabourCostsAutomatically(data));
+           //labourCostList.AddRange(AddBatchLabourCostsAutomatically(data));
             if (labourCosts.Any())
             {
                 foreach (var labour in labourCosts)
@@ -537,6 +561,8 @@ namespace Higgs.Mbale.BAL.Concrete
                             Quantity = batchSupply.Supply.Quantity,
                             SupplierId = batchSupply.Supply.SupplierId,
                             Price = batchSupply.Supply.Price,
+                            NormalBags =batchSupply.Supply.NormalBags,
+                            BagsOfStones = batchSupply.Supply.BagsOfStones,
                             Amount = batchSupply.Supply.Amount,
                            SupplierName = _userService.GetUserFullName(batchSupply.Supply.AspNetUser2),
                         };

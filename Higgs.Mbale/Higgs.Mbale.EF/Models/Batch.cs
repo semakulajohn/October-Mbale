@@ -20,7 +20,6 @@ namespace Higgs.Mbale.EF.Models
             this.BatchOutPuts = new HashSet<BatchOutPut>();
             this.CasualActivities = new HashSet<CasualActivity>();
             this.BatchProducts = new HashSet<BatchProduct>();
-            this.BatchSupplies = new HashSet<BatchSupply>();
             this.FactoryExpenses = new HashSet<FactoryExpense>();
             this.LabourCosts = new HashSet<LabourCost>();
             this.MachineRepairs = new HashSet<MachineRepair>();
@@ -28,6 +27,7 @@ namespace Higgs.Mbale.EF.Models
             this.Stocks = new HashSet<Stock>();
             this.Utilities = new HashSet<Utility>();
             this.Deliveries = new HashSet<Delivery>();
+            this.BatchSupplies = new HashSet<BatchSupply>();
         }
     
         public long BatchId { get; set; }
@@ -39,7 +39,7 @@ namespace Higgs.Mbale.EF.Models
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
         public string DeletedBy { get; set; }
-        public Nullable<System.DateTime> CreatedOn { get; set; }
+        public System.DateTime CreatedOn { get; set; }
         public System.DateTime TimeStamp { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
     
@@ -51,7 +51,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<BatchOutPut> BatchOutPuts { get; set; }
         public virtual ICollection<CasualActivity> CasualActivities { get; set; }
         public virtual ICollection<BatchProduct> BatchProducts { get; set; }
-        public virtual ICollection<BatchSupply> BatchSupplies { get; set; }
         public virtual ICollection<FactoryExpense> FactoryExpenses { get; set; }
         public virtual ICollection<LabourCost> LabourCosts { get; set; }
         public virtual ICollection<MachineRepair> MachineRepairs { get; set; }
@@ -59,5 +58,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Stock> Stocks { get; set; }
         public virtual ICollection<Utility> Utilities { get; set; }
         public virtual ICollection<Delivery> Deliveries { get; set; }
+        public virtual ICollection<BatchSupply> BatchSupplies { get; set; }
     }
 }

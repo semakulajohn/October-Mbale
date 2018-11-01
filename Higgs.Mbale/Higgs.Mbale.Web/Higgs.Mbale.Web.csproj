@@ -399,6 +399,9 @@
     <Content Include="app\views\product\edit.html" />
     <Content Include="app\views\product\list.html" />
     <Content Include="app\views\report\accountTransactions.html" />
+    <Content Include="app\views\report\batches.html" />
+    <Content Include="app\views\report\buveras.html" />
+    <Content Include="app\views\report\deliveries.html" />
     <Content Include="app\views\report\supplies-dashboard.html" />
     <Content Include="app\views\report\supplies.html" />
     <Content Include="app\views\report\transactions.html" />

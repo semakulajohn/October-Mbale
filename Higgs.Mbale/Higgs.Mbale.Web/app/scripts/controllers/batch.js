@@ -414,7 +414,28 @@ angular
                 var innerContents = document.getElementById(batchDetails).innerHTML;
                 var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
                 popupWinindow.document.open();
-                popupWinindow.document.write('<html><head><link rel="stylesheet" type="text/css" href="~/styles/style.css" /></head><body onload="window.print()">' + innerContents + '</html>');
+                popupWinindow.document.write('<html><head>' +
+                   '<link rel="stylesheet" type="text/css" href="~/bower_components/angular-notify/dist/angular-notify.min.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/bower_components/fontawesome/css/font-awesome.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/bower_components/metisMenu/dist/metisMenu.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/bower_components/animate.css/animate.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/bower_components/bootstrap/dist/css/bootstrap.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/bower_components/summernote/dist/summernote.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/bower_components/angular-ui-tree/dist/angular-ui-tree.min.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/bower_components/datatables_plugins/integration/bootstrap/3/dataTables.bootstrap.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/bower_components/angular-xeditable/dist/css/xeditable.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/bower_components/ui-select/dist/select.min.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/bower_components/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/bower_components/iCheck/skins/square/green.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/bower_components/iCheck/skins/square/purple.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/fonts/pe-icon-7-stroke/css/helper.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/styles/ng-table.min.css" media="print"/>' +
+                 '<link rel="stylesheet" type="text/css" href="~/app/styles/isteven-multi-select.css" media="print"/>' +
+                    '<link rel="stylesheet" type="text/css" href="~/styles/style.css" media="print" />' +
+                    '</head><body onload="window.print()">' + innerContents + '</html>');
                 popupWinindow.document.close();
             }
         

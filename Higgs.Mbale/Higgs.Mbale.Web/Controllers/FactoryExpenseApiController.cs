@@ -63,5 +63,13 @@ namespace Higgs.Mbale.Web.Controllers
                 var factoryExpenseId = _factoryExpenseService.SaveFactoryExpense(model, userId);
                 return factoryExpenseId;
             }
+
+            [HttpPost]
+            [ActionName("SaveFactoryExpenses")]
+            public long SaveFactoryExpenses(BatchFactoryExpense model)
+            {
+                var factoryExpenseId = _factoryExpenseService.SaveFactoryExpense(model, userId);
+                return factoryExpenseId;
+            }
     }
 }

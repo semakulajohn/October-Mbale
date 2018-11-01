@@ -18,10 +18,10 @@ namespace Higgs.Mbale.EF.Models
         {
             this.MachineRepairs = new HashSet<MachineRepair>();
             this.Inventories = new HashSet<Inventory>();
-            this.Deliveries = new HashSet<Delivery>();
             this.AccountTransactionActivities = new HashSet<AccountTransactionActivity>();
             this.Transactions = new HashSet<Transaction>();
             this.Cashes = new HashSet<Cash>();
+            this.Deliveries = new HashSet<Delivery>();
         }
     
         public long TransactionSubTypeId { get; set; }
@@ -41,9 +41,9 @@ namespace Higgs.Mbale.EF.Models
         public virtual TransactionType TransactionType { get; set; }
         public virtual ICollection<MachineRepair> MachineRepairs { get; set; }
         public virtual ICollection<Inventory> Inventories { get; set; }
-        public virtual ICollection<Delivery> Deliveries { get; set; }
         public virtual ICollection<AccountTransactionActivity> AccountTransactionActivities { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }
         public virtual ICollection<Cash> Cashes { get; set; }
+        public virtual ICollection<Delivery> Deliveries { get; set; }
     }
 }

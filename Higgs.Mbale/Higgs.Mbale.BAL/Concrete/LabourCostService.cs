@@ -38,6 +38,12 @@ namespace Higgs.Mbale.BAL.Concrete
             return MapEFToModel(result);
         }
 
+
+        public LabourCost GetBatchLabourCost(long activityId, long batchId)
+        {
+            var result = this._dataService.GetBatchLabourCost(activityId, batchId);
+            return MapEFToModel(result);
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -117,30 +123,35 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>LabourCost Model Object.</returns>
         public LabourCost MapEFToModel(EF.Models.LabourCost data)
         {
-          
-            var labourCost = new LabourCost()
+           
+            if (data != null)
             {
-                LabourCostId = data.LabourCostId,
-                Amount = data.Amount,
-                SectorId = data.SectorId,
-                BranchId = data.BranchId,
-                BatchId = data.BatchId,
-                Rate = data.Rate,
-                Quantity = data.Quantity,
-                ActivityId = data.ActivityId,
-                ActivityName = data.Activity != null ? data.Activity.Name : "",
-                
-                BranchName = data.Branch != null ? data.Branch.Name : "",
-                SectorName = data.Sector != null ? data.Sector.Name : "",
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                 Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
-               
+              var   labourCost = new LabourCost()
+                {
+                    LabourCostId = data.LabourCostId,
+                    Amount = data.Amount,
+                    SectorId = data.SectorId,
+                    BranchId = data.BranchId,
+                    BatchId = data.BatchId,
+                    Rate = data.Rate,
+                    Quantity = data.Quantity,
+                    ActivityId = data.ActivityId,
+                    ActivityName = data.Activity != null ? data.Activity.Name : "",
 
-            };
-            return labourCost;
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    SectorName = data.Sector != null ? data.Sector.Name : "",
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+
+
+                };
+                 return labourCost;
+            }
+            
+            return null;
         }
 
 

@@ -76,7 +76,7 @@
 
                                         </div>
                                         <div class="row">
-                                            <div class="form-group col-sm-6" ng-show="labourCost.LabourCostId > 0">
+                                            <div class="form-group col-sm-6" ng-show="labourCost.LabourCostId > 0 && labourCost.Quantity > 0">
                                                 <div class="col-sm-12">
                                                     <label>Amount</label>
                                                     <input ng-readonly="readOnly" name="amount" class="form-control" ng-model="labourCost.Amount" ng-pattern="/^\-?\d+((\.)\d+)?$/">

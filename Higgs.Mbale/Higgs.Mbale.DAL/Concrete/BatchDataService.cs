@@ -124,6 +124,8 @@ namespace Higgs.Mbale.DAL.Concrete
                 BatchId = batchSupplyDTO.BatchId,
                 SupplyId =Convert.ToInt64(batchSupplyDTO.SupplyId),
                 Quantity = Convert.ToDouble(batchSupplyDTO.Quantity),
+                BagsOfStones= batchSupplyDTO.BagsOfStones,
+                NormalBags = batchSupplyDTO.NormalBags,
                 CreatedOn = DateTime.Now
             };
             this.UnitOfWork.Get<BatchSupply>().AddNew(batchSupply);

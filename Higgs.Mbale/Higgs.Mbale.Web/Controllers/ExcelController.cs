@@ -17,18 +17,23 @@ namespace Higgs.Mbale.Web.Controllers
         private IReportService _reportService;
         private ISupplyService _supplyService;
         private IAccountTransactionActivityService _accountTransactionActivityService;
+        private IBatchService _batchService;
+        private IDeliveryService _deliveryService;
         public ExcelController()
         {
 
         }
 
         public ExcelController(ITransactionService transactionService, IReportService reportService,
-            ISupplyService supplyService,IAccountTransactionActivityService accountTransactionActivityService)
+            ISupplyService supplyService,IAccountTransactionActivityService accountTransactionActivityService,
+            IBatchService batchService,IDeliveryService deliveryService)
         {
             this._transactionService = transactionService;
             this._reportService = reportService;
             this._supplyService = supplyService;
             this._accountTransactionActivityService = accountTransactionActivityService;
+            this._batchService = batchService;
+            this._deliveryService = deliveryService;
         }
         // GET: Excel
         public ActionResult Index(int id)
@@ -161,7 +166,6 @@ namespace Higgs.Mbale.Web.Controllers
             return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
 
-      
         public ActionResult SupplierSupply(int reportTypeId,string  supplierId)
         {
             int reportType = reportTypeId;
@@ -293,5 +297,136 @@ namespace Higgs.Mbale.Web.Controllers
             Response.AddHeader("Content-Disposition", "attachment; filename=" + nameOfReport + "_Report_" + DateTime.Now.ToString("yyyy-MM-dd-mm-ss") + ".xlsx");
             return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
+
+        public ActionResult Batch(int id)
+        {
+            int reportType = id;
+            string nameOfReport = string.Empty;
+            List<string> headers = new List<string>();
+            headers.Add("BatchNumber ");
+            headers.Add("Quantity");
+           
+            headers.Add("BranchName");
+            headers.Add("CreatedOn");
+            
+
+
+            IEnumerable<Batch> batchList;
+            switch (reportType)
+            {
+
+                case 1://all todays batches
+                    nameOfReport = "TodaysBatches";
+                    batchList = _reportService.GenerateBatchTodaysReport();
+                    break;
+                case 2://all this months batches
+                    nameOfReport = "CurrentMonthsBatches";
+                    batchList = _reportService.GenerateBatchCurrentMonthReport();
+                    break;
+
+                case 3://Batches for this week
+                    nameOfReport = "CurrentWeeksBatches";
+                    batchList = _reportService.GenerateBatchCurrentWeekReport();
+                    break;
+             
+                default://Todo:: need to decide which one is the default report data
+                    batchList = _batchService.GetAllBatches();
+                    break;
+            }
+            List<List<string>> cellValues = new List<List<string>>();
+            foreach (var w in batchList)
+            {
+
+                var sxr = new List<string>();
+                sxr.Add(w.Name.ToString());
+                sxr.Add(w.Quantity.ToString());
+                sxr.Add(w.BranchName);
+                sxr.Add(w.CreatedOn.ToString());
+    
+                cellValues.Add(sxr);
+            }
+            var data = new ExcelData();
+            data.Headers = headers;
+            data.DataRows = cellValues;
+
+            var file = new ExcelWriter();
+            var excelFileContentInBytes = file.GenerateExcelFile(data);
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + nameOfReport + "_Report_" + DateTime.Now.ToString("yyyy-MM-dd-mm-ss") + ".xlsx");
+            return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+
+        public ActionResult Delivery(int id)
+        {
+            int reportType = id;
+            string nameOfReport = string.Empty;
+            List<string> headers = new List<string>();
+            headers.Add("Location ");
+            headers.Add("OrderNummber");
+            headers.Add("DriverName");
+            headers.Add("DriverNIN");
+            headers.Add("Quantity");
+            headers.Add("BranchName");
+            headers.Add("BatchNumber");
+            headers.Add("VehicleNumber");
+            headers.Add("DeliveryCost");
+            headers.Add("CustomerName");
+            headers.Add("CreatedOn");
+             
+
+            IEnumerable<Delivery>  deliveryList;
+            switch (reportType)
+            {
+
+                case 1://all todays Deliveries
+                    nameOfReport = "TodaysDeliveries";
+                    deliveryList = _reportService.GenerateDeliveryTodaysReport();
+                    break;
+                case 2://all this months Deliveries
+                    nameOfReport = "CurrentMonthsDeliveries";
+                    deliveryList = _reportService.GenerateDeliveryCurrentMonthReport();
+                    break;
+
+                case 3://Deliveries for this week
+                    nameOfReport = "CurrentWeeksDeliveries";
+                    deliveryList = _reportService.GenerateDeliveryCurrentWeekReport();
+                    break;
+               
+                default://Todo:: need to decide which one is the default report data
+                    deliveryList = _deliveryService.GetAllDeliveries();
+                    break;
+            }
+            List<List<string>> cellValues = new List<List<string>>();
+            foreach (var w in deliveryList)
+            {
+
+                var sxr = new List<string>();
+                sxr.Add(w.Location.ToString());
+                sxr.Add(w.OrderId.ToString());
+                sxr.Add(w.DriverName.ToString());
+                sxr.Add(w.DriverNIN.ToString());
+                sxr.Add(w.Quantity.ToString());
+                sxr.Add(w.BranchName.ToString());
+                sxr.Add(w.BatchNumber.ToString());
+                sxr.Add(w.VehicleNumber);
+                sxr.Add(w.DeliveryCost.ToString());
+                sxr.Add(w.CustomerName.ToString());
+                sxr.Add(w.CreatedOn.ToString());
+
+
+                cellValues.Add(sxr);
+            }
+            var data = new ExcelData();
+            data.Headers = headers;
+            data.DataRows = cellValues;
+
+            var file = new ExcelWriter();
+            var excelFileContentInBytes = file.GenerateExcelFile(data);
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + nameOfReport + "_Report_" + DateTime.Now.ToString("yyyy-MM-dd-mm-ss") + ".xlsx");
+            return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+
+      
+
+      
     }
 }

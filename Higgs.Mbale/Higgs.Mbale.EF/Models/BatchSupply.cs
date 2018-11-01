@@ -18,8 +18,10 @@ namespace Higgs.Mbale.EF.Models
         public long SupplyId { get; set; }
         public double Quantity { get; set; }
         public System.DateTime CreatedOn { get; set; }
+        public double NormalBags { get; set; }
+        public double BagsOfStones { get; set; }
     
-        public virtual Supply Supply { get; set; }
         public virtual Batch Batch { get; set; }
+        public virtual Supply Supply { get; set; }
     }
 }
