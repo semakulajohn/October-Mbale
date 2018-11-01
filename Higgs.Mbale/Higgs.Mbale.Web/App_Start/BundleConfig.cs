@@ -114,6 +114,7 @@ namespace Higgs.Mbale.Web
                 .Include("~/app/scripts/config.js")
                 .Include("~/app/scripts/filters/props.js")
                 .Include("~/app/scripts/directives/checklist-model.js")
+                .Include("~/app/scripts/directives/directives.js")
 
 
         .Include("~/app/scripts/filters/props.js")

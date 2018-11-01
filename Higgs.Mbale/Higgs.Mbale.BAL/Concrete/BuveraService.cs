@@ -82,6 +82,7 @@ namespace Higgs.Mbale.BAL.Concrete
         public long IssueBuvera(Buvera buvera, string userId)
         {
             bool inOrOut = false;
+            var storeBuvera = 0;  
 
             var fromSupplierStore = GetStoreName(buvera.StoreId);
             var toReceiverStore = GetStoreName(Convert.ToInt64(buvera.ToReceiver));
@@ -141,7 +142,7 @@ namespace Higgs.Mbale.BAL.Concrete
                                         Quantity = buveraGradeSize.Quantity,
                                     };
 
-                                    this._dataService.SaveStoreBuveraGradeSize(storeBuveraGradeSize, inOrOut);
+                               storeBuvera = this._dataService.SaveStoreBuveraGradeSize(storeBuveraGradeSize, inOrOut);
 
                                     //Method that updates buvera into storeBuveraGradeSize table(storeBuvera stock)
                                     var fromStoreBuveraGradeSize = new StoreBuveraGradeSizeDTO()
@@ -152,7 +153,7 @@ namespace Higgs.Mbale.BAL.Concrete
                                         Quantity = buveraGradeSize.Quantity,
                                     };
 
-                                     this._dataService.SaveStoreBuveraGradeSize(fromStoreBuveraGradeSize, false);
+                                    storeBuvera = this._dataService.SaveStoreBuveraGradeSize(fromStoreBuveraGradeSize, false);
                                 }
                             }
                         }
