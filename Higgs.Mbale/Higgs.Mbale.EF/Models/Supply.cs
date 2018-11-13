@@ -46,10 +46,6 @@ namespace Higgs.Mbale.EF.Models
         public string Offloading { get; set; }
         public double AmountToPay { get; set; }
     
-        public virtual AspNetUser AspNetUser { get; set; }
-        public virtual AspNetUser AspNetUser1 { get; set; }
-        public virtual AspNetUser AspNetUser2 { get; set; }
-        public virtual AspNetUser AspNetUser3 { get; set; }
         public virtual Branch Branch { get; set; }
         public virtual Status Status { get; set; }
         public virtual Supply Supply1 { get; set; }
@@ -57,5 +53,9 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<StoreMaizeStock> StoreMaizeStocks { get; set; }
         public virtual Store Store { get; set; }
         public virtual ICollection<BatchSupply> BatchSupplies { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
+        public virtual AspNetUser AspNetUser2 { get; set; }
+        public virtual AspNetUser AspNetUser3 { get; set; }
     }
 }

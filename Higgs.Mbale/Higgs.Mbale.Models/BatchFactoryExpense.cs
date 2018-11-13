@@ -10,5 +10,7 @@ namespace Higgs.Mbale.Models
     {
       public long BatchId { get; set; }
       public List<FactoryExpense> FactoryExpenses { get; set; }
+      public long BranchId { get; set; }
+      public long SectorId { get; set; }
     }
 }

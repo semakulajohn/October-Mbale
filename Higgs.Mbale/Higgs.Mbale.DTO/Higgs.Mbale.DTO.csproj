@@ -64,6 +64,8 @@
     <Compile Include="DocumentDTO.cs" />
     <Compile Include="ExpenseDTO.cs" />
     <Compile Include="FactoryExpenseDTO.cs" />
+    <Compile Include="FlourTransferDTO.cs" />
+    <Compile Include="FlourTransferGradeSizeDTO.cs" />
     <Compile Include="GradeDTO.cs" />
     <Compile Include="IncomeDTO.cs" />
     <Compile Include="InventoryDTO.cs" />

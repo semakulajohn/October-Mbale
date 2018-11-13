@@ -215,6 +215,7 @@
     <Compile Include="Controllers\DocumentApiController.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
     <Compile Include="Controllers\FactoryExpenseApiController.cs" />
+    <Compile Include="Controllers\FlourTransferApiController.cs" />
     <Compile Include="Controllers\GradeApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventoryApiController.cs" />
@@ -267,6 +268,7 @@
     <Content Include="app\scripts\controllers\dashboard.js" />
     <Content Include="app\scripts\controllers\delivery.js" />
     <Content Include="app\scripts\controllers\factoryexpense.js" />
+    <Content Include="app\scripts\controllers\flourtransfer.js" />
     <Content Include="app\scripts\controllers\inventory.js" />
     <Content Include="app\scripts\controllers\labourcost.js" />
     <Content Include="app\scripts\controllers\machinerepair.js" />
@@ -378,6 +380,10 @@
     <Content Include="app\views\delivery\order-delivery-list.html" />
     <Content Include="app\views\factoryExpense\batch-factoryExpense-list.html" />
     <Content Include="app\views\factoryExpense\edit.html" />
+    <Content Include="app\views\factoryExpense\editFactoryExpenses.html" />
+    <Content Include="app\views\flour\flourtransfer.html" />
+    <Content Include="app\views\flour\flourtransferdetails.html" />
+    <Content Include="app\views\flour\storeflourtransfers.html" />
     <Content Include="app\views\inventory\edit.html" />
     <Content Include="app\views\inventory\list.html" />
     <Content Include="app\views\inventory\store-inventory-list.html" />
@@ -401,7 +407,9 @@
     <Content Include="app\views\report\accountTransactions.html" />
     <Content Include="app\views\report\batches.html" />
     <Content Include="app\views\report\buveras.html" />
+    <Content Include="app\views\report\cash.html" />
     <Content Include="app\views\report\deliveries.html" />
+    <Content Include="app\views\report\orders.html" />
     <Content Include="app\views\report\supplies-dashboard.html" />
     <Content Include="app\views\report\supplies.html" />
     <Content Include="app\views\report\transactions.html" />
@@ -420,6 +428,7 @@
     <Content Include="app\views\store\store-maize.html" />
     <Content Include="app\views\store\storeBuveraStanding.html" />
     <Content Include="app\views\store\storeStanding.html" />
+    <Content Include="app\views\store\transferflour.html" />
     <Content Include="app\views\supplier\list.html" />
     <Content Include="app\views\supply\branch-supplies.html" />
     <Content Include="app\views\supply\dashboard-supply.html" />

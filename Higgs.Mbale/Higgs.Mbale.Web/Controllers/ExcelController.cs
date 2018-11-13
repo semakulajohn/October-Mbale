@@ -19,6 +19,8 @@ namespace Higgs.Mbale.Web.Controllers
         private IAccountTransactionActivityService _accountTransactionActivityService;
         private IBatchService _batchService;
         private IDeliveryService _deliveryService;
+        private IOrderService _orderService;
+        private ICashService _cashService;
         public ExcelController()
         {
 
@@ -26,7 +28,7 @@ namespace Higgs.Mbale.Web.Controllers
 
         public ExcelController(ITransactionService transactionService, IReportService reportService,
             ISupplyService supplyService,IAccountTransactionActivityService accountTransactionActivityService,
-            IBatchService batchService,IDeliveryService deliveryService)
+            IBatchService batchService,IDeliveryService deliveryService,ICashService cashService,IOrderService orderService)
         {
             this._transactionService = transactionService;
             this._reportService = reportService;
@@ -34,6 +36,8 @@ namespace Higgs.Mbale.Web.Controllers
             this._accountTransactionActivityService = accountTransactionActivityService;
             this._batchService = batchService;
             this._deliveryService = deliveryService;
+            this._orderService = orderService;
+            this._cashService = cashService;
         }
         // GET: Excel
         public ActionResult Index(int id)
@@ -425,7 +429,134 @@ namespace Higgs.Mbale.Web.Controllers
             return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
 
-      
+        public ActionResult Cash(int id)
+        {
+            int reportType = id;
+            string nameOfReport = string.Empty;
+            List<string> headers = new List<string>();
+            headers.Add("BranchName ");
+            headers.Add("TransactionSubType");
+            headers.Add("Notes");
+            headers.Add("StartAmount");
+            headers.Add("Action");
+            headers.Add("Amount");
+            headers.Add("Balance");
+            headers.Add("Department");
+            headers.Add("CreatedOn");
+
+
+
+            IEnumerable<Cash> cashList;
+            switch (reportType)
+            {
+
+                case 1://all todays batches
+                    nameOfReport = "TodaysCash";
+                    cashList = _reportService.GenerateCashTodaysReport();
+                    break;
+                case 2://all this months batches
+                    nameOfReport = "CurrentMonthsCash";
+                    cashList = _reportService.GenerateCashCurrentMonthReport();
+                    break;
+
+                case 3://Batches for this week
+                    nameOfReport = "CurrentWeeksCash";
+                    cashList = _reportService.GenerateCashCurrentWeekReport();
+                    break;
+
+                default://Todo:: need to decide which one is the default report data
+                    cashList = _cashService.GetAllCash();
+                    break;
+            }
+            List<List<string>> cellValues = new List<List<string>>();
+            foreach (var w in cashList)
+            {
+
+                var sxr = new List<string>();
+                sxr.Add(w.BranchName);
+                sxr.Add(w.TransactionSubTypeName.ToString());
+                sxr.Add(w.Notes.ToString());
+                sxr.Add(w.StartAmount.ToString());
+                sxr.Add(w.Action.ToString());
+                sxr.Add(w.Amount.ToString());
+                sxr.Add(w.Balance.ToString());
+                sxr.Add(w.SectorName.ToString());
+                sxr.Add(w.CreatedOn.ToString());
+
+                cellValues.Add(sxr);
+            }
+            var data = new ExcelData();
+            data.Headers = headers;
+            data.DataRows = cellValues;
+
+            var file = new ExcelWriter();
+            var excelFileContentInBytes = file.GenerateExcelFile(data);
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + nameOfReport + "_Report_" + DateTime.Now.ToString("yyyy-MM-dd-mm-ss") + ".xlsx");
+            return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+
+        public ActionResult Order(int id)
+        {
+            int reportType = id;
+            string nameOfReport = string.Empty;
+            List<string> headers = new List<string>();
+            headers.Add("ProductName ");
+            headers.Add("CustomerName");
+            headers.Add("OrderNummber");
+            headers.Add("Status");
+            headers.Add("Quantity");
+            headers.Add("BranchName");        
+            headers.Add("CreatedOn");
+
+
+            IEnumerable<Order> orderList;
+            switch (reportType)
+            {
+
+                case 1://all todays Orders
+                    nameOfReport = "TodaysOrders";
+                    orderList = _reportService.GenerateOrderTodaysReport();
+                    break;
+                case 2://all this months Orders
+                    nameOfReport = "CurrentMonthsOrders";
+                    orderList = _reportService.GenerateOrderCurrentMonthReport();
+                    break;
+
+                case 3://Orders for this week
+                    nameOfReport = "CurrentWeeksOrders";
+                    orderList = _reportService.GenerateOrderCurrentWeekReport();
+                    break;
+
+                default://Todo:: need to decide which one is the default report data
+                    orderList = _orderService.GetAllOrders();
+                    break;
+            }
+            List<List<string>> cellValues = new List<List<string>>();
+            foreach (var w in orderList)
+            {
+
+                var sxr = new List<string>();
+                sxr.Add(w.ProductName.ToString());
+                sxr.Add(w.CustomerName.ToString());
+                sxr.Add(w.OrderId.ToString());
+                sxr.Add(w.StatusName.ToString());
+                sxr.Add(w.Amount.ToString());
+                sxr.Add(w.BranchName.ToString()); 
+                sxr.Add(w.CreatedOn.ToString());
+
+
+                cellValues.Add(sxr);
+            }
+            var data = new ExcelData();
+            data.Headers = headers;
+            data.DataRows = cellValues;
+
+            var file = new ExcelWriter();
+            var excelFileContentInBytes = file.GenerateExcelFile(data);
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + nameOfReport + "_Report_" + DateTime.Now.ToString("yyyy-MM-dd-mm-ss") + ".xlsx");
+            return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+
 
       
     }

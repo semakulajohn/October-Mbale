@@ -47,9 +47,6 @@ namespace Higgs.Mbale.EF.Models
         public System.DateTime TimeStamp { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
     
-        public virtual AspNetUser AspNetUser { get; set; }
-        public virtual AspNetUser AspNetUser1 { get; set; }
-        public virtual AspNetUser AspNetUser2 { get; set; }
         public virtual ICollection<BranchSector> BranchSectors { get; set; }
         public virtual ICollection<FactoryExpense> FactoryExpenses { get; set; }
         public virtual ICollection<MachineRepair> MachineRepairs { get; set; }
@@ -69,5 +66,8 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Cash> Cashes { get; set; }
         public virtual ICollection<Batch> Batches { get; set; }
         public virtual ICollection<Delivery> Deliveries { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
+        public virtual AspNetUser AspNetUser2 { get; set; }
     }
 }

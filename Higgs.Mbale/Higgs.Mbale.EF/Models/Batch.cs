@@ -44,8 +44,6 @@ namespace Higgs.Mbale.EF.Models
         public Nullable<System.DateTime> DeletedOn { get; set; }
     
         public virtual ICollection<ActivityBatchCasual> ActivityBatchCasuals { get; set; }
-        public virtual AspNetUser AspNetUser { get; set; }
-        public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual Branch Branch { get; set; }
         public virtual Sector Sector { get; set; }
         public virtual ICollection<BatchOutPut> BatchOutPuts { get; set; }
@@ -59,5 +57,7 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Utility> Utilities { get; set; }
         public virtual ICollection<Delivery> Deliveries { get; set; }
         public virtual ICollection<BatchSupply> BatchSupplies { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
     }
 }

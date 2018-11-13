@@ -7,7 +7,9 @@
 	[EmailConfirmed] [bit] NOT NULL,
 	[PasswordHash] [nvarchar](max) NULL,
 	[SecurityStamp] [nvarchar](max) NULL,
-
+	[UniqueNumber]  [nvarchar](50) NULL,
+	[RegionId]  bigint NULL,
+	[Location]  [nvarchar](50) NULL,
 	[PhoneNumber] [nvarchar](max) NULL,
 	[PhoneNumberConfirmed] [bit] NOT NULL,
 	[TwoFactorEnabled] [bit] NOT NULL,
@@ -36,4 +38,5 @@
 CONSTRAINT [FK_AspNetUser_CreatedBy] FOREIGN KEY ([CreatedBy]) REFERENCES [dbo].[AspNetUsers](Id),
 CONSTRAINT [FK_AspNetUser_UpdatedBy] FOREIGN KEY ([UpdatedBy]) REFERENCES [dbo].[AspNetUsers](Id),
 CONSTRAINT [FK_AspNetUser_DeletedBy] FOREIGN KEY ([DeletedBy]) REFERENCES [dbo].[AspNetUsers](Id),
+CONSTRAINT [FK_AspNetUser_RegionId] FOREIGN KEY ([RegionId]) REFERENCES [dbo].[Region](RegionId),
 )ON [PRIMARY]

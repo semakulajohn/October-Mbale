@@ -142,6 +142,7 @@ function ($scope, $http, $filter, $location, $log, $timeout, $modal, $state, uiG
         $scope.Cancel = function () {
 
             $state.go('casualActivities-list', { 'accountId': accountId });
+            //$state.go('casualActivities-list');
         };
 
         $scope.Delete = function (casualActivityId) {

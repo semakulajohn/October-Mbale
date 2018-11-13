@@ -561,6 +561,7 @@ namespace Higgs.Mbale.BAL.Concrete
                             Quantity = batchSupply.Supply.Quantity,
                             SupplierId = batchSupply.Supply.SupplierId,
                             Price = batchSupply.Supply.Price,
+                            WeightNoteNumber = batchSupply.Supply.WeightNoteNumber,
                             NormalBags =batchSupply.Supply.NormalBags,
                             BagsOfStones = batchSupply.Supply.BagsOfStones,
                             Amount = batchSupply.Supply.Amount,

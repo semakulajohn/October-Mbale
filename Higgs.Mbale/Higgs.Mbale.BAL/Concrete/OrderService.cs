@@ -172,7 +172,7 @@ namespace Higgs.Mbale.BAL.Concrete
       
         #region Mapping Methods
 
-        private IEnumerable<Order> MapEFToModel(IEnumerable<EF.Models.Order> data)
+        public IEnumerable<Order> MapEFToModel(IEnumerable<EF.Models.Order> data)
         {
             var list = new List<Order>();
             foreach (var result in data)

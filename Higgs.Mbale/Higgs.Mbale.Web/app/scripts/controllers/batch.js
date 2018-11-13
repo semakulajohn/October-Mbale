@@ -281,7 +281,8 @@ angular
     .controller("SuppliesPickerController", ['$scope', '$modal', '$http', '$timeout', '$filter', 'Utils', '$window', 'selectSupplyService', '$sessionStorage', 'uiGridConstants',
 function ($scope, $modal, $http, $timeout, $filter, Utils, $window, selectSupplyService, $sessionStorage, uiGridConstants) {
 
-
+    var branches = [];
+    var selectedBranch;
     $scope.$sessionStorage = $sessionStorage;
     $scope.error = false;
     $scope.gridData = {
@@ -319,16 +320,26 @@ function ($scope, $modal, $http, $timeout, $filter, Utils, $window, selectSupply
     };
 
 
-
-
-    $scope.loadingSpinner = true;
-    var promise = $http.get('/webapi/SupplyApi/GetAllSuppliesToBeUsed');
-    promise.then(
-        function (payload) {
-            $scope.gridData.data = payload.data;
-            $scope.loadingSpinner = false;
+    $http.get('/webapi/BranchApi/GetAllBranches').success(function (data, status) {
+        $scope.xdata = {
+            branches: data,
+            selectedBranch: branches[0]
         }
-    );
+    });
+
+    $scope.OnBranchChange = function (supply) {
+        var selectedBranchId = supply.BranchId
+       var promise = $http.get('/webapi/SupplyApi/GetAllSuppliesToBeUsedForAParticularBranch?branchId=' + selectedBranchId)
+       promise.then(function (payload) {
+           $scope.gridData.data = payload.data
+           
+        });
+
+       
+    }
+
+
+   
 
     $scope.selectBatchSupplies = function () {
         $scope.selectedSupplies = $scope.gridApi.selection.getSelectedRows($scope.gridData);

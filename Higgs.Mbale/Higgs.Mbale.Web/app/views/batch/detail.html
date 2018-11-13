@@ -53,12 +53,14 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <th width="33%">Supplier Details </th>
+                                                                    <th width="10%">WNN</th>
                                                                     <th width="20%">KGs</th>
                                                                     <th width="20%">Rate</th>
                                                                     <th width="27%">Amount</th>
                                                                 </tr>
                                                                 <tr ng-repeat="supply in batch.Supplies">
                                                                     <td width="33%"><p> {{ supply.SupplierName }}</p></td>
+                                                                    <td width="10%"><p>{{supply.WeightNoteNumber}}</p></td>
                                                                     <td width="20%">
                                                                         <p>{{supply.Quantity}}</p>
                                                                     </td>
@@ -67,7 +69,9 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <th>Total</th>
+                                                                    <th></th>
                                                                     <th>{{batch.Quantity}}</th>
+                                                                    
                                                                     <th></th>
                                                                     <th>{{batch.TotalSupplyAmount | number}}</th>
                                                                 </tr>

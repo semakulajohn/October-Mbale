@@ -18,7 +18,7 @@ namespace Higgs.Mbale.EF.Models
         public long BranchId { get; set; }
         public System.DateTime TimeStamp { get; set; }
     
-        public virtual AspNetUser AspNetUser { get; set; }
         public virtual Branch Branch { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

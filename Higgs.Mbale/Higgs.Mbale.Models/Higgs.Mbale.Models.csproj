@@ -73,6 +73,8 @@
     <Compile Include="ExtensionType.cs" />
     <Compile Include="Factory.cs" />
     <Compile Include="FactoryExpense.cs" />
+    <Compile Include="FlourTransfer.cs" />
+    <Compile Include="FlourTransferGradeSize.cs" />
     <Compile Include="Grade.cs" />
     <Compile Include="Income.cs" />
     <Compile Include="Inventory.cs" />

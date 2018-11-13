@@ -230,6 +230,11 @@ namespace Higgs.Mbale.BAL.Concrete
             return MapEFToModel(results);
         }
 
+        public IEnumerable<Supply> GetAllSuppliesToBeUsedForAParticularBranch(long branchId)
+        {
+            var results = this._dataService.GetAllSuppliesToBeUsedForAParticularBranch(branchId);
+            return MapEFToModel(results);
+        }
         public IEnumerable<Supply> GetAllSuppliesForAParticularBranch(long branchId)
         {
             var results = this._dataService.GetAllSuppliesForAParticularBranch(branchId);

@@ -25,7 +25,7 @@
 
        
         if (action == 'create') {
-            inventoryId = 0;
+            factoryExpenseId = 0;
             var promise = $http.get('/webapi/UserApi/GetLoggedInUser', {});
             promise.then(
                 function (payload) {
@@ -105,14 +105,25 @@
 
         }
 
-        $scope.SaveFactoryExpenses = function (factoryExpenses) {
+        $scope.SaveFactoryExpenses = function (factoryExpenses,factoryExpenses1,factoryExpenses2,factoryExpenses3,factoryExpenses4,factoryExpenses5,factoryExpenses6,factoryExpenses7,factoryExpenses8,factoryExpenses9) {
             $scope.showMessageSave = false;
+            $scope.selectedFactoryExpenses = $scope.selectedFactoryExpenses.concat(factoryExpenses1);
+            $scope.selectedFactoryExpenses = $scope.selectedFactoryExpenses.concat(factoryExpenses2);
+            $scope.selectedFactoryExpenses = $scope.selectedFactoryExpenses.concat(factoryExpenses3);
+            $scope.selectedFactoryExpenses = $scope.selectedFactoryExpenses.concat(factoryExpenses4);
+            $scope.selectedFactoryExpenses = $scope.selectedFactoryExpenses.concat(factoryExpenses5);
+            $scope.selectedFactoryExpenses = $scope.selectedFactoryExpenses.concat(factoryExpenses6);
+            $scope.selectedFactoryExpenses = $scope.selectedFactoryExpenses.concat(factoryExpenses7);
+            $scope.selectedFactoryExpenses = $scope.selectedFactoryExpenses.concat(factoryExpenses8);
+            $scope.selectedFactoryExpenses = $scope.selectedFactoryExpenses.concat(factoryExpenses9);
             if ($scope.form.$valid) {
                 usSpinnerService.spin('global-spinner');
                 var promise = $http.post('/webapi/FactoryExpenseApi/SaveFactoryExpenses', {
                     
                     BatchId: batchId,
-                    FactoryExpenses:  $scope.selectedFactoryExpenses,
+                    FactoryExpenses: $scope.selectedFactoryExpenses,
+                    BranchId: factoryExpenses.BranchId,
+                    SectorId : factoryExpenses.SectorId,
                     
                 });
 

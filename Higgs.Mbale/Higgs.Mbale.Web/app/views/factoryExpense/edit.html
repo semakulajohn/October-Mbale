@@ -87,75 +87,7 @@
 
                                         </div>
                                        
-                                        <!--<div class="row" >
-                                            <div class="col-sm-12 col-md-12">
-                                                Grade:
-                                            </div>
-                                            <div>
-                                                <div ng-repeat="grade in grades" class="checkbox col-md-3 col-sm-12">
-                                                    <div class="col-sm-12 col-md-12">
-                                                        <input id="grade_{{grade.GradeId}}" type="checkbox" name="grade_{{grade.GradeId}}"
-                                                               checklist-model="selectedGrades"
-                                                               checklist-value="grade">
-                                                        <label for="grade-{{grade.GradeId}}"> {{grade.Value}} </label>
-
-                                                        <div class="table-responsive">
-                                                            <table class="table table-bordered">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <th width="40%">Value </th>
-                                                                        <th width="60%">Number Of Bags</th>
-                                                                    </tr>
-                                                                    <tr ng-repeat="x in grade.Denominations">
-                                                                        <td width="40%"><p> {{ x.Value }} Kg</p></td>
-                                                                        <td width="60%">
-                                                                            <input name="amount{{x.DenominationId}}" class="form-controlx" ng-model="x.Quantity" ng-pattern="/^\-?\d+((\.)\d+)?$/" ng-class="{ errorinput: form.amount{{x.DenominationId}}.$invalid }" ng-disabled="">
-                                                                            <span ng-show="form.amount{{x.DenominationId}}.$invalid">
-                                                                                <span ng-show="form.amount{{x.DenominationId}}.$error.pattern" class="help-block error"><i class="fa fa-warning"></i> Invalid formart, amount should be double or number</span>
-                                                                            </span>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div >
-                                                <div  class="checkbox col-md-3 col-sm-12">
-                                                    <div class="col-sm-12 col-md-12">
-                                                        <input id="grade_{{grade.GradeId}}" type="checkbox" name="grade_{{grade.GradeId}}"
-                                                               checklist-model="order.Grades"
-                                                               checklist-value="grade">
-                                                        <label for="grade-{{grade.GradeId}}"> {{grade.Value}} </label>
-
-                                                        <div class="table-responsive">
-                                                            <table class="table table-bordered">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <th width="40%">Value </th>
-                                                                        <th width="60%">Number Of Bags</th>
-                                                                    </tr>
-                                                                    <tr ng-repeat="x in grade.Denominations">
-                                                                        <td width="40%"><p> {{ x.Value }} Kg</p></td>
-                                                                        <td width="60%">
-                                                                            <input name="amount{{x.DenominationId}}" class="form-controlx" ng-model="x.Quantity" ng-pattern="/^\-?\d+((\.)\d+)?$/" ng-class="{ errorinput: form.amount{{x.DenominationId}}.$invalid }" ng-disabled="">
-                                                                            <span ng-show="form.amount{{x.DenominationId}}.$invalid">
-                                                                                <span ng-show="form.amount{{x.DenominationId}}.$error.pattern" class="help-block error"><i class="fa fa-warning"></i> Invalid formart, amount should be double or number</span>
-                                                                            </span>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <br />
-                                            <div class="hr-line-dashed"></div>
-
-                                        </div>-->
-
+                              
 
                                         <div class="hr-line-dashed"></div>
 

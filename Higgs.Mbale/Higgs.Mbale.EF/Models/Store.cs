@@ -26,6 +26,10 @@ namespace Higgs.Mbale.EF.Models
             this.StoreBuveraGradeSizes = new HashSet<StoreBuveraGradeSize>();
             this.Inventories = new HashSet<Inventory>();
             this.Deliveries = new HashSet<Delivery>();
+            this.FlourTransferGradeSizes = new HashSet<FlourTransferGradeSize>();
+            this.FlourTransfers = new HashSet<FlourTransfer>();
+            this.FlourTransfers1 = new HashSet<FlourTransfer>();
+            this.FlourTransfers2 = new HashSet<FlourTransfer>();
         }
     
         public long StoreId { get; set; }
@@ -39,9 +43,6 @@ namespace Higgs.Mbale.EF.Models
         public System.DateTime TimeStamp { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
     
-        public virtual AspNetUser AspNetUser { get; set; }
-        public virtual AspNetUser AspNetUser1 { get; set; }
-        public virtual AspNetUser AspNetUser2 { get; set; }
         public virtual Branch Branch { get; set; }
         public virtual ICollection<StoreStock> StoreStocks { get; set; }
         public virtual ICollection<Stock> Stocks { get; set; }
@@ -53,5 +54,12 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<StoreBuveraGradeSize> StoreBuveraGradeSizes { get; set; }
         public virtual ICollection<Inventory> Inventories { get; set; }
         public virtual ICollection<Delivery> Deliveries { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
+        public virtual AspNetUser AspNetUser2 { get; set; }
+        public virtual ICollection<FlourTransferGradeSize> FlourTransferGradeSizes { get; set; }
+        public virtual ICollection<FlourTransfer> FlourTransfers { get; set; }
+        public virtual ICollection<FlourTransfer> FlourTransfers1 { get; set; }
+        public virtual ICollection<FlourTransfer> FlourTransfers2 { get; set; }
     }
 }

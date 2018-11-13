@@ -50,6 +50,11 @@ namespace Higgs.Mbale.DAL.Concrete
         {
             return this.UnitOfWork.Get<Supply>().AsQueryable().Where(e => e.Deleted == false && e.BranchId == branchId);
         }
+        public IEnumerable<Supply> GetAllSuppliesToBeUsedForAParticularBranch(long branchId)
+        {
+            return this.UnitOfWork.Get<Supply>().AsQueryable().Where(e => e.Deleted == false && e.BranchId == branchId && e.Used == false);
+        }
+
         public Supply GetSupply(long supplyId)
         {
             return this.UnitOfWork.Get<Supply>().AsQueryable()

@@ -25,6 +25,7 @@ namespace Higgs.Mbale.BAL.Interface
        IEnumerable<StoreMaizeStock> GetMaizeStocksForAParticularStore(long storeId);
 
        void SaveStoreMaizeStock(StoreMaizeStock storeMaizeStock, bool inOrOut);
+       IEnumerable<Supply> GetAllSuppliesToBeUsedForAParticularBranch(long branchId);
         
     }
 }

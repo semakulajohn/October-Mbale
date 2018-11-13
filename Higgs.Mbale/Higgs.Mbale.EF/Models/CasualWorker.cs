@@ -41,14 +41,14 @@ namespace Higgs.Mbale.EF.Models
         public string EmailAddress { get; set; }
         public string UniqueNumber { get; set; }
     
-        public virtual AspNetUser AspNetUser { get; set; }
-        public virtual AspNetUser AspNetUser1 { get; set; }
-        public virtual AspNetUser AspNetUser2 { get; set; }
         public virtual Branch Branch { get; set; }
         public virtual ICollection<ActivityBatchCasual> ActivityBatchCasuals { get; set; }
         public virtual ICollection<CasualActivity> CasualActivities { get; set; }
         public virtual ICollection<Creditor> Creditors { get; set; }
         public virtual ICollection<Debtor> Debtors { get; set; }
         public virtual ICollection<AccountTransactionActivity> AccountTransactionActivities { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
+        public virtual AspNetUser AspNetUser2 { get; set; }
     }
 }

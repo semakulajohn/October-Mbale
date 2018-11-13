@@ -74,6 +74,14 @@ namespace Higgs.Mbale.Web.Controllers
             {
                 return _SupplyService.GetAllSuppliesForAParticularBranch(branchId);
             }
+
+         [HttpGet]
+         [ActionName("GetAllSuppliesToBeUsedForAParticularBranch")]
+            public IEnumerable<Supply> GetAllSuppliesToBeUsedForAParticularBranch(long branchId)
+            {
+                return _SupplyService.GetAllSuppliesToBeUsedForAParticularBranch(branchId);
+            }
+         
           
          [HttpGet]
          [ActionName("GetAllMaizeStocksForAparticularStore")]

@@ -26,6 +26,7 @@ namespace Higgs.Mbale.DAL.Interface
         StoreMaizeStock GetLatestMaizeStockForAParticularStore(long storeId);
 
         IEnumerable<StoreMaizeStock> GetMaizeStocksForAParticularStore(long storeId);
+        IEnumerable<Supply> GetAllSuppliesToBeUsedForAParticularBranch(long branchId);
     }
   
 }

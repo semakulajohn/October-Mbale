@@ -68,6 +68,7 @@
     <Compile Include="Concrete\DeliveryDataService.cs" />
     <Compile Include="Concrete\DocumentDataService.cs" />
     <Compile Include="Concrete\FactoryExpenseDataService.cs" />
+    <Compile Include="Concrete\FlourTransferDataService.cs" />
     <Compile Include="Concrete\GradeDataService.cs" />
     <Compile Include="Concrete\InventoryDataService.cs" />
     <Compile Include="Concrete\LabourCostDataService.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Interface\IDeliveryDataService.cs" />
     <Compile Include="Interface\IDocumentDataService.cs" />
     <Compile Include="Interface\IFactoryExpenseDataService.cs" />
+    <Compile Include="Interface\IFlourTransferDataService.cs" />
     <Compile Include="Interface\IGradeDataService.cs" />
     <Compile Include="Interface\IInventoryDataService.cs" />
     <Compile Include="Interface\ILabourCostDataService.cs" />

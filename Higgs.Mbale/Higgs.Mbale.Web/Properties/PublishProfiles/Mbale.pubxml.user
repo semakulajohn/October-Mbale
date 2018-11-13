@@ -6,23 +6,23 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>F:\GitHub\Higgz\live\mbale_2018_10_8</_PublishTargetUrl>
+    <_PublishTargetUrl>F:\GitHub\Higgz\live\mbale_2018_3_11</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="app/scripts/app.js">
-      <publishTime>08/29/2018 04:35:53</publishTime>
+      <publishTime>10/25/2018 12:03:41</publishTime>
     </File>
     <File Include="app/scripts/config.js">
-      <publishTime>10/01/2018 13:44:04</publishTime>
+      <publishTime>11/03/2018 17:31:44</publishTime>
     </File>
     <File Include="app/scripts/controllers/accounttransactionactivity.js">
-      <publishTime>09/05/2018 07:42:11</publishTime>
+      <publishTime>10/25/2018 10:26:55</publishTime>
     </File>
     <File Include="app/scripts/controllers/activity.js">
       <publishTime>08/29/2018 04:48:12</publishTime>
     </File>
     <File Include="app/scripts/controllers/batch.js">
-      <publishTime>09/30/2018 20:45:28</publishTime>
+      <publishTime>11/02/2018 10:07:37</publishTime>
     </File>
     <File Include="app/scripts/controllers/batchoutput.js">
       <publishTime>08/29/2018 04:45:48</publishTime>
@@ -37,10 +37,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/29/2018 12:01:16</publishTime>
     </File>
     <File Include="app/scripts/controllers/cash.js">
-      <publishTime>10/01/2018 12:55:25</publishTime>
+      <publishTime>10/26/2018 17:42:36</publishTime>
     </File>
     <File Include="app/scripts/controllers/casualactivity.js">
-      <publishTime>09/24/2018 10:20:23</publishTime>
+      <publishTime>11/03/2018 17:43:06</publishTime>
     </File>
     <File Include="app/scripts/controllers/casualworker.js">
       <publishTime>09/24/2018 11:57:45</publishTime>
@@ -61,7 +61,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/26/2018 16:08:08</publishTime>
     </File>
     <File Include="app/scripts/controllers/factoryexpense.js">
-      <publishTime>08/29/2018 04:42:26</publishTime>
+      <publishTime>11/03/2018 16:58:37</publishTime>
     </File>
     <File Include="app/scripts/controllers/inventory.js">
       <publishTime>09/25/2018 07:43:16</publishTime>
@@ -70,7 +70,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/09/2017 19:29:56</publishTime>
     </File>
     <File Include="app/scripts/controllers/labourcost.js">
-      <publishTime>08/29/2018 04:41:19</publishTime>
+      <publishTime>11/02/2018 08:23:49</publishTime>
     </File>
     <File Include="app/scripts/controllers/machinerepair.js">
       <publishTime>08/29/2018 04:40:50</publishTime>
@@ -91,7 +91,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/20/2018 14:07:20</publishTime>
     </File>
     <File Include="app/scripts/controllers/report.js">
-      <publishTime>09/23/2018 05:48:59</publishTime>
+      <publishTime>11/02/2018 08:23:49</publishTime>
     </File>
     <File Include="app/scripts/controllers/requistion.js">
       <publishTime>09/25/2018 16:13:33</publishTime>
@@ -112,7 +112,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/04/2018 14:22:48</publishTime>
     </File>
     <File Include="app/scripts/controllers/supply.js">
-      <publishTime>10/02/2018 05:43:06</publishTime>
+      <publishTime>10/25/2018 10:09:42</publishTime>
     </File>
     <File Include="app/scripts/controllers/template/alerts.js">
       <publishTime>01/09/2017 19:29:54</publishTime>
@@ -280,10 +280,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/02/2018 12:23:44</publishTime>
     </File>
     <File Include="app/views/batch/detail.html">
-      <publishTime>09/21/2018 21:00:59</publishTime>
+      <publishTime>11/02/2018 08:23:50</publishTime>
     </File>
     <File Include="app/views/batch/edit.html">
-      <publishTime>09/24/2018 09:17:53</publishTime>
+      <publishTime>11/02/2018 10:16:17</publishTime>
     </File>
     <File Include="app/views/batch/list.html">
       <publishTime>05/28/2018 10:46:46</publishTime>
@@ -313,7 +313,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/22/2018 05:32:10</publishTime>
     </File>
     <File Include="app/views/buvera/edit.html">
-      <publishTime>09/24/2018 13:15:37</publishTime>
+      <publishTime>10/25/2018 12:37:29</publishTime>
     </File>
     <File Include="app/views/buvera/issuing.html">
       <publishTime>09/28/2018 02:31:22</publishTime>
@@ -331,10 +331,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/01/2018 13:08:27</publishTime>
     </File>
     <File Include="app/views/cash/edit.html">
-      <publishTime>09/30/2018 10:08:00</publishTime>
+      <publishTime>10/26/2018 17:23:25</publishTime>
     </File>
     <File Include="app/views/cash/list.html">
-      <publishTime>10/01/2018 13:08:35</publishTime>
+      <publishTime>11/04/2018 00:23:08</publishTime>
     </File>
     <File Include="app/views/casualactivity/batch-casualActivity-list.html">
       <publishTime>09/24/2018 07:14:28</publishTime>
@@ -367,7 +367,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/08/2018 09:10:40</publishTime>
     </File>
     <File Include="app/views/dashboard.html">
-      <publishTime>10/01/2018 13:44:24</publishTime>
+      <publishTime>10/20/2018 10:03:20</publishTime>
     </File>
     <File Include="app/views/debtor/branch-debtor-list.html">
       <publishTime>09/28/2018 02:13:14</publishTime>
@@ -391,10 +391,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/26/2018 09:37:33</publishTime>
     </File>
     <File Include="app/views/factoryExpense/batch-factoryExpense-list.html">
-      <publishTime>07/23/2018 06:16:20</publishTime>
+      <publishTime>11/03/2018 17:11:13</publishTime>
     </File>
     <File Include="app/views/factoryExpense/edit.html">
       <publishTime>09/22/2018 06:37:33</publishTime>
+    </File>
+    <File Include="app/views/factoryExpense/editFactoryExpenses.html">
+      <publishTime>11/03/2018 17:14:12</publishTime>
     </File>
     <File Include="app/views/inventory/edit.html">
       <publishTime>09/25/2018 06:32:14</publishTime>
@@ -409,7 +412,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/23/2018 18:22:04</publishTime>
     </File>
     <File Include="app/views/labourcost/edit.html">
-      <publishTime>08/29/2018 04:53:53</publishTime>
+      <publishTime>11/02/2018 08:23:50</publishTime>
     </File>
     <File Include="app/views/machinerepair/batch-machinerepair-list.html">
       <publishTime>07/23/2018 13:39:22</publishTime>
@@ -424,7 +427,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/26/2018 12:09:13</publishTime>
     </File>
     <File Include="app/views/modal/modalSupply.html">
-      <publishTime>07/04/2018 18:01:04</publishTime>
+      <publishTime>11/02/2018 09:34:09</publishTime>
     </File>
     <File Include="app/views/order/branch-order-list.html">
       <publishTime>08/02/2018 12:56:05</publishTime>
@@ -457,16 +460,25 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/01/2018 16:06:50</publishTime>
     </File>
     <File Include="app/views/report/accountTransactions.html">
-      <publishTime>09/23/2018 05:51:01</publishTime>
+      <publishTime>11/02/2018 08:23:50</publishTime>
+    </File>
+    <File Include="app/views/report/batches.html">
+      <publishTime>11/02/2018 08:23:50</publishTime>
+    </File>
+    <File Include="app/views/report/buveras.html">
+      <publishTime>11/02/2018 08:23:50</publishTime>
+    </File>
+    <File Include="app/views/report/deliveries.html">
+      <publishTime>11/02/2018 08:23:50</publishTime>
     </File>
     <File Include="app/views/report/supplies-dashboard.html">
-      <publishTime>09/21/2018 15:35:32</publishTime>
+      <publishTime>11/02/2018 08:23:50</publishTime>
     </File>
     <File Include="app/views/report/supplies.html">
-      <publishTime>09/21/2018 16:52:44</publishTime>
+      <publishTime>11/02/2018 08:23:50</publishTime>
     </File>
     <File Include="app/views/report/transactions.html">
-      <publishTime>09/23/2018 05:35:31</publishTime>
+      <publishTime>11/02/2018 08:23:50</publishTime>
     </File>
     <File Include="app/views/requistion/branch-requistion-list.html">
       <publishTime>09/25/2018 16:28:31</publishTime>
@@ -508,7 +520,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/25/2018 07:53:26</publishTime>
     </File>
     <File Include="app/views/store/storeBuveraStanding.html">
-      <publishTime>09/29/2018 12:04:41</publishTime>
+      <publishTime>10/25/2018 12:44:31</publishTime>
     </File>
     <File Include="app/views/store/storeStanding.html">
       <publishTime>09/18/2018 10:22:04</publishTime>
@@ -523,13 +535,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/05/2018 07:24:01</publishTime>
     </File>
     <File Include="app/views/supply/edit.html">
-      <publishTime>09/29/2018 06:51:01</publishTime>
+      <publishTime>10/25/2018 10:10:28</publishTime>
     </File>
     <File Include="app/views/supply/list.html">
       <publishTime>06/13/2018 15:54:15</publishTime>
     </File>
     <File Include="app/views/supply/supplier-supply.html">
-      <publishTime>10/01/2018 07:47:46</publishTime>
+      <publishTime>10/24/2018 14:32:28</publishTime>
     </File>
     <File Include="app/views/transaction/branch-transaction-list.html">
       <publishTime>08/02/2018 13:06:17</publishTime>
@@ -544,13 +556,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/21/2018 06:37:27</publishTime>
     </File>
     <File Include="app/views/transactionactivity/account-accounttransactionactivities.html">
-      <publishTime>09/19/2018 12:06:14</publishTime>
+      <publishTime>11/02/2018 08:23:50</publishTime>
     </File>
     <File Include="app/views/transactionactivity/account-dashboard-accountactivities.html">
       <publishTime>09/19/2018 12:06:24</publishTime>
     </File>
     <File Include="app/views/transactionactivity/edit.html">
-      <publishTime>07/12/2018 07:45:18</publishTime>
+      <publishTime>10/25/2018 10:28:26</publishTime>
     </File>
     <File Include="app/views/transactionactivity/list.html">
       <publishTime>07/03/2018 14:03:46</publishTime>
@@ -586,13 +598,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/31/2018 11:40:39</publishTime>
     </File>
     <File Include="app/views/_common/navigation.html">
-      <publishTime>10/01/2018 11:16:48</publishTime>
+      <publishTime>11/02/2018 08:23:49</publishTime>
     </File>
     <File Include="app/views/_common/panel_tools.html">
       <publishTime>01/09/2017 19:29:56</publishTime>
     </File>
     <File Include="app/views/_common/profile.html">
-      <publishTime>07/03/2018 06:21:37</publishTime>
+      <publishTime>11/02/2018 08:23:49</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>05/22/2018 15:26:10</publishTime>
@@ -607,31 +619,31 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/22/2018 15:40:30</publishTime>
     </File>
     <File Include="bin/Higgs.Mbale.BAL.dll">
-      <publishTime>10/08/2018 09:23:42</publishTime>
+      <publishTime>11/04/2018 00:41:56</publishTime>
     </File>
     <File Include="bin/Higgs.Mbale.DAL.dll">
-      <publishTime>10/08/2018 09:23:36</publishTime>
+      <publishTime>11/04/2018 00:41:51</publishTime>
     </File>
     <File Include="bin/Higgs.Mbale.DependencyResolver.dll">
-      <publishTime>10/08/2018 09:23:45</publishTime>
+      <publishTime>11/04/2018 00:41:58</publishTime>
     </File>
     <File Include="bin/Higgs.Mbale.DTO.dll">
-      <publishTime>10/08/2018 09:23:33</publishTime>
+      <publishTime>11/04/2018 00:41:48</publishTime>
     </File>
     <File Include="bin/Higgs.Mbale.EF.dll">
-      <publishTime>10/08/2018 09:23:34</publishTime>
+      <publishTime>11/04/2018 00:41:49</publishTime>
     </File>
     <File Include="bin/Higgs.Mbale.Helpers.dll">
-      <publishTime>10/08/2018 09:23:38</publishTime>
+      <publishTime>11/04/2018 00:41:51</publishTime>
     </File>
     <File Include="bin/Higgs.Mbale.Interfaces.dll">
-      <publishTime>10/01/2018 08:34:06</publishTime>
+      <publishTime>11/04/2018 00:41:48</publishTime>
     </File>
     <File Include="bin/Higgs.Mbale.Models.dll">
-      <publishTime>10/08/2018 09:23:34</publishTime>
+      <publishTime>11/04/2018 00:41:49</publishTime>
     </File>
     <File Include="bin/Higgs.Mbale.Web.dll">
-      <publishTime>10/08/2018 09:28:46</publishTime>
+      <publishTime>11/04/2018 00:42:02</publishTime>
     </File>
     <File Include="bin/log4net.dll">
       <publishTime>11/23/2017 10:29:42</publishTime>
@@ -8902,10 +8914,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/22/2018 15:26:24</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>10/05/2018 07:55:32</publishTime>
+      <publishTime>11/02/2018 08:23:49</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutMvc.cshtml">
-      <publishTime>10/08/2018 06:15:04</publishTime>
+      <publishTime>11/02/2018 08:23:49</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>05/22/2018 15:26:26</publishTime>

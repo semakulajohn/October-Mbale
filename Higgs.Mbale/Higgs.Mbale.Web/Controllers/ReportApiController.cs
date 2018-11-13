@@ -216,5 +216,66 @@ namespace Higgs.Mbale.Web.Controllers
             }
             #endregion
 
+            #region Cash
+            [HttpPost]
+            [ActionName("GetAllCashBetweenTheSpecifiedDates")]
+            public IEnumerable<Cash> GetAllCashBetweenTheSpecifiedDates(ReportSearch searchDates)
+            {
+                return _reportService.GetAllCashBetweenTheSpecifiedDates(searchDates.FromDate, searchDates.ToDate, searchDates.BranchId);
+            }
+
+            [HttpGet]
+            [ActionName("GenerateCashCurrentMonthReport")]
+            public IEnumerable<Cash> GenerateCashCurrentMonthReport()
+            {
+                return _reportService.GenerateCashCurrentMonthReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateCashTodaysReport")]
+            public IEnumerable<Cash> GenerateCashTodaysReport()
+            {
+                return _reportService.GenerateCashTodaysReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateCashCurrentWeekReport")]
+            public IEnumerable<Cash> GenerateCashCurrentWeekReport()
+            {
+                return _reportService.GenerateCashCurrentWeekReport();
+            }
+            #endregion
+
+            #region orders
+            [HttpPost]
+            [ActionName("GetAllOrdersBetweenTheSpecifiedDates")]
+            public IEnumerable<Order> GetAllOrdersBetweenTheSpecifiedDates(ReportSearch searchDates)
+            {
+                return _reportService.GetAllOrdersBetweenTheSpecifiedDates(searchDates.FromDate, searchDates.ToDate, searchDates.BranchId, searchDates.CustomerId);
+            }
+
+            [HttpGet]
+            [ActionName("GenerateOrderCurrentMonthReport")]
+            public IEnumerable<Order> GenerateOrderCurrentMonthReport()
+            {
+                return _reportService.GenerateOrderCurrentMonthReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateOrderTodaysReport")]
+            public IEnumerable<Order> GenerateOrderTodaysReport()
+            {
+                return _reportService.GenerateOrderTodaysReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateOrderCurrentWeekReport")]
+            public IEnumerable<Order> GenerateOrderCurrentWeekReport()
+            {
+                return _reportService.GenerateOrderCurrentWeekReport();
+            }
+            #endregion
+
+
     }
 }

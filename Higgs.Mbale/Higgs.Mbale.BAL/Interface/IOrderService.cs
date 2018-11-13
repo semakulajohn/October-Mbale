@@ -20,6 +20,7 @@ namespace Higgs.Mbale.BAL.Interface
         IEnumerable<Order> GetAllCompletedOrdersForAParticularCustomer(string customerId, long statusId);
         IEnumerable<Order> GetAllOpenOrdersForAParticularCustomer(string customerId, long statusId);
         void UpdateOrderWithInProgressStatus(long orderId, long statusId, string userId);
+        IEnumerable<Order> MapEFToModel(IEnumerable<EF.Models.Order> data);
       
         
     }

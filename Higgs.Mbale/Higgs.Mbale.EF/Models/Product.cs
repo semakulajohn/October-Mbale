@@ -20,8 +20,8 @@ namespace Higgs.Mbale.EF.Models
             this.Stocks = new HashSet<Stock>();
             this.StockProducts = new HashSet<StockProduct>();
             this.StoreStocks = new HashSet<StoreStock>();
-            this.Orders = new HashSet<Order>();
             this.Deliveries = new HashSet<Delivery>();
+            this.Orders = new HashSet<Order>();
         }
     
         public long ProductId { get; set; }
@@ -34,14 +34,14 @@ namespace Higgs.Mbale.EF.Models
         public System.DateTime TimeStamp { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
     
-        public virtual AspNetUser AspNetUser { get; set; }
-        public virtual AspNetUser AspNetUser1 { get; set; }
-        public virtual AspNetUser AspNetUser2 { get; set; }
         public virtual ICollection<BatchProduct> BatchProducts { get; set; }
         public virtual ICollection<Stock> Stocks { get; set; }
         public virtual ICollection<StockProduct> StockProducts { get; set; }
         public virtual ICollection<StoreStock> StoreStocks { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Delivery> Deliveries { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
+        public virtual AspNetUser AspNetUser2 { get; set; }
     }
 }

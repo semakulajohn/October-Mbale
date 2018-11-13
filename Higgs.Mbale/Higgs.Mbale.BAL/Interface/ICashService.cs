@@ -13,7 +13,7 @@ namespace Higgs.Mbale.BAL.Interface
         IEnumerable<Cash> GetAllCash();
 
         IEnumerable<Cash> GetAllCashForAParticularBranch(long branchId);
-
+        IEnumerable<Cash> MapEFToModel(IEnumerable<EF.Models.Cash> data);
         long SaveCash(Cash cash, string userId);
 
         void MarkAsDeleted(long cashId, string userId);

@@ -37,12 +37,12 @@ namespace Higgs.Mbale.EF.Models
         public long BranchId { get; set; }
         public long SectorId { get; set; }
     
-        public virtual AspNetUser AspNetUser { get; set; }
-        public virtual AspNetUser AspNetUser1 { get; set; }
-        public virtual AspNetUser AspNetUser2 { get; set; }
         public virtual ICollection<BatchGradeSize> BatchGradeSizes { get; set; }
         public virtual Branch Branch { get; set; }
         public virtual Sector Sector { get; set; }
         public virtual Batch Batch { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
+        public virtual AspNetUser AspNetUser2 { get; set; }
     }
 }

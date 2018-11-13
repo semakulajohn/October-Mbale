@@ -17,8 +17,8 @@ namespace Higgs.Mbale.EF.Models
         public Status()
         {
             this.Supplies = new HashSet<Supply>();
-            this.Orders = new HashSet<Order>();
             this.Requistions = new HashSet<Requistion>();
+            this.Orders = new HashSet<Order>();
         }
     
         public long StatusId { get; set; }
@@ -31,11 +31,11 @@ namespace Higgs.Mbale.EF.Models
         public System.DateTime TimeStamp { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
     
+        public virtual ICollection<Supply> Supplies { get; set; }
+        public virtual ICollection<Requistion> Requistions { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual AspNetUser AspNetUser2 { get; set; }
-        public virtual ICollection<Supply> Supplies { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
-        public virtual ICollection<Requistion> Requistions { get; set; }
     }
 }

@@ -79,22 +79,26 @@ namespace Higgs.Mbale.BAL.Concrete
         {
             foreach (var factoryExpense in factoryExpenses.FactoryExpenses)
             {
-                var factoryExpenseDTO = new DTO.FactoryExpenseDTO()
+                if (factoryExpense != null)
                 {
-                    FactoryExpenseId = factoryExpense.FactoryExpenseId,
-                    BatchId = factoryExpenses.BatchId,
-                    Description = factoryExpense.Description,
-                    BranchId = factoryExpense.BranchId,
-                    Amount = factoryExpense.Amount,
-                    Deleted = factoryExpense.Deleted,
-                    CreatedBy = factoryExpense.CreatedBy,
-                    CreatedOn = factoryExpense.CreatedOn,
-                    SectorId = factoryExpense.SectorId,
+                    var factoryExpenseDTO = new DTO.FactoryExpenseDTO()
+                    {
+                        FactoryExpenseId = factoryExpense.FactoryExpenseId,
+                        BatchId = factoryExpenses.BatchId,
+                        Description = factoryExpense.Description,
+                        BranchId = factoryExpenses.BranchId,
+                        Amount = factoryExpense.Amount,
+                        Deleted = factoryExpense.Deleted,
+                        CreatedBy = factoryExpense.CreatedBy,
+                        CreatedOn = factoryExpense.CreatedOn,
+                        SectorId = factoryExpenses.SectorId,
 
-                };
+                    };
 
-                var factoryExpenseId = this._dataService.SaveFactoryExpense(factoryExpenseDTO, userId);
+                    var factoryExpenseId = this._dataService.SaveFactoryExpense(factoryExpenseDTO, userId);
   
+                }
+               
             }
            
             return 1;

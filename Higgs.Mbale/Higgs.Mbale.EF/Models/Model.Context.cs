@@ -31,7 +31,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
-        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Branch> Branches { get; set; }
         public virtual DbSet<CasualWorker> CasualWorkers { get; set; }
         public virtual DbSet<ExtensionType> ExtensionTypes { get; set; }
@@ -69,7 +68,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual DbSet<StoreStock> StoreStocks { get; set; }
         public virtual DbSet<StoreMaizeStock> StoreMaizeStocks { get; set; }
         public virtual DbSet<StoreGradeSize> StoreGradeSizes { get; set; }
-        public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<DeliveryStock> DeliveryStocks { get; set; }
         public virtual DbSet<Buvera> Buveras { get; set; }
         public virtual DbSet<BuveraGradeSize> BuveraGradeSizes { get; set; }
@@ -90,6 +88,11 @@ namespace Higgs.Mbale.EF.Models
         public virtual DbSet<Batch> Batches { get; set; }
         public virtual DbSet<Delivery> Deliveries { get; set; }
         public virtual DbSet<BatchSupply> BatchSupplies { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<FlourTransferGradeSize> FlourTransferGradeSizes { get; set; }
+        public virtual DbSet<Region> Regions { get; set; }
+        public virtual DbSet<FlourTransfer> FlourTransfers { get; set; }
     
         public virtual int Mark_FactoryExpense_AsDeleted(Nullable<long> inPutFactoryExpenseId, string userId)
         {

@@ -249,13 +249,27 @@ angular
         var storeId = $scope.storeId;
 
 
+        var promisestore = $http.get('/webapi/StoreApi/GetStore?storeId=' + storeId, {});
+        promisestore.then(
+            function (payload) {
+                var b = payload.data;
+                    
+                $scope.store = {
+                    StoreId: b.StoreId,
+                    Name: b.Name,
+                   
+                };
 
+            });
+
+
+    
 
         var promise = $http.get('/webapi/StockApi/GetStoreFlourStock?storeId=' + storeId, {});
         promise.then(
             function (payload) {
                 var b = payload.data;
-
+                $scope.retrievedStoreId = $scope.storeId;
                
                   
                 $scope.storeGradeSize = {
@@ -283,6 +297,18 @@ angular
         }
 
         var storeId = $scope.storeId;
+        var promisestore = $http.get('/webapi/StoreApi/GetStore?storeId=' + storeId, {});
+        promisestore.then(
+            function (payload) {
+                var b = payload.data;
+
+                $scope.store = {
+                    StoreId: b.StoreId,
+                    Name: b.Name,
+
+                };
+
+            });
 
         var promise = $http.get('/webapi/BuveraApi/GetStoreBuveraStock?storeId=' + storeId, {});
         promise.then(

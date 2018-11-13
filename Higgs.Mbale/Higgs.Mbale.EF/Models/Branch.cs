@@ -33,7 +33,6 @@ namespace Higgs.Mbale.EF.Models
             this.UserBranches = new HashSet<UserBranch>();
             this.StoreStocks = new HashSet<StoreStock>();
             this.StoreMaizeStocks = new HashSet<StoreMaizeStock>();
-            this.Orders = new HashSet<Order>();
             this.Buveras = new HashSet<Buvera>();
             this.Utilities = new HashSet<Utility>();
             this.Inventories = new HashSet<Inventory>();
@@ -46,6 +45,8 @@ namespace Higgs.Mbale.EF.Models
             this.Cashes = new HashSet<Cash>();
             this.Batches = new HashSet<Batch>();
             this.Deliveries = new HashSet<Delivery>();
+            this.Orders = new HashSet<Order>();
+            this.FlourTransfers = new HashSet<FlourTransfer>();
         }
     
         public long BranchId { get; set; }
@@ -61,9 +62,6 @@ namespace Higgs.Mbale.EF.Models
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public double MillingChargeRate { get; set; }
     
-        public virtual AspNetUser AspNetUser { get; set; }
-        public virtual AspNetUser AspNetUser1 { get; set; }
-        public virtual AspNetUser AspNetUser2 { get; set; }
         public virtual ICollection<CasualWorker> CasualWorkers { get; set; }
         public virtual ICollection<Factory> Factories { get; set; }
         public virtual ICollection<Store> Stores { get; set; }
@@ -81,7 +79,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<UserBranch> UserBranches { get; set; }
         public virtual ICollection<StoreStock> StoreStocks { get; set; }
         public virtual ICollection<StoreMaizeStock> StoreMaizeStocks { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Buvera> Buveras { get; set; }
         public virtual ICollection<Utility> Utilities { get; set; }
         public virtual ICollection<Inventory> Inventories { get; set; }
@@ -94,5 +91,10 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Cash> Cashes { get; set; }
         public virtual ICollection<Batch> Batches { get; set; }
         public virtual ICollection<Delivery> Deliveries { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
+        public virtual AspNetUser AspNetUser2 { get; set; }
+        public virtual ICollection<FlourTransfer> FlourTransfers { get; set; }
     }
 }

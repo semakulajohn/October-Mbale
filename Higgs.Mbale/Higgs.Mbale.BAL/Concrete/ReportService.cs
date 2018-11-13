@@ -22,12 +22,14 @@ namespace Higgs.Mbale.BAL.Concrete
         private IAccountTransactionActivityService _accountTransactionActivityService;
         private IBatchService _batchService;
         private IDeliveryService _deliveryService;
+        private ICashService _cashService;
+        private IOrderService _orderService;
        
 
 
         public ReportService(IReportDataService dataService, IUserService userService, ITransactionService transactionService,
             ISupplyService supplyService,IAccountTransactionActivityService accountTransactionActivityService,
-            IBatchService batchService,IDeliveryService deliveryService)
+            IBatchService batchService,IDeliveryService deliveryService,ICashService cashService,IOrderService orderService)
         {
             this._dataService = dataService;
             this._userService = userService;
@@ -36,6 +38,8 @@ namespace Higgs.Mbale.BAL.Concrete
             this._accountTransactionActivityService = accountTransactionActivityService;
             this._batchService = batchService;
             this._deliveryService = deliveryService;
+            this._cashService = cashService;
+            this._orderService = orderService;
             
         }
 
@@ -228,6 +232,70 @@ namespace Higgs.Mbale.BAL.Concrete
             var results = this._dataService.GetAllDeliveriesBetweenTheSpecifiedDates(lowerSpecifiedDate, upperSpecifiedDate, branchId, customerId);
             var deliveryList = _deliveryService.MapEFToModel(results.ToList());
             return deliveryList;
+        }
+        #endregion
+
+        #region Cash
+
+        public IEnumerable<Cash> GenerateCashCurrentMonthReport()
+        {
+            var results = this._dataService.GenerateCashCurrentMonthReport();
+            var cashList = _cashService.MapEFToModel(results.ToList());
+            return cashList;
+        }
+
+        public IEnumerable<Cash> GenerateCashCurrentWeekReport()
+        {
+            var results = this._dataService.GenerateCashCurrentWeekReport();
+            var cashList = _cashService.MapEFToModel(results.ToList());
+            return cashList;
+        }
+
+
+        public IEnumerable<Cash> GenerateCashTodaysReport()
+        {
+            var results = this._dataService.GenerateCashTodaysReport();
+            var cashList = _cashService.MapEFToModel(results.ToList());
+            return cashList;
+        }
+
+        public IEnumerable<Cash> GetAllCashBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId)
+        {
+            var results = this._dataService.GetAllCashBetweenTheSpecifiedDates(lowerSpecifiedDate, upperSpecifiedDate, branchId);
+            var cashList = _cashService.MapEFToModel(results.ToList());
+            return cashList;
+        }
+
+        #endregion
+
+        #region orders
+        public IEnumerable<Order> GenerateOrderCurrentMonthReport()
+        {
+            var results = this._dataService.GenerateOrderCurrentMonthReport();
+            var orderList = _orderService.MapEFToModel(results.ToList());
+            return orderList;
+        }
+
+        public IEnumerable<Order> GenerateOrderCurrentWeekReport()
+        {
+            var results = this._dataService.GenerateOrderCurrentWeekReport();
+            var orderList = _orderService.MapEFToModel(results.ToList());
+            return orderList;
+        }
+
+
+        public IEnumerable<Order> GenerateOrderTodaysReport()
+        {
+            var results = this._dataService.GenerateOrderTodaysReport();
+            var orderList = _orderService.MapEFToModel(results.ToList());
+            return orderList;
+        }
+
+        public IEnumerable<Order> GetAllOrdersBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId, string customerId)
+        {
+            var results = this._dataService.GetAllOrdersBetweenTheSpecifiedDates(lowerSpecifiedDate, upperSpecifiedDate, branchId, customerId);
+            var orderList = _orderService.MapEFToModel(results.ToList());
+            return orderList;
         }
         #endregion
     }

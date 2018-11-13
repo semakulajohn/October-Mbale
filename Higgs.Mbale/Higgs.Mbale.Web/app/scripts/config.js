@@ -761,6 +761,20 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
              }
          })
 
+          .state('mulitplefactoryExpenses-batch-edit', {
+              url: "/factoryExpenses/:action/:batchId",
+              templateUrl: "/app/views/factoryExpense/editFactoryExpenses.html",
+              data: {
+                  pageTitle: 'Batch Factory Expense',
+                  pageDesc: ''
+              },
+              controller: function ($scope, $stateParams) {
+                  $scope.action = $stateParams.action;
+                  $scope.batchId = $stateParams.batchId;
+                  $scope.defaultTab = 'edit';
+              }
+          })
+
          .state('factoryExpense-batch-edit', {
              url: "/factoryExpenses/:action/:factoryExpenseId/:batchId",
              templateUrl: "/app/views/factoryExpense/edit.html",
@@ -776,6 +790,8 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
              }
          })
 
+
+       
 
          .state('otherExpense-batch', {
              url: "/otherExpenses/:batchId",
@@ -968,17 +984,27 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
             }
         })
 
-    .state('casualActivities-list', {
-        url: "/casualActivities/:accountId",
-        templateUrl: "/app/views/casualactivity/casualworker-casualactivity-list.html",
-        data: {
-            pageTitle: 'Casual Activities',
-        },
-        controller: function ($scope, $stateParams) {
-            $scope.accountId = $stateParams.accountId;
-        }
-    })
+    //.state('casualActivities-list', {
+    //    url: "/casualActivities/:accountId",
+    //    templateUrl: "/app/views/casualactivity/casualworker-casualactivity-list.html",
+    //    data: {
+    //        pageTitle: 'Casual Activities',
+    //    },
+    //    controller: function ($scope, $stateParams) {
+    //        $scope.accountId = $stateParams.accountId;
+    //    }
+    //})
 
+         .state('casualActivities-list', {
+             url: "/casualActivities/",
+             templateUrl: "/app/views/casualactivity/casualworker-casualactivity-list.html",
+             data: {
+                 pageTitle: 'Casual Activities',
+             },
+             controller: function ($scope, $stateParams) {
+                 //$scope.accountId = $stateParams.accountId;
+             }
+         })
     .state('casualactivity-edit', {
         url: "/casualactivities/:action/:accountId/:casualActivityId",
         templateUrl: "/app/views/casualactivity/edit.html",
@@ -1483,6 +1509,27 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
 
              }
          })
+
+         .state('reports.cashlist', {
+             url: "/reports",
+             templateUrl: "/app/views/report/cash.html",
+             data: {
+                 pageTitle: 'Cash',
+             },
+             controller: function ($scope, $stateParams) {
+
+             }
+         })
+         .state('reports.orderlist', {
+             url: "/reports",
+             templateUrl: "/app/views/report/orders.html",
+             data: {
+                 pageTitle: 'Orders',
+             },
+             controller: function ($scope, $stateParams) {
+
+             }
+         })
      //Account Transaction Activities
      .state('accounttransactionactivities', {
          abstract: true,
@@ -1600,6 +1647,48 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
 
          }
      })
+
+      .state('flour-store-transfer', {
+          url: "/flours/:action/:flourTransferId/:storeId",
+          templateUrl: "/app/views/flour/flourtransfer.html",
+          data: {
+              pageTitle: 'Store Flour',
+              pageDesc: ''
+          },
+          controller: function ($scope, $stateParams) {
+              $scope.action = $stateParams.action;
+              $scope.flourTransferId = $stateParams.flourTransferId;
+              $scope.storeId = $stateParams.storeId;
+              $scope.defaultTab = 'edit';
+          }
+      })
+
+          .state('flour-transfer-details', {
+              url: "/flours/:action/:flourTransferId",
+              templateUrl: "/app/views/flour/flourtransferdetails.html",
+              data: {
+                  pageTitle: 'Store Flour Details',
+                  pageDesc: ''
+              },
+              controller: function ($scope, $stateParams) {
+                  $scope.action = $stateParams.action;
+                  $scope.flourTransferId = $stateParams.flourTransferId;
+                  
+                  $scope.defaultTab = 'edit';
+              }
+          })
+      .state('flourlist-store-transfer', {
+          url: "/flours/:storeId",
+          templateUrl: "/app/views/flour/storeflourtransfers.html",
+          data: {
+              pageTitle: 'Store Flour Transfers',
+              pageDesc: ''
+          },
+          controller: function ($scope, $stateParams) {
+               $scope.storeId = $stateParams.storeId;
+              $scope.defaultTab = 'edit';
+          }
+      })
     //Search
     $stateProvider
     .state('search', {

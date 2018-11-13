@@ -1129,3 +1129,14 @@ select.input-validation-error {
   align-content: stretch;
 }
 
+#reportTable {
+    width:100%;
+    border-collapse: collapse;
+}
+
+#reportTable  td, th {
+    border: 1px solid black;
+    text-align: center;
+}
+
+

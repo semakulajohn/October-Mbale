@@ -38,9 +38,6 @@ namespace Higgs.Mbale.EF.Models
         public long StoreId { get; set; }
         public Nullable<bool> SoldOut { get; set; }
     
-        public virtual AspNetUser AspNetUser { get; set; }
-        public virtual AspNetUser AspNetUser1 { get; set; }
-        public virtual AspNetUser AspNetUser2 { get; set; }
         public virtual Branch Branch { get; set; }
         public virtual Product Product { get; set; }
         public virtual Sector Sector { get; set; }
@@ -50,5 +47,8 @@ namespace Higgs.Mbale.EF.Models
         public virtual Store Store { get; set; }
         public virtual ICollection<DeliveryStock> DeliveryStocks { get; set; }
         public virtual Batch Batch { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
+        public virtual AspNetUser AspNetUser2 { get; set; }
     }
 }

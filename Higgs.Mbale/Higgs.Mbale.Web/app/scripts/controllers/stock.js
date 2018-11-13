@@ -134,3 +134,151 @@ angular
 
 
         }]);
+
+
+
+angular
+    .module('homer')
+    .controller('FlourTransferController', ['$scope', '$http', '$filter', '$location', '$log', '$timeout', '$modal', '$state', 'uiGridConstants', '$interval', 'usSpinnerService',
+    function ($scope, $http, $filter, $location, $log, $timeout, $modal, $state, uiGridConstants, $interval, usSpinnerService) {
+        $scope.tab = {};
+        if ($scope.defaultTab == 'dashboard') {
+            $scope.tab.dashboard = true;
+        }
+
+        $scope.selectedGrades = [];
+        var branches = [];
+        var selectedBranch;
+        var stockId = $scope.stockId;
+        var action = $scope.action;
+        var storeId = $scope.storeId;
+        var issuing = "YES"
+
+        var promisestore = $http.get('/webapi/StoreApi/GetStore?storeId=' + storeId, {});
+        promisestore.then(
+            function (payload) {
+                var b = payload.data;
+
+                $scope.store = {
+                    StoreId: b.StoreId,
+                    Name: b.Name,
+
+                };
+
+            });
+        $http.get('webapi/GradeApi/GetAllGrades').success(function (data, status) {
+            $scope.grades = data;
+        });
+
+        $http.get('/webapi/BranchApi/GetAllBranches').success(function (data, status) {
+            $scope.bdata = {
+                branches: data,
+                selectedBranch: branches[0]
+            }
+        });
+
+        $scope.OnBranchChange = function (stock) {
+            var selectedBranchId = buvera.BranchId
+            $http.get('/webapi/StoreApi/GetAllBranchStores?branchId=' + selectedBranchId).then(function (responses) {
+                $scope.stores = responses.data;
+
+            });
+        }
+
+
+        if (action == 'edit') {
+
+            var promise = $http.get('/webapi/BatchOutPutApi/GetBatchOutPut?batchOutPutId=' + batchOutPutId, {});
+            promise.then(
+                function (payload) {
+                    var b = payload.data;
+
+                    $scope.batchOutPut = {
+                        BatchId: b.BatchId,
+                        Loss: b.Loss,
+                        BrandPercentage: b.BrandPercentage,
+                        FlourPercentage: b.FlourPercentage,
+                        LossPercentage: b.LossPercentage,
+                        BrandOutPut: b.BrandOutPut,
+                        FlourOutPut: b.FlourOutPut,
+                        BranchId: b.BranchId,
+                        StoreId: b.StoreId,
+                        SectorId: b.SectorId,
+                        TimeStamp: b.TimeStamp,
+                        CreatedOn: b.CreatedOn,
+                        CreatedBy: b.CreatedBy,
+                        UpdatedBy: b.UpdatedBy,
+                        Deleted: b.Deleted,
+                        Grades: b.Grades
+
+                    };
+
+                });
+
+
+        }
+
+
+
+        $scope.Save = function (flour) {
+
+            $scope.TotalGradeKgs = 0;
+            $scope.DenominationKgs = 0;
+            $scope.showMessageSave = false;          
+
+                if ($scope.form.$valid) {
+                    usSpinnerService.spin('global-spinner');
+                    var promise = $http.post('/webapi/StockApi/Save', {
+                        StockId: stockId,
+                        Issuing: issuing,
+                        StoreId: storeId,
+                        ToReceiver: stock.StoreId,
+                        TotalQuantity: $scope.TotalGradeQuantities,
+                        BranchId: stock.BranchId,
+                        Grades: stockId == 0 ? $scope.selectedGrades : stock.Grades,
+                        
+                        
+                        StoreId: stock.StoreId,
+
+                        Grades: stockId == 0 ? $scope.selectedGrades : stock.Grades
+                    });
+
+                    promise.then(
+                        function (payload) {
+
+                            stockId = payload.data;
+
+                            $scope.showMessageSave = true;
+                            usSpinnerService.stop('global-spinner');
+
+                            $timeout(function () {
+                                $scope.showMessageSave = false;
+
+                                if (action == "create") {
+                                    $state.go('stock-edit', { 'action': 'edit', 'stockId': stockId});
+                                }
+
+                            }, 1500);
+
+
+                        });
+                }
+         
+           
+
+        }
+
+
+
+
+        $scope.Cancel = function () {
+            $state.go('batchoutput-batch', { 'batchId': batchId });
+        };
+
+       
+
+
+      
+
+    }
+    ]);

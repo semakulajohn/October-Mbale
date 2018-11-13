@@ -8,7 +8,9 @@
     <div ng-include="'/app/views/_common/Breadcrumb.html'"></div>
 
     <div class="content" ng-controller="StoreFlourStandingController">
-
+        <div class="text-center">
+            <a class="btn btn-danger btn-sm">  {{store.Name | uppercase}} </a>
+        </div>
 
         <div class="row">
             <div class="col-lg-12">
@@ -76,8 +78,20 @@
                                     </div>
 
                                 </tab>
+                                
+                                  <tab>
+                                      <tab-heading>
+                                          <a ui-sref="flour-store-transfer({ action: 'create', flourTransferId: 0,storeId:retrievedStoreId})"><i class="fa fa-minus-circle" style="color:red"></i> Issue Out Flour</a>
 
+                                      </tab-heading>
+                                  </tab>
 
+                                  <tab>
+                                      <tab-heading>
+                                          <a ui-sref="flourlist-store-transfer({storeId:retrievedStoreId})"><i class="fa fa-minus-circle"></i>Flour Transfer List</a>
+
+                                      </tab-heading>
+                                  </tab>
                             </tabset>
                         </form>
                     </div>

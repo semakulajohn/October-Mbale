@@ -267,5 +267,91 @@ namespace Higgs.Mbale.DAL.Concrete
 
        #endregion 
 
+        #region cash
+
+       public IEnumerable<Cash> GetAllCashBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId)
+       {
+           if (branchId != 0)
+           {
+
+               return this.UnitOfWork.Get<Cash>().AsQueryable()
+                   .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate) && m.BranchId == branchId);
+           }
+
+
+           return this.UnitOfWork.Get<Cash>().AsQueryable()
+               .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate));
+       }
+
+       public IEnumerable<Cash> GenerateCashCurrentMonthReport()
+       {
+           return this.UnitOfWork.Get<Cash>().AsQueryable()
+               .Where(p => p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<Cash> GenerateCashTodaysReport()
+       {
+           return this.UnitOfWork.Get<Cash>().AsQueryable()
+               .Where(p => p.CreatedOn.Day == DateTime.Now.Day && p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<Cash> GenerateCashCurrentWeekReport()
+       {
+
+           DateTime startOfWeek = DateTime.Today.AddDays((int)DateTime.Today.DayOfWeek * -1);
+           DateTime endDate = DateTime.Now;
+
+           return this.UnitOfWork.Get<Cash>().AsQueryable()
+               .Where(p => p.CreatedOn >= startOfWeek && p.CreatedOn <= endDate);
+       }
+        #endregion
+
+        #region orders
+
+       public IEnumerable<Order> GetAllOrdersBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId, string customerId)
+       {
+           if (branchId != 0 && customerId == null)
+           {
+
+               return this.UnitOfWork.Get<Order>().AsQueryable()
+                   .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate) && m.BranchId == branchId);
+           }
+           else if (customerId != null && branchId == 0)
+           {
+
+               return this.UnitOfWork.Get<Order>().AsQueryable()
+                   .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate) && m.CustomerId == customerId);
+           }
+           else if (customerId != null && branchId != 0)
+           {
+               return this.UnitOfWork.Get<Order>().AsQueryable()
+               .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate) && m.CustomerId == customerId && m.BranchId == branchId);
+           }
+           return this.UnitOfWork.Get<Order>().AsQueryable()
+               .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate));
+       }
+
+       public IEnumerable<Order> GenerateOrderCurrentMonthReport()
+       {
+           return this.UnitOfWork.Get<Order>().AsQueryable()
+               .Where(p => p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<Order> GenerateOrderTodaysReport()
+       {
+           return this.UnitOfWork.Get<Order>().AsQueryable()
+               .Where(p => p.CreatedOn.Day == DateTime.Now.Day && p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<Order> GenerateOrderCurrentWeekReport()
+       {
+
+           DateTime startOfWeek = DateTime.Today.AddDays((int)DateTime.Today.DayOfWeek * -1);
+           DateTime endDate = DateTime.Now;
+
+           return this.UnitOfWork.Get<Order>().AsQueryable()
+               .Where(p => p.CreatedOn >= startOfWeek && p.CreatedOn <= endDate);
+       }
+        #endregion
     }
 }
