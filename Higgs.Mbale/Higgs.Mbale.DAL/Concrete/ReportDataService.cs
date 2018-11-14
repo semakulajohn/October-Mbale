@@ -218,6 +218,279 @@ namespace Higgs.Mbale.DAL.Concrete
 
         #endregion
 
+       #region  Factory Expenses
+       public IEnumerable<FactoryExpense> GetAllFactoryExpensesBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId)
+       {
+           if (branchId != 0)
+           {
+
+               return this.UnitOfWork.Get<FactoryExpense>().AsQueryable()
+                   .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate) && m.BranchId == branchId);
+           }
+
+
+           return this.UnitOfWork.Get<FactoryExpense>().AsQueryable()
+               .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate));
+       }
+
+       public IEnumerable<FactoryExpense> GenerateFactoryExpenseCurrentMonthReport()
+       {
+           return this.UnitOfWork.Get<FactoryExpense>().AsQueryable()
+               .Where(p => p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<FactoryExpense> GenerateFactoryExpenseTodaysReport()
+       {
+           return this.UnitOfWork.Get<FactoryExpense>().AsQueryable()
+               .Where(p => p.CreatedOn.Day == DateTime.Now.Day && p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<FactoryExpense> GenerateFactoryExpenseCurrentWeekReport()
+       {
+
+           DateTime startOfWeek = DateTime.Today.AddDays((int)DateTime.Today.DayOfWeek * -1);
+           DateTime endDate = DateTime.Now;
+
+           return this.UnitOfWork.Get<FactoryExpense>().AsQueryable()
+               .Where(p => p.CreatedOn >= startOfWeek && p.CreatedOn <= endDate);
+       }
+
+       #endregion
+
+       #region  Other Expenses
+       public IEnumerable<OtherExpense> GetAllOtherExpensesBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId)
+       {
+           if (branchId != 0)
+           {
+
+               return this.UnitOfWork.Get<OtherExpense>().AsQueryable()
+                   .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate) && m.BranchId == branchId);
+           }
+
+
+           return this.UnitOfWork.Get<OtherExpense>().AsQueryable()
+               .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate));
+       }
+
+       public IEnumerable<OtherExpense> GenerateOtherExpenseCurrentMonthReport()
+       {
+           return this.UnitOfWork.Get<OtherExpense>().AsQueryable()
+               .Where(p => p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<OtherExpense> GenerateOtherExpenseTodaysReport()
+       {
+           return this.UnitOfWork.Get<OtherExpense>().AsQueryable()
+               .Where(p => p.CreatedOn.Day == DateTime.Now.Day && p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<OtherExpense> GenerateOtherExpenseCurrentWeekReport()
+       {
+
+           DateTime startOfWeek = DateTime.Today.AddDays((int)DateTime.Today.DayOfWeek * -1);
+           DateTime endDate = DateTime.Now;
+
+           return this.UnitOfWork.Get<OtherExpense>().AsQueryable()
+               .Where(p => p.CreatedOn >= startOfWeek && p.CreatedOn <= endDate);
+       }
+
+       #endregion
+
+       #region  batchoutputs
+       public IEnumerable<BatchOutPut> GetAllBatchOutPutsBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId)
+       {
+           if (branchId != 0)
+           {
+
+               return this.UnitOfWork.Get<BatchOutPut>().AsQueryable()
+                   .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate) && m.BranchId == branchId);
+           }
+
+
+           return this.UnitOfWork.Get<BatchOutPut>().AsQueryable()
+               .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate));
+       }
+
+       public IEnumerable<BatchOutPut> GenerateBatchOutPutCurrentMonthReport()
+       {
+           return this.UnitOfWork.Get<BatchOutPut>().AsQueryable()
+               .Where(p => p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<BatchOutPut> GenerateBatchOutPutTodaysReport()
+       {
+           return this.UnitOfWork.Get<BatchOutPut>().AsQueryable()
+               .Where(p => p.CreatedOn.Day == DateTime.Now.Day && p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<BatchOutPut> GenerateBatchOutPutCurrentWeekReport()
+       {
+
+           DateTime startOfWeek = DateTime.Today.AddDays((int)DateTime.Today.DayOfWeek * -1);
+           DateTime endDate = DateTime.Now;
+
+           return this.UnitOfWork.Get<BatchOutPut>().AsQueryable()
+               .Where(p => p.CreatedOn >= startOfWeek && p.CreatedOn <= endDate);
+       }
+
+       #endregion
+
+       #region  LabourCosts
+       public IEnumerable<LabourCost> GetAllLabourCostsBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId)
+       {
+           if (branchId != 0)
+           {
+
+               return this.UnitOfWork.Get<LabourCost>().AsQueryable()
+                   .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate) && m.BranchId == branchId);
+           }
+
+
+           return this.UnitOfWork.Get<LabourCost>().AsQueryable()
+               .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate));
+       }
+
+       public IEnumerable<LabourCost> GenerateLabourCostCurrentMonthReport()
+       {
+           return this.UnitOfWork.Get<LabourCost>().AsQueryable()
+               .Where(p => p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<LabourCost> GenerateLabourCostTodaysReport()
+       {
+           return this.UnitOfWork.Get<LabourCost>().AsQueryable()
+               .Where(p => p.CreatedOn.Day == DateTime.Now.Day && p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<LabourCost> GenerateLabourCostCurrentWeekReport()
+       {
+
+           DateTime startOfWeek = DateTime.Today.AddDays((int)DateTime.Today.DayOfWeek * -1);
+           DateTime endDate = DateTime.Now;
+
+           return this.UnitOfWork.Get<LabourCost>().AsQueryable()
+               .Where(p => p.CreatedOn >= startOfWeek && p.CreatedOn <= endDate);
+       }
+
+       #endregion
+
+       #region  MachineRepair
+       public IEnumerable<MachineRepair> GetAllMachineRepairsBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId)
+       {
+           if (branchId != 0)
+           {
+
+               return this.UnitOfWork.Get<MachineRepair>().AsQueryable()
+                   .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate) && m.BranchId == branchId);
+           }
+
+
+           return this.UnitOfWork.Get<MachineRepair>().AsQueryable()
+               .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate));
+       }
+
+       public IEnumerable<MachineRepair> GenerateMachineRepairCurrentMonthReport()
+       {
+           return this.UnitOfWork.Get<MachineRepair>().AsQueryable()
+               .Where(p => p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<MachineRepair> GenerateMachineRepairTodaysReport()
+       {
+           return this.UnitOfWork.Get<MachineRepair>().AsQueryable()
+               .Where(p => p.CreatedOn.Day == DateTime.Now.Day && p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<MachineRepair> GenerateMachineRepairCurrentWeekReport()
+       {
+
+           DateTime startOfWeek = DateTime.Today.AddDays((int)DateTime.Today.DayOfWeek * -1);
+           DateTime endDate = DateTime.Now;
+
+           return this.UnitOfWork.Get<MachineRepair>().AsQueryable()
+               .Where(p => p.CreatedOn >= startOfWeek && p.CreatedOn <= endDate);
+       }
+
+       #endregion
+
+       #region  Utility
+       public IEnumerable<Utility> GetAllUtilitiesBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId)
+       {
+           if (branchId != 0)
+           {
+
+               return this.UnitOfWork.Get<Utility>().AsQueryable()
+                   .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate) && m.BranchId == branchId);
+           }
+
+
+           return this.UnitOfWork.Get<Utility>().AsQueryable()
+               .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate));
+       }
+
+       public IEnumerable<Utility> GenerateUtilityCurrentMonthReport()
+       {
+           return this.UnitOfWork.Get<Utility>().AsQueryable()
+               .Where(p => p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<Utility> GenerateUtilityTodaysReport()
+       {
+           return this.UnitOfWork.Get<Utility>().AsQueryable()
+               .Where(p => p.CreatedOn.Day == DateTime.Now.Day && p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<Utility> GenerateUtilityCurrentWeekReport()
+       {
+
+           DateTime startOfWeek = DateTime.Today.AddDays((int)DateTime.Today.DayOfWeek * -1);
+           DateTime endDate = DateTime.Now;
+
+           return this.UnitOfWork.Get<Utility>().AsQueryable()
+               .Where(p => p.CreatedOn >= startOfWeek && p.CreatedOn <= endDate);
+       }
+
+       #endregion
+
+
+       #region  FlourTransfer
+       public IEnumerable<FlourTransfer> GetAllFlourTransfersBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId)
+       {
+           if (branchId != 0)
+           {
+
+               return this.UnitOfWork.Get<FlourTransfer>().AsQueryable()
+                   .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate) && m.BranchId == branchId);
+           }
+
+
+           return this.UnitOfWork.Get<FlourTransfer>().AsQueryable()
+               .Where(m => m.Deleted == false && (m.CreatedOn >= lowerSpecifiedDate && m.CreatedOn <= upperSpecifiedDate));
+       }
+
+       public IEnumerable<FlourTransfer> GenerateFlourTransferCurrentMonthReport()
+       {
+           return this.UnitOfWork.Get<FlourTransfer>().AsQueryable()
+               .Where(p => p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<FlourTransfer> GenerateFlourTransferTodaysReport()
+       {
+           return this.UnitOfWork.Get<FlourTransfer>().AsQueryable()
+               .Where(p => p.CreatedOn.Day == DateTime.Now.Day && p.CreatedOn.Month == DateTime.Now.Month && p.CreatedOn.Year == DateTime.Now.Year);
+       }
+
+       public IEnumerable<FlourTransfer> GenerateFlourTransferCurrentWeekReport()
+       {
+
+           DateTime startOfWeek = DateTime.Today.AddDays((int)DateTime.Today.DayOfWeek * -1);
+           DateTime endDate = DateTime.Now;
+
+           return this.UnitOfWork.Get<FlourTransfer>().AsQueryable()
+               .Where(p => p.CreatedOn >= startOfWeek && p.CreatedOn <= endDate);
+       }
+
+       #endregion
 
        #region Deliveries
        public IEnumerable<Delivery> GetAllDeliveriesBetweenTheSpecifiedDates(DateTime lowerSpecifiedDate, DateTime upperSpecifiedDate, long branchId, string customerId)

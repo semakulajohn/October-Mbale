@@ -21,6 +21,14 @@ namespace Higgs.Mbale.Web.Controllers
         private IDeliveryService _deliveryService;
         private IOrderService _orderService;
         private ICashService _cashService;
+        private ILabourCostService _labourCostService;
+        private IOtherExpenseService _otherExpenseService;
+        private IFactoryExpenseService _factoryExpenseService;
+        private IBatchOutPutService _batchOutPutService;
+        private IFlourTransferService _flourTransferService;
+        private IMachineRepairService _machineRepairService;
+        private IUtilityService _utilityService;
+
         public ExcelController()
         {
 
@@ -28,7 +36,10 @@ namespace Higgs.Mbale.Web.Controllers
 
         public ExcelController(ITransactionService transactionService, IReportService reportService,
             ISupplyService supplyService,IAccountTransactionActivityService accountTransactionActivityService,
-            IBatchService batchService,IDeliveryService deliveryService,ICashService cashService,IOrderService orderService)
+            IBatchService batchService,IDeliveryService deliveryService,ICashService cashService,IOrderService orderService,
+            ILabourCostService labourCostService, IOtherExpenseService otherExpenseService, IFactoryExpenseService factoryExpenseService,
+            IBatchOutPutService batchOutPutService, IFlourTransferService flourTransferService, IMachineRepairService machineRepairService,
+            IUtilityService utilityService)
         {
             this._transactionService = transactionService;
             this._reportService = reportService;
@@ -38,6 +49,13 @@ namespace Higgs.Mbale.Web.Controllers
             this._deliveryService = deliveryService;
             this._orderService = orderService;
             this._cashService = cashService;
+            this._labourCostService = labourCostService;
+            this._otherExpenseService = otherExpenseService;
+            this._factoryExpenseService = factoryExpenseService;
+            this._batchOutPutService = batchOutPutService;
+            this._flourTransferService = flourTransferService;
+            this._machineRepairService = machineRepairService;
+            this._utilityService = utilityService;
         }
         // GET: Excel
         public ActionResult Index(int id)
@@ -556,6 +574,431 @@ namespace Higgs.Mbale.Web.Controllers
             Response.AddHeader("Content-Disposition", "attachment; filename=" + nameOfReport + "_Report_" + DateTime.Now.ToString("yyyy-MM-dd-mm-ss") + ".xlsx");
             return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
+
+        public ActionResult FactoryExpense(int id)
+        {
+            int reportType = id;
+            string nameOfReport = string.Empty;
+            List<string> headers = new List<string>();
+            headers.Add("Description ");
+            headers.Add("Amount");
+            headers.Add("Department");
+            headers.Add("BranchName");
+            headers.Add("CreatedOn");
+
+
+            IEnumerable<FactoryExpense> factoryExpenseList;
+            switch (reportType)
+            {
+
+                case 1://all todays FactoryExpenses
+                    nameOfReport = "TodaysFactoryExpenses";
+                    factoryExpenseList = _reportService.GenerateFactoryExpenseTodaysReport();
+                    break;
+                case 2://all this months Orders
+                    nameOfReport = "CurrentMonthsFactoryExpenses";
+                    factoryExpenseList = _reportService.GenerateFactoryExpenseCurrentMonthReport();
+                    break;
+
+                case 3://FactoryExpenses for this week
+                    nameOfReport = "CurrentWeeksFactoryExpenses";
+                    factoryExpenseList = _reportService.GenerateFactoryExpenseCurrentWeekReport();
+                    break;
+
+                default://Todo:: need to decide which one is the default report data
+                    factoryExpenseList = _factoryExpenseService.GetAllFactoryExpenses();
+                    break;
+            }
+            List<List<string>> cellValues = new List<List<string>>();
+            foreach (var w in factoryExpenseList)
+            {
+
+                var sxr = new List<string>();
+                sxr.Add(w.Description.ToString());
+                sxr.Add(w.Amount.ToString());
+                sxr.Add(w.SectorName.ToString());
+                sxr.Add(w.BranchName.ToString());
+                sxr.Add(w.CreatedOn.ToString());
+
+
+                cellValues.Add(sxr);
+            }
+            var data = new ExcelData();
+            data.Headers = headers;
+            data.DataRows = cellValues;
+
+            var file = new ExcelWriter();
+            var excelFileContentInBytes = file.GenerateExcelFile(data);
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + nameOfReport + "_Report_" + DateTime.Now.ToString("yyyy-MM-dd-mm-ss") + ".xlsx");
+            return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+
+        public ActionResult OtherExpense(int id)
+        {
+            int reportType = id;
+            string nameOfReport = string.Empty;
+            List<string> headers = new List<string>();
+            headers.Add("Description ");
+            headers.Add("Amount");
+            headers.Add("Department");
+            headers.Add("BranchName");
+            headers.Add("CreatedOn");
+
+
+            IEnumerable<OtherExpense> otherExpenseList;
+            switch (reportType)
+            {
+
+                case 1://all todays OtherExpenses
+                    nameOfReport = "TodaysOtherExpenses";
+                    otherExpenseList = _reportService.GenerateOtherExpenseTodaysReport();
+                    break;
+                case 2://all this months otherExpenses
+                    nameOfReport = "CurrentMonthsOtherExpenses";
+                    otherExpenseList = _reportService.GenerateOtherExpenseCurrentMonthReport();
+                    break;
+
+                case 3://Orders for this week
+                    nameOfReport = "CurrentWeeksOtherExpenses";
+                    otherExpenseList = _reportService.GenerateOtherExpenseCurrentWeekReport();
+                    break;
+
+                default://Todo:: need to decide which one is the default report data
+                    otherExpenseList = _otherExpenseService.GetAllOtherExpenses();
+                    break;
+            }
+            List<List<string>> cellValues = new List<List<string>>();
+            foreach (var w in otherExpenseList)
+            {
+
+                var sxr = new List<string>();
+                sxr.Add(w.Description.ToString());
+                sxr.Add(w.Amount.ToString());
+                sxr.Add(w.SectorName.ToString());
+                sxr.Add(w.BranchName.ToString());
+                sxr.Add(w.CreatedOn.ToString());
+
+
+                cellValues.Add(sxr);
+            }
+            var data = new ExcelData();
+            data.Headers = headers;
+            data.DataRows = cellValues;
+
+            var file = new ExcelWriter();
+            var excelFileContentInBytes = file.GenerateExcelFile(data);
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + nameOfReport + "_Report_" + DateTime.Now.ToString("yyyy-MM-dd-mm-ss") + ".xlsx");
+            return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+
+        public ActionResult MachineRepair(int id)
+        {
+            int reportType = id;
+            string nameOfReport = string.Empty;
+            List<string> headers = new List<string>();
+            headers.Add("Repair's Name ");
+            headers.Add("Amount");
+            headers.Add("Description");
+            headers.Add("DateRepaired");
+          
+            headers.Add("BranchName");
+            headers.Add("CreatedOn");
+
+
+            IEnumerable<MachineRepair> machineRepairList;
+            switch (reportType)
+            {
+
+                case 1://all todays machineRepairs
+                    nameOfReport = "TodaysMachineRepairs";
+                    machineRepairList = _reportService.GenerateMachineRepairTodaysReport();
+                    break;
+                case 2://all this months Orders
+                    nameOfReport = "CurrentMonthsMachineRepairs";
+                    machineRepairList = _reportService.GenerateMachineRepairCurrentMonthReport();
+                    break;
+
+                case 3://MachineRepairs for this week
+                    nameOfReport = "CurrentWeeksMachineRepairs";
+                    machineRepairList = _reportService.GenerateMachineRepairCurrentWeekReport();
+                    break;
+
+                default://Todo:: need to decide which one is the default report data
+                    machineRepairList = _machineRepairService.GetAllMachineRepairs();
+                    break;
+            }
+            List<List<string>> cellValues = new List<List<string>>();
+            foreach (var w in machineRepairList)
+            {
+
+                var sxr = new List<string>();
+                sxr.Add(w.NameOfRepair.ToString());
+                sxr.Add(w.Amount.ToString());
+                sxr.Add(w.Description.ToString());
+                sxr.Add(w.DateRepaired.ToString());
+                
+                sxr.Add(w.BranchName.ToString());
+                sxr.Add(w.CreatedOn.ToString());
+
+
+                cellValues.Add(sxr);
+            }
+            var data = new ExcelData();
+            data.Headers = headers;
+            data.DataRows = cellValues;
+
+            var file = new ExcelWriter();
+            var excelFileContentInBytes = file.GenerateExcelFile(data);
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + nameOfReport + "_Report_" + DateTime.Now.ToString("yyyy-MM-dd-mm-ss") + ".xlsx");
+            return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+
+        public ActionResult Utility(int id)
+        {
+            int reportType = id;
+            string nameOfReport = string.Empty;
+            List<string> headers = new List<string>();
+            headers.Add("Description ");
+            headers.Add("Amount");
+            headers.Add("Department");
+            headers.Add("BranchName");
+            headers.Add("CreatedOn");
+
+
+            IEnumerable<Utility> utilityList;
+            switch (reportType)
+            {
+
+                case 1://all todays Utilities
+                    nameOfReport = "TodaysUtilities";
+                    utilityList = _reportService.GenerateUtilityTodaysReport();
+                    break;
+                case 2://all this months Utilities
+                    nameOfReport = "CurrentMonthsUtilities";
+                    utilityList = _reportService.GenerateUtilityCurrentMonthReport();
+                    break;
+
+                case 3://Utilties for this week
+                    nameOfReport = "CurrentWeeksUtilities";
+                    utilityList = _reportService.GenerateUtilityCurrentWeekReport();
+                    break;
+
+                default://Todo:: need to decide which one is the default report data
+                    utilityList = _utilityService.GetAllUtilities();
+                    break;
+            }
+            List<List<string>> cellValues = new List<List<string>>();
+            foreach (var w in utilityList)
+            {
+
+                var sxr = new List<string>();
+                sxr.Add(w.Description.ToString());
+                sxr.Add(w.Amount.ToString());
+                sxr.Add(w.SectorName.ToString());
+                sxr.Add(w.BranchName.ToString());
+                sxr.Add(w.CreatedOn.ToString());
+
+
+                cellValues.Add(sxr);
+            }
+            var data = new ExcelData();
+            data.Headers = headers;
+            data.DataRows = cellValues;
+
+            var file = new ExcelWriter();
+            var excelFileContentInBytes = file.GenerateExcelFile(data);
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + nameOfReport + "_Report_" + DateTime.Now.ToString("yyyy-MM-dd-mm-ss") + ".xlsx");
+            return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+
+        public ActionResult BatchOutPut(int id)
+        {
+            int reportType = id;
+            string nameOfReport = string.Empty;
+            List<string> headers = new List<string>();
+            headers.Add("Batch");
+            headers.Add("Loss ");
+            headers.Add("Loss(%)");
+            headers.Add("Flour(kgs)");
+            headers.Add("Flour(%)");
+            headers.Add("Brand(kgs)");
+            headers.Add("Brand(%)");
+            headers.Add("BranchName");
+            headers.Add("CreatedOn");
+
+
+            IEnumerable<BatchOutPut> batchOutPutList;
+            switch (reportType)
+            {
+
+                case 1://all todays BatchOutPuts
+                    nameOfReport = "TodaysBatchOutPuts";
+                    batchOutPutList = _reportService.GenerateBatchOutPutTodaysReport();
+                    break;
+                case 2://all this months BatchOutPuts
+                    nameOfReport = "CurrentMonthsBatchOutPuts";
+                    batchOutPutList = _reportService.GenerateBatchOutPutCurrentMonthReport();
+                    break;
+
+                case 3://Orders for this week
+                    nameOfReport = "CurrentWeeksBatchOutPuts";
+                    batchOutPutList = _reportService.GenerateBatchOutPutCurrentWeekReport();
+                    break;
+
+                default://Todo:: need to decide which one is the default report data
+                    batchOutPutList = _batchOutPutService.GetAllBatchOutPuts();
+                    break;
+            }
+            List<List<string>> cellValues = new List<List<string>>();
+            foreach (var w in batchOutPutList)
+            {
+
+                var sxr = new List<string>();
+                sxr.Add(w.BatchName.ToString());
+                sxr.Add(w.Loss.ToString());
+                sxr.Add(w.LossPercentage.ToString());
+                sxr.Add(w.FlourOutPut.ToString());
+                sxr.Add(w.FlourPercentage.ToString());
+                sxr.Add(w.BrandOutPut.ToString());
+                sxr.Add(w.BrandPercentage.ToString());
+                sxr.Add(w.BranchName.ToString());
+                sxr.Add(w.CreatedOn.ToString());
+
+
+                cellValues.Add(sxr);
+            }
+            var data = new ExcelData();
+            data.Headers = headers;
+            data.DataRows = cellValues;
+
+            var file = new ExcelWriter();
+            var excelFileContentInBytes = file.GenerateExcelFile(data);
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + nameOfReport + "_Report_" + DateTime.Now.ToString("yyyy-MM-dd-mm-ss") + ".xlsx");
+            return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+
+        public ActionResult FlourTransfer(int id)
+        {
+            int reportType = id;
+            string nameOfReport = string.Empty;
+            List<string> headers = new List<string>();
+            headers.Add("Quantity(kgs) ");
+            headers.Add("From Store");
+            headers.Add("Receiver Store");
+            headers.Add("Accepted");
+            headers.Add("Rejected");
+            headers.Add("BranchName");
+            headers.Add("CreatedOn");
+
+
+            IEnumerable<FlourTransfer> flourTransferList;
+            switch (reportType)
+            {
+
+                case 1://all todays flourTransfers
+                    nameOfReport = "TodaysFlourTransfers";
+                    flourTransferList = _reportService.GenerateFlourTransferTodaysReport();
+                    break;
+                case 2://all this months Orders
+                    nameOfReport = "CurrentMonthsFlourTransfers";
+                    flourTransferList = _reportService.GenerateFlourTransferCurrentMonthReport();
+                    break;
+
+                case 3://Orders for this week
+                    nameOfReport = "CurrentWeeksFlourTransfers";
+                    flourTransferList = _reportService.GenerateFlourTransferCurrentWeekReport();
+                    break;
+
+                default://Todo:: need to decide which one is the default report data
+                    flourTransferList = _flourTransferService.GetAllFlourTransfers();
+                    break;
+            }
+            List<List<string>> cellValues = new List<List<string>>();
+            foreach (var w in flourTransferList)
+            {
+
+                var sxr = new List<string>();
+                sxr.Add(w.TotalQuantity.ToString());
+                sxr.Add(w.StoreName.ToString());
+                sxr.Add(w.ReceiverStoreName.ToString());
+                sxr.Add(w.Accept.ToString());
+                sxr.Add(w.Reject.ToString());
+                sxr.Add(w.BranchName.ToString());
+                sxr.Add(w.CreatedOn.ToString());
+
+
+                cellValues.Add(sxr);
+            }
+            var data = new ExcelData();
+            data.Headers = headers;
+            data.DataRows = cellValues;
+
+            var file = new ExcelWriter();
+            var excelFileContentInBytes = file.GenerateExcelFile(data);
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + nameOfReport + "_Report_" + DateTime.Now.ToString("yyyy-MM-dd-mm-ss") + ".xlsx");
+            return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+
+        public ActionResult LabourCost(int id)
+        {
+            int reportType = id;
+            string nameOfReport = string.Empty;
+            List<string> headers = new List<string>();
+            headers.Add("ActivityName ");
+            headers.Add("Quantity");
+            headers.Add("Rate");
+            headers.Add("Quantity");
+            headers.Add("BranchName");
+            headers.Add("CreatedOn");
+
+
+            IEnumerable<LabourCost> labourCostList;
+            switch (reportType)
+            {
+
+                case 1://all todays LabourCosts
+                    nameOfReport = "TodaysLabourCosts";
+                    labourCostList = _reportService.GenerateLabourCostTodaysReport();
+                    break;
+                case 2://all this months LabourCosts
+                    nameOfReport = "CurrentMonthsLabourCosts";
+                    labourCostList = _reportService.GenerateLabourCostCurrentMonthReport();
+                    break;
+
+                case 3://Orders for this week
+                    nameOfReport = "CurrentWeeksLabourCosts";
+                    labourCostList = _reportService.GenerateLabourCostCurrentWeekReport();
+                    break;
+
+                default://Todo:: need to decide which one is the default report data
+                    labourCostList = _labourCostService.GetAllLabourCosts();
+                    break;
+            }
+            List<List<string>> cellValues = new List<List<string>>();
+            foreach (var w in labourCostList)
+            {
+
+                var sxr = new List<string>();
+                sxr.Add(w.ActivityName.ToString());
+                sxr.Add(w.Quantity.ToString());
+                sxr.Add(w.Rate.ToString());
+                sxr.Add(w.Amount.ToString());
+                sxr.Add(w.BranchName.ToString());
+                sxr.Add(w.CreatedOn.ToString());
+
+
+                cellValues.Add(sxr);
+            }
+            var data = new ExcelData();
+            data.Headers = headers;
+            data.DataRows = cellValues;
+
+            var file = new ExcelWriter();
+            var excelFileContentInBytes = file.GenerateExcelFile(data);
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + nameOfReport + "_Report_" + DateTime.Now.ToString("yyyy-MM-dd-mm-ss") + ".xlsx");
+            return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+
 
 
       

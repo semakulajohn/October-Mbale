@@ -14,7 +14,7 @@ namespace Higgs.Mbale.BAL.Interface
         long SaveFactoryExpense(FactoryExpense factoryExpense, string userId);
         void MarkAsDeleted(long factoryExpenseId, string userId);
         IEnumerable<FactoryExpense> GetAllFactoryExpensesForAParticularBatch(long batchId);
-
+        IEnumerable<FactoryExpense> MapEFToModel(IEnumerable<EF.Models.FactoryExpense> data);
         long SaveFactoryExpense(BatchFactoryExpense factoryExpenses, string userId);
             
     }

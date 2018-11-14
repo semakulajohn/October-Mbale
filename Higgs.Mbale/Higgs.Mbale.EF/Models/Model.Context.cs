@@ -53,15 +53,10 @@ namespace Higgs.Mbale.EF.Models
         public virtual DbSet<ActivityBranch> ActivityBranches { get; set; }
         public virtual DbSet<OrderGradeSize> OrderGradeSizes { get; set; }
         public virtual DbSet<Supply> Supplies { get; set; }
-        public virtual DbSet<FactoryExpense> FactoryExpenses { get; set; }
-        public virtual DbSet<MachineRepair> MachineRepairs { get; set; }
-        public virtual DbSet<LabourCost> LabourCosts { get; set; }
         public virtual DbSet<PaymentMode> PaymentModes { get; set; }
         public virtual DbSet<Stock> Stocks { get; set; }
         public virtual DbSet<StockGradeSize> StockGradeSizes { get; set; }
         public virtual DbSet<CasualActivity> CasualActivities { get; set; }
-        public virtual DbSet<OtherExpense> OtherExpenses { get; set; }
-        public virtual DbSet<BatchOutPut> BatchOutPuts { get; set; }
         public virtual DbSet<BatchGradeSize> BatchGradeSizes { get; set; }
         public virtual DbSet<StockProduct> StockProducts { get; set; }
         public virtual DbSet<UserBranch> UserBranches { get; set; }
@@ -71,7 +66,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual DbSet<DeliveryStock> DeliveryStocks { get; set; }
         public virtual DbSet<Buvera> Buveras { get; set; }
         public virtual DbSet<BuveraGradeSize> BuveraGradeSizes { get; set; }
-        public virtual DbSet<Utility> Utilities { get; set; }
         public virtual DbSet<StoreBuveraGradeSize> StoreBuveraGradeSizes { get; set; }
         public virtual DbSet<Inventory> Inventories { get; set; }
         public virtual DbSet<InventoryCategory> InventoryCategories { get; set; }
@@ -92,7 +86,13 @@ namespace Higgs.Mbale.EF.Models
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<FlourTransferGradeSize> FlourTransferGradeSizes { get; set; }
         public virtual DbSet<Region> Regions { get; set; }
+        public virtual DbSet<BatchOutPut> BatchOutPuts { get; set; }
+        public virtual DbSet<FactoryExpense> FactoryExpenses { get; set; }
         public virtual DbSet<FlourTransfer> FlourTransfers { get; set; }
+        public virtual DbSet<LabourCost> LabourCosts { get; set; }
+        public virtual DbSet<MachineRepair> MachineRepairs { get; set; }
+        public virtual DbSet<OtherExpense> OtherExpenses { get; set; }
+        public virtual DbSet<Utility> Utilities { get; set; }
     
         public virtual int Mark_FactoryExpense_AsDeleted(Nullable<long> inPutFactoryExpenseId, string userId)
         {

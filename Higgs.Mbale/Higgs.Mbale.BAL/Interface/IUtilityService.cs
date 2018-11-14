@@ -14,6 +14,6 @@ namespace Higgs.Mbale.BAL.Interface
         long SaveUtility(Utility utility, string userId);
         void MarkAsDeleted(long utilityId, string userId);
         IEnumerable<Utility> GetAllUtilitiesForAParticularBatch(long batchId);
-            
+        IEnumerable<Utility> MapEFToModel(IEnumerable<EF.Models.Utility> data);
     }
 }

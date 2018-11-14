@@ -15,5 +15,6 @@ namespace Higgs.Mbale.BAL.Interface
         void MarkAsDeleted(long machineRepairId, string userId);
         IEnumerable<MachineRepair> GetAllMachineRepairsForAParticularBranch(long branchId);
         IEnumerable<MachineRepair> GetAllMachineRepairsForAParticularBatch(long batchId);
+        IEnumerable<MachineRepair> MapEFToModel(IEnumerable<EF.Models.MachineRepair> data);
     }
 }

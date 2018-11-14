@@ -16,12 +16,12 @@ namespace Higgs.Mbale.EF.Models
     {
         public TransactionSubType()
         {
-            this.MachineRepairs = new HashSet<MachineRepair>();
             this.Inventories = new HashSet<Inventory>();
             this.AccountTransactionActivities = new HashSet<AccountTransactionActivity>();
             this.Transactions = new HashSet<Transaction>();
             this.Cashes = new HashSet<Cash>();
             this.Deliveries = new HashSet<Delivery>();
+            this.MachineRepairs = new HashSet<MachineRepair>();
         }
     
         public long TransactionSubTypeId { get; set; }
@@ -36,7 +36,6 @@ namespace Higgs.Mbale.EF.Models
         public Nullable<System.DateTime> DeletedOn { get; set; }
     
         public virtual TransactionType TransactionType { get; set; }
-        public virtual ICollection<MachineRepair> MachineRepairs { get; set; }
         public virtual ICollection<Inventory> Inventories { get; set; }
         public virtual ICollection<AccountTransactionActivity> AccountTransactionActivities { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }
@@ -45,5 +44,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual AspNetUser AspNetUser2 { get; set; }
+        public virtual ICollection<MachineRepair> MachineRepairs { get; set; }
     }
 }

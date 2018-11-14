@@ -48,17 +48,6 @@
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_OrderGradeSize_dbo_Size_SizeId" />
         <EntityTypeShape EntityType="Higgs.MbaleModel.Supply" Width="1.5" PointX="18.75" PointY="55.375" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Supply_BranchId" />
-        <EntityTypeShape EntityType="Higgs.MbaleModel.FactoryExpense" Width="1.5" PointX="12.75" PointY="51" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_FactoryExpense_Branch" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_FactoryExpense_Sector" />
-        <EntityTypeShape EntityType="Higgs.MbaleModel.MachineRepair" Width="1.5" PointX="15.75" PointY="37.25" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_MachineRepair_BranchId" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_MachineRepair_SectorId" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_MachineRepair_TransactionSubTypeId" />
-        <EntityTypeShape EntityType="Higgs.MbaleModel.LabourCost" Width="1.5" PointX="20.75" PointY="62.5" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_LabourCost_Activity" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_LabourCost_Branch" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_LabourCost_Sector" />
         <EntityTypeShape EntityType="Higgs.MbaleModel.PaymentMode" Width="1.5" PointX="5.25" PointY="46" />
         <EntityTypeShape EntityType="Higgs.MbaleModel.Stock" Width="1.5" PointX="15.75" PointY="53.875" />
         <EntityTypeShape EntityType="Higgs.MbaleModel.StockGradeSize" Width="1.5" PointX="23" PointY="64.625" />
@@ -73,18 +62,11 @@
         <AssociationConnector Association="Higgs.MbaleModel.FK_CasualActivity_BranchId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_CasualActivity_CasualWorkerId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_CasualActivity_SectorId" />
-        <EntityTypeShape EntityType="Higgs.MbaleModel.OtherExpense" Width="1.5" PointX="9.75" PointY="33.75" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_OtherExpense_Branch" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_OtherExpense_Sector" />
-        <EntityTypeShape EntityType="Higgs.MbaleModel.BatchOutPut" Width="1.5" PointX="29" PointY="45.625" />
         <EntityTypeShape EntityType="Higgs.MbaleModel.BatchGradeSize" Width="1.5" PointX="31.25" PointY="55.625" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_BatchOutPut_BatchId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_Grade_GradeId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_Size_SizeId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Supply_StatusId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Supply_Supply" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_BatchOutPut_BranchId" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_BatchOutPut_SectorId1" />
         <EntityTypeShape EntityType="Higgs.MbaleModel.StockProduct" Width="1.5" PointX="24" PointY="57.625" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_StockProduct_dbo_Product_ProductId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_StockProduct_dbo_Stock_StockId" />
@@ -117,9 +99,6 @@
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_BuveraGradeSize_dbo_Grade_GradeId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_BuveraGradeSize_dbo_Size_SizeId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_BuveraGradeSize_dbo_Store_StoreId" />
-        <EntityTypeShape EntityType="Higgs.MbaleModel.Utility" Width="1.5" PointX="32" PointY="42.5" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Utility_Branch" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Utility_Sector" />
         <EntityTypeShape EntityType="Higgs.MbaleModel.StoreBuveraGradeSize" Width="1.5" PointX="18" PointY="51.125" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_StoreBuveraGradeSize_dbo_Grade_GradeId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_StoreBuveraGradeSize_dbo_Size_SizeId" />
@@ -169,15 +148,9 @@
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_ActivityBatchCasual_BatchId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Batch_Branch" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Batch_Sector" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_BatchOutPut_BatchId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_CasualActivity_BatchId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_BatchProduct_dbo_Batch_BatchId" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_FactoryExpense_Batch" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_LabourCost_Batch" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_MachineRepair_BatchId" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_OtherExpense_Batch" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Stock_BatchId" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Utility_Batch" />
         <EntityTypeShape EntityType="Higgs.MbaleModel.Delivery" Width="1.5" PointX="35" PointY="44.875" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Delivery_BatchId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Delivery_BranchId" />
@@ -216,9 +189,6 @@
         <AssociationConnector Association="Higgs.MbaleModel.FK_AspNetUser_UpdatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Batch_CreatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Batch_UpdatedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_BatchOutPut_CreatedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_BatchOutPut_DeletedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_BatchOutPut_UpdatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Branch_CreatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Branch_DeletedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Branch_UpdatedBy" />
@@ -253,28 +223,16 @@
         <AssociationConnector Association="Higgs.MbaleModel.FK_Factory_CreatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Factory_DeletedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Factory_UpdatedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_FactoryExpense_CreatedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_FactoryExpense_DeletedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_FactoryExpense_UpdatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Grade_CreatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Grade_DeletedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Grade_UpdatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Inventory_CreatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Inventory_DeletedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Inventory_UpdatedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_LabourCost_CreatedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_LabourCost_DeletedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_LabourCost_UpdatedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_MachineRepair_CreatedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_MachineRepair_DeletedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_MachineRepair_UpdatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Order_CreatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Order_CustomerId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Order_DeletedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Order_UpdatedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_OtherExpense_CreatedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_OtherExpense_DeletedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_OtherExpense_UpdatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_PaymentMode_CreatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_PaymentMode_DeletedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_Product_CreatedBy" />
@@ -309,22 +267,64 @@
         <AssociationConnector Association="Higgs.MbaleModel.FK_TransactionSubType_CreatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_TransactionSubType_DeletedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_TransactionSubType_UpdatedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Utility_CreatedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Utility_DeletedBy" />
-        <AssociationConnector Association="Higgs.MbaleModel.FK_Utility_UpdatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_FlourTransferGradeSize_dbo_Grade_GradeId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_FlourTransferGradeSize_dbo_Size_SizeId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_FlourTransferGradeSize_dbo_Store_StoreId" />
         <AssociationConnector Association="Higgs.MbaleModel.AspNetUserRoles" />
+        <EntityTypeShape EntityType="Higgs.MbaleModel.BatchOutPut" Width="1.5" PointX="33" PointY="38" />
+        <EntityTypeShape EntityType="Higgs.MbaleModel.FactoryExpense" Width="1.5" PointX="30" PointY="34.5" />
         <EntityTypeShape EntityType="Higgs.MbaleModel.FlourTransfer" Width="1.5" PointX="21" PointY="53.25" />
+        <EntityTypeShape EntityType="Higgs.MbaleModel.LabourCost" Width="1.5" PointX="34" PointY="59.625" />
+        <EntityTypeShape EntityType="Higgs.MbaleModel.MachineRepair" Width="1.5" PointX="30" PointY="40.125" />
+        <EntityTypeShape EntityType="Higgs.MbaleModel.OtherExpense" Width="1.5" PointX="32" PointY="46.5" />
+        <EntityTypeShape EntityType="Higgs.MbaleModel.Utility" Width="1.5" PointX="29" PointY="46.5" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_LabourCost_Activity" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_BatchOutPut_CreatedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_BatchOutPut_DeletedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_BatchOutPut_UpdatedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_FactoryExpense_CreatedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_FactoryExpense_DeletedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_FactoryExpense_UpdatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_FlourTransfer_CreatedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_FlourTransfer_DeletedBy" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_FlourTransfer_UpdatedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_LabourCost_CreatedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_LabourCost_DeletedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_LabourCost_UpdatedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_MachineRepair_CreatedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_MachineRepair_DeletedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_MachineRepair_UpdatedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_OtherExpense_CreatedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_OtherExpense_DeletedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_OtherExpense_UpdatedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Utility_CreatedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Utility_DeletedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Utility_UpdatedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_BatchOutPut_BatchId" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_FactoryExpense_Batch" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_LabourCost_Batch" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_MachineRepair_BatchId" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_OtherExpense_Batch" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Utility_Batch" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_BatchOutPut_BatchId" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_BatchOutPut_BranchId" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_BatchOutPut_SectorId" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_FactoryExpense_Branch" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_FlourTransfer_BranchId" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_LabourCost_Branch" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_MachineRepair_BranchId" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_OtherExpense_Branch" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Utility_Branch" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_FactoryExpense_Sector" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_FlourTransferGradeSize_dbo_FlourTransfer_FlourTransferId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_FlourTransfer_FromSupplierStoreId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_FlourTransfer_StoreId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_FlourTransfer_ToReceiverStoreId" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_LabourCost_Sector" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_MachineRepair_SectorId" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_MachineRepair_TransactionSubTypeId" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_OtherExpense_Sector" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_Utility_Sector" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

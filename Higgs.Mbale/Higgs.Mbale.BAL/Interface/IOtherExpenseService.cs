@@ -14,6 +14,6 @@ namespace Higgs.Mbale.BAL.Interface
         long SaveOtherExpense(OtherExpense otherExpense, string userId);
         void MarkAsDeleted(long otherExpenseId, string userId);
         IEnumerable<OtherExpense> GetAllOtherExpensesForAParticularBatch(long batchId);
-            
+        IEnumerable<OtherExpense> MapEFToModel(IEnumerable<EF.Models.OtherExpense> data);
     }
 }

@@ -13,7 +13,7 @@
 	[CreatedBy] [nvarchar](128) NULL, 
     [UpdatedBy] [nvarchar](128) NULL,     
     [DeletedBy] [nvarchar](128) NULL,
-	[CreatedOn]	[datetime] NULL,
+	[CreatedOn]	[datetime] NOT NULL,
 	[TimeStamp]	[datetime] NOT NULL DEFAULT GETDATE(),	
 	[DeletedOn]	[datetime] NULL,
 

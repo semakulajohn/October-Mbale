@@ -23,18 +23,12 @@ namespace Higgs.Mbale.EF.Models
             this.UserBranchManagers = new HashSet<UserBranchManager>();
             this.ActivityBranches = new HashSet<ActivityBranch>();
             this.Supplies = new HashSet<Supply>();
-            this.FactoryExpenses = new HashSet<FactoryExpense>();
-            this.MachineRepairs = new HashSet<MachineRepair>();
-            this.LabourCosts = new HashSet<LabourCost>();
             this.Stocks = new HashSet<Stock>();
             this.CasualActivities = new HashSet<CasualActivity>();
-            this.OtherExpenses = new HashSet<OtherExpense>();
-            this.BatchOutPuts = new HashSet<BatchOutPut>();
             this.UserBranches = new HashSet<UserBranch>();
             this.StoreStocks = new HashSet<StoreStock>();
             this.StoreMaizeStocks = new HashSet<StoreMaizeStock>();
             this.Buveras = new HashSet<Buvera>();
-            this.Utilities = new HashSet<Utility>();
             this.Inventories = new HashSet<Inventory>();
             this.Requistions = new HashSet<Requistion>();
             this.Creditors = new HashSet<Creditor>();
@@ -46,7 +40,13 @@ namespace Higgs.Mbale.EF.Models
             this.Batches = new HashSet<Batch>();
             this.Deliveries = new HashSet<Delivery>();
             this.Orders = new HashSet<Order>();
+            this.BatchOutPuts = new HashSet<BatchOutPut>();
+            this.FactoryExpenses = new HashSet<FactoryExpense>();
             this.FlourTransfers = new HashSet<FlourTransfer>();
+            this.LabourCosts = new HashSet<LabourCost>();
+            this.MachineRepairs = new HashSet<MachineRepair>();
+            this.OtherExpenses = new HashSet<OtherExpense>();
+            this.Utilities = new HashSet<Utility>();
         }
     
         public long BranchId { get; set; }
@@ -69,18 +69,12 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<UserBranchManager> UserBranchManagers { get; set; }
         public virtual ICollection<ActivityBranch> ActivityBranches { get; set; }
         public virtual ICollection<Supply> Supplies { get; set; }
-        public virtual ICollection<FactoryExpense> FactoryExpenses { get; set; }
-        public virtual ICollection<MachineRepair> MachineRepairs { get; set; }
-        public virtual ICollection<LabourCost> LabourCosts { get; set; }
         public virtual ICollection<Stock> Stocks { get; set; }
         public virtual ICollection<CasualActivity> CasualActivities { get; set; }
-        public virtual ICollection<OtherExpense> OtherExpenses { get; set; }
-        public virtual ICollection<BatchOutPut> BatchOutPuts { get; set; }
         public virtual ICollection<UserBranch> UserBranches { get; set; }
         public virtual ICollection<StoreStock> StoreStocks { get; set; }
         public virtual ICollection<StoreMaizeStock> StoreMaizeStocks { get; set; }
         public virtual ICollection<Buvera> Buveras { get; set; }
-        public virtual ICollection<Utility> Utilities { get; set; }
         public virtual ICollection<Inventory> Inventories { get; set; }
         public virtual ICollection<Requistion> Requistions { get; set; }
         public virtual ICollection<Creditor> Creditors { get; set; }
@@ -95,6 +89,12 @@ namespace Higgs.Mbale.EF.Models
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual AspNetUser AspNetUser2 { get; set; }
+        public virtual ICollection<BatchOutPut> BatchOutPuts { get; set; }
+        public virtual ICollection<FactoryExpense> FactoryExpenses { get; set; }
         public virtual ICollection<FlourTransfer> FlourTransfers { get; set; }
+        public virtual ICollection<LabourCost> LabourCosts { get; set; }
+        public virtual ICollection<MachineRepair> MachineRepairs { get; set; }
+        public virtual ICollection<OtherExpense> OtherExpenses { get; set; }
+        public virtual ICollection<Utility> Utilities { get; set; }
     }
 }

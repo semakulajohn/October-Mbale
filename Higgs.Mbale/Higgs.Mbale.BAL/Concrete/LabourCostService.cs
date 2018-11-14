@@ -105,7 +105,7 @@ namespace Higgs.Mbale.BAL.Concrete
       
         #region Mapping Methods
 
-        private IEnumerable<LabourCost> MapEFToModel(IEnumerable<EF.Models.LabourCost> data)
+        public IEnumerable<LabourCost> MapEFToModel(IEnumerable<EF.Models.LabourCost> data)
         {
             var list = new List<LabourCost>();
             foreach (var result in data)

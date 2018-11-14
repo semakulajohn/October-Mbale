@@ -216,33 +216,33 @@ namespace Higgs.Mbale.Web.Controllers
             }
             #endregion
 
-            #region Cash
+            #region FactoryExpenses
             [HttpPost]
-            [ActionName("GetAllCashBetweenTheSpecifiedDates")]
-            public IEnumerable<Cash> GetAllCashBetweenTheSpecifiedDates(ReportSearch searchDates)
+            [ActionName("GetAllFactoryExpensesBetweenTheSpecifiedDates")]
+            public IEnumerable<FactoryExpense> GetAllFactoryExpensesBetweenTheSpecifiedDates(ReportSearch searchDates)
             {
-                return _reportService.GetAllCashBetweenTheSpecifiedDates(searchDates.FromDate, searchDates.ToDate, searchDates.BranchId);
+                return _reportService.GetAllFactoryExpensesBetweenTheSpecifiedDates(searchDates.FromDate, searchDates.ToDate, searchDates.BranchId);
             }
 
             [HttpGet]
-            [ActionName("GenerateCashCurrentMonthReport")]
-            public IEnumerable<Cash> GenerateCashCurrentMonthReport()
+            [ActionName("GenerateFactoryExpenseCurrentMonthReport")]
+            public IEnumerable<FactoryExpense> GenerateFactoryExpenseCurrentMonthReport()
             {
-                return _reportService.GenerateCashCurrentMonthReport();
+                return _reportService.GenerateFactoryExpenseCurrentMonthReport();
             }
 
             [HttpGet]
-            [ActionName("GenerateCashTodaysReport")]
-            public IEnumerable<Cash> GenerateCashTodaysReport()
+            [ActionName("GenerateFactoryExpenseTodaysReport")]
+            public IEnumerable<FactoryExpense> GenerateFactoryExpenseTodaysReport()
             {
-                return _reportService.GenerateCashTodaysReport();
+                return _reportService.GenerateFactoryExpenseTodaysReport();
             }
 
             [HttpGet]
-            [ActionName("GenerateCashCurrentWeekReport")]
-            public IEnumerable<Cash> GenerateCashCurrentWeekReport()
+            [ActionName("GenerateFactoryExpenseCurrentWeekReport")]
+            public IEnumerable<FactoryExpense> GenerateFactoryExpenseCurrentWeekReport()
             {
-                return _reportService.GenerateCashCurrentWeekReport();
+                return _reportService.GenerateFactoryExpenseCurrentWeekReport();
             }
             #endregion
 
@@ -276,6 +276,214 @@ namespace Higgs.Mbale.Web.Controllers
             }
             #endregion
 
+            #region Cash
+            [HttpPost]
+            [ActionName("GetAllCashBetweenTheSpecifiedDates")]
+            public IEnumerable<Cash> GetAllCashBetweenTheSpecifiedDates(ReportSearch searchDates)
+            {
+                return _reportService.GetAllCashBetweenTheSpecifiedDates(searchDates.FromDate, searchDates.ToDate, searchDates.BranchId);
+            }
 
+            [HttpGet]
+            [ActionName("GenerateCashCurrentMonthReport")]
+            public IEnumerable<Cash> GenerateCashCurrentMonthReport()
+            {
+                return _reportService.GenerateCashCurrentMonthReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateCashTodaysReport")]
+            public IEnumerable<Cash> GenerateCashTodaysReport()
+            {
+                return _reportService.GenerateCashTodaysReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateCashCurrentWeekReport")]
+            public IEnumerable<Cash> GenerateCashCurrentWeekReport()
+            {
+                return _reportService.GenerateCashCurrentWeekReport();
+            }
+            #endregion
+
+            #region OtherExpenses
+            [HttpPost]
+            [ActionName("GetAllOtherExpensesBetweenTheSpecifiedDates")]
+            public IEnumerable<OtherExpense> GetAllOtherExpensesBetweenTheSpecifiedDates(ReportSearch searchDates)
+            {
+                return _reportService.GetAllOtherExpensesBetweenTheSpecifiedDates(searchDates.FromDate, searchDates.ToDate, searchDates.BranchId);
+            }
+
+            [HttpGet]
+            [ActionName("GenerateOtherExpenseCurrentMonthReport")]
+            public IEnumerable<OtherExpense> GenerateOtherExpenseCurrentMonthReport()
+            {
+                return _reportService.GenerateOtherExpenseCurrentMonthReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateOtherExpenseTodaysReport")]
+            public IEnumerable<OtherExpense> GenerateOtherExpenseTodaysReport()
+            {
+                return _reportService.GenerateOtherExpenseTodaysReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateOtherExpenseCurrentWeekReport")]
+            public IEnumerable<OtherExpense> GenerateOtherExpenseCurrentWeekReport()
+            {
+                return _reportService.GenerateOtherExpenseCurrentWeekReport();
+            }
+            #endregion
+
+            #region LabourCosts
+            [HttpPost]
+            [ActionName("GetAllLabourCostsBetweenTheSpecifiedDates")]
+            public IEnumerable<LabourCost> GetAllLabourCostsBetweenTheSpecifiedDates(ReportSearch searchDates)
+            {
+                return _reportService.GetAllLabourCostsBetweenTheSpecifiedDates(searchDates.FromDate, searchDates.ToDate, searchDates.BranchId);
+            }
+
+            [HttpGet]
+            [ActionName("GenerateLabourCostCurrentMonthReport")]
+            public IEnumerable<LabourCost> GenerateLabourCostCurrentMonthReport()
+            {
+                return _reportService.GenerateLabourCostCurrentMonthReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateLabourCostTodaysReport")]
+            public IEnumerable<LabourCost> GenerateLabourCostTodaysReport()
+            {
+                return _reportService.GenerateLabourCostTodaysReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateLabourCostCurrentWeekReport")]
+            public IEnumerable<LabourCost> GenerateLabourCostCurrentWeekReport()
+            {
+                return _reportService.GenerateLabourCostCurrentWeekReport();
+            }
+            #endregion
+
+            #region Utility
+            [HttpPost]
+            [ActionName("GetAllUtilityBetweenTheSpecifiedDates")]
+            public IEnumerable<Utility> GetAllUtilitiesBetweenTheSpecifiedDates(ReportSearch searchDates)
+            {
+                return _reportService.GetAllUtilitiesBetweenTheSpecifiedDates(searchDates.FromDate, searchDates.ToDate, searchDates.BranchId);
+            }
+
+            [HttpGet]
+            [ActionName("GenerateUtilityCurrentMonthReport")]
+            public IEnumerable<Utility> GenerateUtilityCurrentMonthReport()
+            {
+                return _reportService.GenerateUtilityCurrentMonthReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateUtilityTodaysReport")]
+            public IEnumerable<Utility> GenerateUtilityTodaysReport()
+            {
+                return _reportService.GenerateUtilityTodaysReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateUtilityCurrentWeekReport")]
+            public IEnumerable<Utility> GenerateUtilityCurrentWeekReport()
+            {
+                return _reportService.GenerateUtilityCurrentWeekReport();
+            }
+            #endregion
+
+            #region FlourTransfer
+            [HttpPost]
+            [ActionName("GetAllFlourTransfersBetweenTheSpecifiedDates")]
+            public IEnumerable<FlourTransfer> GetAllFlourTransfersBetweenTheSpecifiedDates(ReportSearch searchDates)
+            {
+                return _reportService.GetAllFlourTransfersBetweenTheSpecifiedDates(searchDates.FromDate, searchDates.ToDate, searchDates.BranchId);
+            }
+
+            [HttpGet]
+            [ActionName("GenerateFlourTransferCurrentMonthReport")]
+            public IEnumerable<FlourTransfer> GenerateFlourTransferCurrentMonthReport()
+            {
+                return _reportService.GenerateFlourTransferCurrentMonthReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateFlourTransferTodaysReport")]
+            public IEnumerable<FlourTransfer> GenerateFlourTransferTodaysReport()
+            {
+                return _reportService.GenerateFlourTransferTodaysReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateFlourTransferCurrentWeekReport")]
+            public IEnumerable<FlourTransfer> GenerateFlourTransferCurrentWeekReport()
+            {
+                return _reportService.GenerateFlourTransferCurrentWeekReport();
+            }
+            #endregion
+
+            #region MachineRepairs
+            [HttpPost]
+            [ActionName("GetAllMachineRepairsBetweenTheSpecifiedDates")]
+            public IEnumerable<MachineRepair> GetAllMachineRepairsBetweenTheSpecifiedDates(ReportSearch searchDates)
+            {
+                return _reportService.GetAllMachineRepairsBetweenTheSpecifiedDates(searchDates.FromDate, searchDates.ToDate, searchDates.BranchId);
+            }
+
+            [HttpGet]
+            [ActionName("GenerateMachineRepairCurrentMonthReport")]
+            public IEnumerable<MachineRepair> GenerateMachineRepairCurrentMonthReport()
+            {
+                return _reportService.GenerateMachineRepairCurrentMonthReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateMachineRepairTodaysReport")]
+            public IEnumerable<MachineRepair> GenerateMachineRepairTodaysReport()
+            {
+                return _reportService.GenerateMachineRepairTodaysReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateMachineRepairCurrentWeekReport")]
+            public IEnumerable<MachineRepair> GenerateMachineRepairCurrentWeekReport()
+            {
+                return _reportService.GenerateMachineRepairCurrentWeekReport();
+            }
+            #endregion
+
+            #region BatchOutPuts
+            [HttpPost]
+            [ActionName("GetAllBatchOutPutsBetweenTheSpecifiedDates")]
+            public IEnumerable<BatchOutPut> GetAllBatchOutPutsBetweenTheSpecifiedDates(ReportSearch searchDates)
+            {
+                return _reportService.GetAllBatchOutPutsBetweenTheSpecifiedDates(searchDates.FromDate, searchDates.ToDate, searchDates.BranchId);
+            }
+
+            [HttpGet]
+            [ActionName("GenerateBatchOutPutCurrentMonthReport")]
+            public IEnumerable<BatchOutPut> GenerateBatchOutPutCurrentMonthReport()
+            {
+                return _reportService.GenerateBatchOutPutCurrentMonthReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateBatchOutPutTodaysReport")]
+            public IEnumerable<BatchOutPut> GenerateBatchOutPutTodaysReport()
+            {
+                return _reportService.GenerateBatchOutPutTodaysReport();
+            }
+
+            [HttpGet]
+            [ActionName("GenerateBatchOutPutCurrentWeekReport")]
+            public IEnumerable<BatchOutPut> GenerateBatchOutPutCurrentWeekReport()
+            {
+                return _reportService.GenerateBatchOutPutCurrentWeekReport();
+            }
+            #endregion
     }
 }

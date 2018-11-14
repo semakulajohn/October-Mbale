@@ -124,7 +124,7 @@ namespace Higgs.Mbale.BAL.Concrete
       
         #region Mapping Methods
 
-        private IEnumerable<MachineRepair> MapEFToModel(IEnumerable<EF.Models.MachineRepair> data)
+        public IEnumerable<MachineRepair> MapEFToModel(IEnumerable<EF.Models.MachineRepair> data)
         {
             var list = new List<MachineRepair>();
             foreach (var result in data)

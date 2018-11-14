@@ -32,9 +32,6 @@ namespace Higgs.Mbale.EF.Models
             this.AspNetUsers12 = new HashSet<AspNetUser>();
             this.Batches = new HashSet<Batch>();
             this.Batches1 = new HashSet<Batch>();
-            this.BatchOutPuts = new HashSet<BatchOutPut>();
-            this.BatchOutPuts1 = new HashSet<BatchOutPut>();
-            this.BatchOutPuts2 = new HashSet<BatchOutPut>();
             this.Branches = new HashSet<Branch>();
             this.Branches1 = new HashSet<Branch>();
             this.Branches2 = new HashSet<Branch>();
@@ -69,28 +66,16 @@ namespace Higgs.Mbale.EF.Models
             this.Factories = new HashSet<Factory>();
             this.Factories1 = new HashSet<Factory>();
             this.Factories2 = new HashSet<Factory>();
-            this.FactoryExpenses = new HashSet<FactoryExpense>();
-            this.FactoryExpenses1 = new HashSet<FactoryExpense>();
-            this.FactoryExpenses2 = new HashSet<FactoryExpense>();
             this.Grades = new HashSet<Grade>();
             this.Grades1 = new HashSet<Grade>();
             this.Grades2 = new HashSet<Grade>();
             this.Inventories = new HashSet<Inventory>();
             this.Inventories1 = new HashSet<Inventory>();
             this.Inventories2 = new HashSet<Inventory>();
-            this.LabourCosts = new HashSet<LabourCost>();
-            this.LabourCosts1 = new HashSet<LabourCost>();
-            this.LabourCosts2 = new HashSet<LabourCost>();
-            this.MachineRepairs = new HashSet<MachineRepair>();
-            this.MachineRepairs1 = new HashSet<MachineRepair>();
-            this.MachineRepairs2 = new HashSet<MachineRepair>();
             this.Orders = new HashSet<Order>();
             this.Orders1 = new HashSet<Order>();
             this.Orders2 = new HashSet<Order>();
             this.Orders3 = new HashSet<Order>();
-            this.OtherExpenses = new HashSet<OtherExpense>();
-            this.OtherExpenses1 = new HashSet<OtherExpense>();
-            this.OtherExpenses2 = new HashSet<OtherExpense>();
             this.PaymentModes = new HashSet<PaymentMode>();
             this.PaymentModes1 = new HashSet<PaymentMode>();
             this.Products = new HashSet<Product>();
@@ -125,13 +110,28 @@ namespace Higgs.Mbale.EF.Models
             this.TransactionSubTypes = new HashSet<TransactionSubType>();
             this.TransactionSubTypes1 = new HashSet<TransactionSubType>();
             this.TransactionSubTypes2 = new HashSet<TransactionSubType>();
-            this.Utilities = new HashSet<Utility>();
-            this.Utilities1 = new HashSet<Utility>();
-            this.Utilities2 = new HashSet<Utility>();
             this.AspNetRoles = new HashSet<AspNetRole>();
+            this.BatchOutPuts = new HashSet<BatchOutPut>();
+            this.BatchOutPuts1 = new HashSet<BatchOutPut>();
+            this.BatchOutPuts2 = new HashSet<BatchOutPut>();
+            this.FactoryExpenses = new HashSet<FactoryExpense>();
+            this.FactoryExpenses1 = new HashSet<FactoryExpense>();
+            this.FactoryExpenses2 = new HashSet<FactoryExpense>();
             this.FlourTransfers = new HashSet<FlourTransfer>();
             this.FlourTransfers1 = new HashSet<FlourTransfer>();
             this.FlourTransfers2 = new HashSet<FlourTransfer>();
+            this.LabourCosts = new HashSet<LabourCost>();
+            this.LabourCosts1 = new HashSet<LabourCost>();
+            this.LabourCosts2 = new HashSet<LabourCost>();
+            this.MachineRepairs = new HashSet<MachineRepair>();
+            this.MachineRepairs1 = new HashSet<MachineRepair>();
+            this.MachineRepairs2 = new HashSet<MachineRepair>();
+            this.OtherExpenses = new HashSet<OtherExpense>();
+            this.OtherExpenses1 = new HashSet<OtherExpense>();
+            this.OtherExpenses2 = new HashSet<OtherExpense>();
+            this.Utilities = new HashSet<Utility>();
+            this.Utilities1 = new HashSet<Utility>();
+            this.Utilities2 = new HashSet<Utility>();
         }
     
         public string Id { get; set; }
@@ -182,9 +182,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual AspNetUser AspNetUser3 { get; set; }
         public virtual ICollection<Batch> Batches { get; set; }
         public virtual ICollection<Batch> Batches1 { get; set; }
-        public virtual ICollection<BatchOutPut> BatchOutPuts { get; set; }
-        public virtual ICollection<BatchOutPut> BatchOutPuts1 { get; set; }
-        public virtual ICollection<BatchOutPut> BatchOutPuts2 { get; set; }
         public virtual ICollection<Branch> Branches { get; set; }
         public virtual ICollection<Branch> Branches1 { get; set; }
         public virtual ICollection<Branch> Branches2 { get; set; }
@@ -219,28 +216,16 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Factory> Factories { get; set; }
         public virtual ICollection<Factory> Factories1 { get; set; }
         public virtual ICollection<Factory> Factories2 { get; set; }
-        public virtual ICollection<FactoryExpense> FactoryExpenses { get; set; }
-        public virtual ICollection<FactoryExpense> FactoryExpenses1 { get; set; }
-        public virtual ICollection<FactoryExpense> FactoryExpenses2 { get; set; }
         public virtual ICollection<Grade> Grades { get; set; }
         public virtual ICollection<Grade> Grades1 { get; set; }
         public virtual ICollection<Grade> Grades2 { get; set; }
         public virtual ICollection<Inventory> Inventories { get; set; }
         public virtual ICollection<Inventory> Inventories1 { get; set; }
         public virtual ICollection<Inventory> Inventories2 { get; set; }
-        public virtual ICollection<LabourCost> LabourCosts { get; set; }
-        public virtual ICollection<LabourCost> LabourCosts1 { get; set; }
-        public virtual ICollection<LabourCost> LabourCosts2 { get; set; }
-        public virtual ICollection<MachineRepair> MachineRepairs { get; set; }
-        public virtual ICollection<MachineRepair> MachineRepairs1 { get; set; }
-        public virtual ICollection<MachineRepair> MachineRepairs2 { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Order> Orders1 { get; set; }
         public virtual ICollection<Order> Orders2 { get; set; }
         public virtual ICollection<Order> Orders3 { get; set; }
-        public virtual ICollection<OtherExpense> OtherExpenses { get; set; }
-        public virtual ICollection<OtherExpense> OtherExpenses1 { get; set; }
-        public virtual ICollection<OtherExpense> OtherExpenses2 { get; set; }
         public virtual ICollection<PaymentMode> PaymentModes { get; set; }
         public virtual ICollection<PaymentMode> PaymentModes1 { get; set; }
         public virtual ICollection<Product> Products { get; set; }
@@ -275,12 +260,27 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<TransactionSubType> TransactionSubTypes { get; set; }
         public virtual ICollection<TransactionSubType> TransactionSubTypes1 { get; set; }
         public virtual ICollection<TransactionSubType> TransactionSubTypes2 { get; set; }
-        public virtual ICollection<Utility> Utilities { get; set; }
-        public virtual ICollection<Utility> Utilities1 { get; set; }
-        public virtual ICollection<Utility> Utilities2 { get; set; }
         public virtual ICollection<AspNetRole> AspNetRoles { get; set; }
+        public virtual ICollection<BatchOutPut> BatchOutPuts { get; set; }
+        public virtual ICollection<BatchOutPut> BatchOutPuts1 { get; set; }
+        public virtual ICollection<BatchOutPut> BatchOutPuts2 { get; set; }
+        public virtual ICollection<FactoryExpense> FactoryExpenses { get; set; }
+        public virtual ICollection<FactoryExpense> FactoryExpenses1 { get; set; }
+        public virtual ICollection<FactoryExpense> FactoryExpenses2 { get; set; }
         public virtual ICollection<FlourTransfer> FlourTransfers { get; set; }
         public virtual ICollection<FlourTransfer> FlourTransfers1 { get; set; }
         public virtual ICollection<FlourTransfer> FlourTransfers2 { get; set; }
+        public virtual ICollection<LabourCost> LabourCosts { get; set; }
+        public virtual ICollection<LabourCost> LabourCosts1 { get; set; }
+        public virtual ICollection<LabourCost> LabourCosts2 { get; set; }
+        public virtual ICollection<MachineRepair> MachineRepairs { get; set; }
+        public virtual ICollection<MachineRepair> MachineRepairs1 { get; set; }
+        public virtual ICollection<MachineRepair> MachineRepairs2 { get; set; }
+        public virtual ICollection<OtherExpense> OtherExpenses { get; set; }
+        public virtual ICollection<OtherExpense> OtherExpenses1 { get; set; }
+        public virtual ICollection<OtherExpense> OtherExpenses2 { get; set; }
+        public virtual ICollection<Utility> Utilities { get; set; }
+        public virtual ICollection<Utility> Utilities1 { get; set; }
+        public virtual ICollection<Utility> Utilities2 { get; set; }
     }
 }

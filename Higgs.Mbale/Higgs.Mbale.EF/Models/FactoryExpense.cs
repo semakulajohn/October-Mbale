@@ -18,21 +18,21 @@ namespace Higgs.Mbale.EF.Models
         public string Description { get; set; }
         public double Amount { get; set; }
         public long BatchId { get; set; }
+        public long SectorId { get; set; }
+        public long BranchId { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
         public string DeletedBy { get; set; }
-        public Nullable<System.DateTime> CreatedOn { get; set; }
+        public System.DateTime CreatedOn { get; set; }
         public System.DateTime TimeStamp { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
-        public long SectorId { get; set; }
-        public long BranchId { get; set; }
     
-        public virtual Branch Branch { get; set; }
-        public virtual Sector Sector { get; set; }
-        public virtual Batch Batch { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual AspNetUser AspNetUser2 { get; set; }
+        public virtual Batch Batch { get; set; }
+        public virtual Branch Branch { get; set; }
+        public virtual Sector Sector { get; set; }
     }
 }

@@ -14,5 +14,6 @@ namespace Higgs.Mbale.BAL.Interface
         long SaveBatchOutPut(BatchOutPut batchOutPut, string userId);
         void MarkAsDeleted(long batchOutPutId, string userId);
         IEnumerable<BatchOutPut> GetAllBatchOutPutsForAParticularBatch(long batchId);
+        IEnumerable<BatchOutPut> MapEFToModel(IEnumerable<EF.Models.BatchOutPut> data);
     }
 }

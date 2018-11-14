@@ -18,8 +18,8 @@ namespace Higgs.Mbale.EF.Models
         {
             this.ActivityBranches = new HashSet<ActivityBranch>();
             this.ActivityBatchCasuals = new HashSet<ActivityBatchCasual>();
-            this.LabourCosts = new HashSet<LabourCost>();
             this.CasualActivities = new HashSet<CasualActivity>();
+            this.LabourCosts = new HashSet<LabourCost>();
         }
     
         public long ActivityId { get; set; }
@@ -35,10 +35,10 @@ namespace Higgs.Mbale.EF.Models
     
         public virtual ICollection<ActivityBranch> ActivityBranches { get; set; }
         public virtual ICollection<ActivityBatchCasual> ActivityBatchCasuals { get; set; }
-        public virtual ICollection<LabourCost> LabourCosts { get; set; }
         public virtual ICollection<CasualActivity> CasualActivities { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual AspNetUser AspNetUser2 { get; set; }
+        public virtual ICollection<LabourCost> LabourCosts { get; set; }
     }
 }

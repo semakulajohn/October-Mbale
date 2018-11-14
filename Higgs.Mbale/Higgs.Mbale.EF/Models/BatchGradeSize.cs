@@ -20,8 +20,8 @@ namespace Higgs.Mbale.EF.Models
         public double Quantity { get; set; }
         public System.DateTime TimeStamp { get; set; }
     
-        public virtual BatchOutPut BatchOutPut { get; set; }
         public virtual Grade Grade { get; set; }
         public virtual Size Size { get; set; }
+        public virtual BatchOutPut BatchOutPut { get; set; }
     }
 }

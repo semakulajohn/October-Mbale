@@ -357,7 +357,7 @@ namespace Higgs.Mbale.BAL.Concrete
       
         #region Mapping Methods
 
-        private IEnumerable<FlourTransfer> MapEFToModel(IEnumerable<EF.Models.FlourTransfer> data)
+        public IEnumerable<FlourTransfer> MapEFToModel(IEnumerable<EF.Models.FlourTransfer> data)
         {
             var list = new List<FlourTransfer>();
             foreach (var result in data)

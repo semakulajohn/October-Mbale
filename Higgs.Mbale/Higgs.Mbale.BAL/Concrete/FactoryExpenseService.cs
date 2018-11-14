@@ -119,7 +119,7 @@ namespace Higgs.Mbale.BAL.Concrete
       
         #region Mapping Methods
 
-        private IEnumerable<FactoryExpense> MapEFToModel(IEnumerable<EF.Models.FactoryExpense> data)
+        public IEnumerable<FactoryExpense> MapEFToModel(IEnumerable<EF.Models.FactoryExpense> data)
         {
             var list = new List<FactoryExpense>();
             foreach (var result in data)

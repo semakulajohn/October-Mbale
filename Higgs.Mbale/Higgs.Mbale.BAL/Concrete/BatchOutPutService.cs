@@ -298,7 +298,7 @@ namespace Higgs.Mbale.BAL.Concrete
       
         #region Mapping Methods
 
-        private IEnumerable<BatchOutPut> MapEFToModel(IEnumerable<EF.Models.BatchOutPut> data)
+        public IEnumerable<BatchOutPut> MapEFToModel(IEnumerable<EF.Models.BatchOutPut> data)
         {
             var list = new List<BatchOutPut>();
             foreach (var result in data)
@@ -336,6 +336,7 @@ namespace Higgs.Mbale.BAL.Concrete
                 Deleted = data.Deleted,
                 CreatedBy = _userService.GetUserFullName(data.AspNetUser),
                 UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+                BatchName = data.Batch != null? data.Batch.Name:"",
             };
                        
           

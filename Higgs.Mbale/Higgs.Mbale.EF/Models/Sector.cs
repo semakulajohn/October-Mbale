@@ -17,16 +17,10 @@ namespace Higgs.Mbale.EF.Models
         public Sector()
         {
             this.BranchSectors = new HashSet<BranchSector>();
-            this.FactoryExpenses = new HashSet<FactoryExpense>();
-            this.MachineRepairs = new HashSet<MachineRepair>();
-            this.LabourCosts = new HashSet<LabourCost>();
             this.Stocks = new HashSet<Stock>();
             this.CasualActivities = new HashSet<CasualActivity>();
-            this.OtherExpenses = new HashSet<OtherExpense>();
-            this.BatchOutPuts = new HashSet<BatchOutPut>();
             this.StoreStocks = new HashSet<StoreStock>();
             this.StoreMaizeStocks = new HashSet<StoreMaizeStock>();
-            this.Utilities = new HashSet<Utility>();
             this.Inventories = new HashSet<Inventory>();
             this.Creditors = new HashSet<Creditor>();
             this.Debtors = new HashSet<Debtor>();
@@ -35,6 +29,12 @@ namespace Higgs.Mbale.EF.Models
             this.Cashes = new HashSet<Cash>();
             this.Batches = new HashSet<Batch>();
             this.Deliveries = new HashSet<Delivery>();
+            this.BatchOutPuts = new HashSet<BatchOutPut>();
+            this.FactoryExpenses = new HashSet<FactoryExpense>();
+            this.LabourCosts = new HashSet<LabourCost>();
+            this.MachineRepairs = new HashSet<MachineRepair>();
+            this.OtherExpenses = new HashSet<OtherExpense>();
+            this.Utilities = new HashSet<Utility>();
         }
     
         public long SectorId { get; set; }
@@ -48,16 +48,10 @@ namespace Higgs.Mbale.EF.Models
         public Nullable<System.DateTime> DeletedOn { get; set; }
     
         public virtual ICollection<BranchSector> BranchSectors { get; set; }
-        public virtual ICollection<FactoryExpense> FactoryExpenses { get; set; }
-        public virtual ICollection<MachineRepair> MachineRepairs { get; set; }
-        public virtual ICollection<LabourCost> LabourCosts { get; set; }
         public virtual ICollection<Stock> Stocks { get; set; }
         public virtual ICollection<CasualActivity> CasualActivities { get; set; }
-        public virtual ICollection<OtherExpense> OtherExpenses { get; set; }
-        public virtual ICollection<BatchOutPut> BatchOutPuts { get; set; }
         public virtual ICollection<StoreStock> StoreStocks { get; set; }
         public virtual ICollection<StoreMaizeStock> StoreMaizeStocks { get; set; }
-        public virtual ICollection<Utility> Utilities { get; set; }
         public virtual ICollection<Inventory> Inventories { get; set; }
         public virtual ICollection<Creditor> Creditors { get; set; }
         public virtual ICollection<Debtor> Debtors { get; set; }
@@ -69,5 +63,11 @@ namespace Higgs.Mbale.EF.Models
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual AspNetUser AspNetUser2 { get; set; }
+        public virtual ICollection<BatchOutPut> BatchOutPuts { get; set; }
+        public virtual ICollection<FactoryExpense> FactoryExpenses { get; set; }
+        public virtual ICollection<LabourCost> LabourCosts { get; set; }
+        public virtual ICollection<MachineRepair> MachineRepairs { get; set; }
+        public virtual ICollection<OtherExpense> OtherExpenses { get; set; }
+        public virtual ICollection<Utility> Utilities { get; set; }
     }
 }

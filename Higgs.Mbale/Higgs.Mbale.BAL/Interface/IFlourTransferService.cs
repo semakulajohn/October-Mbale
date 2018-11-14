@@ -17,6 +17,7 @@ namespace Higgs.Mbale.BAL.Interface
         StoreGrade GetStoreFlourTransferStock(long storeId);
         long RejectFlour(FlourTransfer flourTransfer, string userId);
         long AcceptFlour(FlourTransfer flourTransfer, string userId);
+        IEnumerable<FlourTransfer> MapEFToModel(IEnumerable<EF.Models.FlourTransfer> data);
     }
         
     

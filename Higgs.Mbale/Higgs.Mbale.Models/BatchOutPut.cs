@@ -20,7 +20,7 @@ namespace Higgs.Mbale.Models
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
         public string DeletedBy { get; set; }
-        public Nullable<System.DateTime> CreatedOn { get; set; }
+        public System.DateTime CreatedOn { get; set; }
         public System.DateTime TimeStamp { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public long BranchId { get; set; }
@@ -32,5 +32,6 @@ namespace Higgs.Mbale.Models
         public double TotalBuveraCost { get; set; }
         public string BranchName { get; set; }
         public string SectorName { get; set; }
+        public string BatchName { get; set; }
     }
 }

@@ -14,40 +14,18 @@
 	[GradeId] ASC,
 	[SizeId] ASC
 ) 
-) ON [PRIMARY]
+,
+ CONSTRAINT [FK_dbo.FlourTransferGradeSize_dbo.FlourTransfer_FlourTransferId] FOREIGN KEY([FlourTransferId])
+REFERENCES [dbo].[FlourTransfer] ([FlourTransferId]),
 
-GO
-ALTER TABLE [dbo].[FlourTransferGradeSize]  ADD  CONSTRAINT [FK_dbo.FlourTransferGradeSize_dbo.FlourTransfer_FlourTransferId] FOREIGN KEY([FlourTransferId])
-REFERENCES [dbo].[FlourTransfer] ([FlourTransferId])
-ON DELETE CASCADE
-GO
+CONSTRAINT [FK_dbo.FlourTransferGradeSize_dbo.Size_SizeId] FOREIGN KEY([SizeId])
+REFERENCES  [dbo].[Size] ([SizeId]),
 
-ALTER TABLE [dbo].[FlourTransferGradeSize] CHECK CONSTRAINT [FK_dbo.FlourTransferGradeSize_dbo.FlourTransfer_FlourTransferId]
-GO
+CONSTRAINT [FK_dbo.FlourTransferGradeSize_dbo.Grade_GradeId] FOREIGN KEY([GradeId])
+REFERENCES  [dbo].[Grade] ([GradeId]),
 
-ALTER TABLE [dbo].[FlourTransferGradeSize]  ADD  CONSTRAINT [FK_dbo.FlourTransferGradeSize_dbo.Size_SizeId] FOREIGN KEY([SizeId])
-REFERENCES  [dbo].[Size] ([SizeId])
-ON DELETE CASCADE
-GO
+ CONSTRAINT [FK_dbo.FlourTransferGradeSize_dbo.Store_StoreId] FOREIGN KEY([StoreId])
+REFERENCES  [dbo].[Store] ([StoreId]),
 
-ALTER TABLE [dbo].[FlourTransferGradeSize] CHECK CONSTRAINT [FK_dbo.FlourTransferGradeSize_dbo.Size_SizeId]
-GO
-
-
-ALTER TABLE [dbo].[FlourTransferGradeSize]  ADD  CONSTRAINT [FK_dbo.FlourTransferGradeSize_dbo.Grade_GradeId] FOREIGN KEY([GradeId])
-REFERENCES  [dbo].[Grade] ([GradeId])
-ON DELETE CASCADE
-GO
-
-ALTER TABLE [dbo].[FlourTransferGradeSize] CHECK CONSTRAINT [FK_dbo.FlourTransferGradeSize_dbo.Grade_GradeId]
-GO
-
-
-ALTER TABLE [dbo].[FlourTransferGradeSize]  ADD  CONSTRAINT [FK_dbo.FlourTransferGradeSize_dbo.Store_StoreId] FOREIGN KEY([StoreId])
-REFERENCES  [dbo].[Store] ([StoreId])
-ON DELETE CASCADE
-GO
-
-ALTER TABLE [dbo].[FlourTransferGradeSize] CHECK CONSTRAINT [FK_dbo.FlourTransferGradeSize_dbo.Store_StoreId]
-GO
+)ON [PRIMARY]
 
