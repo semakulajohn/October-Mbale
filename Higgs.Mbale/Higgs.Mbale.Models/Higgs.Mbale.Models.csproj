@@ -50,6 +50,7 @@
     <Compile Include="AspNetRole.cs" />
     <Compile Include="AspNetUser.cs" />
     <Compile Include="Batch.cs" />
+    <Compile Include="BatchBranch.cs" />
     <Compile Include="BatchFactoryExpense.cs" />
     <Compile Include="BatchGrade.cs" />
     <Compile Include="BatchGradeSize.cs" />
@@ -59,12 +60,15 @@
     <Compile Include="Branch.cs" />
     <Compile Include="Buvera.cs" />
     <Compile Include="BuveraGradeSize.cs" />
+    <Compile Include="BuveraTransfer.cs" />
+    <Compile Include="BuveraTransferGradeSize.cs" />
     <Compile Include="Cash.cs" />
     <Compile Include="CasualActivity.cs" />
     <Compile Include="CasualWorker.cs" />
     <Compile Include="Creditor.cs" />
     <Compile Include="Debtor.cs" />
     <Compile Include="Delivery.cs" />
+    <Compile Include="DeliveryBatch.cs" />
     <Compile Include="DeliveryGradeSize.cs" />
     <Compile Include="DeliveryStock.cs" />
     <Compile Include="Document.cs" />
@@ -74,6 +78,7 @@
     <Compile Include="Factory.cs" />
     <Compile Include="FactoryExpense.cs" />
     <Compile Include="FlourTransfer.cs" />
+    <Compile Include="FlourTransferBatch.cs" />
     <Compile Include="FlourTransferGradeSize.cs" />
     <Compile Include="Grade.cs" />
     <Compile Include="Income.cs" />
@@ -103,6 +108,8 @@
     <Compile Include="StockProduct.cs" />
     <Compile Include="Store.cs" />
     <Compile Include="StoreBuveraGradeSize.cs" />
+    <Compile Include="StoreBuveraTransferGradeSize.cs" />
+    <Compile Include="StoreFlourTransferGradeSize.cs" />
     <Compile Include="StoreGrade.cs" />
     <Compile Include="StoreMaizeStock.cs" />
     <Compile Include="StoreStock.cs" />

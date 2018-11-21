@@ -352,7 +352,7 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
          })
 
          .state('buvera-store-issue', {
-             url: "/buveras/:action/:buveraId/:storeId",
+             url: "/buveras/:action/:buveraTransferId/:storeId",
              templateUrl: "/app/views/buvera/issuing.html",
              data: {
                  pageTitle: 'Store Buvera',
@@ -360,11 +360,42 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
              },
              controller: function ($scope, $stateParams) {
                  $scope.action = $stateParams.action;
-                 $scope.buveraId = $stateParams.buveraId;
+                 $scope.buveraTransferId = $stateParams.buveraTransferId;
                  $scope.storeId = $stateParams.storeId;
                  $scope.defaultTab = 'edit';
              }
          })
+
+       
+
+          .state('buvera-transfer-details', {
+              url: "/buvera/:storeId/:buveraTransferId",
+              templateUrl: "/app/views/buvera/buveratransferdetails.html",
+              data: {
+                  pageTitle: 'Store Buvera Details',
+                  pageDesc: ''
+              },
+              controller: function ($scope, $stateParams) {
+                  $scope.action = 'view';
+                  $scope.storeId = $stateParams.storeId;
+                  $scope.buveraTransferId = $stateParams.buveraTransferId;
+
+                  $scope.defaultTab = 'edit';
+              }
+          })
+      .state('buveralist-store-transfer', {
+          url: "/buvera/:storeId",
+          templateUrl: "/app/views/buvera/storebuveratransfers.html",
+          data: {
+              pageTitle: 'Store Buvera Transfers',
+              pageDesc: ''
+          },
+          controller: function ($scope, $stateParams) {
+              $scope.storeId = $stateParams.storeId;
+              $scope.defaultTab = 'edit';
+          }
+      })
+
          //stores
      .state('stores', {
          abstract: true,
@@ -1499,6 +1530,86 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
              }
          })
 
+         .state('reports.otherExpenselist', {
+             url: "/reports",
+             templateUrl: "/app/views/report/otherExpenses.html",
+             data: {
+                 pageTitle: 'Other Expenses',
+             },
+             controller: function ($scope, $stateParams) {
+
+             }
+         })
+         .state('reports.factoryExpenselist', {
+             url: "/reports",
+             templateUrl: "/app/views/report/factoryExpenses.html",
+             data: {
+                 pageTitle: 'Factory Expenses',
+             },
+             controller: function ($scope, $stateParams) {
+
+             }
+         })
+         .state('reports.batchOutPutlist', {
+             url: "/reports",
+             templateUrl: "/app/views/report/batchoutputs.html",
+             data: {
+                 pageTitle: 'BatchOutPuts',
+             },
+             controller: function ($scope, $stateParams) {
+
+             }
+         })
+         .state('reports.flourTransferlist', {
+             url: "/reports",
+             templateUrl: "/app/views/report/flourTransfer.html",
+             data: {
+                 pageTitle: 'Flour Transfers',
+             },
+             controller: function ($scope, $stateParams) {
+
+             }
+         })
+         .state('reports.machineRepairlist', {
+             url: "/reports",
+             templateUrl: "/app/views/report/machinerepairs.html",
+             data: {
+                 pageTitle: 'Machine Repairs',
+             },
+             controller: function ($scope, $stateParams) {
+
+             }
+         })
+          .state('reports.LabourCostlist', {
+              url: "/reports",
+              templateUrl: "/app/views/report/labourcosts.html",
+              data: {
+                  pageTitle: 'Labour Costs',
+              },
+              controller: function ($scope, $stateParams) {
+
+              }
+          })
+          .state('reports.millingbalancelist', {
+              url: "/reports",
+              templateUrl: "/app/views/report/millingbalance.html",
+              data: {
+                  pageTitle: 'Miling Balances',
+              },
+              controller: function ($scope, $stateParams) {
+
+              }
+          })
+          .state('reports.utilitylist', {
+              url: "/reports",
+              templateUrl: "/app/views/report/utilities.html",
+              data: {
+                  pageTitle: 'Utilities',
+              },
+              controller: function ($scope, $stateParams) {
+
+              }
+          })
          .state('reports.buveralist', {
              url: "/reports",
              templateUrl: "/app/views/report/buveras.html",
@@ -1664,14 +1775,15 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
       })
 
           .state('flour-transfer-details', {
-              url: "/flours/:action/:flourTransferId",
+              url: "/flours/:storeId/:flourTransferId",
               templateUrl: "/app/views/flour/flourtransferdetails.html",
               data: {
                   pageTitle: 'Store Flour Details',
                   pageDesc: ''
               },
               controller: function ($scope, $stateParams) {
-                  $scope.action = $stateParams.action;
+                  $scope.action = 'view';
+                  $scope.storeId = $stateParams.storeId;
                   $scope.flourTransferId = $stateParams.flourTransferId;
                   
                   $scope.defaultTab = 'edit';

@@ -53,60 +53,69 @@
                                             </div>
                                                 <div class="form-group col-sm-6">
                                                     <div class="col-sm-12">
-                                                        <h5>branch</h5>
-                                                        <p>{{buvera.BranchName}}</p>
+                                                        <h5>Invoice Number</h5>
+                                                        <p>{{buvera.InvoiceNumber}}</p>
                                                     </div>
                                                 </div>
                                            
                                         </div>
                                      
+                                            <div class="row">
+                                               
+                                                    <div class="form-group col-sm-6">
+                                                        <div class="col-sm-12">
+                                                            <h5>branch</h5>
+                                                            <p>{{buvera.BranchName}}</p>
+                                                        </div>
+                                                    </div>
 
-                                        <div class="row" >
-                                            <div class="col-sm-12 col-md-12">
-                                                Grade:
-                                            </div>
-                                            <div ng-repeat="grade in buvera.Grades" class="col-md-3 col-sm-12">
-                                                <div class="col-sm-12 col-md-12">
-                                                    <h3> {{grade.Value}}</h3>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th width="40%">Value </th>
-                                                                    <th width="60%">Quantity</th>
-                                                                </tr>
-                                                                <tr ng-repeat="x in grade.Denominations">
-                                                                    <td width="40%"><p> {{ x.Value }} Kg</p></td>
-                                                                    <td width="60%">
-                                                                        <p>{{x.Quantity}}</p>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12">
+                                                        Grade:
+                                                    </div>
+                                                    <div ng-repeat="grade in buvera.Grades" class="col-md-3 col-sm-12">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <h3> {{grade.Value}}</h3>
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <th width="40%">Value </th>
+                                                                            <th width="60%">Quantity</th>
+                                                                        </tr>
+                                                                        <tr ng-repeat="x in grade.Denominations">
+                                                                            <td width="40%"><p> {{ x.Value }} Kg</p></td>
+                                                                            <td width="60%">
+                                                                                <p>{{x.Quantity}}</p>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                    <div class="hr-line-dashed"></div>
+
+                                                </div>
+
+
+
+                                                <div class="row">
+
+
+                                                    <div class="col-sm-12" style="padding-left: 0px">
+
+
+                                                        <div class="hr-line-dashed"></div>
+
+
+
+
                                                     </div>
                                                 </div>
                                             </div>
-                                            <br />
-                                            <div class="hr-line-dashed"></div>
-
-                                        </div>
-
-
-
-                                        <div class="row">
-
-
-                                            <div class="col-sm-12" style="padding-left: 0px">
-
-
-                                                <div class="hr-line-dashed"></div>
-
-
-                                                
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
 
                                 </tab>
 

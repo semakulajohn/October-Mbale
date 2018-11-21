@@ -145,18 +145,6 @@
                                         <div class="row">
                                             <div class="form-group col-sm-6">
                                                 <div class="col-sm-12">
-                                                    <label>Batch</label>
-                                                    <select style="border: none" name="batch" class="form-control col-sm-12" data-ng-model="delivery.BatchId"  ng-class="{errorinput:form.batch.$invalid}"
-                                                            data-ng-options="i.BatchId as i.Name for i in batches">
-                                                        <option value="">Please select</option>
-                                                    </select>
-
-
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group col-sm-6">
-                                                <div class="col-sm-12">
                                                     <label>Mode Of Payment</label>
                                                     <select style="border: none" name="mode" class="form-control col-sm-12" data-ng-model="delivery.PaymentModeId" required ng-class="{errorinput:form.mode.$invalid}"
                                                             data-ng-options="i.PaymentModeId as i.Name for i in paymentModes">
@@ -168,6 +156,26 @@
 
                                                 </div>
                                             </div>
+                                      
+                                                <div class="form-group col-sm-6">
+                                                    <div class="col-sm-12">
+                                                        <label>Batch</label>
+                                                        <select style="border: none" name="batch" class="form-control col-sm-12" data-ng-model="delivery.Batches" multiple ng-class="{errorinput:form.batch.$invalid}"
+                                                                data-ng-options="i as i.Name for i in batches" ng-value="i.BatchId">
+                                                            <option value="">Please select</option>
+                                                        </select>
+
+                                                        <div class="form-group col-sm-6">
+                                                            <div class="col-sm-12">
+
+                                                                <label>Selected Batches</label>
+                                                                <pre ng-repeat="n in delivery.Batches ">{{n.Name}}</pre>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                           
+                                           
                                            
                                         </div>
 
@@ -186,7 +194,7 @@
                                             <div class="form-group col-sm-6" ng-show="order.ProductId ==2">
                                                 <div class="col-sm-12">
                                                     <label>Quantity</label>
-                                                    <input name="quantity" class="form-control" ng-model="delivery.Quantity" ng-pattern="/^\-?\d+((\.)\d+)?$/"  ng-class="{ errorinput: form.quantity.$invalid }">
+                                                    <input name="quantity" class="form-control"  ng-model="delivery.Quantity" ng-pattern="/^\-?\d+((\.)\d+)?$/"  ng-class="{ errorinput: form.quantity.$invalid }">
                                                     <span ng-show="form.quantity.$invalid">
                                                         <span ng-show="form.quantity.$error.required" class="help-block error"><i class="fa fa-warning"></i> This is a required field.</span>
                                                         <span ng-show="form.quantity.$error.pattern" class="help-block error"><i class="fa fa-warning"></i> Invalid formart, quantity should be double or number</span>
@@ -319,6 +327,9 @@
                                                     <i class="fa-fw fa fa-check"></i><span>Delivery has failed to be deleted</span>
                                                 </div>
 
+                                                <div class="check-element sample-show-hide alert alert-danger animate-show" ng-show="showMessageNoBatchSelected" style="clear:both;">
+                                                    <i class="fa-fw fa fa-check"></i><span>Delivery has failed because No Batch was selected</span>
+                                                </div>
 
 
                                             </div>

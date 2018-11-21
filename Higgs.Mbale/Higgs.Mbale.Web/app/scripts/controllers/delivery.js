@@ -6,7 +6,7 @@
         if ($scope.defaultTab == 'dashboard') {
             $scope.tab.dashboard = true;
         }
-
+       
         var branches = [];
         var selectedBranch;
         $scope.selectedGrades = [];
@@ -28,15 +28,17 @@
             }
         });
 
+       
         $scope.OnBranchChange = function (delivery) {
             var selectedBranchId = delivery.BranchId
-            $http.get('/webapi/BatchApi/GetAllBatchesForAParticularBranch?branchId=' + selectedBranchId).then(function (responses) {
-                $scope.batches = responses.data;
-
-            });
-
+           
             $http.get('/webapi/StoreApi/GetAllBranchStores?branchId=' + selectedBranchId).then(function (responses) {
                 $scope.stores = responses.data;
+
+            });
+            $http.get('/webapi/BatchApi/GetAllBatchesForAParticularBranchToTransfer?branchId=' + selectedBranchId + '&productId=' + $scope.order.ProductId
+                     ).then(function (responses) {
+                $scope.batches = responses.data;
 
             });
         }
@@ -80,7 +82,7 @@
                         VehicleNumber: b.VehicleNumber,
                         BranchId: b.BranchId,
                         Price: b.Price,
-                        BatchId : b.BatchId,
+                       
                         Amount : b.Amount,
                         Location: b.Location,
                         StoreId : b.StoreId,
@@ -93,7 +95,9 @@
                         CreatedOn: b.CreatedOn,
                         CreatedBy: b.CreatedBy,
                         UpdatedBy: b.UpdatedBy,
-                        Deleted: b.Deleted
+                        Deleted: b.Deleted,
+                        Batches: b.Batches,
+                        DeliveryBatches: b.DeliveryBatches,
                     };
                 });
 
@@ -140,7 +144,7 @@
                     });
                     $scope.TotalAmount = $scope.DenominationAmount;
                     $scope.TotalQuantity = $scope.DenominationQuantity;
-                    //+$scope.TotalGradeKgs;
+                    
                 });
             }
             else {
@@ -165,30 +169,45 @@
                     Location : delivery.Location,
                     SectorId: delivery.SectorId,
                     StoreId: delivery.StoreId,
-                    BatchId : delivery.BatchId,
+                    
                     TransactionSubTypeId : transactionSubTypeId,
                     DriverName: delivery.DriverName,
                     DriverNIN: delivery.DriverNIN,
                     CreatedBy: delivery.CreatedBy,
                     CreatedOn: delivery.CreatedOn,
                     Deleted: delivery.Deleted,
-                    Grades : delivery.Grades
+                    Grades: delivery.Grades,
+                    Batches: delivery.Batches,
+                    DeliveryBatches: delivery.DeliveryBatches,
                 });
 
                 promise.then(
                     function (payload) {
 
                         deliveryId = payload.data;
-                        $scope.showMessageSave = true;
-                        usSpinnerService.stop('global-spinner');
-                        $timeout(function () {
-                            $scope.showMessageSave = false;
+                        if (deliveryId == -1) {
+                            usSpinnerService.stop('global-spinner');
+                            $scope.showMessageNoBatchSelected = true;
 
-                            if (action == "create") {
-                                $state.go('delivery-edit', { 'action': 'edit', 'deliveryId': deliveryId });
-                            }
+                            $timeout(function () {
+                                $scope.showMessageNoBatchSelected = false;
 
-                        }, 1500);
+                            }, 3000);
+                        }
+                        else {
+                            $scope.showMessageSave = true;
+                            usSpinnerService.stop('global-spinner');
+                            $timeout(function () {
+                                $scope.showMessageSave = false;
+
+                                if (action == "create") {
+                                    $state.go('delivery-branch-list', { 'branchId': delivery.BranchId });
+
+                                }
+
+                            }, 2000);
+                        }
+                       
 
 
                     });
@@ -394,7 +413,7 @@ angular
                         VehicleNumber: b.VehicleNumber,
                         BranchName: b.BranchName,
                         Price: b.Price,
-                        BatchNumber: b.BatchNumber,
+                       
                         Amount: b.Amount,
                         Location: b.Location,
                         StoreName: b.StoreName,
@@ -403,7 +422,8 @@ angular
                         PaymentModeName: b.PaymentModeName,
                         DriverName: b.DriverName,
                         TimeStamp: b.TimeStamp,
-                        Grades : b.Grades,
+                        Grades: b.Grades,
+                        DeliveryBatches: b.DeliveryBatches,
                     };
                 });
     }]);

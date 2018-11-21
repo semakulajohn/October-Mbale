@@ -52,12 +52,29 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group col-sm-6">
-                                                <div class="col-sm-12">
-                                                    <h5>Batch Number</h5>
-                                                    <p>{{delivery.BatchNumber}}</p>
+                                          
+
+                                                <div class="form-group col-sm-6">
+                                                    <div class="col-sm-6">
+                                                        <h5>Used Batches</h5>
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered">
+                                                                <tbody>
+
+                                                                    <tr ng-repeat="batch in delivery.DeliveryBatches">
+                                                                        <td width="100%"><p> {{ batch.BatchNumber }}</p></td>
+
+
+                                                                    </tr>
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                    </div>
                                                 </div>
-                                            </div>
+
+                                         
 
                                         </div>
                                         <div class="row">

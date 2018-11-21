@@ -14,7 +14,7 @@ namespace Higgs.Mbale.DTO
         public Nullable<double> Price { get; set; }
         public long ProductId { get; set; }
         public double DeliveryCost { get; set; }
-        public long BatchId { get; set; }
+       
         public string DriverNIN { get; set; }
         public string VehicleNumber { get; set; }
         public long OrderId { get; set; }

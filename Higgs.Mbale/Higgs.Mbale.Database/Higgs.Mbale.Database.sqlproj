@@ -163,6 +163,12 @@
     <Build Include="Schema Objects\Schemas\dbo\Tables\Region.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\FlourTransfer.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\FlourTransferGradeSize.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\BuveraTransfer.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\BuveraTransferGradeSize.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\StoreBuveraTransferGradeSize.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\StoreFlourTransferGradeSize.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\DeliveryBatch.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\FlourTransferBatch.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Higgs.Mbale.Database.publish.xml" />

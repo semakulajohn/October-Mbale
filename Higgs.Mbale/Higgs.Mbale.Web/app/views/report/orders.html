@@ -146,7 +146,7 @@
                                     </th>
                                   
                                     <th class="sortable"
-                                        ng-click="tableParams.sorting({'Amount' : tableParams.isSortBy('Amount', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        ng-click="tableParams.sorting({'TotalQuantity' : tableParams.isSortBy('TotalQuantity', 'asc') ? 'desc' : 'asc'})" rowspan="2">
                                         <div>Quantity</div>
                                     </th>
 
@@ -176,7 +176,7 @@
                                     <td width="10%">{{order.CustomerName}}</td>
                                     <td width="10%">{{order.OrderId}}</td>
                                     <td width="20%">{{order.StatusName}}</td>
-                                    <td width="10%"> {{order.Amount}}</td>
+                                    <td width="10%"> {{order.TotalQuantity}}</td>
                                     <td width="12%">{{ order.BranchName }}</td>
                                     <td width="12%">{{ order.CreatedOn | date:"yyyy-MM-dd hh:mm" }}</td>
                                    

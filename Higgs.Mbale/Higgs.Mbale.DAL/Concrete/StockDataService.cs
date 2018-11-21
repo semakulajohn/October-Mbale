@@ -34,6 +34,15 @@ public   class StockDataService : DataServiceBase,IStockDataService
             return this.UnitOfWork.Get<Stock>().AsQueryable().Where(e => e.Deleted == false && e.BranchId == branchId);
         }
 
+        public IEnumerable<StoreStock> GetStockForAParticularBranchForTransfer(long branchId,long productId)
+        {
+            return this.UnitOfWork.Get<StoreStock>().AsQueryable().Where
+                   (c =>
+                    c.BranchId == branchId &&  
+                    c.SoldOut == false &&  c.ProductId == productId 
+                );
+        }
+
         public Size GetSize(long sizeId)
         {
             return this.UnitOfWork.Get<Size>().AsQueryable()
@@ -117,6 +126,32 @@ public   class StockDataService : DataServiceBase,IStockDataService
                 }
                 return stockDTO.StockId;
             }
+        }
+
+
+        public long SaveStoreStock(StoreStockDTO storeStockDTO)
+        {
+           
+                var result = this.UnitOfWork.Get<StoreStock>().AsQueryable()
+                    .FirstOrDefault(e => e.StoreStockId == storeStockDTO.StoreStockId);
+                if (result != null)
+                {
+                    result.StockId = storeStockDTO.StockId;
+                    result.SectorId = storeStockDTO.SectorId;
+                    result.Balance = storeStockDTO.Balance;
+                    result.StockBalance = storeStockDTO.StockBalance;
+                    result.ProductId = storeStockDTO.ProductId;
+                    result.SoldOut = storeStockDTO.SoldOut;
+                    result.BranchId = storeStockDTO.BranchId;
+                    result.StoreId = storeStockDTO.StoreId;
+                    result.InOrOut = storeStockDTO.InOrOut;
+                    
+                    result.TimeStamp = DateTime.Now;
+                    this.UnitOfWork.Get<StoreStock>().Update(result);
+                    this.UnitOfWork.SaveChanges();
+                }
+                return storeStockDTO.StoreStockId;
+            
         }
 
         public void MarkAsDeleted(long StockId, string userId)
@@ -259,6 +294,13 @@ public   class StockDataService : DataServiceBase,IStockDataService
 
         }
 
+        public StoreStock GetStoreStockForParticularStock(long stockId, long productId, long storeId)
+        {
+            var storeStock = this.UnitOfWork.Get<StoreStock>().AsQueryable()
+                 .FirstOrDefault(c =>
+                    c.StockId == stockId && c.ProductId == productId && c.StoreId == storeId);
+            return storeStock;
+        }
         public Stock GetStockForAParticularBatchAndProduct(long batchId, long productId,long storeId)
         {
             var stock = this.UnitOfWork.Get<Stock>().AsQueryable()

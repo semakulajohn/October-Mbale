@@ -18,13 +18,13 @@ namespace Higgs.Mbale.EF.Models
         {
             this.DeliveryGradeSizes = new HashSet<DeliveryGradeSize>();
             this.DeliveryStocks = new HashSet<DeliveryStock>();
+            this.DeliveryBatches = new HashSet<DeliveryBatch>();
         }
     
         public long DeliveryId { get; set; }
         public string CustomerId { get; set; }
         public string DriverName { get; set; }
         public Nullable<double> Price { get; set; }
-        public long BatchId { get; set; }
         public long ProductId { get; set; }
         public long PaymentModeId { get; set; }
         public double DeliveryCost { get; set; }
@@ -47,18 +47,18 @@ namespace Higgs.Mbale.EF.Models
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public double Quantity { get; set; }
     
-        public virtual Batch Batch { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
+        public virtual AspNetUser AspNetUser2 { get; set; }
         public virtual Branch Branch { get; set; }
         public virtual ICollection<DeliveryGradeSize> DeliveryGradeSizes { get; set; }
         public virtual ICollection<DeliveryStock> DeliveryStocks { get; set; }
+        public virtual Order Order { get; set; }
         public virtual PaymentMode PaymentMode { get; set; }
         public virtual Product Product { get; set; }
         public virtual Sector Sector { get; set; }
         public virtual Store Store { get; set; }
         public virtual TransactionSubType TransactionSubType { get; set; }
-        public virtual Order Order { get; set; }
-        public virtual AspNetUser AspNetUser { get; set; }
-        public virtual AspNetUser AspNetUser1 { get; set; }
-        public virtual AspNetUser AspNetUser2 { get; set; }
+        public virtual ICollection<DeliveryBatch> DeliveryBatches { get; set; }
     }
 }

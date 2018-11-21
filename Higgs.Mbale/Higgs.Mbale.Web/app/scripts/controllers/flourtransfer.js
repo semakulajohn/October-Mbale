@@ -1,23 +1,25 @@
 ﻿
 angular
     .module('homer')
-    .controller('FlourTransferDetailController', ['$scope', '$http', '$filter', '$location', '$log', '$timeout', '$state',
-    function ($scope, $http, $filter, $location, $log, $timeout, $state) {
+    .controller('FlourTransferDetailController', ['$scope', '$http', '$filter', '$location', '$log', '$timeout', '$state','usSpinnerService',
+    function ($scope, $http, $filter, $location, $log, $timeout, $state, usSpinnerService) {
         $scope.tab = {};
         if ($scope.defaultTab == 'dashboard') {
             $scope.tab.dashboard = true;
         }
         $scope.hideAcceptReject = false;
+       
         var flourTransferId = $scope.flourTransferId;
+        var storeId = $scope.storeId;
 
         var promise = $http.get('/webapi/FlourTransferApi/GetFlourTransfer?flourTransferId=' + flourTransferId, {});
         promise.then(
             function (payload) {
                 var b = payload.data;
-                if(b.Accept != true && b.Reject != true){
+                if((b.Accept != true && b.Reject != true) && b.FromSupplierStoreId != storeId){
                     $scope.hideAcceptReject = true;
                 }
-                else if(b.Accept == true || b.Reject == true){
+                else if((b.Accept == true || b.Reject == true) && b.FromSupplierStoreId != storeId){
                     $scope.hideAcceptReject = false;
                 }
                 $scope.flourTransfer = {
@@ -38,13 +40,16 @@ angular
                     StoreName: b.StoreName,
                     BranchName: b.BranchName,
                     TotalQuantity: b.TotalQuantity,
+                    Batches: b.Batches,
+                    FlourTransferBatches : b.FlourTransferBatches,
                    
                 };
             });
 
 
         $scope.Accept = function (flourTransfer) {        
-           
+            usSpinnerService.spin('global-spinner');
+
                 var promise = $http.post('/webapi/FlourTransferApi/Accept', {
                     FlourTransferId: flourTransfer.FlourTransferId,
                     ToReceiverStoreId: flourTransfer.ToReceiverStoreId,
@@ -52,7 +57,9 @@ angular
                     TotalQuantity: flourTransfer.TotalQuantity,
                     BranchId: flourTransfer.BranchId,
                     Grades: flourTransfer.Grades,
-                    StoreId : flourTransfer.StoreId,
+                    StoreId: flourTransfer.StoreId,
+                    Batches: flourTransfer.Batches,
+                    FlourTransferBatches : flourTransfer.FlourTransferBatches,
 
                 });
 
@@ -60,11 +67,21 @@ angular
                     function (payload) {
 
                         flourTransferId = payload.data;                       
-                        
+                        usSpinnerService.stop('global-spinner');
+                        $timeout(function () {
+
+
+                            $state.go('flourlist-store-transfer', { 'storeId': $scope.storeId });
+
+
+                        }, 500);
+
                     });
             }
 
         $scope.Reject = function (flourTransfer) {
+
+            usSpinnerService.spin('global-spinner');
 
             var promise = $http.post('/webapi/FlourTransferApi/Reject', {
                 FlourTransferId: flourTransfer.FlourTransferId,
@@ -73,7 +90,9 @@ angular
                 TotalQuantity: flourTransfer.TotalQuantity,
                 BranchId: flourTransfer.BranchId,
                 Grades: flourTransfer.Grades,
-                StoreId : flourTransfer.StoreId,
+                StoreId: flourTransfer.StoreId,
+                Batches: flourTransfer.Batches,
+                FlourTransferBatches : flourTransfer.FlourTransferBatches,
 
             });
 
@@ -81,6 +100,14 @@ angular
                 function (payload) {
 
                     flourTransferId = payload.data;
+                    usSpinnerService.stop('global-spinner');
+                    $timeout(function () {
+
+
+                        $state.go('flourlist-store-transfer', { 'storeId': $scope.storeId });
+
+
+                    }, 500);
                 });
         }
 
@@ -94,6 +121,22 @@ angular
         function ($scope, ngTableParams, $http, $filter, $location, Utils, uiGridConstants) {
             $scope.loadingSpinner = true;
             var storeId = $scope.storeId;
+
+         
+
+            var promisestore = $http.get('/webapi/StoreApi/GetStore?storeId=' + storeId, {});
+            promisestore.then(
+                function (payload) {
+                    var b = payload.data;
+
+                    $scope.store = {
+                        StoreId: b.StoreId,
+                        Name: b.Name,
+
+                    };
+
+                });
+
             var promise = $http.get('/webapi/FlourTransferApi/GetAllFlourTransfersForAparticularStore?storeId=' + storeId, {});
             promise.then(
                 function (payload) {
@@ -102,14 +145,16 @@ angular
                 }
             );
 
+            $scope.retrievedStoreId = $scope.storeId;
             $scope.gridData = {
                 enableFiltering: true,
                 columnDefs: $scope.columns,
-                enableRowSelection: true
+                enableRowSelection: false
             };
 
-            $scope.gridData.multiSelect = true;
+            $scope.gridData.multiSelect = false;
 
+          
             $scope.gridData.columnDefs = [
 
                 {
@@ -127,7 +172,7 @@ angular
                 { name: 'Reject', field: 'Reject' },
            
             {
-                name: 'Transfer Details', cellTemplate: '<div class="ui-grid-cell-contents"> <a href="#/flours/edit/{{row.entity.FlourTransferId}}">Transfer Details</a> </div>',
+                name: 'Transfer Details', cellTemplate: '<div class="ui-grid-cell-contents"> <a href="#/flours/' + $scope.storeId + '/{{row.entity.FlourTransferId}}">Transfer Details</a> </div>',
 
             },
 
@@ -184,11 +229,14 @@ angular
 
         $scope.selectedGrades = [];
         var branches = [];
+        var batchBranch;
         var selectedBranch;
         var flourTransferId = $scope.flourTransferId;
         var action = $scope.action;
         var storeId = $scope.storeId;
-        var issuing = "YES"
+        var issuing = "YES";
+        var storeBranchId = 0;
+        var productId = 1;
 
         var promisestore = $http.get('/webapi/StoreApi/GetStore?storeId=' + storeId, {});
         promisestore.then(
@@ -198,10 +246,24 @@ angular
                 $scope.store = {
                     StoreId: b.StoreId,
                     Name: b.Name,
+                    BranchId : b.BranchId,
 
                 };
+               
+                $scope.batchBranch = {
+                    BranchId: $scope.store.BranchId,
+                    ProductId: productId,
+                };
+                
+               
+                $http.get('/webapi/BatchApi/GetAllBatchesForAParticularBranchToTransfer?branchId=' + $scope.store.BranchId + '&productId=' + productId).then(function (responses) {
+                        $scope.batches = responses.data;
 
+                });
+               
             });
+
+       
 
         $http.get('webapi/GradeApi/GetAllGrades').success(function (data, status) {
             $scope.grades = data;
@@ -220,8 +282,8 @@ angular
                 $scope.stores = responses.data;
 
             });
-        }
-
+        }      
+        
 
         if (action == 'create') {
             flourTransferId = 0;
@@ -246,6 +308,7 @@ angular
             promise.then(
                 function (payload) {
                     var b = payload.data;
+                    
                     $scope.flourTransfer = {
                         FlourTransferId: b.FlourTransferId,
                         TotalQuantity: b.TotalQuantity,
@@ -260,7 +323,8 @@ angular
                         UpdatedBy: b.UpdatedBy,
                         Deleted: b.Deleted,
 
-                        Grades: b.Grades
+                        Grades: b.Grades,
+                        Batches : b.Batches,
                     };
                 });
 
@@ -292,7 +356,7 @@ angular
                     TotalQuantity: $scope.TotalGradeQuantities,
                     BranchId: flourTransfer.BranchId,
                     Grades: flourTransferId == 0 ? $scope.selectedGrades : flourTransfer.Grades,
-
+                    Batches : flourTransfer.Batches,
                 });
 
                 promise.then(

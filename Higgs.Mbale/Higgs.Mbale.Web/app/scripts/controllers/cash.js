@@ -168,13 +168,7 @@ angular
 
             $scope.gridData.columnDefs = [
 
-                //{
-                //    name: 'CashId',
-                //    sort: {
-                //        direction: uiGridConstants.DESC,
-                //        priority: 1
-                //    }
-                //},
+                
                 { name: 'Branch', field: 'BranchName' },
                 { name: 'TransactionSubTypeName', field: 'TransactionSubTypeName' },
                 { name: 'Notes', field: 'Notes', field: 'Notes' },

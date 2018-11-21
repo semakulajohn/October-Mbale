@@ -82,7 +82,7 @@ namespace Higgs.Mbale.BAL.Concrete
         public long IssueBuvera(Buvera buvera, string userId)
         {
             bool inOrOut = false;
-            var storeBuvera = 0;  
+           // var storeBuvera = 0;  
 
             var fromSupplierStore = GetStoreName(buvera.StoreId);
             var toReceiverStore = GetStoreName(Convert.ToInt64(buvera.ToReceiver));
@@ -94,6 +94,7 @@ namespace Higgs.Mbale.BAL.Concrete
                 TotalQuantity = buvera.TotalQuantity,
                 BranchId = buvera.BranchId,
                 FromSupplier = fromSupplierStore,
+                InvoiceNumber = buvera.InvoiceNumber,
                 ToReceiver = toReceiverStore,
                 StoreId = Convert.ToInt64(buvera.ToReceiver),
                 Deleted = buvera.Deleted,
@@ -142,7 +143,7 @@ namespace Higgs.Mbale.BAL.Concrete
                                         Quantity = buveraGradeSize.Quantity,
                                     };
 
-                               storeBuvera = this._dataService.SaveStoreBuveraGradeSize(storeBuveraGradeSize, inOrOut);
+                                this._dataService.SaveStoreBuveraGradeSize(storeBuveraGradeSize, inOrOut);
 
                                     //Method that updates buvera into storeBuveraGradeSize table(storeBuvera stock)
                                     var fromStoreBuveraGradeSize = new StoreBuveraGradeSizeDTO()
@@ -153,7 +154,7 @@ namespace Higgs.Mbale.BAL.Concrete
                                         Quantity = buveraGradeSize.Quantity,
                                     };
 
-                                    storeBuvera = this._dataService.SaveStoreBuveraGradeSize(fromStoreBuveraGradeSize, false);
+                                   this._dataService.SaveStoreBuveraGradeSize(fromStoreBuveraGradeSize, false);
                                 }
                             }
                         }
@@ -203,6 +204,7 @@ namespace Higgs.Mbale.BAL.Concrete
                     FromSupplier = buvera.FromSupplier,
                     ToReceiver = buvera.ToReceiver,
                     StoreId = buvera.StoreId,
+                    InvoiceNumber = buvera.InvoiceNumber,
                     Deleted = buvera.Deleted,
                     CreatedBy = buvera.CreatedBy,
                     CreatedOn = buvera.CreatedOn
@@ -354,6 +356,7 @@ namespace Higgs.Mbale.BAL.Concrete
                 BuveraId = data.BuveraId,
                 FromSupplier = data.FromSupplier,
                 ToReceiver = data.ToReceiver,
+                InvoiceNumber = data.InvoiceNumber,
                 StoreName = data.Store!=null? data.Store.Name:"",
                 CreatedOn = data.CreatedOn,
                 TimeStamp = data.TimeStamp,

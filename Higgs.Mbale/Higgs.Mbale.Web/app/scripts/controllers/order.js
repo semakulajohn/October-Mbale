@@ -394,7 +394,9 @@ angular
                 { name: 'Status', field: 'StatusName' },
 
                 { name: 'Quantity', cellTemplate: '<div ng-if="row.entity.Amount == 0 || row.entity.Amount == null">{{row.entity.TotalQuantity}}</div><div ng-if="row.entity.Amount != 0">{{row.entity.Amount}}</div>' },
-                { name: 'Branch Name', field: 'BranchName' },
+                 { name: 'Quantityx', cellTemplate: '<div ng-if="row.entity.ProductId == 1 || row.entity.Amount == null">{{row.entity.TotalQuantity}}</div><div ng-if="row.entity.Amount != 0 && row.entity.Amount != null">{{row.entity.Amount}}</div>' },
+
+               { name: 'Branch Name', field: 'BranchName' },
                 { name: 'Order Details', cellTemplate: '<div class="ui-grid-cell-contents"> <a href="#/order/detail/{{row.entity.OrderId}}"> Order Detail</a> </div>' },
             { name: 'Delivery', field: 'Id', width: '15%', cellTemplate: '<div class="ui-grid-cell-contents"><a href="#/deliveries/{{row.entity.OrderId}}"> Deliveries</a></div>' },
 

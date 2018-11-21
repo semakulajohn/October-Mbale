@@ -122,6 +122,7 @@ namespace Higgs.Mbale.BAL.Concrete
                  Deleted = data.Deleted,
                 CreatedBy = _userService.GetUserFullName(data.AspNetUser),
                 UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+                BatchNumber = data.Batch !=null? data.Batch.Name:"",
                
 
             };

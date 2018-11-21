@@ -211,6 +211,7 @@ namespace Higgs.Mbale.BAL.Concrete
 
             if (data.OrderGradeSizes != null)
             {
+              
                 if (data.OrderGradeSizes.Any())
                 {
                     List<Grade> grades = new List<Grade>();
@@ -233,6 +234,7 @@ namespace Higgs.Mbale.BAL.Concrete
                                 if (orderGradeSize.Grade.OrderGradeSizes.Any())
                                 {
                                     var distinctSizes = orderGradeSize.Grade.OrderGradeSizes.GroupBy(s => s.SizeId).Select(o => o.First()).ToList();
+                                    //var distinctSizes = orderGradeSize.Grade.OrderGradeSizes.GroupBy(s => s.OrderId ).Select(s => s.First()).ToList();
                                     foreach (var ogs in distinctSizes)
                                     {
                                         var denomination = new Denomination()

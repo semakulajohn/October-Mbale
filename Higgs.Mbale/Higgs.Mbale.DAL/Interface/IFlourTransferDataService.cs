@@ -16,7 +16,10 @@ namespace Higgs.Mbale.DAL.Interface
             IEnumerable<FlourTransfer> GetAllFlourTransfersForAParticularStore(long storeId);
             void SaveFlourTransferGradeSize(FlourTransferGradeSizeDTO flourTransferGradeSizeDTO);
             void PurgeFlourTransferGradeSize(long flourTransferId);
-            int SaveStoreFlourTransferGradeSize(StoreGradeSizeDTO storeGradeSizeDTO, bool inOrOut);
-            IEnumerable<StoreGradeSize> GetStoreFlourTransferStock(long storeId);
+            void SaveStoreFlourTransferGradeSize(StoreFlourTransferGradeSizeDTO storeGradeSizeDTO, bool inOrOut);
+            IEnumerable<StoreFlourTransferGradeSize> GetStoreFlourTransferStock(long storeId);
+            void SaveFlourTransferBatch(FlourTransferBatchDTO flourTransferBatch);
+            IEnumerable<FlourTransferBatch> GetAllBatchesForAFlourTransfer(long flourTransferId);
+            
     }
 }

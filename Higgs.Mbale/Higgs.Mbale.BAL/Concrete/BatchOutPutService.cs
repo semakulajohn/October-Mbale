@@ -119,6 +119,8 @@ namespace Higgs.Mbale.BAL.Concrete
         }
         public long SaveBatchOutPut(BatchOutPut batchOutPut, string userId)
         {
+            //check buvera in store
+
             List<StockGradeSize> stockGradeSizeList = new List<StockGradeSize>();
             double batchQuantity = BatchQuantity(batchOutPut.BatchId);
             var batchOutPutDTO = new DTO.BatchOutPutDTO()

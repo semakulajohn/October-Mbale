@@ -21,12 +21,18 @@ namespace Higgs.Mbale.EF.Models
             this.StoreMaizeStocks = new HashSet<StoreMaizeStock>();
             this.Supplies = new HashSet<Supply>();
             this.StoreGradeSizes = new HashSet<StoreGradeSize>();
-            this.Buveras = new HashSet<Buvera>();
             this.BuveraGradeSizes = new HashSet<BuveraGradeSize>();
             this.StoreBuveraGradeSizes = new HashSet<StoreBuveraGradeSize>();
             this.Inventories = new HashSet<Inventory>();
-            this.Deliveries = new HashSet<Delivery>();
             this.FlourTransferGradeSizes = new HashSet<FlourTransferGradeSize>();
+            this.Buveras = new HashSet<Buvera>();
+            this.BuveraTransfers = new HashSet<BuveraTransfer>();
+            this.BuveraTransfers1 = new HashSet<BuveraTransfer>();
+            this.BuveraTransfers2 = new HashSet<BuveraTransfer>();
+            this.BuveraTransferGradeSizes = new HashSet<BuveraTransferGradeSize>();
+            this.StoreBuveraTransferGradeSizes = new HashSet<StoreBuveraTransferGradeSize>();
+            this.StoreFlourTransferGradeSizes = new HashSet<StoreFlourTransferGradeSize>();
+            this.Deliveries = new HashSet<Delivery>();
             this.FlourTransfers = new HashSet<FlourTransfer>();
             this.FlourTransfers1 = new HashSet<FlourTransfer>();
             this.FlourTransfers2 = new HashSet<FlourTransfer>();
@@ -49,15 +55,21 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<StoreMaizeStock> StoreMaizeStocks { get; set; }
         public virtual ICollection<Supply> Supplies { get; set; }
         public virtual ICollection<StoreGradeSize> StoreGradeSizes { get; set; }
-        public virtual ICollection<Buvera> Buveras { get; set; }
         public virtual ICollection<BuveraGradeSize> BuveraGradeSizes { get; set; }
         public virtual ICollection<StoreBuveraGradeSize> StoreBuveraGradeSizes { get; set; }
         public virtual ICollection<Inventory> Inventories { get; set; }
-        public virtual ICollection<Delivery> Deliveries { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual AspNetUser AspNetUser2 { get; set; }
         public virtual ICollection<FlourTransferGradeSize> FlourTransferGradeSizes { get; set; }
+        public virtual ICollection<Buvera> Buveras { get; set; }
+        public virtual ICollection<BuveraTransfer> BuveraTransfers { get; set; }
+        public virtual ICollection<BuveraTransfer> BuveraTransfers1 { get; set; }
+        public virtual ICollection<BuveraTransfer> BuveraTransfers2 { get; set; }
+        public virtual ICollection<BuveraTransferGradeSize> BuveraTransferGradeSizes { get; set; }
+        public virtual ICollection<StoreBuveraTransferGradeSize> StoreBuveraTransferGradeSizes { get; set; }
+        public virtual ICollection<StoreFlourTransferGradeSize> StoreFlourTransferGradeSizes { get; set; }
+        public virtual ICollection<Delivery> Deliveries { get; set; }
         public virtual ICollection<FlourTransfer> FlourTransfers { get; set; }
         public virtual ICollection<FlourTransfer> FlourTransfers1 { get; set; }
         public virtual ICollection<FlourTransfer> FlourTransfers2 { get; set; }

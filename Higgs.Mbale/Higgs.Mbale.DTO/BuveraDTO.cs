@@ -22,6 +22,7 @@ namespace Higgs.Mbale.DTO
         public double TotalQuantity { get; set; }
         public string FromSupplier { get; set; }
         public string ToReceiver { get; set; }
+        public string InvoiceNumber { get; set; }
     
     }
 }

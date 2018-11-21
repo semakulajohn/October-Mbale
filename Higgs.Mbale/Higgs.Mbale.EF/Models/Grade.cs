@@ -24,6 +24,9 @@ namespace Higgs.Mbale.EF.Models
             this.StoreBuveraGradeSizes = new HashSet<StoreBuveraGradeSize>();
             this.DeliveryGradeSizes = new HashSet<DeliveryGradeSize>();
             this.FlourTransferGradeSizes = new HashSet<FlourTransferGradeSize>();
+            this.BuveraTransferGradeSizes = new HashSet<BuveraTransferGradeSize>();
+            this.StoreBuveraTransferGradeSizes = new HashSet<StoreBuveraTransferGradeSize>();
+            this.StoreFlourTransferGradeSizes = new HashSet<StoreFlourTransferGradeSize>();
         }
     
         public long GradeId { get; set; }
@@ -47,5 +50,8 @@ namespace Higgs.Mbale.EF.Models
         public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual AspNetUser AspNetUser2 { get; set; }
         public virtual ICollection<FlourTransferGradeSize> FlourTransferGradeSizes { get; set; }
+        public virtual ICollection<BuveraTransferGradeSize> BuveraTransferGradeSizes { get; set; }
+        public virtual ICollection<StoreBuveraTransferGradeSize> StoreBuveraTransferGradeSizes { get; set; }
+        public virtual ICollection<StoreFlourTransferGradeSize> StoreFlourTransferGradeSizes { get; set; }
     }
 }

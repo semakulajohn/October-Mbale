@@ -173,6 +173,7 @@ namespace Higgs.Mbale.Web
 .Include("~/app/scripts/controllers/creditor.js")
 .Include("~/app/scripts/controllers/buvera.js")
 .Include("~/app/scripts/controllers/flourtransfer.js")
+.Include("~/app/scripts/controllers/buveratransfer.js")
 .Include("~/app/scripts/controllers/utility.js")
 .Include("~/app/scripts/controllers/application.js")
 .Include("~/app/scripts/directives/touchSpin.js")

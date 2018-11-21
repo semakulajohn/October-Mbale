@@ -67,7 +67,7 @@ namespace Higgs.Mbale.DAL.Concrete
                     TotalQuantity = flourTransferDTO.TotalQuantity,   
                     Accept = flourTransferDTO.Accept,
                     Reject = flourTransferDTO.Reject,
-                    BatchNumbers = flourTransferDTO.BatchNumbers,
+                   
                     CreatedOn = DateTime.Now,
                     TimeStamp = DateTime.Now,
                     CreatedBy = userId,
@@ -96,7 +96,7 @@ namespace Higgs.Mbale.DAL.Concrete
                     result.TotalQuantity = flourTransferDTO.TotalQuantity;               
                     result.BranchId = flourTransferDTO.BranchId;
                     result.StoreId = flourTransferDTO.StoreId;
-                    result.BatchNumbers = flourTransferDTO.BatchNumbers;
+                   
                     result.Accept = flourTransferDTO.Accept;
                     result.Reject = flourTransferDTO.Reject;
                     result.UpdatedBy = userId;
@@ -106,6 +106,26 @@ namespace Higgs.Mbale.DAL.Concrete
                 }
                 return flourTransferDTO.FlourTransferId;
             }
+        }
+
+
+        public void SaveFlourTransferBatch(FlourTransferBatchDTO flourTransferBatchDTO)
+        {
+           
+           
+                var flourTransferBatch = new FlourTransferBatch()
+                {
+
+                   FlourTransferId = flourTransferBatchDTO.FlourTransferId,
+                   BatchId = flourTransferBatchDTO.BatchId,
+                    CreatedOn = DateTime.Now,
+                    TimeStamp = DateTime.Now,
+                   
+                };
+
+                this.UnitOfWork.Get<FlourTransferBatch>().AddNew(flourTransferBatch);
+                this.UnitOfWork.SaveChanges();
+       
         }
 
         public void MarkAsDeleted(long FlourTransferId, string userId)
@@ -118,14 +138,43 @@ namespace Higgs.Mbale.DAL.Concrete
         }
 
 
-        public IEnumerable<StoreGradeSize> GetStoreFlourTransferStock(long storeId)
+        public IEnumerable<StoreFlourTransferGradeSize> GetStoreFlourTransferStock(long storeId)
         {
-            return this.UnitOfWork.Get<StoreGradeSize>().AsQueryable().Where(e => e.StoreId == storeId);
+            return this.UnitOfWork.Get<StoreFlourTransferGradeSize>().AsQueryable().Where(e => e.StoreId == storeId);
 
         }
 
+        public IEnumerable<FlourTransferBatch> GetAllBatchesForAFlourTransfer(long flourTransferId)
+        {
+            return this.UnitOfWork.Get<FlourTransferBatch>().AsQueryable().Where(e => e.FlourTransferId == flourTransferId);
+        }
 
-        public int SaveStoreFlourTransferGradeSize(StoreGradeSizeDTO storeFlourTransferGradeSizeDTO, bool inOrOut)
+
+        private void SaveStoreFlourTransferGradeSizes(StoreFlourTransferGradeSizeDTO storeFlourTransferGradeSizeDTO, bool inOrOut)
+        {
+            
+            var result = this.UnitOfWork.Get<StoreFlourTransferGradeSize>().AsQueryable()
+           .FirstOrDefault(e => e.StoreId == storeFlourTransferGradeSizeDTO.StoreId && e.GradeId == storeFlourTransferGradeSizeDTO.GradeId && e.SizeId == storeFlourTransferGradeSizeDTO.SizeId);
+
+
+            if (result == null)
+            {
+                var storeFlourTransferGradeSize = new StoreFlourTransferGradeSize()
+                {
+
+                    GradeId = storeFlourTransferGradeSizeDTO.GradeId,
+                    SizeId = storeFlourTransferGradeSizeDTO.SizeId,
+                    StoreId = storeFlourTransferGradeSizeDTO.StoreId,
+                    Quantity = storeFlourTransferGradeSizeDTO.Quantity,
+                    TimeStamp = DateTime.Now
+                };
+                this.UnitOfWork.Get<StoreFlourTransferGradeSize>().AddNew(storeFlourTransferGradeSize);
+                this.UnitOfWork.SaveChanges();
+            
+
+            }
+        }
+        public void SaveStoreFlourTransferGradeSize(StoreFlourTransferGradeSizeDTO storeFlourTransferGradeSizeDTO, bool inOrOut)
         {
             double sizeQuantity = 0;
             var result = this.UnitOfWork.Get<StoreGradeSize>().AsQueryable()
@@ -145,7 +194,9 @@ namespace Higgs.Mbale.DAL.Concrete
                 };
                 this.UnitOfWork.Get<StoreGradeSize>().AddNew(storeFlourTransferGradeSize);
                 this.UnitOfWork.SaveChanges();
-                return 1;
+
+                SaveStoreFlourTransferGradeSizes(storeFlourTransferGradeSizeDTO, inOrOut);
+               
 
             }
 
@@ -162,15 +213,12 @@ namespace Higgs.Mbale.DAL.Concrete
                     result.TimeStamp = DateTime.Now;
                     this.UnitOfWork.Get<StoreGradeSize>().Update(result);
                     this.UnitOfWork.SaveChanges();
-                    return 1;
+                   
 
                 }
                 else
                 {
-                    if (storeFlourTransferGradeSizeDTO.Quantity > result.Quantity)
-                    {
-                        return -1;
-                    }
+
                     sizeQuantity = result.Quantity - storeFlourTransferGradeSizeDTO.Quantity;
 
                     result.StoreId = storeFlourTransferGradeSizeDTO.StoreId;
@@ -180,7 +228,7 @@ namespace Higgs.Mbale.DAL.Concrete
                     result.TimeStamp = DateTime.Now;
                     this.UnitOfWork.Get<StoreGradeSize>().Update(result);
                     this.UnitOfWork.SaveChanges();
-                    return 1;
+                   
                 }
 
 

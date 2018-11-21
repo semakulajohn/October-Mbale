@@ -3,6 +3,7 @@
 	[BuveraId] BIGINT IDENTITY(1,1) NOT NULL,	
 	[TotalCost] FLOAT NULL,
 	[StoreId]  BIGINT NOT NULL,
+	[InvoiceNumber] [nvarchar](50) NULL,
 	[BranchId]   BIGINT NOT NULL,
 	[Deleted]	[bit] NULL,
 	[ToReceiver]  [nvarchar](255) NULL,

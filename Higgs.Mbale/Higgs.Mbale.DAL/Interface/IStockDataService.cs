@@ -32,5 +32,8 @@ public    interface IStockDataService
         StoreStock GetStockForAParticularStoreForDelivery(long storeId, long productId, long batchId);
         void UpdateStoreStockAndStockDetails(long stockId, long productId, bool soldOut, string userId);
         Stock GetStockForAParticularBatchAndProduct(long batchId, long productId, long storeId);
+        StoreStock GetStoreStockForParticularStock(long stockId, long productId, long storeId);
+        long SaveStoreStock(StoreStockDTO storeStockDTO);
+        IEnumerable<StoreStock> GetStockForAParticularBranchForTransfer(long branchId, long productId);
     }
 }

@@ -4,7 +4,7 @@
 	[CustomerId] [nvarchar](128) NOT NULL,
 	[DriverName]   [nvarchar](500) NOT NULL,
 	[Price]      FLOAT NULL,
-	[BatchId]    BIGINT NOT NULL,
+	
 	[ProductId]   BIGINT NOT NULL,
 	[PaymentModeId] BIGINT NOT NULL,
 	[DeliveryCost] FLOAT NOT NULL,
@@ -33,7 +33,7 @@
 CONSTRAINT [FK_Delivery_OrderId] FOREIGN KEY([OrderId]) REFERENCES [dbo].[Order](OrderId),
 CONSTRAINT [FK_Delivery_StoreId] FOREIGN KEY([StoreId]) REFERENCES [dbo].[Store] (StoreId),
 CONSTRAINT [FK_Delivery_PaymentModeId] FOREIGN KEY ([PaymentModeId]) REFERENCES [dbo].[PaymentMode](PaymentModeId),
-CONSTRAINT [FK_Delivery_BatchId] FOREIGN KEY([BatchId]) REFERENCES [dbo].[Batch](BatchId),
+
 CONSTRAINT [FK_Delivery_ProductId] FOREIGN KEY([ProductId]) REFERENCES [dbo].[Product] (ProductId),
 CONSTRAINT [FK_Delivery_BranchId] FOREIGN KEY([BranchId]) REFERENCES [dbo].[Branch](BranchId),
 CONSTRAINT [FK_Delivery_SectorId] FOREIGN KEY([SectorId]) REFERENCES [dbo].[Sector](SectorId),

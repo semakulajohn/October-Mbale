@@ -60,6 +60,7 @@
     <Compile Include="Concrete\BatchOutPutDataService.cs" />
     <Compile Include="Concrete\BranchDataService.cs" />
     <Compile Include="Concrete\BuveraDataService.cs" />
+    <Compile Include="Concrete\BuveraTransferDataService.cs" />
     <Compile Include="Concrete\CashDataService.cs" />
     <Compile Include="Concrete\CasualActivityDataService.cs" />
     <Compile Include="Concrete\CasualWorkerDataService.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Interface\IBatchOutPutDataService.cs" />
     <Compile Include="Interface\IBranchDataService.cs" />
     <Compile Include="Interface\IBuveraDataService.cs" />
+    <Compile Include="Interface\IBuveraTransferDataService.cs" />
     <Compile Include="Interface\ICashDataService.cs" />
     <Compile Include="Interface\ICasualActivityDataService.cs" />
     <Compile Include="Interface\ICasualWorkerDataService.cs" />

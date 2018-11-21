@@ -264,6 +264,7 @@
           <Property Name="TimeStamp" Type="datetime" Nullable="false" />
           <Property Name="DeletedOn" Type="datetime" />
           <Property Name="ToReceiver" Type="nvarchar" MaxLength="255" />
+          <Property Name="InvoiceNumber" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="BuveraGradeSize">
           <Key>
@@ -272,6 +273,41 @@
             <PropertyRef Name="SizeId" />
           </Key>
           <Property Name="BuveraId" Type="bigint" Nullable="false" />
+          <Property Name="GradeId" Type="bigint" Nullable="false" />
+          <Property Name="SizeId" Type="bigint" Nullable="false" />
+          <Property Name="StoreId" Type="bigint" Nullable="false" />
+          <Property Name="Quantity" Type="float" Nullable="false" />
+          <Property Name="Rate" Type="float" Nullable="false" />
+          <Property Name="Amount" Type="float" Nullable="false" />
+          <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BuveraTransfer">
+          <Key>
+            <PropertyRef Name="BuveraTransferId" />
+          </Key>
+          <Property Name="BuveraTransferId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StoreId" Type="bigint" Nullable="false" />
+          <Property Name="BranchId" Type="bigint" Nullable="false" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="ToReceiverStoreId" Type="bigint" Nullable="false" />
+          <Property Name="Accept" Type="bit" Nullable="false" />
+          <Property Name="Reject" Type="bit" Nullable="false" />
+          <Property Name="FromSupplierStoreId" Type="bigint" Nullable="false" />
+          <Property Name="TotalQuantity" Type="float" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="DeletedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="BuveraTransferGradeSize">
+          <Key>
+            <PropertyRef Name="BuveraTransferId" />
+            <PropertyRef Name="GradeId" />
+            <PropertyRef Name="SizeId" />
+          </Key>
+          <Property Name="BuveraTransferId" Type="bigint" Nullable="false" />
           <Property Name="GradeId" Type="bigint" Nullable="false" />
           <Property Name="SizeId" Type="bigint" Nullable="false" />
           <Property Name="StoreId" Type="bigint" Nullable="false" />
@@ -389,7 +425,6 @@
           <Property Name="CustomerId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="DriverName" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Price" Type="float" />
-          <Property Name="BatchId" Type="bigint" Nullable="false" />
           <Property Name="ProductId" Type="bigint" Nullable="false" />
           <Property Name="PaymentModeId" Type="bigint" Nullable="false" />
           <Property Name="DeliveryCost" Type="float" Nullable="false" />
@@ -411,6 +446,17 @@
           <Property Name="TimeStamp" Type="datetime" Nullable="false" />
           <Property Name="DeletedOn" Type="datetime" />
           <Property Name="Quantity" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DeliveryBatch">
+          <Key>
+            <PropertyRef Name="BatchId" />
+            <PropertyRef Name="DeliveryId" />
+          </Key>
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="DeliveryId" Type="bigint" Nullable="false" />
+          <Property Name="BatchQuantity" Type="float" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="TimeStamp" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="DeliveryGradeSize">
           <Key>
@@ -526,7 +572,16 @@
           <Property Name="DeletedOn" Type="datetime" />
           <Property Name="Accept" Type="bit" Nullable="false" />
           <Property Name="Reject" Type="bit" Nullable="false" />
-          <Property Name="BatchNumbers" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="FlourTransferBatch">
+          <Key>
+            <PropertyRef Name="BatchId" />
+            <PropertyRef Name="FlourTransferId" />
+          </Key>
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="FlourTransferId" Type="bigint" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="TimeStamp" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="FlourTransferGradeSize">
           <Key>
@@ -862,6 +917,28 @@
           <Key>
             <PropertyRef Name="GradeId" />
             <PropertyRef Name="StoreId" />
+            <PropertyRef Name="SizeId" />
+          </Key>
+          <Property Name="GradeId" Type="bigint" Nullable="false" />
+          <Property Name="StoreId" Type="bigint" Nullable="false" />
+          <Property Name="SizeId" Type="bigint" Nullable="false" />
+          <Property Name="Quantity" Type="float" Nullable="false" />
+          <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StoreBuveraTransferGradeSize">
+          <Key>
+            <PropertyRef Name="GradeId" />
+            <PropertyRef Name="SizeId" />
+          </Key>
+          <Property Name="GradeId" Type="bigint" Nullable="false" />
+          <Property Name="StoreId" Type="bigint" Nullable="false" />
+          <Property Name="SizeId" Type="bigint" Nullable="false" />
+          <Property Name="Quantity" Type="float" Nullable="false" />
+          <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StoreFlourTransferGradeSize">
+          <Key>
+            <PropertyRef Name="GradeId" />
             <PropertyRef Name="SizeId" />
           </Key>
           <Property Name="GradeId" Type="bigint" Nullable="false" />
@@ -1433,6 +1510,90 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_BuveraTransfer_BranchId">
+          <End Role="Branch" Type="Self.Branch" Multiplicity="1" />
+          <End Role="BuveraTransfer" Type="Self.BuveraTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="BuveraTransfer">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BuveraTransfer_CreatedBy">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="BuveraTransfer" Type="Self.BuveraTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BuveraTransfer">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BuveraTransfer_DeletedBy">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="BuveraTransfer" Type="Self.BuveraTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BuveraTransfer">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BuveraTransfer_FromSupplierStoreId">
+          <End Role="Store" Type="Self.Store" Multiplicity="1" />
+          <End Role="BuveraTransfer" Type="Self.BuveraTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="BuveraTransfer">
+              <PropertyRef Name="FromSupplierStoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BuveraTransfer_StoreId">
+          <End Role="Store" Type="Self.Store" Multiplicity="1" />
+          <End Role="BuveraTransfer" Type="Self.BuveraTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="BuveraTransfer">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BuveraTransfer_ToReceiverStoreId">
+          <End Role="Store" Type="Self.Store" Multiplicity="1" />
+          <End Role="BuveraTransfer" Type="Self.BuveraTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="BuveraTransfer">
+              <PropertyRef Name="ToReceiverStoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BuveraTransfer_UpdatedBy">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="BuveraTransfer" Type="Self.BuveraTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BuveraTransfer">
+              <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Cash_BranchId">
           <End Role="Branch" Type="Self.Branch" Multiplicity="0..1" />
           <End Role="Cash" Type="Self.Cash" Multiplicity="*" />
@@ -1995,6 +2156,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_dbo_BuveraTransferGradeSize_dbo_BuveraTransfer_BuveraTransferId">
+          <End Role="BuveraTransfer" Type="Self.BuveraTransfer" Multiplicity="1" />
+          <End Role="BuveraTransferGradeSize" Type="Self.BuveraTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BuveraTransfer">
+              <PropertyRef Name="BuveraTransferId" />
+            </Principal>
+            <Dependent Role="BuveraTransferGradeSize">
+              <PropertyRef Name="BuveraTransferId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_BuveraTransferGradeSize_dbo_Grade_GradeId">
+          <End Role="Grade" Type="Self.Grade" Multiplicity="1" />
+          <End Role="BuveraTransferGradeSize" Type="Self.BuveraTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grade">
+              <PropertyRef Name="GradeId" />
+            </Principal>
+            <Dependent Role="BuveraTransferGradeSize">
+              <PropertyRef Name="GradeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_BuveraTransferGradeSize_dbo_Size_SizeId">
+          <End Role="Size" Type="Self.Size" Multiplicity="1" />
+          <End Role="BuveraTransferGradeSize" Type="Self.BuveraTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Size">
+              <PropertyRef Name="SizeId" />
+            </Principal>
+            <Dependent Role="BuveraTransferGradeSize">
+              <PropertyRef Name="SizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_BuveraTransferGradeSize_dbo_Store_StoreId">
+          <End Role="Store" Type="Self.Store" Multiplicity="1" />
+          <End Role="BuveraTransferGradeSize" Type="Self.BuveraTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="BuveraTransferGradeSize">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_DeliveryGradeSize_dbo_Delivery_DeliveryId">
           <End Role="Delivery" Type="Self.Delivery" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2273,6 +2482,90 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_dbo_StoreBuveraTransferGradeSize_dbo_Grade_GradeId">
+          <End Role="Grade" Type="Self.Grade" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StoreBuveraTransferGradeSize" Type="Self.StoreBuveraTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grade">
+              <PropertyRef Name="GradeId" />
+            </Principal>
+            <Dependent Role="StoreBuveraTransferGradeSize">
+              <PropertyRef Name="GradeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_StoreBuveraTransferGradeSize_dbo_Size_SizeId">
+          <End Role="Size" Type="Self.Size" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StoreBuveraTransferGradeSize" Type="Self.StoreBuveraTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Size">
+              <PropertyRef Name="SizeId" />
+            </Principal>
+            <Dependent Role="StoreBuveraTransferGradeSize">
+              <PropertyRef Name="SizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_StoreBuveraTransferGradeSize_dbo_Store_StoreId">
+          <End Role="Store" Type="Self.Store" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StoreBuveraTransferGradeSize" Type="Self.StoreBuveraTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="StoreBuveraTransferGradeSize">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_StoreFlourTransferGradeSize_dbo_Grade_GradeId">
+          <End Role="Grade" Type="Self.Grade" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StoreFlourTransferGradeSize" Type="Self.StoreFlourTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grade">
+              <PropertyRef Name="GradeId" />
+            </Principal>
+            <Dependent Role="StoreFlourTransferGradeSize">
+              <PropertyRef Name="GradeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_StoreFlourTransferGradeSize_dbo_Size_SizeId">
+          <End Role="Size" Type="Self.Size" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StoreFlourTransferGradeSize" Type="Self.StoreFlourTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Size">
+              <PropertyRef Name="SizeId" />
+            </Principal>
+            <Dependent Role="StoreFlourTransferGradeSize">
+              <PropertyRef Name="SizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_StoreFlourTransferGradeSize_dbo_Store_StoreId">
+          <End Role="Store" Type="Self.Store" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StoreFlourTransferGradeSize" Type="Self.StoreFlourTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="StoreFlourTransferGradeSize">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_StoreGradeSize_dbo_Grade_GradeId">
           <End Role="Grade" Type="Self.Grade" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2503,18 +2796,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Delivery_BatchId">
-          <End Role="Batch" Type="Self.Batch" Multiplicity="1" />
-          <End Role="Delivery" Type="Self.Delivery" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Batch">
-              <PropertyRef Name="BatchId" />
-            </Principal>
-            <Dependent Role="Delivery">
-              <PropertyRef Name="BatchId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Delivery_BranchId">
           <End Role="Branch" Type="Self.Branch" Multiplicity="1" />
           <End Role="Delivery" Type="Self.Delivery" Multiplicity="*" />
@@ -2632,6 +2913,30 @@
             </Principal>
             <Dependent Role="Delivery">
               <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DeliveryBatch_BatchId">
+          <End Role="Batch" Type="Self.Batch" Multiplicity="1" />
+          <End Role="DeliveryBatch" Type="Self.DeliveryBatch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Batch">
+              <PropertyRef Name="BatchId" />
+            </Principal>
+            <Dependent Role="DeliveryBatch">
+              <PropertyRef Name="BatchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DeliveryBatch_DeliveryId">
+          <End Role="Delivery" Type="Self.Delivery" Multiplicity="1" />
+          <End Role="DeliveryBatch" Type="Self.DeliveryBatch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Delivery">
+              <PropertyRef Name="DeliveryId" />
+            </Principal>
+            <Dependent Role="DeliveryBatch">
+              <PropertyRef Name="DeliveryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2908,6 +3213,30 @@
             </Principal>
             <Dependent Role="FlourTransfer">
               <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FlourTransferBatch_BatchId">
+          <End Role="Batch" Type="Self.Batch" Multiplicity="1" />
+          <End Role="FlourTransferBatch" Type="Self.FlourTransferBatch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Batch">
+              <PropertyRef Name="BatchId" />
+            </Principal>
+            <Dependent Role="FlourTransferBatch">
+              <PropertyRef Name="BatchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FlourTransferBatch_DeliveryId">
+          <End Role="FlourTransfer" Type="Self.FlourTransfer" Multiplicity="1" />
+          <End Role="FlourTransferBatch" Type="Self.FlourTransferBatch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlourTransfer">
+              <PropertyRef Name="FlourTransferId" />
+            </Principal>
+            <Dependent Role="FlourTransferBatch">
+              <PropertyRef Name="FlourTransferId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4261,12 +4590,15 @@
           <EntitySet Name="BranchSector" EntityType="Self.BranchSector" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Buvera" EntityType="Self.Buvera" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BuveraGradeSize" EntityType="Self.BuveraGradeSize" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BuveraTransfer" EntityType="Self.BuveraTransfer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BuveraTransferGradeSize" EntityType="Self.BuveraTransferGradeSize" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cash" EntityType="Self.Cash" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CasualActivity" EntityType="Self.CasualActivity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CasualWorker" EntityType="Self.CasualWorker" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Creditor" EntityType="Self.Creditor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Debtor" EntityType="Self.Debtor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Delivery" EntityType="Self.Delivery" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeliveryBatch" EntityType="Self.DeliveryBatch" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DeliveryGradeSize" EntityType="Self.DeliveryGradeSize" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DeliveryStock" EntityType="Self.DeliveryStock" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Document" EntityType="Self.Document" Schema="dbo" store:Type="Tables" />
@@ -4275,6 +4607,7 @@
           <EntitySet Name="Factory" EntityType="Self.Factory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FactoryExpense" EntityType="Self.FactoryExpense" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FlourTransfer" EntityType="Self.FlourTransfer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FlourTransferBatch" EntityType="Self.FlourTransferBatch" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FlourTransferGradeSize" EntityType="Self.FlourTransferGradeSize" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Grade" EntityType="Self.Grade" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
@@ -4298,6 +4631,8 @@
           <EntitySet Name="StockProduct" EntityType="Self.StockProduct" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Store" EntityType="Self.Store" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StoreBuveraGradeSize" EntityType="Self.StoreBuveraGradeSize" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StoreBuveraTransferGradeSize" EntityType="Self.StoreBuveraTransferGradeSize" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StoreFlourTransferGradeSize" EntityType="Self.StoreFlourTransferGradeSize" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StoreGradeSize" EntityType="Self.StoreGradeSize" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StoreMaizeStock" EntityType="Self.StoreMaizeStock" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StoreStock" EntityType="Self.StoreStock" Schema="dbo" store:Type="Tables" />
@@ -4443,6 +4778,34 @@
           <AssociationSet Name="FK_Buvera_UpdatedBy" Association="Self.FK_Buvera_UpdatedBy">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Buvera" EntitySet="Buvera" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuveraTransfer_BranchId" Association="Self.FK_BuveraTransfer_BranchId">
+            <End Role="Branch" EntitySet="Branch" />
+            <End Role="BuveraTransfer" EntitySet="BuveraTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuveraTransfer_CreatedBy" Association="Self.FK_BuveraTransfer_CreatedBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="BuveraTransfer" EntitySet="BuveraTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuveraTransfer_DeletedBy" Association="Self.FK_BuveraTransfer_DeletedBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="BuveraTransfer" EntitySet="BuveraTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuveraTransfer_FromSupplierStoreId" Association="Self.FK_BuveraTransfer_FromSupplierStoreId">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="BuveraTransfer" EntitySet="BuveraTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuveraTransfer_StoreId" Association="Self.FK_BuveraTransfer_StoreId">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="BuveraTransfer" EntitySet="BuveraTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuveraTransfer_ToReceiverStoreId" Association="Self.FK_BuveraTransfer_ToReceiverStoreId">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="BuveraTransfer" EntitySet="BuveraTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuveraTransfer_UpdatedBy" Association="Self.FK_BuveraTransfer_UpdatedBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="BuveraTransfer" EntitySet="BuveraTransfer" />
           </AssociationSet>
           <AssociationSet Name="FK_Cash_BranchId" Association="Self.FK_Cash_BranchId">
             <End Role="Branch" EntitySet="Branch" />
@@ -4620,6 +4983,22 @@
             <End Role="Store" EntitySet="Store" />
             <End Role="BuveraGradeSize" EntitySet="BuveraGradeSize" />
           </AssociationSet>
+          <AssociationSet Name="FK_dbo_BuveraTransferGradeSize_dbo_BuveraTransfer_BuveraTransferId" Association="Self.FK_dbo_BuveraTransferGradeSize_dbo_BuveraTransfer_BuveraTransferId">
+            <End Role="BuveraTransfer" EntitySet="BuveraTransfer" />
+            <End Role="BuveraTransferGradeSize" EntitySet="BuveraTransferGradeSize" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_BuveraTransferGradeSize_dbo_Grade_GradeId" Association="Self.FK_dbo_BuveraTransferGradeSize_dbo_Grade_GradeId">
+            <End Role="Grade" EntitySet="Grade" />
+            <End Role="BuveraTransferGradeSize" EntitySet="BuveraTransferGradeSize" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_BuveraTransferGradeSize_dbo_Size_SizeId" Association="Self.FK_dbo_BuveraTransferGradeSize_dbo_Size_SizeId">
+            <End Role="Size" EntitySet="Size" />
+            <End Role="BuveraTransferGradeSize" EntitySet="BuveraTransferGradeSize" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_BuveraTransferGradeSize_dbo_Store_StoreId" Association="Self.FK_dbo_BuveraTransferGradeSize_dbo_Store_StoreId">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="BuveraTransferGradeSize" EntitySet="BuveraTransferGradeSize" />
+          </AssociationSet>
           <AssociationSet Name="FK_dbo_DeliveryGradeSize_dbo_Delivery_DeliveryId" Association="Self.FK_dbo_DeliveryGradeSize_dbo_Delivery_DeliveryId">
             <End Role="Delivery" EntitySet="Delivery" />
             <End Role="DeliveryGradeSize" EntitySet="DeliveryGradeSize" />
@@ -4700,6 +5079,30 @@
             <End Role="Store" EntitySet="Store" />
             <End Role="StoreBuveraGradeSize" EntitySet="StoreBuveraGradeSize" />
           </AssociationSet>
+          <AssociationSet Name="FK_dbo_StoreBuveraTransferGradeSize_dbo_Grade_GradeId" Association="Self.FK_dbo_StoreBuveraTransferGradeSize_dbo_Grade_GradeId">
+            <End Role="Grade" EntitySet="Grade" />
+            <End Role="StoreBuveraTransferGradeSize" EntitySet="StoreBuveraTransferGradeSize" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_StoreBuveraTransferGradeSize_dbo_Size_SizeId" Association="Self.FK_dbo_StoreBuveraTransferGradeSize_dbo_Size_SizeId">
+            <End Role="Size" EntitySet="Size" />
+            <End Role="StoreBuveraTransferGradeSize" EntitySet="StoreBuveraTransferGradeSize" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_StoreBuveraTransferGradeSize_dbo_Store_StoreId" Association="Self.FK_dbo_StoreBuveraTransferGradeSize_dbo_Store_StoreId">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="StoreBuveraTransferGradeSize" EntitySet="StoreBuveraTransferGradeSize" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_StoreFlourTransferGradeSize_dbo_Grade_GradeId" Association="Self.FK_dbo_StoreFlourTransferGradeSize_dbo_Grade_GradeId">
+            <End Role="Grade" EntitySet="Grade" />
+            <End Role="StoreFlourTransferGradeSize" EntitySet="StoreFlourTransferGradeSize" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_StoreFlourTransferGradeSize_dbo_Size_SizeId" Association="Self.FK_dbo_StoreFlourTransferGradeSize_dbo_Size_SizeId">
+            <End Role="Size" EntitySet="Size" />
+            <End Role="StoreFlourTransferGradeSize" EntitySet="StoreFlourTransferGradeSize" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_StoreFlourTransferGradeSize_dbo_Store_StoreId" Association="Self.FK_dbo_StoreFlourTransferGradeSize_dbo_Store_StoreId">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="StoreFlourTransferGradeSize" EntitySet="StoreFlourTransferGradeSize" />
+          </AssociationSet>
           <AssociationSet Name="FK_dbo_StoreGradeSize_dbo_Grade_GradeId" Association="Self.FK_dbo_StoreGradeSize_dbo_Grade_GradeId">
             <End Role="Grade" EntitySet="Grade" />
             <End Role="StoreGradeSize" EntitySet="StoreGradeSize" />
@@ -4772,10 +5175,6 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Debtor" EntitySet="Debtor" />
           </AssociationSet>
-          <AssociationSet Name="FK_Delivery_BatchId" Association="Self.FK_Delivery_BatchId">
-            <End Role="Batch" EntitySet="Batch" />
-            <End Role="Delivery" EntitySet="Delivery" />
-          </AssociationSet>
           <AssociationSet Name="FK_Delivery_BranchId" Association="Self.FK_Delivery_BranchId">
             <End Role="Branch" EntitySet="Branch" />
             <End Role="Delivery" EntitySet="Delivery" />
@@ -4815,6 +5214,14 @@
           <AssociationSet Name="FK_Delivery_UpdatedBy" Association="Self.FK_Delivery_UpdatedBy">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Delivery" EntitySet="Delivery" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DeliveryBatch_BatchId" Association="Self.FK_DeliveryBatch_BatchId">
+            <End Role="Batch" EntitySet="Batch" />
+            <End Role="DeliveryBatch" EntitySet="DeliveryBatch" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DeliveryBatch_DeliveryId" Association="Self.FK_DeliveryBatch_DeliveryId">
+            <End Role="Delivery" EntitySet="Delivery" />
+            <End Role="DeliveryBatch" EntitySet="DeliveryBatch" />
           </AssociationSet>
           <AssociationSet Name="FK_Document_BranchId" Association="Self.FK_Document_BranchId">
             <End Role="Branch" EntitySet="Branch" />
@@ -4907,6 +5314,14 @@
           <AssociationSet Name="FK_FlourTransfer_UpdatedBy" Association="Self.FK_FlourTransfer_UpdatedBy">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="FlourTransfer" EntitySet="FlourTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FlourTransferBatch_BatchId" Association="Self.FK_FlourTransferBatch_BatchId">
+            <End Role="Batch" EntitySet="Batch" />
+            <End Role="FlourTransferBatch" EntitySet="FlourTransferBatch" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FlourTransferBatch_DeliveryId" Association="Self.FK_FlourTransferBatch_DeliveryId">
+            <End Role="FlourTransfer" EntitySet="FlourTransfer" />
+            <End Role="FlourTransferBatch" EntitySet="FlourTransferBatch" />
           </AssociationSet>
           <AssociationSet Name="FK_Grade_CreatedBy" Association="Self.FK_Grade_CreatedBy">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -5396,7 +5811,6 @@
           <NavigationProperty Name="UserBranches" Relationship="Higgs.MbaleModel.FK_dbo_UserBranch_dbo_Branch_BranchId" FromRole="Branch" ToRole="UserBranch" />
           <NavigationProperty Name="StoreStocks" Relationship="Higgs.MbaleModel.FK_StoreStock_BranchId" FromRole="Branch" ToRole="StoreStock" />
           <NavigationProperty Name="StoreMaizeStocks" Relationship="Higgs.MbaleModel.FK_StoreMaizeStock_BranchId" FromRole="Branch" ToRole="StoreMaizeStock" />
-          <NavigationProperty Name="Buveras" Relationship="Higgs.MbaleModel.FK_Buvera_BranchId" FromRole="Branch" ToRole="Buvera" />
           <NavigationProperty Name="Inventories" Relationship="Higgs.MbaleModel.FK_Inventory_BranchId" FromRole="Branch" ToRole="Inventory" />
           <NavigationProperty Name="Requistions" Relationship="Higgs.MbaleModel.FK_Requistion_BranchId" FromRole="Branch" ToRole="Requistion" />
           <NavigationProperty Name="Creditors" Relationship="Higgs.MbaleModel.FK_Creditor_BranchId" FromRole="Branch" ToRole="Creditor" />
@@ -5406,18 +5820,20 @@
           <NavigationProperty Name="Transactions" Relationship="Higgs.MbaleModel.FK_Transaction_BranchId" FromRole="Branch" ToRole="Transaction" />
           <NavigationProperty Name="Cashes" Relationship="Higgs.MbaleModel.FK_Cash_BranchId" FromRole="Branch" ToRole="Cash" />
           <NavigationProperty Name="Batches" Relationship="Higgs.MbaleModel.FK_Batch_Branch" FromRole="Branch" ToRole="Batch" />
-          <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_BranchId" FromRole="Branch" ToRole="Delivery" />
           <NavigationProperty Name="Orders" Relationship="Higgs.MbaleModel.FK_Order_BranchId" FromRole="Branch" ToRole="Order" />
           <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Branch_CreatedBy" FromRole="Branch" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Branch_DeletedBy" FromRole="Branch" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Branch_UpdatedBy" FromRole="Branch" ToRole="AspNetUser" />
           <NavigationProperty Name="BatchOutPuts" Relationship="Higgs.MbaleModel.FK_BatchOutPut_BranchId" FromRole="Branch" ToRole="BatchOutPut" />
           <NavigationProperty Name="FactoryExpenses" Relationship="Higgs.MbaleModel.FK_FactoryExpense_Branch" FromRole="Branch" ToRole="FactoryExpense" />
-          <NavigationProperty Name="FlourTransfers" Relationship="Higgs.MbaleModel.FK_FlourTransfer_BranchId" FromRole="Branch" ToRole="FlourTransfer" />
           <NavigationProperty Name="LabourCosts" Relationship="Higgs.MbaleModel.FK_LabourCost_Branch" FromRole="Branch" ToRole="LabourCost" />
           <NavigationProperty Name="MachineRepairs" Relationship="Higgs.MbaleModel.FK_MachineRepair_BranchId" FromRole="Branch" ToRole="MachineRepair" />
           <NavigationProperty Name="OtherExpenses" Relationship="Higgs.MbaleModel.FK_OtherExpense_Branch" FromRole="Branch" ToRole="OtherExpense" />
           <NavigationProperty Name="Utilities" Relationship="Higgs.MbaleModel.FK_Utility_Branch" FromRole="Branch" ToRole="Utility" />
+          <NavigationProperty Name="Buveras" Relationship="Higgs.MbaleModel.FK_Buvera_BranchId" FromRole="Branch" ToRole="Buvera" />
+          <NavigationProperty Name="BuveraTransfers" Relationship="Higgs.MbaleModel.FK_BuveraTransfer_BranchId" FromRole="Branch" ToRole="BuveraTransfer" />
+          <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_BranchId" FromRole="Branch" ToRole="Delivery" />
+          <NavigationProperty Name="FlourTransfers" Relationship="Higgs.MbaleModel.FK_FlourTransfer_BranchId" FromRole="Branch" ToRole="FlourTransfer" />
         </EntityType>
         <EntityType Name="CasualWorker">
           <Key>
@@ -5505,11 +5921,11 @@
           <NavigationProperty Name="Stocks" Relationship="Higgs.MbaleModel.FK_Stock_ProductId" FromRole="Product" ToRole="Stock" />
           <NavigationProperty Name="StockProducts" Relationship="Higgs.MbaleModel.FK_dbo_StockProduct_dbo_Product_ProductId" FromRole="Product" ToRole="StockProduct" />
           <NavigationProperty Name="StoreStocks" Relationship="Higgs.MbaleModel.FK_StoreStock_ProductId" FromRole="Product" ToRole="StoreStock" />
-          <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_ProductId" FromRole="Product" ToRole="Delivery" />
           <NavigationProperty Name="Orders" Relationship="Higgs.MbaleModel.FK_Order_ProductId" FromRole="Product" ToRole="Order" />
           <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Product_CreatedBy" FromRole="Product" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Product_DeletedBy" FromRole="Product" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Product_UpdatedBy" FromRole="Product" ToRole="AspNetUser" />
+          <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_ProductId" FromRole="Product" ToRole="Delivery" />
         </EntityType>
         <EntityType Name="Size">
           <Key>
@@ -5536,6 +5952,9 @@
           <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Size_DeletedBy" FromRole="Size" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Size_UpdatedBy" FromRole="Size" ToRole="AspNetUser" />
           <NavigationProperty Name="FlourTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_FlourTransferGradeSize_dbo_Size_SizeId" FromRole="Size" ToRole="FlourTransferGradeSize" />
+          <NavigationProperty Name="BuveraTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_BuveraTransferGradeSize_dbo_Size_SizeId" FromRole="Size" ToRole="BuveraTransferGradeSize" />
+          <NavigationProperty Name="StoreBuveraTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StoreBuveraTransferGradeSize_dbo_Size_SizeId" FromRole="Size" ToRole="StoreBuveraTransferGradeSize" />
+          <NavigationProperty Name="StoreFlourTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StoreFlourTransferGradeSize_dbo_Size_SizeId" FromRole="Size" ToRole="StoreFlourTransferGradeSize" />
         </EntityType>
         <EntityType Name="Status">
           <Key>
@@ -5577,15 +5996,21 @@
           <NavigationProperty Name="StoreMaizeStocks" Relationship="Higgs.MbaleModel.FK_StoreMaizeStock_StoreId" FromRole="Store" ToRole="StoreMaizeStock" />
           <NavigationProperty Name="Supplies" Relationship="Higgs.MbaleModel.FK_Supply_Store" FromRole="Store" ToRole="Supply" />
           <NavigationProperty Name="StoreGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StoreGradeSize_dbo_Store_StoreId" FromRole="Store" ToRole="StoreGradeSize" />
-          <NavigationProperty Name="Buveras" Relationship="Higgs.MbaleModel.FK_Buvera_StoreId" FromRole="Store" ToRole="Buvera" />
           <NavigationProperty Name="BuveraGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_BuveraGradeSize_dbo_Store_StoreId" FromRole="Store" ToRole="BuveraGradeSize" />
           <NavigationProperty Name="StoreBuveraGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StoreBuveraGradeSize_dbo_Store_StoreId" FromRole="Store" ToRole="StoreBuveraGradeSize" />
           <NavigationProperty Name="Inventories" Relationship="Higgs.MbaleModel.FK_Inventory_StoreId" FromRole="Store" ToRole="Inventory" />
-          <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_StoreId" FromRole="Store" ToRole="Delivery" />
           <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Store_CreatedBy" FromRole="Store" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Store_DeletedBy" FromRole="Store" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Store_UpdatedBy" FromRole="Store" ToRole="AspNetUser" />
           <NavigationProperty Name="FlourTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_FlourTransferGradeSize_dbo_Store_StoreId" FromRole="Store" ToRole="FlourTransferGradeSize" />
+          <NavigationProperty Name="Buveras" Relationship="Higgs.MbaleModel.FK_Buvera_StoreId" FromRole="Store" ToRole="Buvera" />
+          <NavigationProperty Name="BuveraTransfers" Relationship="Higgs.MbaleModel.FK_BuveraTransfer_FromSupplierStoreId" FromRole="Store" ToRole="BuveraTransfer" />
+          <NavigationProperty Name="BuveraTransfers1" Relationship="Higgs.MbaleModel.FK_BuveraTransfer_StoreId" FromRole="Store" ToRole="BuveraTransfer" />
+          <NavigationProperty Name="BuveraTransfers2" Relationship="Higgs.MbaleModel.FK_BuveraTransfer_ToReceiverStoreId" FromRole="Store" ToRole="BuveraTransfer" />
+          <NavigationProperty Name="BuveraTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_BuveraTransferGradeSize_dbo_Store_StoreId" FromRole="Store" ToRole="BuveraTransferGradeSize" />
+          <NavigationProperty Name="StoreBuveraTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StoreBuveraTransferGradeSize_dbo_Store_StoreId" FromRole="Store" ToRole="StoreBuveraTransferGradeSize" />
+          <NavigationProperty Name="StoreFlourTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StoreFlourTransferGradeSize_dbo_Store_StoreId" FromRole="Store" ToRole="StoreFlourTransferGradeSize" />
+          <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_StoreId" FromRole="Store" ToRole="Delivery" />
           <NavigationProperty Name="FlourTransfers" Relationship="Higgs.MbaleModel.FK_FlourTransfer_FromSupplierStoreId" FromRole="Store" ToRole="FlourTransfer" />
           <NavigationProperty Name="FlourTransfers1" Relationship="Higgs.MbaleModel.FK_FlourTransfer_StoreId" FromRole="Store" ToRole="FlourTransfer" />
           <NavigationProperty Name="FlourTransfers2" Relationship="Higgs.MbaleModel.FK_FlourTransfer_ToReceiverStoreId" FromRole="Store" ToRole="FlourTransfer" />
@@ -5915,20 +6340,7 @@
             <Parameter Name="statusId" Mode="In" Type="Int64" />
             <Parameter Name="userId" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="Buveras" EntityType="Higgs.MbaleModel.Buvera" />
-          <AssociationSet Name="FK_Buvera_BranchId" Association="Higgs.MbaleModel.FK_Buvera_BranchId">
-            <End Role="Branch" EntitySet="Branches" />
-            <End Role="Buvera" EntitySet="Buveras" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Buvera_StoreId" Association="Higgs.MbaleModel.FK_Buvera_StoreId">
-            <End Role="Store" EntitySet="Stores" />
-            <End Role="Buvera" EntitySet="Buveras" />
-          </AssociationSet>
           <EntitySet Name="BuveraGradeSizes" EntityType="Higgs.MbaleModel.BuveraGradeSize" />
-          <AssociationSet Name="FK_dbo_BuveraGradeSize_dbo_Buvera_BuveraId" Association="Higgs.MbaleModel.FK_dbo_BuveraGradeSize_dbo_Buvera_BuveraId">
-            <End Role="Buvera" EntitySet="Buveras" />
-            <End Role="BuveraGradeSize" EntitySet="BuveraGradeSizes" />
-          </AssociationSet>
           <AssociationSet Name="FK_dbo_BuveraGradeSize_dbo_Grade_GradeId" Association="Higgs.MbaleModel.FK_dbo_BuveraGradeSize_dbo_Grade_GradeId">
             <End Role="Grade" EntitySet="Grades" />
             <End Role="BuveraGradeSize" EntitySet="BuveraGradeSizes" />
@@ -6125,43 +6537,6 @@
             <End Role="Batch" EntitySet="Batches" />
             <End Role="Stock" EntitySet="Stocks" />
           </AssociationSet>
-          <EntitySet Name="Deliveries" EntityType="Higgs.MbaleModel.Delivery" />
-          <AssociationSet Name="FK_Delivery_BatchId" Association="Higgs.MbaleModel.FK_Delivery_BatchId">
-            <End Role="Batch" EntitySet="Batches" />
-            <End Role="Delivery" EntitySet="Deliveries" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Delivery_BranchId" Association="Higgs.MbaleModel.FK_Delivery_BranchId">
-            <End Role="Branch" EntitySet="Branches" />
-            <End Role="Delivery" EntitySet="Deliveries" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_DeliveryGradeSize_dbo_Delivery_DeliveryId" Association="Higgs.MbaleModel.FK_dbo_DeliveryGradeSize_dbo_Delivery_DeliveryId">
-            <End Role="Delivery" EntitySet="Deliveries" />
-            <End Role="DeliveryGradeSize" EntitySet="DeliveryGradeSizes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_DeliveryStock_dbo_Delivery_DeliveryId" Association="Higgs.MbaleModel.FK_dbo_DeliveryStock_dbo_Delivery_DeliveryId">
-            <End Role="Delivery" EntitySet="Deliveries" />
-            <End Role="DeliveryStock" EntitySet="DeliveryStocks" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Delivery_PaymentModeId" Association="Higgs.MbaleModel.FK_Delivery_PaymentModeId">
-            <End Role="PaymentMode" EntitySet="PaymentModes" />
-            <End Role="Delivery" EntitySet="Deliveries" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Delivery_ProductId" Association="Higgs.MbaleModel.FK_Delivery_ProductId">
-            <End Role="Product" EntitySet="Products" />
-            <End Role="Delivery" EntitySet="Deliveries" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Delivery_SectorId" Association="Higgs.MbaleModel.FK_Delivery_SectorId">
-            <End Role="Sector" EntitySet="Sectors" />
-            <End Role="Delivery" EntitySet="Deliveries" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Delivery_StoreId" Association="Higgs.MbaleModel.FK_Delivery_StoreId">
-            <End Role="Store" EntitySet="Stores" />
-            <End Role="Delivery" EntitySet="Deliveries" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Delivery_TransactionSubTypeId" Association="Higgs.MbaleModel.FK_Delivery_TransactionSubTypeId">
-            <End Role="TransactionSubType" EntitySet="TransactionSubTypes" />
-            <End Role="Delivery" EntitySet="Deliveries" />
-          </AssociationSet>
           <EntitySet Name="BatchSupplies" EntityType="Higgs.MbaleModel.BatchSupply" />
           <AssociationSet Name="FK_dbo_BatchSupply_dbo_Batch_BatchId" Association="Higgs.MbaleModel.FK_dbo_BatchSupply_dbo_Batch_BatchId">
             <End Role="Batch" EntitySet="Batches" />
@@ -6175,10 +6550,6 @@
           <AssociationSet Name="FK_Order_BranchId" Association="Higgs.MbaleModel.FK_Order_BranchId">
             <End Role="Branch" EntitySet="Branches" />
             <End Role="Order" EntitySet="Orders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Delivery_OrderId" Association="Higgs.MbaleModel.FK_Delivery_OrderId">
-            <End Role="Order" EntitySet="Orders" />
-            <End Role="Delivery" EntitySet="Deliveries" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_OrderGradeSize_dbo_Order_OrderId" Association="Higgs.MbaleModel.FK_dbo_OrderGradeSize_dbo_Order_OrderId">
             <End Role="Order" EntitySet="Orders" />
@@ -6271,18 +6642,6 @@
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="Branch" EntitySet="Branches" />
           </AssociationSet>
-          <AssociationSet Name="FK_Buvera_CreatedBy" Association="Higgs.MbaleModel.FK_Buvera_CreatedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Buvera" EntitySet="Buveras" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Buvera_DeletedBy" Association="Higgs.MbaleModel.FK_Buvera_DeletedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Buvera" EntitySet="Buveras" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Buvera_UpdatedBy" Association="Higgs.MbaleModel.FK_Buvera_UpdatedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Buvera" EntitySet="Buveras" />
-          </AssociationSet>
           <AssociationSet Name="FK_Cash_CreatedBy" Association="Higgs.MbaleModel.FK_Cash_CreatedBy">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="Cash" EntitySet="Cashes" />
@@ -6354,18 +6713,6 @@
           <AssociationSet Name="FK_Debtor_UpdatedBy" Association="Higgs.MbaleModel.FK_Debtor_UpdatedBy">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="Debtor" EntitySet="Debtors" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Delivery_CreatedBy" Association="Higgs.MbaleModel.FK_Delivery_CreatedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Delivery" EntitySet="Deliveries" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Delivery_DeletedBy" Association="Higgs.MbaleModel.FK_Delivery_DeletedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Delivery" EntitySet="Deliveries" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Delivery_UpdatedBy" Association="Higgs.MbaleModel.FK_Delivery_UpdatedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Delivery" EntitySet="Deliveries" />
           </AssociationSet>
           <AssociationSet Name="FK_Document_CreatedBy" Association="Higgs.MbaleModel.FK_Document_CreatedBy">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
@@ -6589,7 +6936,6 @@
           </AssociationSet>
           <EntitySet Name="BatchOutPuts" EntityType="Higgs.MbaleModel.BatchOutPut" />
           <EntitySet Name="FactoryExpenses" EntityType="Higgs.MbaleModel.FactoryExpense" />
-          <EntitySet Name="FlourTransfers" EntityType="Higgs.MbaleModel.FlourTransfer" />
           <EntitySet Name="LabourCosts" EntityType="Higgs.MbaleModel.LabourCost" />
           <EntitySet Name="MachineRepairs" EntityType="Higgs.MbaleModel.MachineRepair" />
           <EntitySet Name="OtherExpenses" EntityType="Higgs.MbaleModel.OtherExpense" />
@@ -6621,18 +6967,6 @@
           <AssociationSet Name="FK_FactoryExpense_UpdatedBy" Association="Higgs.MbaleModel.FK_FactoryExpense_UpdatedBy">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="FactoryExpense" EntitySet="FactoryExpenses" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FlourTransfer_CreatedBy" Association="Higgs.MbaleModel.FK_FlourTransfer_CreatedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="FlourTransfer" EntitySet="FlourTransfers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FlourTransfer_DeletedBy" Association="Higgs.MbaleModel.FK_FlourTransfer_DeletedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="FlourTransfer" EntitySet="FlourTransfers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FlourTransfer_UpdatedBy" Association="Higgs.MbaleModel.FK_FlourTransfer_UpdatedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="FlourTransfer" EntitySet="FlourTransfers" />
           </AssociationSet>
           <AssociationSet Name="FK_LabourCost_CreatedBy" Association="Higgs.MbaleModel.FK_LabourCost_CreatedBy">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
@@ -6722,10 +7056,6 @@
             <End Role="Branch" EntitySet="Branches" />
             <End Role="FactoryExpense" EntitySet="FactoryExpenses" />
           </AssociationSet>
-          <AssociationSet Name="FK_FlourTransfer_BranchId" Association="Higgs.MbaleModel.FK_FlourTransfer_BranchId">
-            <End Role="Branch" EntitySet="Branches" />
-            <End Role="FlourTransfer" EntitySet="FlourTransfers" />
-          </AssociationSet>
           <AssociationSet Name="FK_LabourCost_Branch" Association="Higgs.MbaleModel.FK_LabourCost_Branch">
             <End Role="Branch" EntitySet="Branches" />
             <End Role="LabourCost" EntitySet="LabourCosts" />
@@ -6746,22 +7076,6 @@
             <End Role="Sector" EntitySet="Sectors" />
             <End Role="FactoryExpense" EntitySet="FactoryExpenses" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_FlourTransferGradeSize_dbo_FlourTransfer_FlourTransferId" Association="Higgs.MbaleModel.FK_dbo_FlourTransferGradeSize_dbo_FlourTransfer_FlourTransferId">
-            <End Role="FlourTransfer" EntitySet="FlourTransfers" />
-            <End Role="FlourTransferGradeSize" EntitySet="FlourTransferGradeSizes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FlourTransfer_FromSupplierStoreId" Association="Higgs.MbaleModel.FK_FlourTransfer_FromSupplierStoreId">
-            <End Role="Store" EntitySet="Stores" />
-            <End Role="FlourTransfer" EntitySet="FlourTransfers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FlourTransfer_StoreId" Association="Higgs.MbaleModel.FK_FlourTransfer_StoreId">
-            <End Role="Store" EntitySet="Stores" />
-            <End Role="FlourTransfer" EntitySet="FlourTransfers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FlourTransfer_ToReceiverStoreId" Association="Higgs.MbaleModel.FK_FlourTransfer_ToReceiverStoreId">
-            <End Role="Store" EntitySet="Stores" />
-            <End Role="FlourTransfer" EntitySet="FlourTransfers" />
-          </AssociationSet>
           <AssociationSet Name="FK_LabourCost_Sector" Association="Higgs.MbaleModel.FK_LabourCost_Sector">
             <End Role="Sector" EntitySet="Sectors" />
             <End Role="LabourCost" EntitySet="LabourCosts" />
@@ -6781,6 +7095,203 @@
           <AssociationSet Name="FK_Utility_Sector" Association="Higgs.MbaleModel.FK_Utility_Sector">
             <End Role="Sector" EntitySet="Sectors" />
             <End Role="Utility" EntitySet="Utilities" />
+          </AssociationSet>
+          <EntitySet Name="Buveras" EntityType="Higgs.MbaleModel.Buvera" />
+          <EntitySet Name="BuveraTransfers" EntityType="Higgs.MbaleModel.BuveraTransfer" />
+          <EntitySet Name="BuveraTransferGradeSizes" EntityType="Higgs.MbaleModel.BuveraTransferGradeSize" />
+          <AssociationSet Name="FK_Buvera_CreatedBy" Association="Higgs.MbaleModel.FK_Buvera_CreatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Buvera" EntitySet="Buveras" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Buvera_DeletedBy" Association="Higgs.MbaleModel.FK_Buvera_DeletedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Buvera" EntitySet="Buveras" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Buvera_UpdatedBy" Association="Higgs.MbaleModel.FK_Buvera_UpdatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Buvera" EntitySet="Buveras" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuveraTransfer_CreatedBy" Association="Higgs.MbaleModel.FK_BuveraTransfer_CreatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="BuveraTransfer" EntitySet="BuveraTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuveraTransfer_DeletedBy" Association="Higgs.MbaleModel.FK_BuveraTransfer_DeletedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="BuveraTransfer" EntitySet="BuveraTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuveraTransfer_UpdatedBy" Association="Higgs.MbaleModel.FK_BuveraTransfer_UpdatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="BuveraTransfer" EntitySet="BuveraTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Buvera_BranchId" Association="Higgs.MbaleModel.FK_Buvera_BranchId">
+            <End Role="Branch" EntitySet="Branches" />
+            <End Role="Buvera" EntitySet="Buveras" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuveraTransfer_BranchId" Association="Higgs.MbaleModel.FK_BuveraTransfer_BranchId">
+            <End Role="Branch" EntitySet="Branches" />
+            <End Role="BuveraTransfer" EntitySet="BuveraTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Buvera_StoreId" Association="Higgs.MbaleModel.FK_Buvera_StoreId">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="Buvera" EntitySet="Buveras" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_BuveraGradeSize_dbo_Buvera_BuveraId" Association="Higgs.MbaleModel.FK_dbo_BuveraGradeSize_dbo_Buvera_BuveraId">
+            <End Role="Buvera" EntitySet="Buveras" />
+            <End Role="BuveraGradeSize" EntitySet="BuveraGradeSizes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuveraTransfer_FromSupplierStoreId" Association="Higgs.MbaleModel.FK_BuveraTransfer_FromSupplierStoreId">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="BuveraTransfer" EntitySet="BuveraTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuveraTransfer_StoreId" Association="Higgs.MbaleModel.FK_BuveraTransfer_StoreId">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="BuveraTransfer" EntitySet="BuveraTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuveraTransfer_ToReceiverStoreId" Association="Higgs.MbaleModel.FK_BuveraTransfer_ToReceiverStoreId">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="BuveraTransfer" EntitySet="BuveraTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_BuveraTransferGradeSize_dbo_BuveraTransfer_BuveraTransferId" Association="Higgs.MbaleModel.FK_dbo_BuveraTransferGradeSize_dbo_BuveraTransfer_BuveraTransferId">
+            <End Role="BuveraTransfer" EntitySet="BuveraTransfers" />
+            <End Role="BuveraTransferGradeSize" EntitySet="BuveraTransferGradeSizes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_BuveraTransferGradeSize_dbo_Grade_GradeId" Association="Higgs.MbaleModel.FK_dbo_BuveraTransferGradeSize_dbo_Grade_GradeId">
+            <End Role="Grade" EntitySet="Grades" />
+            <End Role="BuveraTransferGradeSize" EntitySet="BuveraTransferGradeSizes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_BuveraTransferGradeSize_dbo_Size_SizeId" Association="Higgs.MbaleModel.FK_dbo_BuveraTransferGradeSize_dbo_Size_SizeId">
+            <End Role="Size" EntitySet="Sizes" />
+            <End Role="BuveraTransferGradeSize" EntitySet="BuveraTransferGradeSizes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_BuveraTransferGradeSize_dbo_Store_StoreId" Association="Higgs.MbaleModel.FK_dbo_BuveraTransferGradeSize_dbo_Store_StoreId">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="BuveraTransferGradeSize" EntitySet="BuveraTransferGradeSizes" />
+          </AssociationSet>
+          <EntitySet Name="StoreBuveraTransferGradeSizes" EntityType="Higgs.MbaleModel.StoreBuveraTransferGradeSize" />
+          <EntitySet Name="StoreFlourTransferGradeSizes" EntityType="Higgs.MbaleModel.StoreFlourTransferGradeSize" />
+          <AssociationSet Name="FK_dbo_StoreBuveraTransferGradeSize_dbo_Grade_GradeId" Association="Higgs.MbaleModel.FK_dbo_StoreBuveraTransferGradeSize_dbo_Grade_GradeId">
+            <End Role="Grade" EntitySet="Grades" />
+            <End Role="StoreBuveraTransferGradeSize" EntitySet="StoreBuveraTransferGradeSizes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_StoreFlourTransferGradeSize_dbo_Grade_GradeId" Association="Higgs.MbaleModel.FK_dbo_StoreFlourTransferGradeSize_dbo_Grade_GradeId">
+            <End Role="Grade" EntitySet="Grades" />
+            <End Role="StoreFlourTransferGradeSize" EntitySet="StoreFlourTransferGradeSizes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_StoreBuveraTransferGradeSize_dbo_Size_SizeId" Association="Higgs.MbaleModel.FK_dbo_StoreBuveraTransferGradeSize_dbo_Size_SizeId">
+            <End Role="Size" EntitySet="Sizes" />
+            <End Role="StoreBuveraTransferGradeSize" EntitySet="StoreBuveraTransferGradeSizes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_StoreFlourTransferGradeSize_dbo_Size_SizeId" Association="Higgs.MbaleModel.FK_dbo_StoreFlourTransferGradeSize_dbo_Size_SizeId">
+            <End Role="Size" EntitySet="Sizes" />
+            <End Role="StoreFlourTransferGradeSize" EntitySet="StoreFlourTransferGradeSizes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_StoreBuveraTransferGradeSize_dbo_Store_StoreId" Association="Higgs.MbaleModel.FK_dbo_StoreBuveraTransferGradeSize_dbo_Store_StoreId">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="StoreBuveraTransferGradeSize" EntitySet="StoreBuveraTransferGradeSizes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_StoreFlourTransferGradeSize_dbo_Store_StoreId" Association="Higgs.MbaleModel.FK_dbo_StoreFlourTransferGradeSize_dbo_Store_StoreId">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="StoreFlourTransferGradeSize" EntitySet="StoreFlourTransferGradeSizes" />
+          </AssociationSet>
+          <EntitySet Name="Deliveries" EntityType="Higgs.MbaleModel.Delivery" />
+          <EntitySet Name="DeliveryBatches" EntityType="Higgs.MbaleModel.DeliveryBatch" />
+          <AssociationSet Name="FK_Delivery_CreatedBy" Association="Higgs.MbaleModel.FK_Delivery_CreatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Delivery" EntitySet="Deliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Delivery_DeletedBy" Association="Higgs.MbaleModel.FK_Delivery_DeletedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Delivery" EntitySet="Deliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Delivery_UpdatedBy" Association="Higgs.MbaleModel.FK_Delivery_UpdatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Delivery" EntitySet="Deliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DeliveryBatch_BatchId" Association="Higgs.MbaleModel.FK_DeliveryBatch_BatchId">
+            <End Role="Batch" EntitySet="Batches" />
+            <End Role="DeliveryBatch" EntitySet="DeliveryBatches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Delivery_BranchId" Association="Higgs.MbaleModel.FK_Delivery_BranchId">
+            <End Role="Branch" EntitySet="Branches" />
+            <End Role="Delivery" EntitySet="Deliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_DeliveryGradeSize_dbo_Delivery_DeliveryId" Association="Higgs.MbaleModel.FK_dbo_DeliveryGradeSize_dbo_Delivery_DeliveryId">
+            <End Role="Delivery" EntitySet="Deliveries" />
+            <End Role="DeliveryGradeSize" EntitySet="DeliveryGradeSizes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_DeliveryStock_dbo_Delivery_DeliveryId" Association="Higgs.MbaleModel.FK_dbo_DeliveryStock_dbo_Delivery_DeliveryId">
+            <End Role="Delivery" EntitySet="Deliveries" />
+            <End Role="DeliveryStock" EntitySet="DeliveryStocks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Delivery_OrderId" Association="Higgs.MbaleModel.FK_Delivery_OrderId">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="Delivery" EntitySet="Deliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Delivery_PaymentModeId" Association="Higgs.MbaleModel.FK_Delivery_PaymentModeId">
+            <End Role="PaymentMode" EntitySet="PaymentModes" />
+            <End Role="Delivery" EntitySet="Deliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Delivery_ProductId" Association="Higgs.MbaleModel.FK_Delivery_ProductId">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Delivery" EntitySet="Deliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Delivery_SectorId" Association="Higgs.MbaleModel.FK_Delivery_SectorId">
+            <End Role="Sector" EntitySet="Sectors" />
+            <End Role="Delivery" EntitySet="Deliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Delivery_StoreId" Association="Higgs.MbaleModel.FK_Delivery_StoreId">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="Delivery" EntitySet="Deliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Delivery_TransactionSubTypeId" Association="Higgs.MbaleModel.FK_Delivery_TransactionSubTypeId">
+            <End Role="TransactionSubType" EntitySet="TransactionSubTypes" />
+            <End Role="Delivery" EntitySet="Deliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DeliveryBatch_DeliveryId" Association="Higgs.MbaleModel.FK_DeliveryBatch_DeliveryId">
+            <End Role="Delivery" EntitySet="Deliveries" />
+            <End Role="DeliveryBatch" EntitySet="DeliveryBatches" />
+          </AssociationSet>
+          <EntitySet Name="FlourTransfers" EntityType="Higgs.MbaleModel.FlourTransfer" />
+          <EntitySet Name="FlourTransferBatches" EntityType="Higgs.MbaleModel.FlourTransferBatch" />
+          <AssociationSet Name="FK_FlourTransfer_CreatedBy" Association="Higgs.MbaleModel.FK_FlourTransfer_CreatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="FlourTransfer" EntitySet="FlourTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FlourTransfer_DeletedBy" Association="Higgs.MbaleModel.FK_FlourTransfer_DeletedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="FlourTransfer" EntitySet="FlourTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FlourTransfer_UpdatedBy" Association="Higgs.MbaleModel.FK_FlourTransfer_UpdatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="FlourTransfer" EntitySet="FlourTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FlourTransferBatch_BatchId" Association="Higgs.MbaleModel.FK_FlourTransferBatch_BatchId">
+            <End Role="Batch" EntitySet="Batches" />
+            <End Role="FlourTransferBatch" EntitySet="FlourTransferBatches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FlourTransfer_BranchId" Association="Higgs.MbaleModel.FK_FlourTransfer_BranchId">
+            <End Role="Branch" EntitySet="Branches" />
+            <End Role="FlourTransfer" EntitySet="FlourTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_FlourTransferGradeSize_dbo_FlourTransfer_FlourTransferId" Association="Higgs.MbaleModel.FK_dbo_FlourTransferGradeSize_dbo_FlourTransfer_FlourTransferId">
+            <End Role="FlourTransfer" EntitySet="FlourTransfers" />
+            <End Role="FlourTransferGradeSize" EntitySet="FlourTransferGradeSizes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FlourTransfer_FromSupplierStoreId" Association="Higgs.MbaleModel.FK_FlourTransfer_FromSupplierStoreId">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="FlourTransfer" EntitySet="FlourTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FlourTransfer_StoreId" Association="Higgs.MbaleModel.FK_FlourTransfer_StoreId">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="FlourTransfer" EntitySet="FlourTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FlourTransfer_ToReceiverStoreId" Association="Higgs.MbaleModel.FK_FlourTransfer_ToReceiverStoreId">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="FlourTransfer" EntitySet="FlourTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FlourTransferBatch_DeliveryId" Association="Higgs.MbaleModel.FK_FlourTransferBatch_DeliveryId">
+            <End Role="FlourTransfer" EntitySet="FlourTransfers" />
+            <End Role="FlourTransferBatch" EntitySet="FlourTransferBatches" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Media">
@@ -6857,11 +7368,11 @@
           <NavigationProperty Name="AccountTransactionActivities" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_TransactionSubTypeId" FromRole="TransactionSubType" ToRole="AccountTransactionActivity" />
           <NavigationProperty Name="Transactions" Relationship="Higgs.MbaleModel.FK_Transaction_TransactionSubTypeId" FromRole="TransactionSubType" ToRole="Transaction" />
           <NavigationProperty Name="Cashes" Relationship="Higgs.MbaleModel.FK_Cash_TransactionSubTypeId" FromRole="TransactionSubType" ToRole="Cash" />
-          <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_TransactionSubTypeId" FromRole="TransactionSubType" ToRole="Delivery" />
           <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_TransactionSubType_CreatedBy" FromRole="TransactionSubType" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_TransactionSubType_DeletedBy" FromRole="TransactionSubType" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_TransactionSubType_UpdatedBy" FromRole="TransactionSubType" ToRole="AspNetUser" />
           <NavigationProperty Name="MachineRepairs" Relationship="Higgs.MbaleModel.FK_MachineRepair_TransactionSubTypeId" FromRole="TransactionSubType" ToRole="MachineRepair" />
+          <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_TransactionSubTypeId" FromRole="TransactionSubType" ToRole="Delivery" />
         </EntityType>
         <EntityType Name="TransactionType">
           <Key>
@@ -6935,7 +7446,6 @@
           <NavigationProperty Name="Transactions" Relationship="Higgs.MbaleModel.FK_Transaction_SectorId" FromRole="Sector" ToRole="Transaction" />
           <NavigationProperty Name="Cashes" Relationship="Higgs.MbaleModel.FK_Cash_SectorId" FromRole="Sector" ToRole="Cash" />
           <NavigationProperty Name="Batches" Relationship="Higgs.MbaleModel.FK_Batch_Sector" FromRole="Sector" ToRole="Batch" />
-          <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_SectorId" FromRole="Sector" ToRole="Delivery" />
           <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Sector_CreatedBy" FromRole="Sector" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Sector_DeletedBy" FromRole="Sector" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Sector_UpdatedBy" FromRole="Sector" ToRole="AspNetUser" />
@@ -6945,6 +7455,7 @@
           <NavigationProperty Name="MachineRepairs" Relationship="Higgs.MbaleModel.FK_MachineRepair_SectorId" FromRole="Sector" ToRole="MachineRepair" />
           <NavigationProperty Name="OtherExpenses" Relationship="Higgs.MbaleModel.FK_OtherExpense_Sector" FromRole="Sector" ToRole="OtherExpense" />
           <NavigationProperty Name="Utilities" Relationship="Higgs.MbaleModel.FK_Utility_Sector" FromRole="Sector" ToRole="Utility" />
+          <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_SectorId" FromRole="Sector" ToRole="Delivery" />
         </EntityType>
         <Association Name="FK_dbo_BranchSector_dbo_Branch_BranchId">
           <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1">
@@ -6998,6 +7509,9 @@
           <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Grade_DeletedBy" FromRole="Grade" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Grade_UpdatedBy" FromRole="Grade" ToRole="AspNetUser" />
           <NavigationProperty Name="FlourTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_FlourTransferGradeSize_dbo_Grade_GradeId" FromRole="Grade" ToRole="FlourTransferGradeSize" />
+          <NavigationProperty Name="BuveraTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_BuveraTransferGradeSize_dbo_Grade_GradeId" FromRole="Grade" ToRole="BuveraTransferGradeSize" />
+          <NavigationProperty Name="StoreBuveraTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StoreBuveraTransferGradeSize_dbo_Grade_GradeId" FromRole="Grade" ToRole="StoreBuveraTransferGradeSize" />
+          <NavigationProperty Name="StoreFlourTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StoreFlourTransferGradeSize_dbo_Grade_GradeId" FromRole="Grade" ToRole="StoreFlourTransferGradeSize" />
         </EntityType>
         <EntityType Name="UserBranchManager">
           <Key>
@@ -7240,9 +7754,9 @@
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_PaymentModeId" FromRole="PaymentMode" ToRole="Delivery" />
           <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_PaymentMode_CreatedBy" FromRole="PaymentMode" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_PaymentMode_DeletedBy" FromRole="PaymentMode" ToRole="AspNetUser" />
+          <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_PaymentModeId" FromRole="PaymentMode" ToRole="Delivery" />
         </EntityType>
         <EntityType Name="Stock">
           <Key>
@@ -7837,55 +8351,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Buvera">
-          <Key>
-            <PropertyRef Name="BuveraId" />
-          </Key>
-          <Property Name="BuveraId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TotalCost" Type="Double" />
-          <Property Name="StoreId" Type="Int64" Nullable="false" />
-          <Property Name="BranchId" Type="Int64" Nullable="false" />
-          <Property Name="Deleted" Type="Boolean" />
-          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
-          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_Buvera_BranchId" FromRole="Buvera" ToRole="Branch" />
-          <NavigationProperty Name="Store" Relationship="Higgs.MbaleModel.FK_Buvera_StoreId" FromRole="Buvera" ToRole="Store" />
-          <Property Name="TotalQuantity" Type="Double" Nullable="false" />
-          <NavigationProperty Name="BuveraGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_BuveraGradeSize_dbo_Buvera_BuveraId" FromRole="Buvera" ToRole="BuveraGradeSize" />
-          <Property Name="FromSupplier" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ToReceiver" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Buvera_CreatedBy" FromRole="Buvera" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Buvera_DeletedBy" FromRole="Buvera" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Buvera_UpdatedBy" FromRole="Buvera" ToRole="AspNetUser" />
-        </EntityType>
-        <Association Name="FK_Buvera_BranchId">
-          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Buvera" Role="Buvera" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Branch">
-              <PropertyRef Name="BranchId" />
-            </Principal>
-            <Dependent Role="Buvera">
-              <PropertyRef Name="BranchId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Buvera_StoreId">
-          <End Type="Higgs.MbaleModel.Store" Role="Store" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Buvera" Role="Buvera" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Store">
-              <PropertyRef Name="StoreId" />
-            </Principal>
-            <Dependent Role="Buvera">
-              <PropertyRef Name="StoreId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="BuveraGradeSize">
           <Key>
             <PropertyRef Name="BuveraId" />
@@ -7900,25 +8365,11 @@
           <Property Name="Rate" Type="Double" Nullable="false" />
           <Property Name="Amount" Type="Double" Nullable="false" />
           <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Buvera" Relationship="Higgs.MbaleModel.FK_dbo_BuveraGradeSize_dbo_Buvera_BuveraId" FromRole="BuveraGradeSize" ToRole="Buvera" />
           <NavigationProperty Name="Grade" Relationship="Higgs.MbaleModel.FK_dbo_BuveraGradeSize_dbo_Grade_GradeId" FromRole="BuveraGradeSize" ToRole="Grade" />
           <NavigationProperty Name="Size" Relationship="Higgs.MbaleModel.FK_dbo_BuveraGradeSize_dbo_Size_SizeId" FromRole="BuveraGradeSize" ToRole="Size" />
           <NavigationProperty Name="Store" Relationship="Higgs.MbaleModel.FK_dbo_BuveraGradeSize_dbo_Store_StoreId" FromRole="BuveraGradeSize" ToRole="Store" />
+          <NavigationProperty Name="Buvera" Relationship="Higgs.MbaleModel.FK_dbo_BuveraGradeSize_dbo_Buvera_BuveraId" FromRole="BuveraGradeSize" ToRole="Buvera" />
         </EntityType>
-        <Association Name="FK_dbo_BuveraGradeSize_dbo_Buvera_BuveraId">
-          <End Type="Higgs.MbaleModel.Buvera" Role="Buvera" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Higgs.MbaleModel.BuveraGradeSize" Role="BuveraGradeSize" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Buvera">
-              <PropertyRef Name="BuveraId" />
-            </Principal>
-            <Dependent Role="BuveraGradeSize">
-              <PropertyRef Name="BuveraId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_dbo_BuveraGradeSize_dbo_Grade_GradeId">
           <End Type="Higgs.MbaleModel.Grade" Role="Grade" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -8658,7 +9109,6 @@
           <NavigationProperty Name="CasualActivities" Relationship="Higgs.MbaleModel.FK_CasualActivity_BatchId" FromRole="Batch" ToRole="CasualActivity" />
           <NavigationProperty Name="BatchProducts" Relationship="Higgs.MbaleModel.FK_dbo_BatchProduct_dbo_Batch_BatchId" FromRole="Batch" ToRole="BatchProduct" />
           <NavigationProperty Name="Stocks" Relationship="Higgs.MbaleModel.FK_Stock_BatchId" FromRole="Batch" ToRole="Stock" />
-          <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_BatchId" FromRole="Batch" ToRole="Delivery" />
           <NavigationProperty Name="BatchSupplies" Relationship="Higgs.MbaleModel.FK_dbo_BatchSupply_dbo_Batch_BatchId" FromRole="Batch" ToRole="BatchSupply" />
           <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Batch_CreatedBy" FromRole="Batch" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Batch_UpdatedBy" FromRole="Batch" ToRole="AspNetUser" />
@@ -8668,6 +9118,8 @@
           <NavigationProperty Name="MachineRepairs" Relationship="Higgs.MbaleModel.FK_MachineRepair_BatchId" FromRole="Batch" ToRole="MachineRepair" />
           <NavigationProperty Name="OtherExpenses" Relationship="Higgs.MbaleModel.FK_OtherExpense_Batch" FromRole="Batch" ToRole="OtherExpense" />
           <NavigationProperty Name="Utilities" Relationship="Higgs.MbaleModel.FK_Utility_Batch" FromRole="Batch" ToRole="Utility" />
+          <NavigationProperty Name="DeliveryBatches" Relationship="Higgs.MbaleModel.FK_DeliveryBatch_BatchId" FromRole="Batch" ToRole="DeliveryBatch" />
+          <NavigationProperty Name="FlourTransferBatches" Relationship="Higgs.MbaleModel.FK_FlourTransferBatch_BatchId" FromRole="Batch" ToRole="FlourTransferBatch" />
         </EntityType>
         <Association Name="FK_dbo_ActivityBatchCasual_BatchId">
           <End Type="Higgs.MbaleModel.Batch" Role="Batch" Multiplicity="1" />
@@ -8743,162 +9195,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Delivery">
-          <Key>
-            <PropertyRef Name="DeliveryId" />
-          </Key>
-          <Property Name="DeliveryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CustomerId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DriverName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Price" Type="Double" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="ProductId" Type="Int64" Nullable="false" />
-          <Property Name="PaymentModeId" Type="Int64" Nullable="false" />
-          <Property Name="DeliveryCost" Type="Double" Nullable="false" />
-          <Property Name="DriverNIN" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="VehicleNumber" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="OrderId" Type="Int64" Nullable="false" />
-          <Property Name="TransactionSubTypeId" Type="Int64" Nullable="false" />
-          <Property Name="MediaId" Type="Int64" Nullable="false" />
-          <Property Name="BranchId" Type="Int64" Nullable="false" />
-          <Property Name="SectorId" Type="Int64" Nullable="false" />
-          <Property Name="Amount" Type="Double" Nullable="false" />
-          <Property Name="StoreId" Type="Int64" Nullable="false" />
-          <Property Name="Location" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Deleted" Type="Boolean" />
-          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
-          <Property Name="Quantity" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Batch" Relationship="Higgs.MbaleModel.FK_Delivery_BatchId" FromRole="Delivery" ToRole="Batch" />
-          <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_Delivery_BranchId" FromRole="Delivery" ToRole="Branch" />
-          <NavigationProperty Name="DeliveryGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_DeliveryGradeSize_dbo_Delivery_DeliveryId" FromRole="Delivery" ToRole="DeliveryGradeSize" />
-          <NavigationProperty Name="DeliveryStocks" Relationship="Higgs.MbaleModel.FK_dbo_DeliveryStock_dbo_Delivery_DeliveryId" FromRole="Delivery" ToRole="DeliveryStock" />
-          <NavigationProperty Name="PaymentMode" Relationship="Higgs.MbaleModel.FK_Delivery_PaymentModeId" FromRole="Delivery" ToRole="PaymentMode" />
-          <NavigationProperty Name="Product" Relationship="Higgs.MbaleModel.FK_Delivery_ProductId" FromRole="Delivery" ToRole="Product" />
-          <NavigationProperty Name="Sector" Relationship="Higgs.MbaleModel.FK_Delivery_SectorId" FromRole="Delivery" ToRole="Sector" />
-          <NavigationProperty Name="Store" Relationship="Higgs.MbaleModel.FK_Delivery_StoreId" FromRole="Delivery" ToRole="Store" />
-          <NavigationProperty Name="TransactionSubType" Relationship="Higgs.MbaleModel.FK_Delivery_TransactionSubTypeId" FromRole="Delivery" ToRole="TransactionSubType" />
-          <NavigationProperty Name="Order" Relationship="Higgs.MbaleModel.FK_Delivery_OrderId" FromRole="Delivery" ToRole="Order" />
-          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Delivery_CreatedBy" FromRole="Delivery" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Delivery_DeletedBy" FromRole="Delivery" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Delivery_UpdatedBy" FromRole="Delivery" ToRole="AspNetUser" />
-        </EntityType>
-        <Association Name="FK_Delivery_BatchId">
-          <End Type="Higgs.MbaleModel.Batch" Role="Batch" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Batch">
-              <PropertyRef Name="BatchId" />
-            </Principal>
-            <Dependent Role="Delivery">
-              <PropertyRef Name="BatchId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Delivery_BranchId">
-          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Branch">
-              <PropertyRef Name="BranchId" />
-            </Principal>
-            <Dependent Role="Delivery">
-              <PropertyRef Name="BranchId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_DeliveryGradeSize_dbo_Delivery_DeliveryId">
-          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Higgs.MbaleModel.DeliveryGradeSize" Role="DeliveryGradeSize" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Delivery">
-              <PropertyRef Name="DeliveryId" />
-            </Principal>
-            <Dependent Role="DeliveryGradeSize">
-              <PropertyRef Name="DeliveryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_DeliveryStock_dbo_Delivery_DeliveryId">
-          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Higgs.MbaleModel.DeliveryStock" Role="DeliveryStock" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Delivery">
-              <PropertyRef Name="DeliveryId" />
-            </Principal>
-            <Dependent Role="DeliveryStock">
-              <PropertyRef Name="DeliveryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Delivery_PaymentModeId">
-          <End Type="Higgs.MbaleModel.PaymentMode" Role="PaymentMode" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PaymentMode">
-              <PropertyRef Name="PaymentModeId" />
-            </Principal>
-            <Dependent Role="Delivery">
-              <PropertyRef Name="PaymentModeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Delivery_ProductId">
-          <End Type="Higgs.MbaleModel.Product" Role="Product" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="ProductId" />
-            </Principal>
-            <Dependent Role="Delivery">
-              <PropertyRef Name="ProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Delivery_SectorId">
-          <End Type="Higgs.MbaleModel.Sector" Role="Sector" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sector">
-              <PropertyRef Name="SectorId" />
-            </Principal>
-            <Dependent Role="Delivery">
-              <PropertyRef Name="SectorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Delivery_StoreId">
-          <End Type="Higgs.MbaleModel.Store" Role="Store" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Store">
-              <PropertyRef Name="StoreId" />
-            </Principal>
-            <Dependent Role="Delivery">
-              <PropertyRef Name="StoreId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Delivery_TransactionSubTypeId">
-          <End Type="Higgs.MbaleModel.TransactionSubType" Role="TransactionSubType" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TransactionSubType">
-              <PropertyRef Name="TransactionSubTypeId" />
-            </Principal>
-            <Dependent Role="Delivery">
-              <PropertyRef Name="TransactionSubTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="BatchSupply">
           <Key>
             <PropertyRef Name="BatchId" />
@@ -8959,7 +9255,6 @@
           <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_Order_BranchId" FromRole="Order" ToRole="Branch" />
-          <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_OrderId" FromRole="Order" ToRole="Delivery" />
           <NavigationProperty Name="OrderGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_OrderGradeSize_dbo_Order_OrderId" FromRole="Order" ToRole="OrderGradeSize" />
           <NavigationProperty Name="Product" Relationship="Higgs.MbaleModel.FK_Order_ProductId" FromRole="Order" ToRole="Product" />
           <NavigationProperty Name="Status" Relationship="Higgs.MbaleModel.FK_Order_StatusId" FromRole="Order" ToRole="Status" />
@@ -8967,6 +9262,7 @@
           <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Order_CustomerId" FromRole="Order" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Order_DeletedBy" FromRole="Order" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser3" Relationship="Higgs.MbaleModel.FK_Order_UpdatedBy" FromRole="Order" ToRole="AspNetUser" />
+          <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_OrderId" FromRole="Order" ToRole="Delivery" />
         </EntityType>
         <Association Name="FK_Order_BranchId">
           <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
@@ -8977,18 +9273,6 @@
             </Principal>
             <Dependent Role="Order">
               <PropertyRef Name="BranchId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Delivery_OrderId">
-          <End Type="Higgs.MbaleModel.Order" Role="Order" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Order">
-              <PropertyRef Name="OrderId" />
-            </Principal>
-            <Dependent Role="Delivery">
-              <PropertyRef Name="OrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9082,9 +9366,6 @@
           <NavigationProperty Name="Branches" Relationship="Higgs.MbaleModel.FK_Branch_CreatedBy" FromRole="AspNetUser" ToRole="Branch" />
           <NavigationProperty Name="Branches1" Relationship="Higgs.MbaleModel.FK_Branch_DeletedBy" FromRole="AspNetUser" ToRole="Branch" />
           <NavigationProperty Name="Branches2" Relationship="Higgs.MbaleModel.FK_Branch_UpdatedBy" FromRole="AspNetUser" ToRole="Branch" />
-          <NavigationProperty Name="Buveras" Relationship="Higgs.MbaleModel.FK_Buvera_CreatedBy" FromRole="AspNetUser" ToRole="Buvera" />
-          <NavigationProperty Name="Buveras1" Relationship="Higgs.MbaleModel.FK_Buvera_DeletedBy" FromRole="AspNetUser" ToRole="Buvera" />
-          <NavigationProperty Name="Buveras2" Relationship="Higgs.MbaleModel.FK_Buvera_UpdatedBy" FromRole="AspNetUser" ToRole="Buvera" />
           <NavigationProperty Name="Cashes" Relationship="Higgs.MbaleModel.FK_Cash_CreatedBy" FromRole="AspNetUser" ToRole="Cash" />
           <NavigationProperty Name="Cashes1" Relationship="Higgs.MbaleModel.FK_Cash_DeletedBy" FromRole="AspNetUser" ToRole="Cash" />
           <NavigationProperty Name="CasualActivities" Relationship="Higgs.MbaleModel.FK_CasualActivity_CreatedBy" FromRole="AspNetUser" ToRole="CasualActivity" />
@@ -9103,9 +9384,6 @@
           <NavigationProperty Name="Debtors1" Relationship="Higgs.MbaleModel.FK_Debtor_CreatedBy" FromRole="AspNetUser" ToRole="Debtor" />
           <NavigationProperty Name="Debtors2" Relationship="Higgs.MbaleModel.FK_Debtor_DeletedBy" FromRole="AspNetUser" ToRole="Debtor" />
           <NavigationProperty Name="Debtors3" Relationship="Higgs.MbaleModel.FK_Debtor_UpdatedBy" FromRole="AspNetUser" ToRole="Debtor" />
-          <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_CreatedBy" FromRole="AspNetUser" ToRole="Delivery" />
-          <NavigationProperty Name="Deliveries1" Relationship="Higgs.MbaleModel.FK_Delivery_DeletedBy" FromRole="AspNetUser" ToRole="Delivery" />
-          <NavigationProperty Name="Deliveries2" Relationship="Higgs.MbaleModel.FK_Delivery_UpdatedBy" FromRole="AspNetUser" ToRole="Delivery" />
           <NavigationProperty Name="Documents" Relationship="Higgs.MbaleModel.FK_Document_CreatedBy" FromRole="AspNetUser" ToRole="Document" />
           <NavigationProperty Name="Documents1" Relationship="Higgs.MbaleModel.FK_Document_DeletedBy" FromRole="AspNetUser" ToRole="Document" />
           <NavigationProperty Name="Documents2" Relationship="Higgs.MbaleModel.FK_Document_UpdatedBy" FromRole="AspNetUser" ToRole="Document" />
@@ -9164,9 +9442,6 @@
           <NavigationProperty Name="FactoryExpenses" Relationship="Higgs.MbaleModel.FK_FactoryExpense_CreatedBy" FromRole="AspNetUser" ToRole="FactoryExpense" />
           <NavigationProperty Name="FactoryExpenses1" Relationship="Higgs.MbaleModel.FK_FactoryExpense_DeletedBy" FromRole="AspNetUser" ToRole="FactoryExpense" />
           <NavigationProperty Name="FactoryExpenses2" Relationship="Higgs.MbaleModel.FK_FactoryExpense_UpdatedBy" FromRole="AspNetUser" ToRole="FactoryExpense" />
-          <NavigationProperty Name="FlourTransfers" Relationship="Higgs.MbaleModel.FK_FlourTransfer_CreatedBy" FromRole="AspNetUser" ToRole="FlourTransfer" />
-          <NavigationProperty Name="FlourTransfers1" Relationship="Higgs.MbaleModel.FK_FlourTransfer_DeletedBy" FromRole="AspNetUser" ToRole="FlourTransfer" />
-          <NavigationProperty Name="FlourTransfers2" Relationship="Higgs.MbaleModel.FK_FlourTransfer_UpdatedBy" FromRole="AspNetUser" ToRole="FlourTransfer" />
           <NavigationProperty Name="LabourCosts" Relationship="Higgs.MbaleModel.FK_LabourCost_CreatedBy" FromRole="AspNetUser" ToRole="LabourCost" />
           <NavigationProperty Name="LabourCosts1" Relationship="Higgs.MbaleModel.FK_LabourCost_DeletedBy" FromRole="AspNetUser" ToRole="LabourCost" />
           <NavigationProperty Name="LabourCosts2" Relationship="Higgs.MbaleModel.FK_LabourCost_UpdatedBy" FromRole="AspNetUser" ToRole="LabourCost" />
@@ -9179,6 +9454,18 @@
           <NavigationProperty Name="Utilities" Relationship="Higgs.MbaleModel.FK_Utility_CreatedBy" FromRole="AspNetUser" ToRole="Utility" />
           <NavigationProperty Name="Utilities1" Relationship="Higgs.MbaleModel.FK_Utility_DeletedBy" FromRole="AspNetUser" ToRole="Utility" />
           <NavigationProperty Name="Utilities2" Relationship="Higgs.MbaleModel.FK_Utility_UpdatedBy" FromRole="AspNetUser" ToRole="Utility" />
+          <NavigationProperty Name="Buveras" Relationship="Higgs.MbaleModel.FK_Buvera_CreatedBy" FromRole="AspNetUser" ToRole="Buvera" />
+          <NavigationProperty Name="Buveras1" Relationship="Higgs.MbaleModel.FK_Buvera_DeletedBy" FromRole="AspNetUser" ToRole="Buvera" />
+          <NavigationProperty Name="Buveras2" Relationship="Higgs.MbaleModel.FK_Buvera_UpdatedBy" FromRole="AspNetUser" ToRole="Buvera" />
+          <NavigationProperty Name="BuveraTransfers" Relationship="Higgs.MbaleModel.FK_BuveraTransfer_CreatedBy" FromRole="AspNetUser" ToRole="BuveraTransfer" />
+          <NavigationProperty Name="BuveraTransfers1" Relationship="Higgs.MbaleModel.FK_BuveraTransfer_DeletedBy" FromRole="AspNetUser" ToRole="BuveraTransfer" />
+          <NavigationProperty Name="BuveraTransfers2" Relationship="Higgs.MbaleModel.FK_BuveraTransfer_UpdatedBy" FromRole="AspNetUser" ToRole="BuveraTransfer" />
+          <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_CreatedBy" FromRole="AspNetUser" ToRole="Delivery" />
+          <NavigationProperty Name="Deliveries1" Relationship="Higgs.MbaleModel.FK_Delivery_DeletedBy" FromRole="AspNetUser" ToRole="Delivery" />
+          <NavigationProperty Name="Deliveries2" Relationship="Higgs.MbaleModel.FK_Delivery_UpdatedBy" FromRole="AspNetUser" ToRole="Delivery" />
+          <NavigationProperty Name="FlourTransfers" Relationship="Higgs.MbaleModel.FK_FlourTransfer_CreatedBy" FromRole="AspNetUser" ToRole="FlourTransfer" />
+          <NavigationProperty Name="FlourTransfers1" Relationship="Higgs.MbaleModel.FK_FlourTransfer_DeletedBy" FromRole="AspNetUser" ToRole="FlourTransfer" />
+          <NavigationProperty Name="FlourTransfers2" Relationship="Higgs.MbaleModel.FK_FlourTransfer_UpdatedBy" FromRole="AspNetUser" ToRole="FlourTransfer" />
           </EntityType>
         <EntityType Name="FlourTransferGradeSize">
           <Key>
@@ -9435,42 +9722,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Buvera_CreatedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Buvera" Role="Buvera" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Buvera">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Buvera_DeletedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Buvera" Role="Buvera" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Buvera">
-              <PropertyRef Name="DeletedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Buvera_UpdatedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Buvera" Role="Buvera" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Buvera">
-              <PropertyRef Name="UpdatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Cash_CreatedBy">
           <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
           <End Type="Higgs.MbaleModel.Cash" Role="Cash" Multiplicity="*" />
@@ -9687,42 +9938,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Debtor">
-              <PropertyRef Name="UpdatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Delivery_CreatedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Delivery">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Delivery_DeletedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Delivery">
-              <PropertyRef Name="DeletedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Delivery_UpdatedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Delivery">
               <PropertyRef Name="UpdatedBy" />
             </Dependent>
           </ReferentialConstraint>
@@ -10438,35 +10653,6 @@
           <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_FactoryExpense_Branch" FromRole="FactoryExpense" ToRole="Branch" />
           <NavigationProperty Name="Sector" Relationship="Higgs.MbaleModel.FK_FactoryExpense_Sector" FromRole="FactoryExpense" ToRole="Sector" />
         </EntityType>
-        <EntityType Name="FlourTransfer">
-          <Key>
-            <PropertyRef Name="FlourTransferId" />
-          </Key>
-          <Property Name="FlourTransferId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StoreId" Type="Int64" Nullable="false" />
-          <Property Name="BranchId" Type="Int64" Nullable="false" />
-          <Property Name="Deleted" Type="Boolean" />
-          <Property Name="ToReceiverStoreId" Type="Int64" Nullable="false" />
-          <Property Name="FromSupplierStoreId" Type="Int64" Nullable="false" />
-          <Property Name="TotalQuantity" Type="Double" Nullable="false" />
-          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
-          <Property Name="Accept" Type="Boolean" Nullable="false" />
-          <Property Name="Reject" Type="Boolean" Nullable="false" />
-          <Property Name="BatchNumbers" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_FlourTransfer_CreatedBy" FromRole="FlourTransfer" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_FlourTransfer_DeletedBy" FromRole="FlourTransfer" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_FlourTransfer_UpdatedBy" FromRole="FlourTransfer" ToRole="AspNetUser" />
-          <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_FlourTransfer_BranchId" FromRole="FlourTransfer" ToRole="Branch" />
-          <NavigationProperty Name="FlourTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_FlourTransferGradeSize_dbo_FlourTransfer_FlourTransferId" FromRole="FlourTransfer" ToRole="FlourTransferGradeSize" />
-          <NavigationProperty Name="Store" Relationship="Higgs.MbaleModel.FK_FlourTransfer_FromSupplierStoreId" FromRole="FlourTransfer" ToRole="Store" />
-          <NavigationProperty Name="Store1" Relationship="Higgs.MbaleModel.FK_FlourTransfer_StoreId" FromRole="FlourTransfer" ToRole="Store" />
-          <NavigationProperty Name="Store2" Relationship="Higgs.MbaleModel.FK_FlourTransfer_ToReceiverStoreId" FromRole="FlourTransfer" ToRole="Store" />
-        </EntityType>
         <EntityType Name="LabourCost">
           <Key>
             <PropertyRef Name="LabourCostId" />
@@ -10650,42 +10836,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="FactoryExpense">
-              <PropertyRef Name="UpdatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FlourTransfer_CreatedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.FlourTransfer" Role="FlourTransfer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="FlourTransfer">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FlourTransfer_DeletedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.FlourTransfer" Role="FlourTransfer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="FlourTransfer">
-              <PropertyRef Name="DeletedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FlourTransfer_UpdatedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.FlourTransfer" Role="FlourTransfer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="FlourTransfer">
               <PropertyRef Name="UpdatedBy" />
             </Dependent>
           </ReferentialConstraint>
@@ -10956,18 +11106,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_FlourTransfer_BranchId">
-          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.FlourTransfer" Role="FlourTransfer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Branch">
-              <PropertyRef Name="BranchId" />
-            </Principal>
-            <Dependent Role="FlourTransfer">
-              <PropertyRef Name="BranchId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_LabourCost_Branch">
           <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
           <End Type="Higgs.MbaleModel.LabourCost" Role="LabourCost" Multiplicity="*" />
@@ -11028,56 +11166,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_FlourTransferGradeSize_dbo_FlourTransfer_FlourTransferId">
-          <End Type="Higgs.MbaleModel.FlourTransfer" Role="FlourTransfer" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Higgs.MbaleModel.FlourTransferGradeSize" Role="FlourTransferGradeSize" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FlourTransfer">
-              <PropertyRef Name="FlourTransferId" />
-            </Principal>
-            <Dependent Role="FlourTransferGradeSize">
-              <PropertyRef Name="FlourTransferId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FlourTransfer_FromSupplierStoreId">
-          <End Type="Higgs.MbaleModel.Store" Role="Store" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.FlourTransfer" Role="FlourTransfer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Store">
-              <PropertyRef Name="StoreId" />
-            </Principal>
-            <Dependent Role="FlourTransfer">
-              <PropertyRef Name="FromSupplierStoreId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FlourTransfer_StoreId">
-          <End Type="Higgs.MbaleModel.Store" Role="Store" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.FlourTransfer" Role="FlourTransfer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Store">
-              <PropertyRef Name="StoreId" />
-            </Principal>
-            <Dependent Role="FlourTransfer">
-              <PropertyRef Name="StoreId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FlourTransfer_ToReceiverStoreId">
-          <End Type="Higgs.MbaleModel.Store" Role="Store" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.FlourTransfer" Role="FlourTransfer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Store">
-              <PropertyRef Name="StoreId" />
-            </Principal>
-            <Dependent Role="FlourTransfer">
-              <PropertyRef Name="ToReceiverStoreId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_LabourCost_Sector">
           <End Type="Higgs.MbaleModel.Sector" Role="Sector" Multiplicity="1" />
           <End Type="Higgs.MbaleModel.LabourCost" Role="LabourCost" Multiplicity="*" />
@@ -11135,6 +11223,788 @@
             </Principal>
             <Dependent Role="Utility">
               <PropertyRef Name="SectorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Buvera">
+          <Key>
+            <PropertyRef Name="BuveraId" />
+          </Key>
+          <Property Name="BuveraId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TotalCost" Type="Double" />
+          <Property Name="StoreId" Type="Int64" Nullable="false" />
+          <Property Name="BranchId" Type="Int64" Nullable="false" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="FromSupplier" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TotalQuantity" Type="Double" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="ToReceiver" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Buvera_CreatedBy" FromRole="Buvera" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Buvera_DeletedBy" FromRole="Buvera" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Buvera_UpdatedBy" FromRole="Buvera" ToRole="AspNetUser" />
+          <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_Buvera_BranchId" FromRole="Buvera" ToRole="Branch" />
+          <NavigationProperty Name="Store" Relationship="Higgs.MbaleModel.FK_Buvera_StoreId" FromRole="Buvera" ToRole="Store" />
+          <NavigationProperty Name="BuveraGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_BuveraGradeSize_dbo_Buvera_BuveraId" FromRole="Buvera" ToRole="BuveraGradeSize" />
+        </EntityType>
+        <EntityType Name="BuveraTransfer">
+          <Key>
+            <PropertyRef Name="BuveraTransferId" />
+          </Key>
+          <Property Name="BuveraTransferId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StoreId" Type="Int64" Nullable="false" />
+          <Property Name="BranchId" Type="Int64" Nullable="false" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="ToReceiverStoreId" Type="Int64" Nullable="false" />
+          <Property Name="Accept" Type="Boolean" Nullable="false" />
+          <Property Name="Reject" Type="Boolean" Nullable="false" />
+          <Property Name="FromSupplierStoreId" Type="Int64" Nullable="false" />
+          <Property Name="TotalQuantity" Type="Double" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_BuveraTransfer_CreatedBy" FromRole="BuveraTransfer" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_BuveraTransfer_DeletedBy" FromRole="BuveraTransfer" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_BuveraTransfer_UpdatedBy" FromRole="BuveraTransfer" ToRole="AspNetUser" />
+          <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_BuveraTransfer_BranchId" FromRole="BuveraTransfer" ToRole="Branch" />
+          <NavigationProperty Name="Store" Relationship="Higgs.MbaleModel.FK_BuveraTransfer_FromSupplierStoreId" FromRole="BuveraTransfer" ToRole="Store" />
+          <NavigationProperty Name="Store1" Relationship="Higgs.MbaleModel.FK_BuveraTransfer_StoreId" FromRole="BuveraTransfer" ToRole="Store" />
+          <NavigationProperty Name="Store2" Relationship="Higgs.MbaleModel.FK_BuveraTransfer_ToReceiverStoreId" FromRole="BuveraTransfer" ToRole="Store" />
+          <NavigationProperty Name="BuveraTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_BuveraTransferGradeSize_dbo_BuveraTransfer_BuveraTransferId" FromRole="BuveraTransfer" ToRole="BuveraTransferGradeSize" />
+        </EntityType>
+        <EntityType Name="BuveraTransferGradeSize">
+          <Key>
+            <PropertyRef Name="BuveraTransferId" />
+            <PropertyRef Name="GradeId" />
+            <PropertyRef Name="SizeId" />
+          </Key>
+          <Property Name="BuveraTransferId" Type="Int64" Nullable="false" />
+          <Property Name="GradeId" Type="Int64" Nullable="false" />
+          <Property Name="SizeId" Type="Int64" Nullable="false" />
+          <Property Name="StoreId" Type="Int64" Nullable="false" />
+          <Property Name="Quantity" Type="Double" Nullable="false" />
+          <Property Name="Rate" Type="Double" Nullable="false" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="BuveraTransfer" Relationship="Higgs.MbaleModel.FK_dbo_BuveraTransferGradeSize_dbo_BuveraTransfer_BuveraTransferId" FromRole="BuveraTransferGradeSize" ToRole="BuveraTransfer" />
+          <NavigationProperty Name="Grade" Relationship="Higgs.MbaleModel.FK_dbo_BuveraTransferGradeSize_dbo_Grade_GradeId" FromRole="BuveraTransferGradeSize" ToRole="Grade" />
+          <NavigationProperty Name="Size" Relationship="Higgs.MbaleModel.FK_dbo_BuveraTransferGradeSize_dbo_Size_SizeId" FromRole="BuveraTransferGradeSize" ToRole="Size" />
+          <NavigationProperty Name="Store" Relationship="Higgs.MbaleModel.FK_dbo_BuveraTransferGradeSize_dbo_Store_StoreId" FromRole="BuveraTransferGradeSize" ToRole="Store" />
+        </EntityType>
+        <Association Name="FK_Buvera_CreatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Buvera" Role="Buvera" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Buvera">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Buvera_DeletedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Buvera" Role="Buvera" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Buvera">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Buvera_UpdatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Buvera" Role="Buvera" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Buvera">
+              <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BuveraTransfer_CreatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.BuveraTransfer" Role="BuveraTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BuveraTransfer">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BuveraTransfer_DeletedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.BuveraTransfer" Role="BuveraTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BuveraTransfer">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BuveraTransfer_UpdatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.BuveraTransfer" Role="BuveraTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BuveraTransfer">
+              <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Buvera_BranchId">
+          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Buvera" Role="Buvera" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="Buvera">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BuveraTransfer_BranchId">
+          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.BuveraTransfer" Role="BuveraTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="BuveraTransfer">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Buvera_StoreId">
+          <End Type="Higgs.MbaleModel.Store" Role="Store" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Buvera" Role="Buvera" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="Buvera">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_BuveraGradeSize_dbo_Buvera_BuveraId">
+          <End Type="Higgs.MbaleModel.Buvera" Role="Buvera" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Higgs.MbaleModel.BuveraGradeSize" Role="BuveraGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Buvera">
+              <PropertyRef Name="BuveraId" />
+            </Principal>
+            <Dependent Role="BuveraGradeSize">
+              <PropertyRef Name="BuveraId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BuveraTransfer_FromSupplierStoreId">
+          <End Type="Higgs.MbaleModel.Store" Role="Store" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.BuveraTransfer" Role="BuveraTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="BuveraTransfer">
+              <PropertyRef Name="FromSupplierStoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BuveraTransfer_StoreId">
+          <End Type="Higgs.MbaleModel.Store" Role="Store" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.BuveraTransfer" Role="BuveraTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="BuveraTransfer">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BuveraTransfer_ToReceiverStoreId">
+          <End Type="Higgs.MbaleModel.Store" Role="Store" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.BuveraTransfer" Role="BuveraTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="BuveraTransfer">
+              <PropertyRef Name="ToReceiverStoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_BuveraTransferGradeSize_dbo_BuveraTransfer_BuveraTransferId">
+          <End Type="Higgs.MbaleModel.BuveraTransfer" Role="BuveraTransfer" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.BuveraTransferGradeSize" Role="BuveraTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BuveraTransfer">
+              <PropertyRef Name="BuveraTransferId" />
+            </Principal>
+            <Dependent Role="BuveraTransferGradeSize">
+              <PropertyRef Name="BuveraTransferId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_BuveraTransferGradeSize_dbo_Grade_GradeId">
+          <End Type="Higgs.MbaleModel.Grade" Role="Grade" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.BuveraTransferGradeSize" Role="BuveraTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grade">
+              <PropertyRef Name="GradeId" />
+            </Principal>
+            <Dependent Role="BuveraTransferGradeSize">
+              <PropertyRef Name="GradeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_BuveraTransferGradeSize_dbo_Size_SizeId">
+          <End Type="Higgs.MbaleModel.Size" Role="Size" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.BuveraTransferGradeSize" Role="BuveraTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Size">
+              <PropertyRef Name="SizeId" />
+            </Principal>
+            <Dependent Role="BuveraTransferGradeSize">
+              <PropertyRef Name="SizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_BuveraTransferGradeSize_dbo_Store_StoreId">
+          <End Type="Higgs.MbaleModel.Store" Role="Store" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.BuveraTransferGradeSize" Role="BuveraTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="BuveraTransferGradeSize">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="StoreBuveraTransferGradeSize">
+          <Key>
+            <PropertyRef Name="GradeId" />
+            <PropertyRef Name="SizeId" />
+          </Key>
+          <Property Name="GradeId" Type="Int64" Nullable="false" />
+          <Property Name="StoreId" Type="Int64" Nullable="false" />
+          <Property Name="SizeId" Type="Int64" Nullable="false" />
+          <Property Name="Quantity" Type="Double" Nullable="false" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Grade" Relationship="Higgs.MbaleModel.FK_dbo_StoreBuveraTransferGradeSize_dbo_Grade_GradeId" FromRole="StoreBuveraTransferGradeSize" ToRole="Grade" />
+          <NavigationProperty Name="Size" Relationship="Higgs.MbaleModel.FK_dbo_StoreBuveraTransferGradeSize_dbo_Size_SizeId" FromRole="StoreBuveraTransferGradeSize" ToRole="Size" />
+          <NavigationProperty Name="Store" Relationship="Higgs.MbaleModel.FK_dbo_StoreBuveraTransferGradeSize_dbo_Store_StoreId" FromRole="StoreBuveraTransferGradeSize" ToRole="Store" />
+        </EntityType>
+        <EntityType Name="StoreFlourTransferGradeSize">
+          <Key>
+            <PropertyRef Name="GradeId" />
+            <PropertyRef Name="SizeId" />
+          </Key>
+          <Property Name="GradeId" Type="Int64" Nullable="false" />
+          <Property Name="StoreId" Type="Int64" Nullable="false" />
+          <Property Name="SizeId" Type="Int64" Nullable="false" />
+          <Property Name="Quantity" Type="Double" Nullable="false" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Grade" Relationship="Higgs.MbaleModel.FK_dbo_StoreFlourTransferGradeSize_dbo_Grade_GradeId" FromRole="StoreFlourTransferGradeSize" ToRole="Grade" />
+          <NavigationProperty Name="Size" Relationship="Higgs.MbaleModel.FK_dbo_StoreFlourTransferGradeSize_dbo_Size_SizeId" FromRole="StoreFlourTransferGradeSize" ToRole="Size" />
+          <NavigationProperty Name="Store" Relationship="Higgs.MbaleModel.FK_dbo_StoreFlourTransferGradeSize_dbo_Store_StoreId" FromRole="StoreFlourTransferGradeSize" ToRole="Store" />
+        </EntityType>
+        <Association Name="FK_dbo_StoreBuveraTransferGradeSize_dbo_Grade_GradeId">
+          <End Type="Higgs.MbaleModel.Grade" Role="Grade" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Higgs.MbaleModel.StoreBuveraTransferGradeSize" Role="StoreBuveraTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grade">
+              <PropertyRef Name="GradeId" />
+            </Principal>
+            <Dependent Role="StoreBuveraTransferGradeSize">
+              <PropertyRef Name="GradeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_StoreFlourTransferGradeSize_dbo_Grade_GradeId">
+          <End Type="Higgs.MbaleModel.Grade" Role="Grade" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Higgs.MbaleModel.StoreFlourTransferGradeSize" Role="StoreFlourTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grade">
+              <PropertyRef Name="GradeId" />
+            </Principal>
+            <Dependent Role="StoreFlourTransferGradeSize">
+              <PropertyRef Name="GradeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_StoreBuveraTransferGradeSize_dbo_Size_SizeId">
+          <End Type="Higgs.MbaleModel.Size" Role="Size" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Higgs.MbaleModel.StoreBuveraTransferGradeSize" Role="StoreBuveraTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Size">
+              <PropertyRef Name="SizeId" />
+            </Principal>
+            <Dependent Role="StoreBuveraTransferGradeSize">
+              <PropertyRef Name="SizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_StoreFlourTransferGradeSize_dbo_Size_SizeId">
+          <End Type="Higgs.MbaleModel.Size" Role="Size" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Higgs.MbaleModel.StoreFlourTransferGradeSize" Role="StoreFlourTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Size">
+              <PropertyRef Name="SizeId" />
+            </Principal>
+            <Dependent Role="StoreFlourTransferGradeSize">
+              <PropertyRef Name="SizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_StoreBuveraTransferGradeSize_dbo_Store_StoreId">
+          <End Type="Higgs.MbaleModel.Store" Role="Store" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Higgs.MbaleModel.StoreBuveraTransferGradeSize" Role="StoreBuveraTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="StoreBuveraTransferGradeSize">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_StoreFlourTransferGradeSize_dbo_Store_StoreId">
+          <End Type="Higgs.MbaleModel.Store" Role="Store" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Higgs.MbaleModel.StoreFlourTransferGradeSize" Role="StoreFlourTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="StoreFlourTransferGradeSize">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Delivery">
+          <Key>
+            <PropertyRef Name="DeliveryId" />
+          </Key>
+          <Property Name="DeliveryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DriverName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Double" />
+          <Property Name="ProductId" Type="Int64" Nullable="false" />
+          <Property Name="PaymentModeId" Type="Int64" Nullable="false" />
+          <Property Name="DeliveryCost" Type="Double" Nullable="false" />
+          <Property Name="DriverNIN" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleNumber" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="OrderId" Type="Int64" Nullable="false" />
+          <Property Name="TransactionSubTypeId" Type="Int64" Nullable="false" />
+          <Property Name="MediaId" Type="Int64" Nullable="false" />
+          <Property Name="BranchId" Type="Int64" Nullable="false" />
+          <Property Name="SectorId" Type="Int64" Nullable="false" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <Property Name="StoreId" Type="Int64" Nullable="false" />
+          <Property Name="Location" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="Quantity" Type="Double" Nullable="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Delivery_CreatedBy" FromRole="Delivery" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Delivery_DeletedBy" FromRole="Delivery" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Delivery_UpdatedBy" FromRole="Delivery" ToRole="AspNetUser" />
+          <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_Delivery_BranchId" FromRole="Delivery" ToRole="Branch" />
+          <NavigationProperty Name="DeliveryGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_DeliveryGradeSize_dbo_Delivery_DeliveryId" FromRole="Delivery" ToRole="DeliveryGradeSize" />
+          <NavigationProperty Name="DeliveryStocks" Relationship="Higgs.MbaleModel.FK_dbo_DeliveryStock_dbo_Delivery_DeliveryId" FromRole="Delivery" ToRole="DeliveryStock" />
+          <NavigationProperty Name="Order" Relationship="Higgs.MbaleModel.FK_Delivery_OrderId" FromRole="Delivery" ToRole="Order" />
+          <NavigationProperty Name="PaymentMode" Relationship="Higgs.MbaleModel.FK_Delivery_PaymentModeId" FromRole="Delivery" ToRole="PaymentMode" />
+          <NavigationProperty Name="Product" Relationship="Higgs.MbaleModel.FK_Delivery_ProductId" FromRole="Delivery" ToRole="Product" />
+          <NavigationProperty Name="Sector" Relationship="Higgs.MbaleModel.FK_Delivery_SectorId" FromRole="Delivery" ToRole="Sector" />
+          <NavigationProperty Name="Store" Relationship="Higgs.MbaleModel.FK_Delivery_StoreId" FromRole="Delivery" ToRole="Store" />
+          <NavigationProperty Name="TransactionSubType" Relationship="Higgs.MbaleModel.FK_Delivery_TransactionSubTypeId" FromRole="Delivery" ToRole="TransactionSubType" />
+          <NavigationProperty Name="DeliveryBatches" Relationship="Higgs.MbaleModel.FK_DeliveryBatch_DeliveryId" FromRole="Delivery" ToRole="DeliveryBatch" />
+        </EntityType>
+        <EntityType Name="DeliveryBatch">
+          <Key>
+            <PropertyRef Name="BatchId" />
+            <PropertyRef Name="DeliveryId" />
+          </Key>
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="DeliveryId" Type="Int64" Nullable="false" />
+          <Property Name="BatchQuantity" Type="Double" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Batch" Relationship="Higgs.MbaleModel.FK_DeliveryBatch_BatchId" FromRole="DeliveryBatch" ToRole="Batch" />
+          <NavigationProperty Name="Delivery" Relationship="Higgs.MbaleModel.FK_DeliveryBatch_DeliveryId" FromRole="DeliveryBatch" ToRole="Delivery" />
+        </EntityType>
+        <Association Name="FK_Delivery_CreatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Delivery">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Delivery_DeletedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Delivery">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Delivery_UpdatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Delivery">
+              <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DeliveryBatch_BatchId">
+          <End Type="Higgs.MbaleModel.Batch" Role="Batch" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.DeliveryBatch" Role="DeliveryBatch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Batch">
+              <PropertyRef Name="BatchId" />
+            </Principal>
+            <Dependent Role="DeliveryBatch">
+              <PropertyRef Name="BatchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Delivery_BranchId">
+          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="Delivery">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_DeliveryGradeSize_dbo_Delivery_DeliveryId">
+          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Higgs.MbaleModel.DeliveryGradeSize" Role="DeliveryGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Delivery">
+              <PropertyRef Name="DeliveryId" />
+            </Principal>
+            <Dependent Role="DeliveryGradeSize">
+              <PropertyRef Name="DeliveryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_DeliveryStock_dbo_Delivery_DeliveryId">
+          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Higgs.MbaleModel.DeliveryStock" Role="DeliveryStock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Delivery">
+              <PropertyRef Name="DeliveryId" />
+            </Principal>
+            <Dependent Role="DeliveryStock">
+              <PropertyRef Name="DeliveryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Delivery_OrderId">
+          <End Type="Higgs.MbaleModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="Delivery">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Delivery_PaymentModeId">
+          <End Type="Higgs.MbaleModel.PaymentMode" Role="PaymentMode" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentMode">
+              <PropertyRef Name="PaymentModeId" />
+            </Principal>
+            <Dependent Role="Delivery">
+              <PropertyRef Name="PaymentModeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Delivery_ProductId">
+          <End Type="Higgs.MbaleModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="Delivery">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Delivery_SectorId">
+          <End Type="Higgs.MbaleModel.Sector" Role="Sector" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sector">
+              <PropertyRef Name="SectorId" />
+            </Principal>
+            <Dependent Role="Delivery">
+              <PropertyRef Name="SectorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Delivery_StoreId">
+          <End Type="Higgs.MbaleModel.Store" Role="Store" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="Delivery">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Delivery_TransactionSubTypeId">
+          <End Type="Higgs.MbaleModel.TransactionSubType" Role="TransactionSubType" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransactionSubType">
+              <PropertyRef Name="TransactionSubTypeId" />
+            </Principal>
+            <Dependent Role="Delivery">
+              <PropertyRef Name="TransactionSubTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DeliveryBatch_DeliveryId">
+          <End Type="Higgs.MbaleModel.Delivery" Role="Delivery" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.DeliveryBatch" Role="DeliveryBatch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Delivery">
+              <PropertyRef Name="DeliveryId" />
+            </Principal>
+            <Dependent Role="DeliveryBatch">
+              <PropertyRef Name="DeliveryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FlourTransfer">
+          <Key>
+            <PropertyRef Name="FlourTransferId" />
+          </Key>
+          <Property Name="FlourTransferId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StoreId" Type="Int64" Nullable="false" />
+          <Property Name="BranchId" Type="Int64" Nullable="false" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="ToReceiverStoreId" Type="Int64" Nullable="false" />
+          <Property Name="FromSupplierStoreId" Type="Int64" Nullable="false" />
+          <Property Name="TotalQuantity" Type="Double" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="Accept" Type="Boolean" Nullable="false" />
+          <Property Name="Reject" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_FlourTransfer_CreatedBy" FromRole="FlourTransfer" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_FlourTransfer_DeletedBy" FromRole="FlourTransfer" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_FlourTransfer_UpdatedBy" FromRole="FlourTransfer" ToRole="AspNetUser" />
+          <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_FlourTransfer_BranchId" FromRole="FlourTransfer" ToRole="Branch" />
+          <NavigationProperty Name="FlourTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_FlourTransferGradeSize_dbo_FlourTransfer_FlourTransferId" FromRole="FlourTransfer" ToRole="FlourTransferGradeSize" />
+          <NavigationProperty Name="Store" Relationship="Higgs.MbaleModel.FK_FlourTransfer_FromSupplierStoreId" FromRole="FlourTransfer" ToRole="Store" />
+          <NavigationProperty Name="Store1" Relationship="Higgs.MbaleModel.FK_FlourTransfer_StoreId" FromRole="FlourTransfer" ToRole="Store" />
+          <NavigationProperty Name="Store2" Relationship="Higgs.MbaleModel.FK_FlourTransfer_ToReceiverStoreId" FromRole="FlourTransfer" ToRole="Store" />
+          <NavigationProperty Name="FlourTransferBatches" Relationship="Higgs.MbaleModel.FK_FlourTransferBatch_DeliveryId" FromRole="FlourTransfer" ToRole="FlourTransferBatch" />
+        </EntityType>
+        <EntityType Name="FlourTransferBatch">
+          <Key>
+            <PropertyRef Name="BatchId" />
+            <PropertyRef Name="FlourTransferId" />
+          </Key>
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="FlourTransferId" Type="Int64" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Batch" Relationship="Higgs.MbaleModel.FK_FlourTransferBatch_BatchId" FromRole="FlourTransferBatch" ToRole="Batch" />
+          <NavigationProperty Name="FlourTransfer" Relationship="Higgs.MbaleModel.FK_FlourTransferBatch_DeliveryId" FromRole="FlourTransferBatch" ToRole="FlourTransfer" />
+        </EntityType>
+        <Association Name="FK_FlourTransfer_CreatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.FlourTransfer" Role="FlourTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FlourTransfer">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FlourTransfer_DeletedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.FlourTransfer" Role="FlourTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FlourTransfer">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FlourTransfer_UpdatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.FlourTransfer" Role="FlourTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FlourTransfer">
+              <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FlourTransferBatch_BatchId">
+          <End Type="Higgs.MbaleModel.Batch" Role="Batch" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.FlourTransferBatch" Role="FlourTransferBatch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Batch">
+              <PropertyRef Name="BatchId" />
+            </Principal>
+            <Dependent Role="FlourTransferBatch">
+              <PropertyRef Name="BatchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FlourTransfer_BranchId">
+          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.FlourTransfer" Role="FlourTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="FlourTransfer">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_FlourTransferGradeSize_dbo_FlourTransfer_FlourTransferId">
+          <End Type="Higgs.MbaleModel.FlourTransfer" Role="FlourTransfer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Higgs.MbaleModel.FlourTransferGradeSize" Role="FlourTransferGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlourTransfer">
+              <PropertyRef Name="FlourTransferId" />
+            </Principal>
+            <Dependent Role="FlourTransferGradeSize">
+              <PropertyRef Name="FlourTransferId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FlourTransfer_FromSupplierStoreId">
+          <End Type="Higgs.MbaleModel.Store" Role="Store" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.FlourTransfer" Role="FlourTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="FlourTransfer">
+              <PropertyRef Name="FromSupplierStoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FlourTransfer_StoreId">
+          <End Type="Higgs.MbaleModel.Store" Role="Store" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.FlourTransfer" Role="FlourTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="FlourTransfer">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FlourTransfer_ToReceiverStoreId">
+          <End Type="Higgs.MbaleModel.Store" Role="Store" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.FlourTransfer" Role="FlourTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="FlourTransfer">
+              <PropertyRef Name="ToReceiverStoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FlourTransferBatch_DeliveryId">
+          <End Type="Higgs.MbaleModel.FlourTransfer" Role="FlourTransfer" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.FlourTransferBatch" Role="FlourTransferBatch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlourTransfer">
+              <PropertyRef Name="FlourTransferId" />
+            </Principal>
+            <Dependent Role="FlourTransferBatch">
+              <PropertyRef Name="FlourTransferId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -11658,26 +12528,6 @@
           <FunctionImportMapping FunctionImportName="Mark_Activity_AsDeleted" FunctionName="Higgs.MbaleModel.Store.Mark_Activity_AsDeleted" />
           <FunctionImportMapping FunctionImportName="UpdateStoreStockWithSoldOut" FunctionName="Higgs.MbaleModel.Store.UpdateStoreStockWithSoldOut" />
           <FunctionImportMapping FunctionImportName="UpdateOrderWithCompletedStatus" FunctionName="Higgs.MbaleModel.Store.UpdateOrderWithCompletedStatus" />
-          <EntitySetMapping Name="Buveras">
-            <EntityTypeMapping TypeName="Higgs.MbaleModel.Buvera">
-              <MappingFragment StoreEntitySet="Buvera">
-                <ScalarProperty Name="ToReceiver" ColumnName="ToReceiver" />
-                <ScalarProperty Name="FromSupplier" ColumnName="FromSupplier" />
-                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
-                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
-                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
-                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
-                <ScalarProperty Name="TotalCost" ColumnName="TotalCost" />
-                <ScalarProperty Name="BuveraId" ColumnName="BuveraId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BuveraGradeSizes">
             <EntityTypeMapping TypeName="Higgs.MbaleModel.BuveraGradeSize">
               <MappingFragment StoreEntitySet="BuveraGradeSize">
@@ -11941,38 +12791,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Deliveries">
-            <EntityTypeMapping TypeName="Higgs.MbaleModel.Delivery">
-              <MappingFragment StoreEntitySet="Delivery">
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
-                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="Location" ColumnName="Location" />
-                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="SectorId" ColumnName="SectorId" />
-                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
-                <ScalarProperty Name="MediaId" ColumnName="MediaId" />
-                <ScalarProperty Name="TransactionSubTypeId" ColumnName="TransactionSubTypeId" />
-                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-                <ScalarProperty Name="VehicleNumber" ColumnName="VehicleNumber" />
-                <ScalarProperty Name="DriverNIN" ColumnName="DriverNIN" />
-                <ScalarProperty Name="DeliveryCost" ColumnName="DeliveryCost" />
-                <ScalarProperty Name="PaymentModeId" ColumnName="PaymentModeId" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="DriverName" ColumnName="DriverName" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="DeliveryId" ColumnName="DeliveryId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BatchSupplies">
             <EntityTypeMapping TypeName="Higgs.MbaleModel.BatchSupply">
               <MappingFragment StoreEntitySet="BatchSupply">
@@ -12111,28 +12929,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="FlourTransfers">
-            <EntityTypeMapping TypeName="Higgs.MbaleModel.FlourTransfer">
-              <MappingFragment StoreEntitySet="FlourTransfer">
-                <ScalarProperty Name="BatchNumbers" ColumnName="BatchNumbers" />
-                <ScalarProperty Name="Reject" ColumnName="Reject" />
-                <ScalarProperty Name="Accept" ColumnName="Accept" />
-                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
-                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
-                <ScalarProperty Name="FromSupplierStoreId" ColumnName="FromSupplierStoreId" />
-                <ScalarProperty Name="ToReceiverStoreId" ColumnName="ToReceiverStoreId" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
-                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
-                <ScalarProperty Name="FlourTransferId" ColumnName="FlourTransferId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="LabourCosts">
             <EntityTypeMapping TypeName="Higgs.MbaleModel.LabourCost">
               <MappingFragment StoreEntitySet="LabourCost">
@@ -12211,6 +13007,157 @@
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="UtilityId" ColumnName="UtilityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Buveras">
+            <EntityTypeMapping TypeName="Higgs.MbaleModel.Buvera">
+              <MappingFragment StoreEntitySet="Buvera">
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+                <ScalarProperty Name="ToReceiver" ColumnName="ToReceiver" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="FromSupplier" ColumnName="FromSupplier" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="TotalCost" ColumnName="TotalCost" />
+                <ScalarProperty Name="BuveraId" ColumnName="BuveraId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BuveraTransfers">
+            <EntityTypeMapping TypeName="Higgs.MbaleModel.BuveraTransfer">
+              <MappingFragment StoreEntitySet="BuveraTransfer">
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="FromSupplierStoreId" ColumnName="FromSupplierStoreId" />
+                <ScalarProperty Name="Reject" ColumnName="Reject" />
+                <ScalarProperty Name="Accept" ColumnName="Accept" />
+                <ScalarProperty Name="ToReceiverStoreId" ColumnName="ToReceiverStoreId" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="BuveraTransferId" ColumnName="BuveraTransferId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BuveraTransferGradeSizes">
+            <EntityTypeMapping TypeName="Higgs.MbaleModel.BuveraTransferGradeSize">
+              <MappingFragment StoreEntitySet="BuveraTransferGradeSize">
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="SizeId" ColumnName="SizeId" />
+                <ScalarProperty Name="GradeId" ColumnName="GradeId" />
+                <ScalarProperty Name="BuveraTransferId" ColumnName="BuveraTransferId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StoreBuveraTransferGradeSizes">
+            <EntityTypeMapping TypeName="Higgs.MbaleModel.StoreBuveraTransferGradeSize">
+              <MappingFragment StoreEntitySet="StoreBuveraTransferGradeSize">
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="SizeId" ColumnName="SizeId" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="GradeId" ColumnName="GradeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StoreFlourTransferGradeSizes">
+            <EntityTypeMapping TypeName="Higgs.MbaleModel.StoreFlourTransferGradeSize">
+              <MappingFragment StoreEntitySet="StoreFlourTransferGradeSize">
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="SizeId" ColumnName="SizeId" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="GradeId" ColumnName="GradeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Deliveries">
+            <EntityTypeMapping TypeName="Higgs.MbaleModel.Delivery">
+              <MappingFragment StoreEntitySet="Delivery">
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="SectorId" ColumnName="SectorId" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="MediaId" ColumnName="MediaId" />
+                <ScalarProperty Name="TransactionSubTypeId" ColumnName="TransactionSubTypeId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="VehicleNumber" ColumnName="VehicleNumber" />
+                <ScalarProperty Name="DriverNIN" ColumnName="DriverNIN" />
+                <ScalarProperty Name="DeliveryCost" ColumnName="DeliveryCost" />
+                <ScalarProperty Name="PaymentModeId" ColumnName="PaymentModeId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="DriverName" ColumnName="DriverName" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="DeliveryId" ColumnName="DeliveryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeliveryBatches">
+            <EntityTypeMapping TypeName="Higgs.MbaleModel.DeliveryBatch">
+              <MappingFragment StoreEntitySet="DeliveryBatch">
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="BatchQuantity" ColumnName="BatchQuantity" />
+                <ScalarProperty Name="DeliveryId" ColumnName="DeliveryId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FlourTransfers">
+            <EntityTypeMapping TypeName="Higgs.MbaleModel.FlourTransfer">
+              <MappingFragment StoreEntitySet="FlourTransfer">
+                <ScalarProperty Name="Reject" ColumnName="Reject" />
+                <ScalarProperty Name="Accept" ColumnName="Accept" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="FromSupplierStoreId" ColumnName="FromSupplierStoreId" />
+                <ScalarProperty Name="ToReceiverStoreId" ColumnName="ToReceiverStoreId" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="FlourTransferId" ColumnName="FlourTransferId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FlourTransferBatches">
+            <EntityTypeMapping TypeName="Higgs.MbaleModel.FlourTransferBatch">
+              <MappingFragment StoreEntitySet="FlourTransferBatch">
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="FlourTransferId" ColumnName="FlourTransferId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

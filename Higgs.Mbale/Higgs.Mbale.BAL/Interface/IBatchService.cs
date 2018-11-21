@@ -16,5 +16,6 @@ namespace Higgs.Mbale.BAL.Interface
         IEnumerable<Batch> GetAllBatchesForAParticularBranch(long branchId);
         IEnumerable<Batch> MapEFToModel(IEnumerable<EF.Models.Batch> data);
         IEnumerable<LabourCost> GenerateLabourCosts(long batchId,string userId);
+        IEnumerable<Batch> GetBatchesForAParticularBranchToTransfer(long branchId,long productId);
     }
 }

@@ -21,5 +21,10 @@ namespace Higgs.Mbale.BAL.Interface
         void UpdateStoreStockAndStockDetails(long stockId, long productId, bool soldOut, string userId);
         void SaveStoreStock(StoreStock storeStock, bool inOrOut);
         IEnumerable<StoreGradeSize> GetStoreGradeSizeForParticularGradeAtAStore(long gradeId, long storeId);
+        Stock GetStockForAParticularBatchAndProduct(long batchId, long productId, long storeId);
+        StoreStock GetStoreStockForParticularStock(long stockId, long productId,long storeId);
+        long SaveStoreStockFlourTransfer(StoreStock storeStock);
+        IEnumerable<Stock> GetStockForAParticularBranchForTransfer(long branchId, long productId);
+        void SaveStoreGradeSize(StoreGradeSize storeGradeSize, bool inOrOut);
     }
 }

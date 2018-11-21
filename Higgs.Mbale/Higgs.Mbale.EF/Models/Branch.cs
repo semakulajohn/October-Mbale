@@ -28,7 +28,6 @@ namespace Higgs.Mbale.EF.Models
             this.UserBranches = new HashSet<UserBranch>();
             this.StoreStocks = new HashSet<StoreStock>();
             this.StoreMaizeStocks = new HashSet<StoreMaizeStock>();
-            this.Buveras = new HashSet<Buvera>();
             this.Inventories = new HashSet<Inventory>();
             this.Requistions = new HashSet<Requistion>();
             this.Creditors = new HashSet<Creditor>();
@@ -38,15 +37,17 @@ namespace Higgs.Mbale.EF.Models
             this.Transactions = new HashSet<Transaction>();
             this.Cashes = new HashSet<Cash>();
             this.Batches = new HashSet<Batch>();
-            this.Deliveries = new HashSet<Delivery>();
             this.Orders = new HashSet<Order>();
             this.BatchOutPuts = new HashSet<BatchOutPut>();
             this.FactoryExpenses = new HashSet<FactoryExpense>();
-            this.FlourTransfers = new HashSet<FlourTransfer>();
             this.LabourCosts = new HashSet<LabourCost>();
             this.MachineRepairs = new HashSet<MachineRepair>();
             this.OtherExpenses = new HashSet<OtherExpense>();
             this.Utilities = new HashSet<Utility>();
+            this.Buveras = new HashSet<Buvera>();
+            this.BuveraTransfers = new HashSet<BuveraTransfer>();
+            this.Deliveries = new HashSet<Delivery>();
+            this.FlourTransfers = new HashSet<FlourTransfer>();
         }
     
         public long BranchId { get; set; }
@@ -74,7 +75,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<UserBranch> UserBranches { get; set; }
         public virtual ICollection<StoreStock> StoreStocks { get; set; }
         public virtual ICollection<StoreMaizeStock> StoreMaizeStocks { get; set; }
-        public virtual ICollection<Buvera> Buveras { get; set; }
         public virtual ICollection<Inventory> Inventories { get; set; }
         public virtual ICollection<Requistion> Requistions { get; set; }
         public virtual ICollection<Creditor> Creditors { get; set; }
@@ -84,17 +84,19 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Transaction> Transactions { get; set; }
         public virtual ICollection<Cash> Cashes { get; set; }
         public virtual ICollection<Batch> Batches { get; set; }
-        public virtual ICollection<Delivery> Deliveries { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual AspNetUser AspNetUser2 { get; set; }
         public virtual ICollection<BatchOutPut> BatchOutPuts { get; set; }
         public virtual ICollection<FactoryExpense> FactoryExpenses { get; set; }
-        public virtual ICollection<FlourTransfer> FlourTransfers { get; set; }
         public virtual ICollection<LabourCost> LabourCosts { get; set; }
         public virtual ICollection<MachineRepair> MachineRepairs { get; set; }
         public virtual ICollection<OtherExpense> OtherExpenses { get; set; }
         public virtual ICollection<Utility> Utilities { get; set; }
+        public virtual ICollection<Buvera> Buveras { get; set; }
+        public virtual ICollection<BuveraTransfer> BuveraTransfers { get; set; }
+        public virtual ICollection<Delivery> Deliveries { get; set; }
+        public virtual ICollection<FlourTransfer> FlourTransfers { get; set; }
     }
 }

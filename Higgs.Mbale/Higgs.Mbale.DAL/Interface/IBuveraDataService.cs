@@ -19,7 +19,7 @@ namespace Higgs.Mbale.DAL.Interface
         void SaveBuveraGradeSize(BuveraGradeSizeDTO buveraGradeSizeDTO);
         void PurgeBuveraGradeSize(long buveraId);
         IEnumerable<StoreBuveraGradeSize> GetStoreBuveraStock(long storeId);
-        int SaveStoreBuveraGradeSize(StoreBuveraGradeSizeDTO storeBuveraGradeSizeDTO, bool inOrOut);
+        void SaveStoreBuveraGradeSize(StoreBuveraGradeSizeDTO storeBuveraGradeSizeDTO, bool inOrOut);
        
     }
 }

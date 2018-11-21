@@ -24,21 +24,22 @@ namespace Higgs.Mbale.EF.Models
         public long StoreId { get; set; }
         public long BranchId { get; set; }
         public Nullable<bool> Deleted { get; set; }
+        public string FromSupplier { get; set; }
+        public double TotalQuantity { get; set; }
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
         public string DeletedBy { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public System.DateTime TimeStamp { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
-        public double TotalQuantity { get; set; }
-        public string FromSupplier { get; set; }
         public string ToReceiver { get; set; }
+        public string InvoiceNumber { get; set; }
     
-        public virtual Branch Branch { get; set; }
-        public virtual Store Store { get; set; }
-        public virtual ICollection<BuveraGradeSize> BuveraGradeSizes { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual AspNetUser AspNetUser2 { get; set; }
+        public virtual Branch Branch { get; set; }
+        public virtual Store Store { get; set; }
+        public virtual ICollection<BuveraGradeSize> BuveraGradeSizes { get; set; }
     }
 }

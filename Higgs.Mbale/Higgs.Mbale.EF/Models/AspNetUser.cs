@@ -35,9 +35,6 @@ namespace Higgs.Mbale.EF.Models
             this.Branches = new HashSet<Branch>();
             this.Branches1 = new HashSet<Branch>();
             this.Branches2 = new HashSet<Branch>();
-            this.Buveras = new HashSet<Buvera>();
-            this.Buveras1 = new HashSet<Buvera>();
-            this.Buveras2 = new HashSet<Buvera>();
             this.Cashes = new HashSet<Cash>();
             this.Cashes1 = new HashSet<Cash>();
             this.CasualActivities = new HashSet<CasualActivity>();
@@ -56,9 +53,6 @@ namespace Higgs.Mbale.EF.Models
             this.Debtors1 = new HashSet<Debtor>();
             this.Debtors2 = new HashSet<Debtor>();
             this.Debtors3 = new HashSet<Debtor>();
-            this.Deliveries = new HashSet<Delivery>();
-            this.Deliveries1 = new HashSet<Delivery>();
-            this.Deliveries2 = new HashSet<Delivery>();
             this.Documents = new HashSet<Document>();
             this.Documents1 = new HashSet<Document>();
             this.Documents2 = new HashSet<Document>();
@@ -117,9 +111,6 @@ namespace Higgs.Mbale.EF.Models
             this.FactoryExpenses = new HashSet<FactoryExpense>();
             this.FactoryExpenses1 = new HashSet<FactoryExpense>();
             this.FactoryExpenses2 = new HashSet<FactoryExpense>();
-            this.FlourTransfers = new HashSet<FlourTransfer>();
-            this.FlourTransfers1 = new HashSet<FlourTransfer>();
-            this.FlourTransfers2 = new HashSet<FlourTransfer>();
             this.LabourCosts = new HashSet<LabourCost>();
             this.LabourCosts1 = new HashSet<LabourCost>();
             this.LabourCosts2 = new HashSet<LabourCost>();
@@ -132,6 +123,18 @@ namespace Higgs.Mbale.EF.Models
             this.Utilities = new HashSet<Utility>();
             this.Utilities1 = new HashSet<Utility>();
             this.Utilities2 = new HashSet<Utility>();
+            this.Buveras = new HashSet<Buvera>();
+            this.Buveras1 = new HashSet<Buvera>();
+            this.Buveras2 = new HashSet<Buvera>();
+            this.BuveraTransfers = new HashSet<BuveraTransfer>();
+            this.BuveraTransfers1 = new HashSet<BuveraTransfer>();
+            this.BuveraTransfers2 = new HashSet<BuveraTransfer>();
+            this.Deliveries = new HashSet<Delivery>();
+            this.Deliveries1 = new HashSet<Delivery>();
+            this.Deliveries2 = new HashSet<Delivery>();
+            this.FlourTransfers = new HashSet<FlourTransfer>();
+            this.FlourTransfers1 = new HashSet<FlourTransfer>();
+            this.FlourTransfers2 = new HashSet<FlourTransfer>();
         }
     
         public string Id { get; set; }
@@ -185,9 +188,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Branch> Branches { get; set; }
         public virtual ICollection<Branch> Branches1 { get; set; }
         public virtual ICollection<Branch> Branches2 { get; set; }
-        public virtual ICollection<Buvera> Buveras { get; set; }
-        public virtual ICollection<Buvera> Buveras1 { get; set; }
-        public virtual ICollection<Buvera> Buveras2 { get; set; }
         public virtual ICollection<Cash> Cashes { get; set; }
         public virtual ICollection<Cash> Cashes1 { get; set; }
         public virtual ICollection<CasualActivity> CasualActivities { get; set; }
@@ -206,9 +206,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Debtor> Debtors1 { get; set; }
         public virtual ICollection<Debtor> Debtors2 { get; set; }
         public virtual ICollection<Debtor> Debtors3 { get; set; }
-        public virtual ICollection<Delivery> Deliveries { get; set; }
-        public virtual ICollection<Delivery> Deliveries1 { get; set; }
-        public virtual ICollection<Delivery> Deliveries2 { get; set; }
         public virtual ICollection<Document> Documents { get; set; }
         public virtual ICollection<Document> Documents1 { get; set; }
         public virtual ICollection<Document> Documents2 { get; set; }
@@ -267,9 +264,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<FactoryExpense> FactoryExpenses { get; set; }
         public virtual ICollection<FactoryExpense> FactoryExpenses1 { get; set; }
         public virtual ICollection<FactoryExpense> FactoryExpenses2 { get; set; }
-        public virtual ICollection<FlourTransfer> FlourTransfers { get; set; }
-        public virtual ICollection<FlourTransfer> FlourTransfers1 { get; set; }
-        public virtual ICollection<FlourTransfer> FlourTransfers2 { get; set; }
         public virtual ICollection<LabourCost> LabourCosts { get; set; }
         public virtual ICollection<LabourCost> LabourCosts1 { get; set; }
         public virtual ICollection<LabourCost> LabourCosts2 { get; set; }
@@ -282,5 +276,17 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Utility> Utilities { get; set; }
         public virtual ICollection<Utility> Utilities1 { get; set; }
         public virtual ICollection<Utility> Utilities2 { get; set; }
+        public virtual ICollection<Buvera> Buveras { get; set; }
+        public virtual ICollection<Buvera> Buveras1 { get; set; }
+        public virtual ICollection<Buvera> Buveras2 { get; set; }
+        public virtual ICollection<BuveraTransfer> BuveraTransfers { get; set; }
+        public virtual ICollection<BuveraTransfer> BuveraTransfers1 { get; set; }
+        public virtual ICollection<BuveraTransfer> BuveraTransfers2 { get; set; }
+        public virtual ICollection<Delivery> Deliveries { get; set; }
+        public virtual ICollection<Delivery> Deliveries1 { get; set; }
+        public virtual ICollection<Delivery> Deliveries2 { get; set; }
+        public virtual ICollection<FlourTransfer> FlourTransfers { get; set; }
+        public virtual ICollection<FlourTransfer> FlourTransfers1 { get; set; }
+        public virtual ICollection<FlourTransfer> FlourTransfers2 { get; set; }
     }
 }

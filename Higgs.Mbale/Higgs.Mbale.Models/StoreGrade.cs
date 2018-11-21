@@ -10,7 +10,8 @@ namespace Higgs.Mbale.Models
     {
         
             public IEnumerable<StoreGradeSize> StoreSizeGrades { get; set; }
-
+            public IEnumerable<StoreBuveraTransferGradeSize> StoreBuveraTransferGradeSizes { get; set; }
+            public IEnumerable<StoreFlourTransferGradeSize> StoreFlourTransferGradeSizes { get; set; }
             public IEnumerable<StoreBuveraGradeSize> StoreBuveraSizeGrades { get; set; }
        
     }

@@ -64,7 +64,8 @@ namespace Higgs.Mbale.DAL.Concrete
                     FromSupplier = buveraDTO.FromSupplier,
                     ToReceiver = buveraDTO.ToReceiver,
                     BranchId = buveraDTO.BranchId,                   
-                    TotalQuantity = buveraDTO.TotalQuantity,            
+                    TotalQuantity = buveraDTO.TotalQuantity,  
+                    InvoiceNumber = buveraDTO.InvoiceNumber,
                     CreatedOn = DateTime.Now,
                     TimeStamp = DateTime.Now,
                     CreatedBy = userId,
@@ -90,6 +91,7 @@ namespace Higgs.Mbale.DAL.Concrete
                     result.TotalCost = buveraDTO.TotalCost;
                     result.FromSupplier = buveraDTO.FromSupplier;
                     result.ToReceiver = buveraDTO.ToReceiver;
+                    result.InvoiceNumber = buveraDTO.InvoiceNumber;
                     result.TotalQuantity = buveraDTO.TotalQuantity;               
                     result.BranchId = buveraDTO.BranchId;
                     result.StoreId = buveraDTO.StoreId;
@@ -119,7 +121,8 @@ namespace Higgs.Mbale.DAL.Concrete
         }
 
 
-        public int SaveStoreBuveraGradeSize(StoreBuveraGradeSizeDTO storeBuveraGradeSizeDTO, bool inOrOut)
+      
+        public void SaveStoreBuveraGradeSize(StoreBuveraGradeSizeDTO storeBuveraGradeSizeDTO, bool inOrOut)
         {
             double sizeQuantity = 0;
             var result = this.UnitOfWork.Get<StoreBuveraGradeSize>().AsQueryable()
@@ -139,7 +142,8 @@ namespace Higgs.Mbale.DAL.Concrete
                 };
                 this.UnitOfWork.Get<StoreBuveraGradeSize>().AddNew(storeBuveraGradeSize);
                 this.UnitOfWork.SaveChanges();
-                return 1;
+
+            
 
             }
 
@@ -156,15 +160,12 @@ namespace Higgs.Mbale.DAL.Concrete
                     result.TimeStamp = DateTime.Now;
                     this.UnitOfWork.Get<StoreBuveraGradeSize>().Update(result);
                     this.UnitOfWork.SaveChanges();
-                    return 1;
+                    
 
                 }
                 else
                 {
-                    if (storeBuveraGradeSizeDTO.Quantity > result.Quantity)
-                    {
-                        return -1;
-                    }
+                   
                     sizeQuantity = result.Quantity - storeBuveraGradeSizeDTO.Quantity;
 
                     result.StoreId = storeBuveraGradeSizeDTO.StoreId;
@@ -174,7 +175,7 @@ namespace Higgs.Mbale.DAL.Concrete
                     result.TimeStamp = DateTime.Now;
                     this.UnitOfWork.Get<StoreBuveraGradeSize>().Update(result);
                     this.UnitOfWork.SaveChanges();
-                    return 1;
+                   
                 }
 
 

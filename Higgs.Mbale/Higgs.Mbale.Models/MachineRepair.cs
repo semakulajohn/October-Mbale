@@ -28,5 +28,6 @@ namespace Higgs.Mbale.Models
         public string TransactionSubTypeName { get; set; }
         public string BranchName { get; set; }
         public string SectorName { get; set; }
+        public string BatchNumber { get; set; }
     }
 }

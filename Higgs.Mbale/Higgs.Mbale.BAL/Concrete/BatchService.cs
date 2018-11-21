@@ -16,6 +16,7 @@ namespace Higgs.Mbale.BAL.Concrete
   public  class BatchService : IBatchService
     {
       private string supplyStatusIdInProgress = ConfigurationManager.AppSettings["SupplyStatusIdInProgress"];
+      private long flourId = Convert.ToInt64(ConfigurationManager.AppSettings["FlourId"]);
          ILog logger = log4net.LogManager.GetLogger(typeof(BatchService));
         private IBatchDataService _dataService;
         private IUserService _userService;
@@ -28,6 +29,7 @@ namespace Higgs.Mbale.BAL.Concrete
         private ISupplyService _supplyService;
         private IUtilityService _utilityService;
         private IActivityService _activityService;
+        private IStockService _stockService;
        
         
 
@@ -35,7 +37,7 @@ namespace Higgs.Mbale.BAL.Concrete
             IFactoryExpenseService factoryExpenseService,ILabourCostService labourCostService,
             IMachineRepairService machineRepairService,IOtherExpenseService otherExpenseService,
             IBatchOutPutService batchOutPutService,ISupplyService supplyService,IUtilityService utilityService,
-            IActivityService activityService)
+            IActivityService activityService,IStockService stockService)
         {
             this._dataService = dataService;
             this._userService = userService;
@@ -48,6 +50,7 @@ namespace Higgs.Mbale.BAL.Concrete
             this._supplyService = supplyService;
             this._utilityService = utilityService;
             this._activityService = activityService;
+            this._stockService = stockService;
            
         }
 
@@ -368,6 +371,28 @@ namespace Higgs.Mbale.BAL.Concrete
             _dataService.MarkAsDeleted(batchId, userId);
         }
 
+        public IEnumerable<Batch> GetBatchesForAParticularBranchToTransfer(long branchId,long productId)
+        {
+            List<Batch> batches = new List<Batch>();
+            var stocks = _stockService.GetStockForAParticularBranchForTransfer(branchId, productId);
+            if (stocks.Any())
+            {
+                List<long> batchIds = new List<long>();
+               
+                foreach (var stock in stocks)
+                {
+                    long batchId = stock.BatchId;
+                    batchIds.Add(batchId);
+                }
+
+                foreach (var batchid in batchIds)
+                {
+                    var batch = GetBatch(batchid);
+                    batches.Add(batch);
+                }
+            }
+            return batches;
+        }
       
         #region Mapping Methods
 

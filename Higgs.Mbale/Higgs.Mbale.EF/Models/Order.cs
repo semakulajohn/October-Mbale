@@ -16,8 +16,8 @@ namespace Higgs.Mbale.EF.Models
     {
         public Order()
         {
-            this.Deliveries = new HashSet<Delivery>();
             this.OrderGradeSizes = new HashSet<OrderGradeSize>();
+            this.Deliveries = new HashSet<Delivery>();
         }
     
         public long OrderId { get; set; }
@@ -35,7 +35,6 @@ namespace Higgs.Mbale.EF.Models
         public Nullable<System.DateTime> DeletedOn { get; set; }
     
         public virtual Branch Branch { get; set; }
-        public virtual ICollection<Delivery> Deliveries { get; set; }
         public virtual ICollection<OrderGradeSize> OrderGradeSizes { get; set; }
         public virtual Product Product { get; set; }
         public virtual Status Status { get; set; }
@@ -43,5 +42,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual AspNetUser AspNetUser2 { get; set; }
         public virtual AspNetUser AspNetUser3 { get; set; }
+        public virtual ICollection<Delivery> Deliveries { get; set; }
     }
 }

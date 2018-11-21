@@ -17,6 +17,7 @@ namespace Higgs.Mbale.EF.Models
         public FlourTransfer()
         {
             this.FlourTransferGradeSizes = new HashSet<FlourTransferGradeSize>();
+            this.FlourTransferBatches = new HashSet<FlourTransferBatch>();
         }
     
         public long FlourTransferId { get; set; }
@@ -34,7 +35,6 @@ namespace Higgs.Mbale.EF.Models
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public bool Accept { get; set; }
         public bool Reject { get; set; }
-        public string BatchNumbers { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }
@@ -44,5 +44,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual Store Store { get; set; }
         public virtual Store Store1 { get; set; }
         public virtual Store Store2 { get; set; }
+        public virtual ICollection<FlourTransferBatch> FlourTransferBatches { get; set; }
     }
 }

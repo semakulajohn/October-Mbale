@@ -137,7 +137,7 @@ namespace Higgs.Mbale.BAL.Concrete
                     Quantity = data.Quantity,
                     ActivityId = data.ActivityId,
                     ActivityName = data.Activity != null ? data.Activity.Name : "",
-
+                    BatchNumber = data.Batch != null ? data.Batch.Name : "",
                     BranchName = data.Branch != null ? data.Branch.Name : "",
                     SectorName = data.Sector != null ? data.Sector.Name : "",
                     CreatedOn = data.CreatedOn,

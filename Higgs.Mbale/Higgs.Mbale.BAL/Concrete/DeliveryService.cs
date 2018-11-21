@@ -22,6 +22,7 @@ namespace Higgs.Mbale.BAL.Concrete
         private long orderStatusIdInProgress = Convert.ToInt64(ConfigurationManager.AppSettings["StatusIdInProgress"]);
         private long flourTransactionSubTypeId = Convert.ToInt64(ConfigurationManager.AppSettings["FlourSaleTransactionSubTypeId"]);
         private long branTransactionSubTypeId = Convert.ToInt64(ConfigurationManager.AppSettings["BranSaleTransactionSubTypeId"]);
+        private double orderBalance = 0;
         ILog logger = log4net.LogManager.GetLogger(typeof(DeliveryService));
         private IDeliveryDataService _dataService;
         private IUserService _userService;
@@ -32,12 +33,14 @@ namespace Higgs.Mbale.BAL.Concrete
         private IStockDataService _stockDataService;
         private IAccountTransactionActivityService _accountTransactionActivityService;
         private ICashService _cashService;
+        private IBatchService _batchService;
         
 
         public DeliveryService(IDeliveryDataService dataService,IUserService userService,ITransactionDataService transactionDataService,
             ITransactionSubTypeService transactionSubTypeService,
             IOrderService orderService,IStockService stockService,IStockDataService stockDataService,
-            IAccountTransactionActivityService accountTransactionActivityService,ICashService cashService)
+            IAccountTransactionActivityService accountTransactionActivityService,ICashService cashService,
+            IBatchService batchService)
         {
             this._dataService = dataService;
             this._userService = userService;
@@ -48,6 +51,7 @@ namespace Higgs.Mbale.BAL.Concrete
             this._stockDataService = stockDataService;
             this._accountTransactionActivityService = accountTransactionActivityService;
             this._cashService = cashService;
+            this._batchService = batchService;
         }
 
         /// <summary>
@@ -83,8 +87,135 @@ namespace Higgs.Mbale.BAL.Concrete
             return MapEFToModel(results);
         }
 
+
 #region makeDelivery
-      
+
+        private long UpdateStoreStockDetailsOnTransfer(StoreStock storeStock)
+        {
+            var storeStockId = _stockService.SaveStoreStockFlourTransfer(storeStock);
+            return storeStockId;
+
+        }
+        private MakeDelivery ReduceBatchStock(long batchId, long productId, long storeId, double totalQuantity, string userId)
+        {
+            var soldOut = false;
+            MakeDelivery makeDelivery = new MakeDelivery();
+            var stockToTransfer = _stockService.GetStockForAParticularBatchAndProduct(batchId, productId, storeId);
+            var storeStock = _stockService.GetStoreStockForParticularStock(stockToTransfer.StockId, productId, storeId);
+            if (storeStock != null)
+            {
+                if (storeStock.Balance == totalQuantity)
+                {
+                    soldOut = true;
+                    orderBalance = 0;
+                    var storeStockUpdate = new StoreStock()
+                    {
+                        StoreStockId = storeStock.StoreStockId,
+                        StoreId = storeStock.StoreId,
+                        StartStock = storeStock.StartStock,
+                        StockId = storeStock.StockId,
+                        ProductId = storeStock.ProductId,
+                        StockBalance = storeStock.StockBalance,
+                        BranchId = storeStock.BranchId,
+                        Quantity = storeStock.Quantity,
+                        SectorId = storeStock.SectorId,
+                        TimeStamp = storeStock.TimeStamp,
+                        InOrOut = storeStock.InOrOut,
+                        Balance = 0,
+                        CreatedOn = storeStock.CreatedOn,
+                        SoldOut = soldOut,
+                        SoldAmount = storeStock.Balance,
+
+                    };
+
+                   
+                    makeDelivery = new MakeDelivery()
+                    { 
+                        StockReduced = soldOut,
+                        OrderQuantityBalance = orderBalance,
+                    };
+                   
+                    var storeStockId = UpdateStoreStockDetailsOnTransfer(storeStockUpdate);
+                    return makeDelivery;
+                }
+                else if (storeStock.Balance < totalQuantity)
+                {
+                    soldOut = true;
+                    var storeStockUpdate = new StoreStock()
+                    {
+                        StoreStockId = storeStock.StoreStockId,
+                        StoreId = storeStock.StoreId,
+                        StartStock = storeStock.StartStock,
+                        StockId = storeStock.StockId,
+                        ProductId = storeStock.ProductId,
+                        StockBalance = storeStock.StockBalance,
+                        BranchId = storeStock.BranchId,
+                        Quantity = storeStock.Quantity,
+                        SectorId = storeStock.SectorId,
+                        TimeStamp = storeStock.TimeStamp,
+                        InOrOut = storeStock.InOrOut,
+                        Balance = 0,
+                        CreatedOn = storeStock.CreatedOn,
+                        SoldOut = soldOut,
+                        SoldAmount = storeStock.Balance,
+
+                    };
+
+                    var storeStockId = UpdateStoreStockDetailsOnTransfer(storeStockUpdate);
+                    orderBalance = totalQuantity - Convert.ToDouble(storeStock.Balance);
+                    if (orderBalance > 0)
+                    {
+                        makeDelivery = new MakeDelivery()
+                        {
+                            StockReduced = false,
+                            OrderQuantityBalance = orderBalance,
+                        };
+                        return makeDelivery;
+                    }
+
+                }
+                else if (storeStock.Balance > totalQuantity)
+                {
+                    soldOut = false;
+                    var stockbalance = Convert.ToDouble(storeStock.Balance) - totalQuantity;
+                    orderBalance = 0;
+                    var storeStockUpdate = new StoreStock()
+                    {
+                        StoreStockId = storeStock.StoreStockId,
+                        StoreId = storeStock.StoreId,
+                        StartStock = storeStock.StartStock,
+                        StockId = storeStock.StockId,
+                        ProductId = storeStock.ProductId,
+                        StockBalance = storeStock.StockBalance,
+                        BranchId = storeStock.BranchId,
+                        Quantity = storeStock.Quantity,
+                        SectorId = storeStock.SectorId,
+                        TimeStamp = storeStock.TimeStamp,
+                        InOrOut = storeStock.InOrOut,
+                        Balance = stockbalance,
+                        CreatedOn = storeStock.CreatedOn,
+                        SoldOut = soldOut,
+                        SoldAmount = totalQuantity,
+
+                    };
+
+                    makeDelivery = new MakeDelivery()
+                    {
+                        StockReduced = soldOut,
+                        OrderQuantityBalance = orderBalance,
+                    };
+
+                    var storeStockId = UpdateStoreStockDetailsOnTransfer(storeStockUpdate);
+                    return makeDelivery;
+                   
+                    
+                }
+
+            }
+            return makeDelivery;
+        }
+       
+
         #region flour delivery
         private bool CheckIfStockHasOrderGrade(long orderGrade, List<long> stockGrades)
         {
@@ -128,98 +259,101 @@ namespace Higgs.Mbale.BAL.Concrete
 
         }
 
-        private MakeDelivery MakeFlourDeliveryRecord(long storeId, Delivery delivery, string userId)
+        private void RemoveGradeSizeQuantitiesFromStore(Delivery delivery)
         {
-            var soldOut = false;
-            var stockReduced = false;
-            double balance = 0, totalBalance=0;
-            List<long> orderGradeIds = new List<long>();
-            List<long> stockGradeIds = new List<long>();
-            List<StoreGradeSize> storeGradeSizes = new List<StoreGradeSize>();
-            List<OrderGradeSize> orderGradeSizes = new List<OrderGradeSize>();
-           
-            var makeDelivery = new MakeDelivery();
-            var storeStock = _stockService.GetStockForAParticularStoreForDelivery(storeId, delivery.ProductId,delivery.BatchId);
-            var order = _orderService.GetOrder(delivery.OrderId);
-            if (storeStock != null)
+            if (delivery.Grades != null)
             {
-                if (delivery.Grades != null)
+                if (delivery.Grades.Any())
                 {
+
                     foreach (var grade in delivery.Grades)
                     {
-                        orderGradeIds.Add(grade.GradeId);
-                    }
-
-                    foreach (var stockGrade in storeStock.Stock.Grades)
-                    {
-                        stockGradeIds.Add(stockGrade.GradeId);
-                    }
-                    foreach (var orderGradeId in orderGradeIds)
-                    {
-                        if (CheckIfStockHasOrderGrade(orderGradeId, stockGradeIds))
+                        var gradeId = grade.GradeId;
+                        if (grade.Denominations != null)
                         {
-                            storeGradeSizes = _stockService.GetStoreGradeSizeForParticularGradeAtAStore(orderGradeId, storeStock.StoreId).ToList();
-                            orderGradeSizes = GetOrderGradeSizes(order, orderGradeId);
-                            if (orderGradeSizes.Any())
+                            if (grade.Denominations.Any())
                             {
-                                foreach (var orderGradeSize in orderGradeSizes)
+                                foreach (var denomination in grade.Denominations)
                                 {
-                                    if(storeGradeSizes.Any())
+                                    var inOrOut = false;
+                                    //Method that removes flour from storeGradeSize table
+                                    var storeGradeSize = new StoreGradeSize()
                                     {
-                                         foreach (var storeGradeSize in storeGradeSizes)
-                                         {
-                                             if (orderGradeSize.SizeId == storeGradeSize.SizeId)
-                                             {
-                                                 balance = storeGradeSize.Quantity - orderGradeSize.Quantity;
-                                                 if (balance < 0)
-                                                 {
-                                                     //store doesn't have enough stock to cover this denomination
-                                                 }
-                                                 else
-                                                 {
-                                                     var storeGradeSizeDTO = new StoreGradeSizeDTO(){
-                                                          GradeId = storeGradeSize.GradeId,
-                                                          StoreId = storeGradeSize.StoreId,
-                                                          SizeId = storeGradeSize.SizeId,
-                                                           Quantity = orderGradeSize.Quantity,
-                                                     };
-                                                     _stockDataService.SaveStoreGradeSize(storeGradeSizeDTO, false);
+                                        StoreId = delivery.StoreId,
+                                        GradeId = gradeId,
+                                        SizeId = denomination.DenominationId,
+                                        Quantity = denomination.Quantity,
+                                    };
 
-                                                     
-                                                 }
-                                             }
-                                           }
-                                    }
-                                     else
-                                    {
-                                        //store doesn't have that Grade
-                                    }
-                                   
+                                    this._stockService.SaveStoreGradeSize(storeGradeSize, inOrOut);
+
+
                                 }
-                                
                             }
-                            stockReduced = true;
-                            makeDelivery = new MakeDelivery()
-                            {
-                                StockId = storeStock.StockId,
-                                StockReduced = stockReduced,
-                                OrderQuantityBalance = totalBalance,
-                            };
                         }
                     }
-                    return makeDelivery;
-                }
-                else
-                {
-                    return makeDelivery;
-                }
-               
 
+                }
+            }
+        }
+
+        private MakeDelivery MakeFlourDeliveryRecord(long storeId, Delivery delivery, string userId)
+        {                    
+            var makeDelivery = new MakeDelivery();
+            if (delivery.Batches == null || !delivery.Batches.Any())
+            {
+                RemoveGradeSizeQuantitiesFromStore(delivery);
+                makeDelivery = new MakeDelivery()
+                {
+                    StockReduced = true,
+                    OrderQuantityBalance = 0,
+                };
+                return makeDelivery;
             }
             else
             {
-                return makeDelivery;
+                List<Batch> batchesList = new List<Batch>();
+                foreach (var deliveryBatch in delivery.Batches)
+                {
+                    var batch = _batchService.GetBatch(deliveryBatch.BatchId);
+                    batchesList.Add(batch);
+                }
+
+                List<Batch> SortedBatchList = batchesList.OrderBy(o => o.CreatedOn).ToList();
+                foreach (var batch in SortedBatchList)
+                {
+                    makeDelivery = ReduceBatchStock(batch.BatchId, delivery.ProductId, delivery.StoreId, delivery.Quantity, userId);
+                    if (makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance == 0)
+                    {
+                        makeDelivery = new MakeDelivery()
+                        {
+                            StockReduced = true,
+                            OrderQuantityBalance = 0,
+                        };
+                        return makeDelivery;
+                    }
+                    else if (!makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance == 0)
+                    {
+
+                        makeDelivery = new MakeDelivery()
+                        {
+                            StockReduced = true,
+                            OrderQuantityBalance = 0,
+                        };
+                        return makeDelivery;
+                    }
+                    else
+                    {
+                        if (orderBalance > 0)
+                        {
+                            makeDelivery = ReduceBatchStock(batch.BatchId, delivery.ProductId, delivery.StoreId, orderBalance, userId);
+                        }
+                    }
+                }
+                RemoveGradeSizeQuantitiesFromStore(delivery);
+               
             }
+         
 
           return makeDelivery;
         }
@@ -233,152 +367,51 @@ namespace Higgs.Mbale.BAL.Concrete
 
         private MakeDelivery MakeBrandDeliveryRecord(long storeId, Delivery delivery, string userId)
         {
-            var soldOut = false;
-            var stockReduced = false;
-            double balance = 0;
             var makeDelivery = new MakeDelivery();
-            
-            var storeStock = _stockService.GetStockForAParticularStoreForDelivery(storeId, delivery.ProductId,delivery.BatchId);
-            if (storeStock != null)
+
+            if (delivery.Batches == null || !delivery.Batches.Any())
             {
-
-                if (storeStock.Balance == delivery.Quantity)
-                {
-                    soldOut = true;
-                    if (storeStock.Balance != 0 || storeStock.Balance != null)
-                    {
-                        balance =Convert.ToDouble( storeStock.Balance) - Convert.ToDouble(delivery.Quantity);
-                    }
-                    else
-                    {
-                        balance = storeStock.Quantity - Convert.ToDouble(delivery.Quantity);
-                    }
-                   
-                    UpdateStoreStockDetailsOnDelivery(storeId, delivery.ProductId, userId, soldOut, storeStock.StockId);
-                    var storeStockObject = new StoreStock()
-                    {
-
-                        StoreId = storeStock.StoreId,
-                        ProductId = storeStock.ProductId,
-                        BranchId = storeStock.BranchId,
-                        StockId = storeStock.StockId,
-                        Quantity = storeStock.Quantity,
-                        SectorId = storeStock.SectorId,
-                        StockBalance = storeStock.StockBalance,
-                        StartStock = storeStock.StartStock,
-                        StoreStockId = storeStock.StoreStockId,
-                        Balance = balance,
-                        SoldAmount = delivery.Quantity,
-                        CreatedOn = storeStock.CreatedOn,
-                        SoldOut = soldOut,
-
-
-                    };
-                    _stockService.SaveStoreStock(storeStockObject, false);
-                    stockReduced = true;
-                     makeDelivery = new MakeDelivery(){
-                        StockId = storeStock.StockId,
-                        StockReduced = stockReduced,
-                        OrderQuantityBalance = balance,
-                    };
-                    return makeDelivery;
-                   
-                }
-                else if (storeStock.Balance > delivery.Quantity)
-                {
-                    if (storeStock.Balance != 0 || storeStock.Balance != null)
-                    {
-                        balance = Convert.ToDouble(storeStock.Balance) - Convert.ToDouble(delivery.Quantity);
-                    }
-                    else
-                    {
-                        balance = storeStock.Quantity - Convert.ToDouble(delivery.Quantity);
-                    }
-                   
-                    var storeStockObject = new StoreStock()
-                    {
-                        StoreId = storeStock.StoreId,
-                        ProductId = storeStock.ProductId,
-                        BranchId = storeStock.BranchId,
-                        StockId = storeStock.StockId,
-                        Quantity = storeStock.Quantity,
-                        SectorId = storeStock.SectorId,
-                        StoreStockId = storeStock.StoreStockId,
-                        StockBalance = storeStock.StockBalance,
-                        StartStock = storeStock.StartStock,
-                        Balance = balance,
-                        SoldAmount = delivery.Quantity,
-                        CreatedOn = storeStock.CreatedOn,
-                        SoldOut = storeStock.SoldOut,
-
-                    };
-                    _stockService.SaveStoreStock(storeStockObject, false);
-                    stockReduced = true;
-                      makeDelivery = new MakeDelivery(){
-                        StockId = storeStock.StockId,
-                        StockReduced = stockReduced,
-                        OrderQuantityBalance = 0,
-                    };
-                    return makeDelivery;
-                   
-                }
-                else
-                {
-                    double stockBalance = 0,deliverQuantity= 0,newOrderQuantity = 0;
-
-                    if (storeStock.Balance != 0 || storeStock.Balance != null)
-                    {
-                        balance = Convert.ToDouble(storeStock.Balance) - Convert.ToDouble(delivery.Quantity);
-                    }
-                    else
-                    {
-                        balance = storeStock.Quantity - Convert.ToDouble(delivery.Quantity);
-                    }
-                    if (stockBalance < 0)
-                    {
-                        balance = 0;
-                        deliverQuantity = storeStock.Quantity;
-                        newOrderQuantity = Convert.ToDouble(delivery.Quantity) - storeStock.Quantity;
-                    }
-
-                    soldOut = true;
-                    UpdateStoreStockDetailsOnDelivery(storeId, delivery.ProductId, userId, soldOut, storeStock.StockId);
-                    var storeStockObject = new StoreStock()
-                    {
-
-                        StoreId = storeStock.StoreId,
-                        ProductId = storeStock.ProductId,
-                        BranchId = storeStock.BranchId,
-                        StockId = storeStock.StockId,
-                        Quantity = storeStock.Quantity,
-                        SectorId = storeStock.SectorId,
-                        StoreStockId = storeStock.StoreStockId,
-                        StockBalance = storeStock.StockBalance,
-                        StartStock = storeStock.StartStock,
-                        Balance = balance,
-                        SoldAmount = deliverQuantity,
-                        CreatedOn = storeStock.CreatedOn,
-                        SoldOut = soldOut,
-
-
-                    };
-                    _stockService.SaveStoreStock(storeStockObject, false);
-                    stockReduced = true;
-                       makeDelivery = new MakeDelivery(){
-                        StockId = storeStock.StockId,
-                        StockReduced = stockReduced,
-                        OrderQuantityBalance = stockBalance,
-                    };
-                    return makeDelivery;
-                   
-                                
-            }
-               
+                return makeDelivery;
             }
             else
             {
-                // we dont have stock in store
-                stockReduced = false;
+                List<Batch> batchesList = new List<Batch>();
+                foreach (var deliveryBatch in delivery.Batches)
+                {
+                    var batch = _batchService.GetBatch(deliveryBatch.BatchId);
+                    batchesList.Add(batch);
+                }
+
+                List<Batch> SortedBatchList = batchesList.OrderBy(o => o.CreatedOn).ToList();
+                foreach (var batch in SortedBatchList)
+                {
+                    makeDelivery = ReduceBatchStock(batch.BatchId, delivery.ProductId, delivery.StoreId, delivery.Quantity, userId);
+                    if (makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance == 0)
+                    {
+                        makeDelivery = new MakeDelivery()
+                        {
+                            StockReduced = true,
+                            OrderQuantityBalance = 0,
+                        };
+                        return makeDelivery;
+                    }
+                    else if (!makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance == 0)
+                    {
+                        makeDelivery = new MakeDelivery()
+                        {
+                            StockReduced = true,
+                            OrderQuantityBalance = 0,
+                        };
+                        return makeDelivery;
+                    }
+                    else
+                    {
+                        if (orderBalance > 0)
+                        {
+                            makeDelivery = ReduceBatchStock(batch.BatchId, delivery.ProductId, delivery.StoreId, orderBalance, userId);
+                        }
+                    }
+                }
             }
             return makeDelivery;
         }
@@ -390,11 +423,9 @@ namespace Higgs.Mbale.BAL.Concrete
             long deliveryId = 0;
             MakeDelivery makeDelivery = new MakeDelivery();
 
-           
-
             if (delivery.OrderId != 0)
             {
-                //var order = _orderService.GetOrder(delivery.OrderId);
+            
                 if (delivery.ProductId == 2)
                 {
                     var deliveryDTO = new DTO.DeliveryDTO()
@@ -407,7 +438,7 @@ namespace Higgs.Mbale.BAL.Concrete
                         BranchId = delivery.BranchId,
                         SectorId = delivery.SectorId,
                         PaymentModeId = delivery.PaymentModeId,
-                        BatchId = delivery.BatchId,
+                        
                         Price = delivery.Price,
                         Quantity = delivery.Quantity,
                         ProductId = delivery.ProductId,
@@ -425,61 +456,29 @@ namespace Higgs.Mbale.BAL.Concrete
 
                     };
                      makeDelivery =   MakeBrandDeliveryRecord(delivery.StoreId, delivery,userId);
-                    if (makeDelivery.StockReduced && (makeDelivery.OrderQuantityBalance == 0 || makeDelivery.OrderQuantityBalance > 0))
+                    if (makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance == 0 )
                     {
                         deliveryId = this._dataService.SaveDelivery(deliveryDTO, userId);
-
-
-                        //StringBuilder sb = new StringBuilder();
-                        //string strNewPath = System.Web.HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings["MbaleReceipt"]);
-                        //using (StreamReader sr = new StreamReader(strNewPath))
-                        //{
-                        //    while (!sr.EndOfStream)
-                        //    {
-                        //        sb.Append(sr.ReadLine());
-                        //    }
-                        //}
-
-                        //string body = sb.ToString().Replace("#CUSTOMERNAME#", deliveryDTO.CustomerId);
-                        //body = body.Replace("#AMOUNT#", deliveryDTO.Amount);
-
-
-                        //try
-                        //{
-
-                        //}
-                        //catch (Exception ex)
-                        //{
-
-                        //    logger.Debug("receipt Not generated: " + ex.Message);
-                        //}
-
-
-                        var deliveryStockDTO = new DeliveryStockDTO()
-                        {
-                            StockId = makeDelivery.StockId,
-                            DeliveryId = deliveryId,
-
-                        };
-                        _dataService.SaveDeliveryStock(deliveryStockDTO);
+    
                         _orderService.UpdateOrderWithCompletedStatus(delivery.OrderId, orderStatusIdComplete, userId);
+
+                        //if (deliveryDTO.PaymentModeId == 2 || deliveryDTO.PaymentModeId == 1)
+                        //{
+                        //    //generate receipt
+                        // throw new   NotImplementedException();
+                        //}
+                        //else
+                        //{
+                        //    //Generate  Invoice
+                        //    throw new NotImplementedException();
+                        //}
+                        
                     }
-                    else if (makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance < 0)
+                    
+                    else if (!makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance <= 0)
                     {
-                        deliveryId = this._dataService.SaveDelivery(deliveryDTO, userId);
-                        if (makeDelivery.OrderQuantityBalance != 0)
-                        {
-                            var deliveryStockDTO = new DeliveryStockDTO()
-                            {
-                                StockId = makeDelivery.StockId,
-                                DeliveryId = deliveryId,
-
-                            };
-                            _dataService.SaveDeliveryStock(deliveryStockDTO);
-                            _orderService.UpdateOrderWithInProgressStatus(delivery.OrderId, orderStatusIdInProgress, userId);
-                           
-                        }
-
+                        // no batches were selected
+                        return -1;
                     }
 
                 }
@@ -497,7 +496,7 @@ namespace Higgs.Mbale.BAL.Concrete
                         BranchId = delivery.BranchId,
                         SectorId = delivery.SectorId,
                         PaymentModeId = delivery.PaymentModeId,
-                        BatchId = delivery.BatchId,
+                      
                         Price = delivery.Price,
                         ProductId = delivery.ProductId,
                         Amount = delivery.Amount,
@@ -518,12 +517,22 @@ namespace Higgs.Mbale.BAL.Concrete
                     if (makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance == 0)
                     {
                         deliveryId = this._dataService.SaveDelivery(deliveryDTO, userId);
-                        var deliveryStockDTO = new DeliveryStockDTO()
+                        if (delivery.Batches != null )
                         {
-                            StockId = makeDelivery.StockId,
-                            DeliveryId = deliveryId,
-                        };
-                        _dataService.SaveDeliveryStock(deliveryStockDTO);
+                            foreach (var batch in delivery.Batches)
+                            {
+                                var deliveryBatchDTO = new DeliveryBatchDTO()
+                                {
+                                    BatchId = batch.BatchId,
+                                    DeliveryId = deliveryId,
+
+                                };
+                                this._dataService.SaveDeliveryBatch(deliveryBatchDTO);
+                            }
+
+                        }
+
+                        
                         _orderService.UpdateOrderWithCompletedStatus(delivery.OrderId, orderStatusIdComplete, userId);
                         List<DeliveryGradeSize> deliveryGradeSizeList = new List<DeliveryGradeSize>();
                             
@@ -558,57 +567,24 @@ namespace Higgs.Mbale.BAL.Concrete
                         }
                         this._dataService.PurgeDeliveryGradeSize(deliveryId);
                         this.SaveDeliveryGradeSizeList(deliveryGradeSizeList);
+                        //if (deliveryDTO.PaymentModeId == 2 || deliveryDTO.PaymentModeId == 1)
+                        //{
+                        //    //generate receipt
+                        //    throw new NotImplementedException();
+                        //}
+                        //else
+                        //{
+                        //    //Generate  Invoice
+                        //    throw new NotImplementedException();
+                        //}
                     }
-                    else
+                   
+                    else if (!makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance < 0)
                     {
-                        deliveryId = this._dataService.SaveDelivery(deliveryDTO, userId);
-                        if (makeDelivery.OrderQuantityBalance != 0)
-                        {
-                            var deliveryStockDTO = new DeliveryStockDTO()
-                            {
-                                StockId = makeDelivery.StockId,
-                                DeliveryId = deliveryId,
-
-                            };
-                            _dataService.SaveDeliveryStock(deliveryStockDTO);
-                            _orderService.UpdateOrderWithInProgressStatus(delivery.OrderId, orderStatusIdInProgress, userId);
-
-                            List<DeliveryGradeSize> deliveryGradeSizeList = new List<DeliveryGradeSize>();
-
-                            foreach (var grade in delivery.Grades)
-                            {
-                                long sizeId = 0;
-                                double amount = 0, price = 0, quantity = 0;
-
-                                foreach (var denomination in grade.Denominations)
-                                {
-                                    sizeId = denomination.DenominationId;
-                                    price = denomination.Price;
-                                    quantity = denomination.Quantity;
-                                    amount = (denomination.Quantity * denomination.Price);
-
-                                    var deliveryGradeSize = new DeliveryGradeSize()
-                                    {
-                                        DeliveryId = deliveryId,
-                                        GradeId = grade.GradeId,
-                                        SizeId = sizeId,
-                                        Quantity = quantity,
-                                        Price = price,
-                                        Amount = amount,
-                                        TimeStamp = DateTime.Now,
-
-                                    };
-                                    deliveryGradeSizeList.Add(deliveryGradeSize);
-
-
-                                }
-
-                            }
-                            this._dataService.PurgeDeliveryGradeSize(deliveryId);
-                            this.SaveDeliveryGradeSizeList(deliveryGradeSizeList);
-                        }
-
+                        // no batches were selected
+                        return -1;
                     }
+                   
 
                     long transactionSubTypeId = 0;
                     var notes = string.Empty;
@@ -743,6 +719,13 @@ namespace Higgs.Mbale.BAL.Concrete
             _dataService.SaveDeliveryGradeSize(deliveryGradeSizeDTO);
         }
 
+        private IEnumerable<DeliveryBatch> GetAllBatchesForADelivery(long deliveryId)
+        {
+            var results = _dataService.GetAllBatchesForADelivery(deliveryId);
+            return MapEFToModel(results);
+        }
+       
+        
         #region Mapping Methods
 
         public IEnumerable<Delivery> MapEFToModel(IEnumerable<EF.Models.Delivery> data)
@@ -795,7 +778,7 @@ namespace Higgs.Mbale.BAL.Concrete
                     StoreName = data.Store != null ? data.Store.Name : "",
                     MediaId = data.MediaId,
                     DeliveryId = data.DeliveryId,
-                    BatchId = data.BatchId,
+                    
                     DriverName = data.DriverName,
                     DriverNIN = data.DriverNIN,
                     CreatedOn = data.CreatedOn,
@@ -804,11 +787,30 @@ namespace Higgs.Mbale.BAL.Concrete
                     ProductName = data.Product != null? data.Product.Name:"",
                     Amount = data.Amount,
                     Price = data.Price,
-                    BatchNumber = data.Batch != null? data.Batch.Name:"",
+                   
                     CreatedBy = _userService.GetUserFullName(data.AspNetUser),
                     UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
 
                 };
+                 var batches = GetAllBatchesForADelivery(data.DeliveryId);
+                 List<DeliveryBatch> deliveryBatchList = new List<DeliveryBatch>();
+                 if (batches.Any())
+                 {
+                     foreach (var batch in batches)
+                     {
+                         var deliverybatch = new DeliveryBatch()
+                         {
+                             BatchId = batch.BatchId,
+                             BatchNumber = batch.BatchNumber,
+                             DeliveryId = batch.DeliveryId,
+                              BatchQuantity = batch.BatchQuantity,
+       
+                         };
+                         deliveryBatchList.Add(deliverybatch);
+
+                     }
+                     delivery.DeliveryBatches = deliveryBatchList;
+                 }
                  if (data.DeliveryGradeSizes != null)
                  {
                      if (data.DeliveryGradeSizes.Any())
@@ -859,7 +861,31 @@ namespace Higgs.Mbale.BAL.Concrete
         }
 
 
+        public DeliveryBatch MapEFToModel(EF.Models.DeliveryBatch data)
+        {
+            var deliveryBatch = new DeliveryBatch()
+            {
 
+                BatchId = data.BatchId,
+                DeliveryId = data.DeliveryId,
+                CreatedOn = data.CreatedOn,
+                BatchNumber = data.Batch != null ? data.Batch.Name : "",
+                TimeStamp = data.TimeStamp,
+
+            };
+            return deliveryBatch;
+
+        }
+
+        public IEnumerable<DeliveryBatch> MapEFToModel(IEnumerable<EF.Models.DeliveryBatch> data)
+        {
+            var list = new List<DeliveryBatch>();
+            foreach (var result in data)
+            {
+                list.Add(MapEFToModel(result));
+            }
+            return list;
+        }
        #endregion
     }
 }

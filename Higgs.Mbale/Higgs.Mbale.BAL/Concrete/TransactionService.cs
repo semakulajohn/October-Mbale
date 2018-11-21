@@ -143,8 +143,8 @@ namespace Higgs.Mbale.BAL.Concrete
                 CreatedOn = data.CreatedOn,
                 TimeStamp = data.TimeStamp,
                 Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+                CreatedBy = _userService.GetUserFullName(data.AspNetUser1),
+                UpdatedBy = _userService.GetUserFullName(data.AspNetUser),
 
 
             };

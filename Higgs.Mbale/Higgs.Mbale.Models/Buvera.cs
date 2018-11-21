@@ -23,6 +23,7 @@ namespace Higgs.Mbale.Models
         public string FromSupplier { get; set; }
         public string ToReceiver { get; set; }
         public string Issuing { get; set; }
+        public string InvoiceNumber { get; set; }
 
         public List<Grade> Grades { get; set; }
 

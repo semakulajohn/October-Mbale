@@ -23,12 +23,14 @@ namespace Higgs.Mbale.Models
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public bool Accept { get; set; }
         public bool Reject { get; set; }
-        public string BatchNumbers { get; set; }
+       
 
         public string Issuing { get; set; }
 
         public List<Grade> Grades { get; set; }
-
+        public List<Batch> Batches { get; set; }
+        public List<FlourTransferBatch> FlourTransferBatches { get; set; }
+      
         public string BranchName { get; set; }
         public string StoreName { get; set; }
         public string ReceiverStoreName { get; set; }

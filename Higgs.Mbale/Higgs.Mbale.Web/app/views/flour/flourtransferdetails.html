@@ -50,7 +50,7 @@
                                             <div class="form-group col-sm-6">
                                                 <div class="col-sm-12">
                                                     <h5>Quantity</h5>
-                                                    <p>{{flourTransfer.TotalQuantity}} Kgs</p>
+                                                    <p>{{flourTransfer.TotalQuantity}} kgs</p>
 
                                                 </div>
                                             </div>
@@ -62,6 +62,29 @@
                                                 </div>
 
                                             </div>
+                                        <div class="row">
+                                           
+                                            <div class="form-group col-sm-6">
+                                                <div class="col-sm-6">
+                                                    <h5>Selected Batches</h5>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered">
+                                                            <tbody>
+                                                                
+                                                                <tr ng-repeat="batch in flourTransfer.FlourTransferBatches">
+                                                                    <td width="100%"><p> {{ batch.BatchNumber }}</p></td>
+
+
+                                                                </tr>
+                                                               
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
                                         <div class="row" ng-show="hideAcceptReject">
                                             <div class="form-group col-sm-6">
                                                 <div class="col-sm-12">
@@ -79,7 +102,7 @@
                                                     <p>{{flourTransfer.Accept}}</p>
                                                     <p >
                                                         
-                                                        <button ng-click="Accept()" class="btn btn-success">Accept</button>
+                                                        <button ng-click="Accept(flourTransfer)" class="btn btn-success">Accept</button>
                                                     </p>
                                                 </div>
                                             </div>

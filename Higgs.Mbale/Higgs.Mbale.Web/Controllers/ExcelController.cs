@@ -388,7 +388,7 @@ namespace Higgs.Mbale.Web.Controllers
             headers.Add("DriverNIN");
             headers.Add("Quantity");
             headers.Add("BranchName");
-            headers.Add("BatchNumber");
+           
             headers.Add("VehicleNumber");
             headers.Add("DeliveryCost");
             headers.Add("CustomerName");
@@ -428,7 +428,7 @@ namespace Higgs.Mbale.Web.Controllers
                 sxr.Add(w.DriverNIN.ToString());
                 sxr.Add(w.Quantity.ToString());
                 sxr.Add(w.BranchName.ToString());
-                sxr.Add(w.BatchNumber.ToString());
+                
                 sxr.Add(w.VehicleNumber);
                 sxr.Add(w.DeliveryCost.ToString());
                 sxr.Add(w.CustomerName.ToString());

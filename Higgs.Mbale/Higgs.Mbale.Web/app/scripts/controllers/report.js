@@ -267,9 +267,16 @@ angular
             $scope.reportType = 0;
             $scope.showDownloadLink = false;
 
-
+            $scope.totalMaize = 0;
+            $scope.totalAmount = 0;
+            $scope.totalNormalBags = 0;
+            $scope.totalStoneBags = 0;
             $scope.SuppliesForThisMonth = function () {
                 $scope.data = [];
+                $scope.totalMaize = 0;
+                $scope.totalAmount = 0;
+                $scope.totalNormalBags = 0;
+                $scope.totalStoneBags = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateSupplyCurrentMonthReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -278,6 +285,15 @@ angular
                      $scope.reportType = 2;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalMaize = value.Quantity + $scope.totalMaize;
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+                             $scope.totalNormalBags = value.NormalBags + $scope.totalNormalBags;
+                             $scope.totalStoneBags = value.BagsOfStones + $scope.totalStoneBags;
+
+                         });
+
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { SupplyNumber: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -292,6 +308,10 @@ angular
 
             $scope.TodaysSupplies = function () {
                 $scope.data = [];
+                $scope.totalMaize = 0;
+                $scope.totalAmount = 0;
+                $scope.totalNormalBags = 0;
+                $scope.totalStoneBags = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateSupplyTodaysReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -300,6 +320,13 @@ angular
                      $scope.reportType = 1;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalMaize = value.Quantity + $scope.totalMaize;
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+                             $scope.totalNormalBags = value.NormalBags + $scope.totalNormalBags;
+                             $scope.totalStoneBags = value.BagsOfStones + $scope.totalStoneBags;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { SupplyNumber: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -314,6 +341,10 @@ angular
 
             $scope.WeeksSupplies = function () {
                 $scope.data = [];
+                $scope.totalMaize = 0;
+                $scope.totalAmount = 0;
+                $scope.totalNormalBags = 0;
+                $scope.totalStoneBags = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateSupplyCurrentWeekReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -322,6 +353,14 @@ angular
                      $scope.reportType = 3;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalMaize = value.Quantity + $scope.totalMaize;
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+                             $scope.totalNormalBags = value.NormalBags + $scope.totalNormalBags;
+                             $scope.totalStoneBags = value.BagsOfStones + $scope.totalStoneBags;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { SupplyNumber: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -345,6 +384,10 @@ angular
 
             $scope.SearchSupplies = function (supply) {
                 $scope.data = [];
+                $scope.totalMaize = 0;
+                $scope.totalAmount = 0;
+                $scope.totalNormalBags = 0;
+                $scope.totalStoneBags = 0;
                 var promise = $http.post('/webapi/ReportApi/GetAllSuppliesBetweenTheSpecifiedDates',
                         {
                             FromDate: supply.FromDate,
@@ -358,7 +401,13 @@ angular
 
                      $scope.data = payload.data;
                      $scope.reportType = 4;
-                     
+                     angular.forEach($scope.data, function (value, key) {
+                         $scope.totalMaize = value.Quantity + $scope.totalMaize;
+                         $scope.totalAmount = value.Amount + $scope.totalAmount;
+                         $scope.totalNormalBags = value.NormalBags + $scope.totalNormalBags;
+                         $scope.totalStoneBags = value.BagsOfStones + $scope.totalStoneBags;
+
+                     });
                      $scope.tableParams = new ngTableParams({
                          page: 1,
                          count: 10,
@@ -1046,6 +1095,7 @@ angular
 
             $scope.FactoryExpenseForThisMonth = function () {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateFactoryExpenseCurrentMonthReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -1054,6 +1104,11 @@ angular
                      $scope.reportType = 2;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+                            
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -1068,6 +1123,7 @@ angular
 
             $scope.TodaysFactoryExpense = function () {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateFactoryExpenseTodaysReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -1076,6 +1132,11 @@ angular
                      $scope.reportType = 1;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -1090,6 +1151,7 @@ angular
 
             $scope.WeeksFactoryExpense = function () {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateFactoryExpenseCurrentWeekReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -1098,6 +1160,11 @@ angular
                      $scope.reportType = 3;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -1119,6 +1186,7 @@ angular
 
             $scope.SearchFactoryExpense = function (factoryExpense) {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.post('/webapi/ReportApi/GetAllFactoryExpensesBetweenTheSpecifiedDates',
                         {
                             FromDate: factoryExpense.FromDate,
@@ -1131,6 +1199,11 @@ angular
                  function (payload) {
 
                      $scope.data = payload.data;
+
+                     angular.forEach($scope.data, function (value, key) {
+                         $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                     });
                      $scope.reportType = 4;
 
                      $scope.tableParams = new ngTableParams({
@@ -1172,6 +1245,7 @@ angular
 
             $scope.OtherExpenseForThisMonth = function () {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateOtherExpenseCurrentMonthReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -1180,6 +1254,11 @@ angular
                      $scope.reportType = 2;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -1194,6 +1273,7 @@ angular
 
             $scope.TodaysOtherExpense = function () {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateOtherExpenseTodaysReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -1202,6 +1282,11 @@ angular
                      $scope.reportType = 1;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -1216,6 +1301,7 @@ angular
 
             $scope.WeeksOtherExpense = function () {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateOtherExpenseCurrentWeekReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -1224,6 +1310,10 @@ angular
                      $scope.reportType = 3;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -1245,6 +1335,7 @@ angular
 
             $scope.SearchOtherExpense = function (otherExpense) {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.post('/webapi/ReportApi/GetAllOtherExpensesBetweenTheSpecifiedDates',
                         {
                             FromDate: otherExpense.FromDate,
@@ -1257,6 +1348,10 @@ angular
                  function (payload) {
 
                      $scope.data = payload.data;
+                     angular.forEach($scope.data, function (value, key) {
+                         $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                     });
                      $scope.reportType = 4;
 
                      $scope.tableParams = new ngTableParams({
@@ -1424,6 +1519,7 @@ angular
 
             $scope.UtilityForThisMonth = function () {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateUtilityCurrentMonthReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -1432,6 +1528,10 @@ angular
                      $scope.reportType = 2;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -1446,6 +1546,7 @@ angular
 
             $scope.TodaysUtility = function () {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateUtilityTodaysReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -1454,6 +1555,10 @@ angular
                      $scope.reportType = 1;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -1468,6 +1573,7 @@ angular
 
             $scope.WeeksUtility = function () {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateUtilityCurrentWeekReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -1476,6 +1582,10 @@ angular
                      $scope.reportType = 3;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -1497,6 +1607,7 @@ angular
 
             $scope.SearchUtility = function (utility) {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.post('/webapi/ReportApi/GetAllUtilitiesBetweenTheSpecifiedDates',
                         {
                             FromDate: utility.FromDate,
@@ -1509,6 +1620,10 @@ angular
                  function (payload) {
 
                      $scope.data = payload.data;
+                     angular.forEach($scope.data, function (value, key) {
+                         $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                     });
                      $scope.reportType = 4;
 
                      $scope.tableParams = new ngTableParams({
@@ -1550,6 +1665,7 @@ angular
 
             $scope.MachineRepairForThisMonth = function () {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateMachineRepairCurrentMonthReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -1558,6 +1674,10 @@ angular
                      $scope.reportType = 2;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -1572,6 +1692,7 @@ angular
 
             $scope.TodaysMachineRepair = function () {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateMachineRepairTodaysReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -1580,6 +1701,10 @@ angular
                      $scope.reportType = 1;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -1594,6 +1719,7 @@ angular
 
             $scope.WeeksMachineRepair = function () {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateMachineRepairCurrentWeekReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -1602,6 +1728,10 @@ angular
                      $scope.reportType = 3;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -1623,6 +1753,7 @@ angular
 
             $scope.SearchMachineRepair = function (machineRepair) {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.post('/webapi/ReportApi/GetAllMachineRepairsBetweenTheSpecifiedDates',
                         {
                             FromDate: machineRepair.FromDate,
@@ -1635,6 +1766,10 @@ angular
                  function (payload) {
 
                      $scope.data = payload.data;
+                     angular.forEach($scope.data, function (value, key) {
+                         $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                     });
                      $scope.reportType = 4;
 
                      $scope.tableParams = new ngTableParams({
@@ -1790,3 +1925,148 @@ angular
 
         }]);
 
+
+angular
+    .module('homer').controller('ReportLabourCostController', ['$scope', 'ngTableParams', '$http', '$filter', '$location', 'Utils', 'uiGridConstants', '$window',
+        function ($scope, ngTableParams, $http, $filter, $location, Utils, uiGridConstants, $window) {
+            $scope.loadingSpinner = true;
+
+            $scope.reportType = 0;
+            $scope.showDownloadLink = false;
+
+
+            $scope.LabourCostForThisMonth = function () {
+                $scope.data = [];
+                $scope.totalAmount = 0;
+                var promise = $http.get('/webapi/ReportApi/GenerateLabourCostCurrentMonthReport', {});
+                $scope.showDownloadLink = false;
+                promise.then(
+                 function (payload) {
+                     $scope.data = payload.data;
+                     $scope.reportType = 2;
+                     if ($scope.data.length > 0) {
+                         $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
+                     }
+                     $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
+                         total: $scope.data.length, getData: function ($defer, params) {
+                             var orderData = params.sorting() ?
+                                                 $filter('orderBy')($scope.data, params.orderBy()) :
+                                                 $scope.data;
+                             $defer.resolve(orderData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                         }
+                     });
+                 });
+            }
+
+            $scope.TodaysLabourCost = function () {
+                $scope.data = [];
+                $scope.totalAmount = 0;
+                var promise = $http.get('/webapi/ReportApi/GenerateLabourCostTodaysReport', {});
+                $scope.showDownloadLink = false;
+                promise.then(
+                 function (payload) {
+                     $scope.data = payload.data;
+                     $scope.reportType = 1;
+                     if ($scope.data.length > 0) {
+                         $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
+                     }
+                     $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
+                         total: $scope.data.length, getData: function ($defer, params) {
+                             var orderData = params.sorting() ?
+                                                 $filter('orderBy')($scope.data, params.orderBy()) :
+                                                 $scope.data;
+                             $defer.resolve(orderData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                         }
+                     });
+                 });
+            }
+
+            $scope.WeeksLabourCost = function () {
+                $scope.data = [];
+                $scope.totalAmount = 0;
+                var promise = $http.get('/webapi/ReportApi/GenerateLabourCostCurrentWeekReport', {});
+                $scope.showDownloadLink = false;
+                promise.then(
+                 function (payload) {
+                     $scope.data = payload.data;
+                     $scope.reportType = 3;
+                     if ($scope.data.length > 0) {
+                         $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
+                     }
+                     $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
+                         total: $scope.data.length, getData: function ($defer, params) {
+                             var orderData = params.sorting() ?
+                                                 $filter('orderBy')($scope.data, params.orderBy()) :
+                                                 $scope.data;
+                             $defer.resolve(orderData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                         }
+                     });
+                 });
+            }
+
+
+            $http.get('/webapi/BranchApi/GetAllBranches').success(function (data, status) {
+                $scope.branches = data;
+            });
+
+
+
+            $scope.SearchLabourCost = function (labourCost) {
+                $scope.data = [];
+                $scope.totalAmount = 0;
+                var promise = $http.post('/webapi/ReportApi/GetAllLabourCostsBetweenTheSpecifiedDates',
+                        {
+                            FromDate: labourCost.FromDate,
+                            ToDate: labourCost.ToDate,
+
+                            BranchId: labourCost.BranchId,
+
+                        });
+                promise.then(
+                 function (payload) {
+
+                     $scope.data = payload.data;
+                     angular.forEach($scope.data, function (value, key) {
+                         $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                     });
+                     $scope.reportType = 4;
+
+                     $scope.tableParams = new ngTableParams({
+                         page: 1,
+                         count: 10,
+                         sorting: { CreatedOn: 'desc' }
+                     }, {
+                         getData: function ($defer, params) {
+                             var filteredData = $filter('filter')($scope.data, $scope.filter);
+                             var orderedData = params.sorting() ?
+                                                 $filter('orderBy')(filteredData, params.orderBy()) :
+                                                 filteredData;
+
+                             params.total(orderedData.length);
+                             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                         },
+                         $scope: $scope
+
+                     });
+                 });
+            }
+
+
+            $scope.DownloadExcelFile = function () {
+                $window.open("/Excel/LabourCost/" + $scope.reportType);
+            };
+
+        }]);

@@ -65,7 +65,7 @@ namespace Higgs.Mbale.DAL.Concrete
                     StoreId = deliveryDTO.StoreId,
                     DeliveryCost = deliveryDTO.DeliveryCost,
                     OrderId =  deliveryDTO.OrderId,
-                    BatchId = deliveryDTO.BatchId,
+                   
                     Amount = deliveryDTO.Amount,
                     PaymentModeId = deliveryDTO.PaymentModeId,
                     Price= deliveryDTO.Price,
@@ -102,7 +102,7 @@ namespace Higgs.Mbale.DAL.Concrete
                     result.StoreId = deliveryDTO.StoreId;
                     result.OrderId =  deliveryDTO.OrderId;
                     result.ProductId = deliveryDTO.ProductId;
-                    result.BatchId = deliveryDTO.BatchId;
+                   
                     result.PaymentModeId = deliveryDTO.PaymentModeId;
                     result.Price = deliveryDTO.Price;
                     result.Amount = deliveryDTO.Amount;
@@ -176,15 +176,36 @@ namespace Higgs.Mbale.DAL.Concrete
             this.UnitOfWork.SaveChanges();
         }
 
+        public void SaveDeliveryBatch(DeliveryBatchDTO deliveryBatchDTO)
+        {
+            var deliveryBatch= new DeliveryBatch()
+            {
+                BatchId = deliveryBatchDTO.BatchId,
+                DeliveryId = deliveryBatchDTO.DeliveryId,
+                BatchQuantity = deliveryBatchDTO.BatchQuantity,
+                CreatedOn = DateTime.Now,
+                TimeStamp = DateTime.Now
+            };
+            this.UnitOfWork.Get<DeliveryBatch>().AddNew(deliveryBatch);
+            this.UnitOfWork.SaveChanges();
+        }
+
         public IEnumerable<DeliveryStock> GetDeliveryStocksForDelivery(long deliveryId){
           return  this.UnitOfWork.Get<DeliveryStock>().AsQueryable().
                Where(b => b.DeliveryId == deliveryId);
         }
-        //public void PurgeDeliveryStock(long stockId, long deliveryId)
-        //{
-        //    this.UnitOfWork.Get<DeliveryStock>().AsQueryable()
-        //        .Where(m => m.StockId == stockId && m.DeliveryId == deliveryId).Delete();
-        //}
-    
+
+        public void PurgeDeliveryStock(long stockId, long deliveryId)
+        {
+            this.UnitOfWork.Get<DeliveryStock>().AsQueryable()
+                .Where(m => m.StockId == stockId && m.DeliveryId == deliveryId).Delete();
+        }
+
+        public IEnumerable<DeliveryBatch> GetAllBatchesForADelivery(long deliveryId)
+        {
+             return  this.UnitOfWork.Get<DeliveryBatch>().AsQueryable().
+               Where(b => b.DeliveryId == deliveryId);
+        }
+        
     }
 }

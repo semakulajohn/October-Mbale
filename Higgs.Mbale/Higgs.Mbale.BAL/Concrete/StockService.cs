@@ -48,6 +48,11 @@ namespace Higgs.Mbale.BAL.Concrete
             return MapEFToModel(results);
         }
 
+        public Stock GetStockForAParticularBatchAndProduct(long batchId, long productId, long storeId)
+        {
+            var results = this._dataService.GetStockForAParticularBatchAndProduct(batchId, productId, storeId);
+            return MapEFToModel(results);
+        }
         public IEnumerable<StoreGradeSize> GetStoreGradeSizeForParticularGradeAtAStore(long gradeId, long storeId)
         {
             var results = this._dataService.GetStoreGradeSizeForParticularGradeAtAStore(gradeId, storeId);
@@ -86,6 +91,59 @@ namespace Higgs.Mbale.BAL.Concrete
         {
             var results = this._dataService.GetStocksForAParticularStore(storeId);
             return MapEFToModel(results);
+        }
+
+        public IEnumerable<Stock> GetStockForAParticularBranchForTransfer(long branchId, long productId)
+        {
+            var results = this._dataService.GetStockForAParticularBranchForTransfer(branchId, productId);
+            var storeStocks = MapEFToModel(results);
+            List<Stock> stocks = new List<Stock>();
+            foreach (var storeStock in storeStocks)
+            {
+                var stockId = storeStock.StockId;
+                var stock = GetStock(stockId);
+                stocks.Add(stock);
+            }
+            return stocks;
+        }
+        public long SaveStoreStockFlourTransfer(StoreStock storeStock)
+        {
+            var storeStockDTO = new DTO.StoreStockDTO()
+            {
+                StoreStockId = storeStock.StoreStockId,
+                StoreId = storeStock.StoreId,
+                StartStock = storeStock.StartStock,
+                StockId = storeStock.StockId,
+                ProductId = storeStock.ProductId,
+                StockBalance = storeStock.StockBalance,
+                BranchId = storeStock.BranchId,
+                Quantity = storeStock.Quantity,
+                SectorId = storeStock.SectorId,
+                TimeStamp = storeStock.TimeStamp,
+                InOrOut = storeStock.InOrOut,
+                Balance = storeStock.Balance,
+                CreatedOn = storeStock.CreatedOn,
+                SoldOut = storeStock.SoldOut,
+                SoldAmount = storeStock.SoldAmount,
+
+            };
+
+         var storeStockId =   this._dataService.SaveStoreStock(storeStockDTO);
+         return storeStockId;
+        }
+
+        public void SaveStoreGradeSize(StoreGradeSize storeGradeSize, bool inOrOut)
+        {
+            var storeGradeSizeDTO = new StoreGradeSizeDTO()
+            {
+
+                GradeId = storeGradeSize.GradeId,
+                SizeId = storeGradeSize.SizeId,
+                StoreId = storeGradeSize.StoreId,
+                Quantity = storeGradeSize.Quantity,
+                TimeStamp = DateTime.Now
+            };
+            this._dataService.SaveStoreGradeSize(storeGradeSizeDTO,inOrOut);
         }
 
         public void SaveStoreStock(StoreStock storeStock, bool inOrOut)
@@ -210,7 +268,11 @@ namespace Higgs.Mbale.BAL.Concrete
                       
         }
 
-        
+        public StoreStock GetStoreStockForParticularStock(long stockId, long productId, long storeId)
+        {
+            var results = this._dataService.GetStoreStockForParticularStock(stockId, productId, storeId);
+            return MapEFToModel(results);
+        }
         /// <summary>
         /// 
         /// </summary>

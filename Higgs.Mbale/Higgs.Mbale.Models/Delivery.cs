@@ -12,7 +12,7 @@ namespace Higgs.Mbale.Models
         public string CustomerId { get; set; }
         public string DriverName { get; set; }
         public Nullable<double> Price { get; set; }
-        public long BatchId { get; set; }
+      
         public long ProductId { get; set; }
         public double DeliveryCost { get; set; }
         public string DriverNIN { get; set; }
@@ -36,7 +36,8 @@ namespace Higgs.Mbale.Models
         public double Quantity { get; set; }
 
         public List<Grade> Grades { get; set; }
-       
+        public List<Batch> Batches { get; set; }
+        public List<DeliveryBatch> DeliveryBatches { get; set; }
         
        public string TransactionSubTypeName { get; set; }
        public string CustomerName { get; set; }
@@ -44,7 +45,7 @@ namespace Higgs.Mbale.Models
        public string BranchName { get; set; }
        public string SectorName { get; set; }
        public string StoreName { get; set; }
-       public string BatchNumber { get; set; }
+      
        public string PaymentModeName { get; set; }
        public string OrderNumber { get; set; }
       

@@ -40,5 +40,5 @@ REFERENCES  [dbo].[Store] ([StoreId])
 ON DELETE CASCADE
 GO
 
-ALTER TABLE [dbo].[StoreGradeSize] CHECK CONSTRAINT [FK_dbo.StoreGradeSize_dbo.Size_SizeId]
+ALTER TABLE [dbo].[StoreGradeSize] CHECK CONSTRAINT [FK_dbo.StoreGradeSize_dbo.Store_StoreId]
 GO

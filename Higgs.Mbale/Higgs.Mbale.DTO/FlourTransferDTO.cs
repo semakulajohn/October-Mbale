@@ -23,6 +23,6 @@ namespace Higgs.Mbale.DTO
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public bool Accept { get; set; }
         public bool Reject { get; set; }
-        public string BatchNumbers { get; set; }
+       
     }
 }

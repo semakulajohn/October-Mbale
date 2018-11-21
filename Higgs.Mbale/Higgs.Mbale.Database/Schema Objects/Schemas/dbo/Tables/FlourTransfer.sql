@@ -7,7 +7,7 @@
 	[ToReceiverStoreId] BIGINT NOT NULL,
 	[Accept]  [bit] NOT NULL,
 	[Reject]   [bit] NOT NULL,
-	[BatchNumbers] [NVARCHAR] (MAX) NULL,
+	
 	[FromSupplierStoreId] BIGINT NOT NULL,
 	[TotalQuantity] FLOAT NOT NULL,
 	[CreatedBy] [nvarchar](128) NULL, 

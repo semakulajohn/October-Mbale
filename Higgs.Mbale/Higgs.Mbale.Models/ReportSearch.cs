@@ -14,7 +14,7 @@ namespace Higgs.Mbale.Models
             public string SupplierId { get; set; }
             public long BranchId { get; set; }
             public string CustomerId { get; set; }
-            
+                
 
         }
     
