@@ -106,27 +106,32 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>Utility Model Object.</returns>
         public Utility MapEFToModel(EF.Models.Utility data)
         {
-          
-            var utility = new Utility()
+            if (data != null)
             {
-                UtilityId = data.UtilityId,
-                Amount = data.Amount,
-                SectorId = data.SectorId,
-                BranchId = data.BranchId,
-                BatchId = data.BatchId,
-                Description = data.Description,
-                BranchName = data.Branch != null ? data.Branch.Name : "",
-                SectorName = data.Sector != null ? data.Sector.Name : "",
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                 Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
-                BatchNumber = data.Batch != null ? data.Batch.Name : "",
-               
 
-            };
-            return utility;
+
+                var utility = new Utility()
+                {
+                    UtilityId = data.UtilityId,
+                    Amount = data.Amount,
+                    SectorId = data.SectorId,
+                    BranchId = data.BranchId,
+                    BatchId = data.BatchId,
+                    Description = data.Description,
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    SectorName = data.Sector != null ? data.Sector.Name : "",
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+                    BatchNumber = data.Batch != null ? data.Batch.Name : "",
+
+
+                };
+                return utility;
+            }
+            return null;
         }
 
 

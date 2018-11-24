@@ -238,33 +238,36 @@ namespace Higgs.Mbale.BAL.Concrete
         public Cash MapEFToModel(EF.Models.Cash data)
         {
             var accountName = string.Empty;
-            
-         
 
-            var cash = new Cash()
+            if (data != null)
             {
-               
-                Action = data.Action,
-                StartAmount= data.StartAmount,
-                Balance = data.Balance,
-                Amount = data.Amount,
-                Notes = data.Notes,
-                CashId = data.CashId,
-                BranchId = data.BranchId,
-                BranchName = data.Branch != null?data.Branch.Name:"",
-                SectorId = data.SectorId,
-                SectorName  = data.Sector != null?data.Sector.Name:"",
-                TransactionSubTypeId = data.TransactionSubTypeId,
-                TransactionSubTypeName = data.TransactionSubType !=null?data.TransactionSubType.Name:"",
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-               
-                            
 
-            };
-            return cash;
+                var cash = new Cash()
+                {
+
+                    Action = data.Action,
+                    StartAmount = data.StartAmount,
+                    Balance = data.Balance,
+                    Amount = data.Amount,
+                    Notes = data.Notes,
+                    CashId = data.CashId,
+                    BranchId = data.BranchId,
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    SectorId = data.SectorId,
+                    SectorName = data.Sector != null ? data.Sector.Name : "",
+                    TransactionSubTypeId = data.TransactionSubTypeId,
+                    TransactionSubTypeName = data.TransactionSubType != null ? data.TransactionSubType.Name : "",
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+
+
+
+                };
+                return cash;
+            }
+            return null;
         }
 
      

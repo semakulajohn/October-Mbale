@@ -104,22 +104,27 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>Store Model Object.</returns>
         public Store MapEFToModel(EF.Models.Store data)
         {
-          
-            var store = new Store()
+            if (data != null)
             {
-                StoreId = data.StoreId,
-                Name = data.Name,
-                BranchId = data.BranchId,
-                BranchName = data.Branch != null? data.Branch.Name : "",
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
-               
 
-            };
-            return store;
+
+                var store = new Store()
+                {
+                    StoreId = data.StoreId,
+                    Name = data.Name,
+                    BranchId = data.BranchId,
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+
+
+                };
+                return store;
+            }
+            return null;
         }
 
 

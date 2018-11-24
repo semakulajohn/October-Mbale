@@ -123,8 +123,8 @@ angular
 
             $scope.DownloadExcelFile = function () {
                 $window.open("/Excel/Index/" + $scope.reportType);
-            };
-
+            };    
+                      
             }]);
         
 
@@ -136,7 +136,7 @@ angular
 
             $scope.reportType = 0;
             $scope.showDownloadLink = false;
-
+            $scope.accounts = [];
 
             $scope.AccountTransactionsForThisMonth = function () {
                 $scope.data = [];
@@ -212,10 +212,17 @@ angular
 
             $http.get('/webapi/SupplierApi/GetAllSuppliers').success(function (data, status) {
                 $scope.suppliers = data;
+                $scope.accounts = $scope.accounts.concat(data);
+            });
+
+            $http.get('/webapi/CustomerApi/GetAllCustomers').success(function (data, status) {
+                $scope.customers = data;
+                $scope.accounts = $scope.accounts.concat(data);
             });
 
             $scope.SearchAccountTransactions = function (accountTransaction) {
                 $scope.data = [];
+               
                 var promise = $http.post('/webapi/ReportApi/GenerateAccountTransactionsBetweenTheSpecifiedDates',
                         {
                             FromDate: accountTransaction.FromDate,
@@ -431,6 +438,10 @@ angular
 
             $scope.DownloadExcelFile = function () {
                 $window.open("/Excel/Supply/" + $scope.reportType);
+                //$window.open("/Excel/ExportSupplyAsPDF/" + $scope.reportType);
+                // $window.open("/Excel/ExportSupplyAsPDF/"+$scope.reportType);
+
+                //href = "/Report/ExportMarriageAsPDF?marriageId=@ViewBag.marriageId"
             };
 
         }]);
@@ -708,10 +719,11 @@ angular
 
             $scope.reportType = 0;
             $scope.showDownloadLink = false;
-
+           
 
             $scope.DeliveriesForThisMonth = function () {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateDeliveryCurrentMonthReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -720,6 +732,12 @@ angular
                      $scope.reportType = 2;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+
+                         angular.forEach($scope.data, function (value, key) {
+                             
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -734,6 +752,7 @@ angular
 
             $scope.TodaysDeliveries = function () {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateDeliveryTodaysReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -742,6 +761,11 @@ angular
                      $scope.reportType = 1;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -756,6 +780,7 @@ angular
 
             $scope.WeeksDeliveries = function () {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateDeliveryCurrentWeekReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -764,6 +789,11 @@ angular
                      $scope.reportType = 3;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -787,6 +817,7 @@ angular
 
             $scope.SearchDeliveries = function (delivery) {
                 $scope.data = [];
+                $scope.totalAmount = 0;
                 var promise = $http.post('/webapi/ReportApi/GetAllDeliveriesBetweenTheSpecifiedDates',
                         {
                             FromDate: delivery.FromDate,
@@ -800,6 +831,11 @@ angular
 
                      $scope.data = payload.data;
                      $scope.reportType = 4;
+                     angular.forEach($scope.data, function (value, key) {
+
+                         $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                     });
 
                      $scope.tableParams = new ngTableParams({
                          page: 1,
@@ -1393,6 +1429,7 @@ angular
 
             $scope.FlourTransferForThisMonth = function () {
                 $scope.data = [];
+                $scope.totalQuantity = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateFlourTransferCurrentMonthReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -1401,6 +1438,10 @@ angular
                      $scope.reportType = 2;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalQuantity = value.TotalQuantity + $scope.totalQuantity;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -1415,6 +1456,7 @@ angular
 
             $scope.TodaysFlourTransfer = function () {
                 $scope.data = [];
+                $scope.totalQuantity = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateFlourTransferTodaysReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -1423,6 +1465,10 @@ angular
                      $scope.reportType = 1;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalQuantity = value.TotalQuantity + $scope.totalQuantity;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -1437,6 +1483,7 @@ angular
 
             $scope.WeeksFlourTransfer = function () {
                 $scope.data = [];
+                $scope.totalQuantity = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateFlourTransferCurrentWeekReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -1445,6 +1492,10 @@ angular
                      $scope.reportType = 3;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalQuantity = value.TotalQuantity + $scope.totalQuantity;
+
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -1466,6 +1517,7 @@ angular
 
             $scope.SearchFlourTransfer = function (flourTransfer) {
                 $scope.data = [];
+                $scope.totalQuantity = 0;
                 var promise = $http.post('/webapi/ReportApi/GetAllFlourTransfersBetweenTheSpecifiedDates',
                         {
                             FromDate: flourTransfer.FromDate,
@@ -1479,7 +1531,10 @@ angular
 
                      $scope.data = payload.data;
                      $scope.reportType = 4;
+                     angular.forEach($scope.data, function (value, key) {
+                         $scope.totalQuantity = value.TotalQuantity + $scope.totalQuantity;
 
+                     });
                      $scope.tableParams = new ngTableParams({
                          page: 1,
                          count: 10,

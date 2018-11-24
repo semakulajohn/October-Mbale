@@ -55,19 +55,24 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>Status Model Object.</returns>
         public Status MapEFToModel(EF.Models.Status data)
         {
-
-            var status = new Status()
+            if (data != null)
             {
-                StatusId = data.StatusId,
-                Name = data.Name,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
 
-            };
-            return status;
+
+                var status = new Status()
+                {
+                    StatusId = data.StatusId,
+                    Name = data.Name,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+
+                };
+                return status;
+            }
+            return null;
         }
 
 

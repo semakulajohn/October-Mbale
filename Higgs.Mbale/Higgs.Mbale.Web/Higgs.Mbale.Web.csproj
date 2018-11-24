@@ -77,6 +77,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\PagedList.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="Rotativa">
+      <HintPath>..\..\..\Paul\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -344,6 +347,7 @@
     <Content Include="app\views\activity\list.html" />
     <Content Include="app\views\batchoutput\edit.html" />
     <Content Include="app\views\batchoutput\batch-batchoutput-list.html" />
+    <Content Include="app\views\batch\admin-view.html" />
     <Content Include="app\views\batch\branch-batch-list.html" />
     <Content Include="app\views\batch\detail.html" />
     <Content Include="app\views\batch\edit.html" />
@@ -416,6 +420,7 @@
     <Content Include="app\views\report\deliveries.html" />
     <Content Include="app\views\report\factoryExpenses.html" />
     <Content Include="app\views\report\flourTransfer.html" />
+    <Content Include="app\views\report\index.html" />
     <Content Include="app\views\report\labourcosts.html" />
     <Content Include="app\views\report\machinerepairs.html" />
     <Content Include="app\views\report\millingbalance.html" />
@@ -3212,6 +3217,7 @@
     <Content Include="Views\UsersAdmin\Customers.cshtml" />
     <Content Include="Views\Excel\Index.cshtml" />
     <Content Include="Views\UsersAdmin\BranchManagers.cshtml" />
+    <Content Include="Views\Excel\SupplyReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

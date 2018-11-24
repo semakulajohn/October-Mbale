@@ -141,17 +141,22 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>TransactionType Model Object.</returns>
         public TransactionType MapEFToModel(EF.Models.TransactionType data)
         {
-
-            var transactionType = new TransactionType()
+            if (data != null)
             {
-                TransactionTypeId = data.TransactionTypeId,
-                Name = data.Name,
-                CreatedOn = data.CreatedOn,
-                
 
 
-            };
-            return transactionType;
+                var transactionType = new TransactionType()
+                {
+                    TransactionTypeId = data.TransactionTypeId,
+                    Name = data.Name,
+                    CreatedOn = data.CreatedOn,
+
+
+
+                };
+                return transactionType;
+            }
+            return null;
         }
 
 

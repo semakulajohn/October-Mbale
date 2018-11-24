@@ -142,29 +142,34 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>MachineRepair Model Object.</returns>
         public MachineRepair MapEFToModel(EF.Models.MachineRepair data)
         {
-            var machineRepair = new MachineRepair()
+            if (data != null)
             {
-               
-                Amount = data.Amount,
-                NameOfRepair = data.NameOfRepair,
-                BranchId = data.BranchId,
-                Description = data.Description,
-                SectorId = data.SectorId,
-                BatchId = data.BatchId,
-                DateRepaired = data.DateRepaired,
-                TransactionSubTypeId = data.TransactionSubTypeId,
-                TransactionSubTypeName = data.TransactionSubType !=null? data.TransactionSubType.Name:"",
-                BranchName = data.Branch !=null? data.Branch.Name:"",
-                SectorName = data.Sector != null ? data.Sector.Name : "",
-                MachineRepairId = data.MachineRepairId,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1)  ,
-                BatchNumber = data.Batch != null ? data.Batch.Name : "",
-            };
-            return machineRepair;
+
+                var machineRepair = new MachineRepair()
+                {
+
+                    Amount = data.Amount,
+                    NameOfRepair = data.NameOfRepair,
+                    BranchId = data.BranchId,
+                    Description = data.Description,
+                    SectorId = data.SectorId,
+                    BatchId = data.BatchId,
+                    DateRepaired = data.DateRepaired,
+                    TransactionSubTypeId = data.TransactionSubTypeId,
+                    TransactionSubTypeName = data.TransactionSubType != null ? data.TransactionSubType.Name : "",
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    SectorName = data.Sector != null ? data.Sector.Name : "",
+                    MachineRepairId = data.MachineRepairId,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+                    BatchNumber = data.Batch != null ? data.Batch.Name : "",
+                };
+                return machineRepair;
+            }
+            return null;
         }
 
        #endregion

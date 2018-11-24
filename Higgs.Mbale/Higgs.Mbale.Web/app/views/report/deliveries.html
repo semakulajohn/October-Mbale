@@ -113,101 +113,82 @@
                         </div>
                     </div>
                     <div ng-show="data.length > 0">
-                        <table ng-table="tableParams" class="table table-striped">
+                        <table id="reportTable">
                             <thead>
                                 <tr>
-                                    <th class="sortable" ng-class="{
-                                        'sort-asc': tableParams.isSortBy('Location', 'asc'),
-                                        'sort-desc': tableParams.isSortBy('Location', 'desc')
-                                        }"
-                                        ng-click="tableParams.sorting({'Location' : tableParams.isSortBy('Location', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                    <th>
                                         <div>Destination</div>
                                     </th>
-                                    <th class="sortable" ng-class="{
-                                        'sort-asc': tableParams.isSortBy('OrderId', 'asc'),
-                                        'sort-desc': tableParams.isSortBy('OrderId', 'desc')
-                                        }"
-                                        ng-click="tableParams.sorting({'OrderId' : tableParams.isSortBy('OrderId', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                    <th>
                                         <div>Order Number</div>
                                     </th>
-                                    <th class="sortable" ng-class="{
-                                        'sort-asc': tableParams.isSortBy('DriverName', 'asc'),
-                                        'sort-desc': tableParams.isSortBy('DriverName', 'desc')
-                                        }"
-                                        ng-click="tableParams.sorting({'DriverName' : tableParams.isSortBy('DriverName', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                                        <div>Driver Name</div>
+                                   
+                                    <th>
+                                        <div> Product</div>
                                     </th>
-                                    <th class="sortable"
-                                        ng-click="tableParams.sorting({'DriverNIN' : tableParams.isSortBy('DriverNIN', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                                        <div> Driver NIN</div>
-                                    </th>
-                                        <th class="sortable"
-                                        ng-click="tableParams.sorting({'Quantity' : tableParams.isSortBy('Quantity', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                    <th>
                                         <div>Quantity</div>
                                     </th>
+                                    <th>
+                                        <div>Amount</div>
+                                    </th>
 
-                                    <th class="sortable" ng-class="{
-                                    'sort-asc': tableParams.isSortBy('BranchName', 'asc'),
-                                    'sort-desc': tableParams.isSortBy('BranchName', 'desc')
-                                    }"
-                                        ng-click="tableParams.sorting({'BranchName' : tableParams.isSortBy('BranchName', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+
+                                    <th>
                                         <div>Branch</div>
                                     </th>
 
-                                    <th class="sortable" ng-class="{
-                                    'sort-asc': tableParams.isSortBy('BatchNumber', 'asc'),
-                                    'sort-desc': tableParams.isSortBy('BatchNumber', 'desc')
-                                    }"
-                                        ng-click="tableParams.sorting({'BatchNumber' : tableParams.isSortBy('BatchNumber', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                    <th>
                                         <div>BatchNumber</div>
                                     </th>
 
-                                    <th class="sortable" ng-class="{
-                                    'sort-asc': tableParams.isSortBy('VehicleNumber', 'asc'),
-                                    'sort-desc': tableParams.isSortBy('VehicleNumber', 'desc')
-                                    }"
-                                        ng-click="tableParams.sorting({'VehicleNumber' : tableParams.isSortBy('VehicleNumber', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                                        <div>TruckNumber</div>
-                                    </th>
+                                  
 
-                                    <th class="sortable" ng-class="{
-                                    'sort-asc': tableParams.isSortBy('DeliveryCost', 'asc'),
-                                    'sort-desc': tableParams.isSortBy('DeliveryCost', 'desc')
-                                    }"
-                                        ng-click="tableParams.sorting({'DeliveryCost' : tableParams.isSortBy('DeliveryCost', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                                        <div>Delivery Cost</div>
-                                    </th>
-
-                                    <th class="sortable" ng-class="{
-                                    'sort-asc': tableParams.isSortBy('CustomerName', 'asc'),
-                                    'sort-desc': tableParams.isSortBy('CustomerName', 'desc')
-                                    }"
-                                        ng-click="tableParams.sorting({'CustomerName' : tableParams.isSortBy('CustomerName', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                    <th>
                                         <div>CustomerName</div>
                                     </th>
-                                   
-                                   
+
+                                    <th>
+                                        <div>Date</div>
+                                    </th>
+
                                 </tr>
                             </thead>
                             <tbody>
-                               
-                                                          
+
+
                                 <tr ng-repeat="delivery in data">
-                                    <td width="10%">{{delivery.Location}}</td>
-                                    <td width="5%">{{delivery.OrderId}}</td>
-                                    <td width="10%">{{delivery.DriverName}}</td>
-                                    <td width="10%">{{delivery.DriverNIN}}</td>
-                                    <td width="10%"> {{delivery.Quantity}}</td>
-                                    <td width="7%">{{ delivery.BranchName }}</td>
-                                    <td width="10%">{{ delivery.BatchNumber }}</td>
-                                    <td width="10%">{{delivery.VehicleNumber}}</td>
-                                    <td width="10%">{{ delivery.DeliveryCost }}</td>
-                                    <td width="10%">{{delivery.CustomerName}}</td>
-                                    <td width="10%">{{delivery.CreatedOn | date:"yyyy-MM-dd hh:mm"}}</td>
+                                    
+                                    <td style="font-size: 18px !important;" width="10%">{{delivery.Location}}</td>
+                                    <td style="font-size: 18px !important;" width="8%">{{delivery.OrderId}}</td>
+                                    <td style="font-size: 18px !important;" width="10%">{{delivery.ProductName}}</td>
+                                    <td style="font-size: 18px !important;" width="10%">{{delivery.Quantity |number}}</td>
+                                    
+                                    <td style="font-size: 18px !important;" width="10%">{{delivery.Amount |number}}</td>
+                                    <td style="font-size: 18px !important;" width="10%">{{ delivery.BranchName }}</td>
+                                    <td style="font-size: 18px !important;" width="10%">{{ delivery.BatchNumber }}</td>
+                                    <td style="font-size: 18px !important;" width="15%">{{delivery.CustomerName}}</td>
+                                    <td style="font-size: 18px !important;" width="10%">{{delivery.CreatedOn | date:"yyyy-MM-dd"}}</td>
 
 
                                 </tr>
                             </tbody>
+                        </table>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <table id="reportTable">
+                            <tbody>
+                                <tr>
+                                   
+                                    <td>&nbsp;&nbsp;&nbsp;</td>
+                                    <td style="font-size: 18px !important;" width="25%">
+                                        <span class="header-search">
+                                            Total Amount :  {{totalAmount |number}}
+                                        </span>
+                                    </td>
+                                    <td>&nbsp;&nbsp;&nbsp;</td>
+                                    
+
+                                </tr>
                         </table>
                     </div>
 

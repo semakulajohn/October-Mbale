@@ -99,20 +99,23 @@ public   class ActivityService : IActivityService
         /// <returns>Activity Model Object.</returns>
         public Activity MapEFToModel(EF.Models.Activity data)
         {
-          
-            var activity = new Activity()
+            if (data != null)
             {
-                ActivityId = data.ActivityId,
-                Name = data.Name,
-                Charge = data.Charge,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+                var activity = new Activity()
+                {
+                    ActivityId = data.ActivityId,
+                    Name = data.Name,
+                    Charge = data.Charge,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
 
-            };
-            return activity;
+                };
+                return activity;
+            }
+            return null;
         }
 
 

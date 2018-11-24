@@ -163,40 +163,44 @@ namespace Higgs.Mbale.BAL.Concrete
         public Requistion MapEFToModel(EF.Models.Requistion data)
         {
             string statusName = string.Empty;
-            if (data.Status != null)
+            if (data != null)
             {
-                if (data.Status.StatusId == 2)
+                if (data.Status != null)
                 {
-                    statusName = "Approved";
-                }
-                else
-                {
-                    statusName = data.Status.Name;
-                }
-                
-            }
-            var requistion = new Requistion()
-            {
-                RequistionId = data.RequistionId,
-                ApprovedById = data.ApprovedById,
-                StatusId = data.StatusId,
-                Amount = data.Amount,
-                Response = data.Response,
-                BranchId = data.BranchId,
-                BranchName = data.Branch != null ? data.Branch.Name : "",
-                StatusName = statusName,
-                ApprovedByName = _userService.GetUserFullName(data.AspNetUser),
-                RequistionNumber = data.RequistionNumber,
-                Description = data.Description,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser1),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser2),
-               
+                    if (data.Status.StatusId == 2)
+                    {
+                        statusName = "Approved";
+                    }
+                    else
+                    {
+                        statusName = data.Status.Name;
+                    }
 
-            };
-            return requistion;
+                }
+                var requistion = new Requistion()
+                {
+                    RequistionId = data.RequistionId,
+                    ApprovedById = data.ApprovedById,
+                    StatusId = data.StatusId,
+                    Amount = data.Amount,
+                    Response = data.Response,
+                    BranchId = data.BranchId,
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    StatusName = statusName,
+                    ApprovedByName = _userService.GetUserFullName(data.AspNetUser),
+                    RequistionNumber = data.RequistionNumber,
+                    Description = data.Description,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser1),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser2),
+
+
+                };
+                return requistion;
+            }
+            return null;
         }
 
 

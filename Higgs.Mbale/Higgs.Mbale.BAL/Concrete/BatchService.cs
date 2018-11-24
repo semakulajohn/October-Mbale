@@ -414,197 +414,201 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>Batch Model Object.</returns>
         public Batch MapEFToModel(EF.Models.Batch data)
         {
-            
-            var batch = new Batch()
+            if (data != null)
             {
-                BatchId = data.BatchId,
-                Name = data.Name,
-                Quantity = data.Quantity,
-                BranchId = data.BranchId,
-                
-                BranchName = data.Branch != null ? data.Branch.Name : "",
-                SectorName = data.Sector != null ? data.Sector.Name : "",
-                SectorId = data.SectorId,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                BranchMillingChargeRate = data.Branch != null? data.Branch.MillingChargeRate:0,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
-            };
-            
-
-            var batchOutPuts = GetAllBatchOutPutsForABatch(data.BatchId);
-            List<BatchOutPut> batchOutPutList = new List<BatchOutPut>();
-            if (batchOutPuts.Any())
-            {
-                foreach (var outPut in batchOutPuts)
+                var batch = new Batch()
                 {
-                    var batchOutPut = new BatchOutPut()
-                    {
-                        Grades = outPut.Grades,
-                        TotalBuveraCost = outPut.TotalBuveraCost,
-                        TotalQuantity = outPut.TotalQuantity,
-                        BrandOutPut = outPut.BrandOutPut,
-                        FlourPercentage = outPut.FlourPercentage,
-                        BrandPercentage = outPut.BrandPercentage,
-                        FlourOutPut = outPut.FlourOutPut,
-                        LossPercentage = outPut.LossPercentage,
-                        Loss = outPut.Loss,
+                    BatchId = data.BatchId,
+                    Name = data.Name,
+                    Quantity = data.Quantity,
+                    BranchId = data.BranchId,
 
-                    };
-                    batchOutPutList.Add(batchOutPut);
-                    batch.TotalBuveraCost = batchOutPut.TotalBuveraCost;
-                    batch.TotalQuantity = batchOutPut.TotalQuantity;
-                    batch.FlourOutPut = batchOutPut.FlourOutPut;
-                    batch.LossPercentage = batchOutPut.LossPercentage;
-                    batch.Loss =Convert.ToDouble(batchOutPut.Loss);
-                    batch.BrandOutPut = batchOutPut.BrandOutPut;
-                    batch.BrandPercentage = batchOutPut.BrandPercentage;
-                    batch.FlourPercentage = batchOutPut.FlourPercentage;
-                    batch.Grades = batchOutPut.Grades;
-                  }
-             
-            }
-            batch.MillingCharge = batch.BranchMillingChargeRate * batch.FlourOutPut;
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    SectorName = data.Sector != null ? data.Sector.Name : "",
+                    SectorId = data.SectorId,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    BranchMillingChargeRate = data.Branch != null ? data.Branch.MillingChargeRate : 0,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+                };
 
-            var otherExpenses = GetAllOtherExpensesForABatch(data.BatchId);
-            double otherExpenseCost = 0;
-            List<OtherExpense> otherExpenseList = new List<OtherExpense>();
-            if (otherExpenses.Any())
-            {
-                foreach (var other in otherExpenses)
+
+                var batchOutPuts = GetAllBatchOutPutsForABatch(data.BatchId);
+                List<BatchOutPut> batchOutPutList = new List<BatchOutPut>();
+                if (batchOutPuts.Any())
                 {
-                    var otherExpense = new OtherExpense()
+                    foreach (var outPut in batchOutPuts)
                     {
-                        Amount = other.Amount,
-                        Description = other.Description,
-
-                    };
-                    otherExpenseList.Add(otherExpense);
-                    otherExpenseCost = otherExpenseCost + other.Amount;
-                }
-                batch.TotalOtherExpenseCost = otherExpenseCost;
-                batch.OtherExpenses = otherExpenseList;
-            }
-
-            var utilities = GetAllUtilitiesForABatch(data.BatchId);
-            double utilityCost = 0;
-            List<Utility> utilityList = new List<Utility>();
-            if (utilities.Any())
-            {
-                foreach (var utility in utilities)
-                {
-                    var utilityObject = new Utility()
-                    {
-                        Amount = utility.Amount,
-                        Description = utility.Description,
-
-                    };
-                    utilityList.Add(utility);
-                    utilityCost = utilityCost + utility.Amount;
-                }
-                batch.TotalUtilityCost = utilityCost;
-                batch.Utilities = utilityList;
-            }
-
-            var factoryExpenses = GetAllFactoryExpensesForABatch(data.BatchId);
-            double totalFactoryExpense = 0;
-            double factoryExpenseCost = 0;
-            List<FactoryExpense> factoryExpenseList = new List<FactoryExpense>();
-            if (factoryExpenses.Any())
-            {
-                foreach (var item in factoryExpenses)
-                {
-                    var factoryExpense = new FactoryExpense()
-                    {
-                        Amount = item.Amount,
-                        Description = item.Description,
-
-                    };
-                    factoryExpenseList.Add(factoryExpense);
-                    factoryExpenseCost = factoryExpenseCost + item.Amount;  
-                }
-                batch.FactoryExpenseCost = factoryExpenseCost;
-                batch.FactoryExpenses = factoryExpenseList;
-            }
-            var machineRepairs = GetAllMachineRepairsForABatch(data.BatchId);
-            double machineCosts = 0;
-            List<MachineRepair> machineRepairList = new List<MachineRepair>();
-            if (machineRepairs.Any())
-            {
-                foreach (var repair in machineRepairs)
-                {
-                    var machineRepair = new MachineRepair()
-                    {
-                        Amount = repair.Amount,
-                        Description = repair.Description,
-                    };
-                    machineRepairList.Add(machineRepair);
-                    machineCosts = machineRepair.Amount + machineCosts;
-                }
-                batch.MachineRepairs = machineRepairList;
-                batch.TotalMachineCost = machineCosts;
-            }
-            totalFactoryExpense = batch.TotalMachineCost + batch.FactoryExpenseCost;
-            batch.TotalFactoryExpenseCost = totalFactoryExpense;
-            batch.MillingChargeBalance = ComputeMillingChargeBalance(batch.MillingCharge, batch.TotalFactoryExpenseCost);
-
-            var labourCosts = GetAllLabourCostsForABatch(data.BatchId);
-             double totalLabourCosts = 0;
-            List<LabourCost> labourCostList = new List<LabourCost>();
-           //labourCostList.AddRange(AddBatchLabourCostsAutomatically(data));
-            if (labourCosts.Any())
-            {
-                foreach (var labour in labourCosts)
-                {
-                    var labourCost = new LabourCost()
-                    {
-                        ActivityName = labour.ActivityName,
-                        Amount = labour.Amount,
-                        Quantity = labour.Quantity,
-                        Rate = labour.Rate,
-                    };
-                    labourCostList.Add(labourCost);
-                    totalLabourCosts = totalLabourCosts + labour.Amount;
-                }
-                batch.TotalLabourCosts = totalLabourCosts;
-                batch.LabourCosts = labourCostList;
-            }
-
-            if(data.BatchSupplies != null){
-                if (data.BatchSupplies.Any())
-                {
-                    double totalSupplyAmount = 0;
-                    List<Supply> supplies = new List<Supply>();
-                    var batchSupplies = data.BatchSupplies.AsQueryable().Where(m =>m.BatchId == data.BatchId);
-                    foreach (var batchSupply in batchSupplies)
-                    {
-                        var supply = new Supply()
+                        var batchOutPut = new BatchOutPut()
                         {
-                            SupplyId = batchSupply.Supply.SupplyId,
-                            Quantity = batchSupply.Supply.Quantity,
-                            SupplierId = batchSupply.Supply.SupplierId,
-                            Price = batchSupply.Supply.Price,
-                            WeightNoteNumber = batchSupply.Supply.WeightNoteNumber,
-                            NormalBags =batchSupply.Supply.NormalBags,
-                            BagsOfStones = batchSupply.Supply.BagsOfStones,
-                            Amount = batchSupply.Supply.Amount,
-                           SupplierName = _userService.GetUserFullName(batchSupply.Supply.AspNetUser2),
+                            Grades = outPut.Grades,
+                            TotalBuveraCost = outPut.TotalBuveraCost,
+                            TotalQuantity = outPut.TotalQuantity,
+                            BrandOutPut = outPut.BrandOutPut,
+                            FlourPercentage = outPut.FlourPercentage,
+                            BrandPercentage = outPut.BrandPercentage,
+                            FlourOutPut = outPut.FlourOutPut,
+                            LossPercentage = outPut.LossPercentage,
+                            Loss = outPut.Loss,
+
                         };
-                        supplies.Add(supply);
-                        totalSupplyAmount = totalSupplyAmount + supply.Amount;
+                        batchOutPutList.Add(batchOutPut);
+                        batch.TotalBuveraCost = batchOutPut.TotalBuveraCost;
+                        batch.TotalQuantity = batchOutPut.TotalQuantity;
+                        batch.FlourOutPut = batchOutPut.FlourOutPut;
+                        batch.LossPercentage = batchOutPut.LossPercentage;
+                        batch.Loss = Convert.ToDouble(batchOutPut.Loss);
+                        batch.BrandOutPut = batchOutPut.BrandOutPut;
+                        batch.BrandPercentage = batchOutPut.BrandPercentage;
+                        batch.FlourPercentage = batchOutPut.FlourPercentage;
+                        batch.Grades = batchOutPut.Grades;
                     }
-                    batch.Supplies = supplies;
-                    batch.TotalSupplyAmount = totalSupplyAmount;
+
                 }
-            
-            
-                batch.TotalProductionCost = ComputeTotalProductionCost(batch.MillingCharge, batch.TotalLabourCosts, batch.TotalBuveraCost);
+                batch.MillingCharge = batch.BranchMillingChargeRate * batch.FlourOutPut;
+
+                var otherExpenses = GetAllOtherExpensesForABatch(data.BatchId);
+                double otherExpenseCost = 0;
+                List<OtherExpense> otherExpenseList = new List<OtherExpense>();
+                if (otherExpenses.Any())
+                {
+                    foreach (var other in otherExpenses)
+                    {
+                        var otherExpense = new OtherExpense()
+                        {
+                            Amount = other.Amount,
+                            Description = other.Description,
+
+                        };
+                        otherExpenseList.Add(otherExpense);
+                        otherExpenseCost = otherExpenseCost + other.Amount;
+                    }
+                    batch.TotalOtherExpenseCost = otherExpenseCost;
+                    batch.OtherExpenses = otherExpenseList;
+                }
+
+                var utilities = GetAllUtilitiesForABatch(data.BatchId);
+                double utilityCost = 0;
+                List<Utility> utilityList = new List<Utility>();
+                if (utilities.Any())
+                {
+                    foreach (var utility in utilities)
+                    {
+                        var utilityObject = new Utility()
+                        {
+                            Amount = utility.Amount,
+                            Description = utility.Description,
+
+                        };
+                        utilityList.Add(utility);
+                        utilityCost = utilityCost + utility.Amount;
+                    }
+                    batch.TotalUtilityCost = utilityCost;
+                    batch.Utilities = utilityList;
+                }
+
+                var factoryExpenses = GetAllFactoryExpensesForABatch(data.BatchId);
+                double totalFactoryExpense = 0;
+                double factoryExpenseCost = 0;
+                List<FactoryExpense> factoryExpenseList = new List<FactoryExpense>();
+                if (factoryExpenses.Any())
+                {
+                    foreach (var item in factoryExpenses)
+                    {
+                        var factoryExpense = new FactoryExpense()
+                        {
+                            Amount = item.Amount,
+                            Description = item.Description,
+
+                        };
+                        factoryExpenseList.Add(factoryExpense);
+                        factoryExpenseCost = factoryExpenseCost + item.Amount;
+                    }
+                    batch.FactoryExpenseCost = factoryExpenseCost;
+                    batch.FactoryExpenses = factoryExpenseList;
+                }
+                var machineRepairs = GetAllMachineRepairsForABatch(data.BatchId);
+                double machineCosts = 0;
+                List<MachineRepair> machineRepairList = new List<MachineRepair>();
+                if (machineRepairs.Any())
+                {
+                    foreach (var repair in machineRepairs)
+                    {
+                        var machineRepair = new MachineRepair()
+                        {
+                            Amount = repair.Amount,
+                            Description = repair.Description,
+                        };
+                        machineRepairList.Add(machineRepair);
+                        machineCosts = machineRepair.Amount + machineCosts;
+                    }
+                    batch.MachineRepairs = machineRepairList;
+                    batch.TotalMachineCost = machineCosts;
+                }
+                totalFactoryExpense = batch.TotalMachineCost + batch.FactoryExpenseCost;
+                batch.TotalFactoryExpenseCost = totalFactoryExpense;
+                batch.MillingChargeBalance = ComputeMillingChargeBalance(batch.MillingCharge, batch.TotalFactoryExpenseCost);
+
+                var labourCosts = GetAllLabourCostsForABatch(data.BatchId);
+                double totalLabourCosts = 0;
+                List<LabourCost> labourCostList = new List<LabourCost>();
+                //labourCostList.AddRange(AddBatchLabourCostsAutomatically(data));
+                if (labourCosts.Any())
+                {
+                    foreach (var labour in labourCosts)
+                    {
+                        var labourCost = new LabourCost()
+                        {
+                            ActivityName = labour.ActivityName,
+                            Amount = labour.Amount,
+                            Quantity = labour.Quantity,
+                            Rate = labour.Rate,
+                        };
+                        labourCostList.Add(labourCost);
+                        totalLabourCosts = totalLabourCosts + labour.Amount;
+                    }
+                    batch.TotalLabourCosts = totalLabourCosts;
+                    batch.LabourCosts = labourCostList;
+                }
+
+                if (data.BatchSupplies != null)
+                {
+                    if (data.BatchSupplies.Any())
+                    {
+                        double totalSupplyAmount = 0;
+                        List<Supply> supplies = new List<Supply>();
+                        var batchSupplies = data.BatchSupplies.AsQueryable().Where(m => m.BatchId == data.BatchId);
+                        foreach (var batchSupply in batchSupplies)
+                        {
+                            var supply = new Supply()
+                            {
+                                SupplyId = batchSupply.Supply.SupplyId,
+                                Quantity = batchSupply.Supply.Quantity,
+                                SupplierId = batchSupply.Supply.SupplierId,
+                                Price = batchSupply.Supply.Price,
+                                WeightNoteNumber = batchSupply.Supply.WeightNoteNumber,
+                                NormalBags = batchSupply.Supply.NormalBags,
+                                BagsOfStones = batchSupply.Supply.BagsOfStones,
+                                Amount = batchSupply.Supply.Amount,
+                                SupplierName = _userService.GetUserFullName(batchSupply.Supply.AspNetUser2),
+                            };
+                            supplies.Add(supply);
+                            totalSupplyAmount = totalSupplyAmount + supply.Amount;
+                        }
+                        batch.Supplies = supplies;
+                        batch.TotalSupplyAmount = totalSupplyAmount;
+                    }
+
+
+                    batch.TotalProductionCost = ComputeTotalProductionCost(batch.MillingCharge, batch.TotalLabourCosts, batch.TotalBuveraCost);
+                }
+
+                return batch;
+
             }
-          
-            return batch;
-            
+            return null;
            
         }
 

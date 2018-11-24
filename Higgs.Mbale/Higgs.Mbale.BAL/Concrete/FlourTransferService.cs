@@ -545,69 +545,70 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>FlourTransfer Model Object.</returns>
         public FlourTransfer MapEFToModel(EF.Models.FlourTransfer data)
         {
-          
-            var flourTransfer = new FlourTransfer()
+            if (data != null)
             {
-              
-             
-               BranchName = data.Branch !=null? data.Branch.Name:"",               
-                BranchId = data.BranchId,
-                TotalQuantity = data.TotalQuantity,
-                StoreId = data.StoreId,
-                FlourTransferId = data.FlourTransferId,
-                FromSupplierStoreId = data.FromSupplierStoreId,
-                Accept = data.Accept,
-                Reject = data.Reject,
-               
-                ToReceiverStoreId = data.ToReceiverStoreId,
-                ReceiverStoreName = data.Store2 != null? data.Store2.Name:"",
-                SupplierStoreName = data.Store1 != null? data.Store1.Name:"",
-                StoreName = data.Store!=null? data.Store.Name:"",
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser2)            
-            };
-
-            var batches = GetAllBatchesForAFlourTransfer(data.FlourTransferId);
-            List<FlourTransferBatch> flourTransferBatchList = new List<FlourTransferBatch>();
-            if (batches.Any())
-            {
-                foreach (var batch in batches)
+                var flourTransfer = new FlourTransfer()
                 {
-                    var flourbatch = new FlourTransferBatch()
-                    {
-                        BatchId = batch.BatchId,
-                        BatchNumber = batch.BatchNumber,
-                        FlourTransferId = batch.FlourTransferId,
 
-                    };
-                    flourTransferBatchList.Add(flourbatch);
-                    
-                }
-                flourTransfer.FlourTransferBatches = flourTransferBatchList;
-            }
-            if (data.FlourTransferGradeSizes != null)
-            {
-                if (data.FlourTransferGradeSizes.Any())
+
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    BranchId = data.BranchId,
+                    TotalQuantity = data.TotalQuantity,
+                    StoreId = data.StoreId,
+                    FlourTransferId = data.FlourTransferId,
+                    FromSupplierStoreId = data.FromSupplierStoreId,
+                    Accept = data.Accept,
+                    Reject = data.Reject,
+
+                    ToReceiverStoreId = data.ToReceiverStoreId,
+                    ReceiverStoreName = data.Store2 != null ? data.Store2.Name : "",
+                    SupplierStoreName = data.Store1 != null ? data.Store1.Name : "",
+                    StoreName = data.Store != null ? data.Store.Name : "",
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser2)
+                };
+
+                var batches = GetAllBatchesForAFlourTransfer(data.FlourTransferId);
+                List<FlourTransferBatch> flourTransferBatchList = new List<FlourTransferBatch>();
+                if (batches.Any())
                 {
-                    List<Grade> grades = new List<Grade>();
-                    var distinctGrades = data.FlourTransferGradeSizes.GroupBy(g => g.GradeId).Select(o => o.First()).ToList();
-                    foreach (var flourTransferGradeSize in distinctGrades)
+                    foreach (var batch in batches)
                     {
-                        var grade = new Grade()
+                        var flourbatch = new FlourTransferBatch()
                         {
-                            GradeId = flourTransferGradeSize.Grade.GradeId,
-                            Value = flourTransferGradeSize.Grade.Value,
-                            CreatedOn = flourTransferGradeSize.Grade.CreatedOn,
-                            TimeStamp = flourTransferGradeSize.Grade.TimeStamp,
-                            Deleted = flourTransferGradeSize.Grade.Deleted,
-                            CreatedBy = _userService.GetUserFullName(flourTransferGradeSize.Grade.AspNetUser),
-                            UpdatedBy = _userService.GetUserFullName(flourTransferGradeSize.Grade.AspNetUser1),
+                            BatchId = batch.BatchId,
+                            BatchNumber = batch.BatchNumber,
+                            FlourTransferId = batch.FlourTransferId,
+
                         };
-                        List<Denomination> denominations = new List<Denomination>();
-                           if (flourTransferGradeSize.Grade.FlourTransferGradeSizes != null)
+                        flourTransferBatchList.Add(flourbatch);
+
+                    }
+                    flourTransfer.FlourTransferBatches = flourTransferBatchList;
+                }
+                if (data.FlourTransferGradeSizes != null)
+                {
+                    if (data.FlourTransferGradeSizes.Any())
+                    {
+                        List<Grade> grades = new List<Grade>();
+                        var distinctGrades = data.FlourTransferGradeSizes.GroupBy(g => g.GradeId).Select(o => o.First()).ToList();
+                        foreach (var flourTransferGradeSize in distinctGrades)
+                        {
+                            var grade = new Grade()
+                            {
+                                GradeId = flourTransferGradeSize.Grade.GradeId,
+                                Value = flourTransferGradeSize.Grade.Value,
+                                CreatedOn = flourTransferGradeSize.Grade.CreatedOn,
+                                TimeStamp = flourTransferGradeSize.Grade.TimeStamp,
+                                Deleted = flourTransferGradeSize.Grade.Deleted,
+                                CreatedBy = _userService.GetUserFullName(flourTransferGradeSize.Grade.AspNetUser),
+                                UpdatedBy = _userService.GetUserFullName(flourTransferGradeSize.Grade.AspNetUser1),
+                            };
+                            List<Denomination> denominations = new List<Denomination>();
+                            if (flourTransferGradeSize.Grade.FlourTransferGradeSizes != null)
                             {
                                 if (flourTransferGradeSize.Grade.FlourTransferGradeSizes.Any())
                                 {
@@ -620,19 +621,21 @@ namespace Higgs.Mbale.BAL.Concrete
                                             Value = ogs.Size != null ? ogs.Size.Value : 0,
                                             Quantity = ogs.Quantity
                                         };
-                                      //  FlourTransfer.TotalQuantity += (ogs.Quantity * ogs.Size.Value);
+                                        //  FlourTransfer.TotalQuantity += (ogs.Quantity * ogs.Size.Value);
                                         denominations.Add(denomination);
                                     }
                                 }
-                               grade.Denominations = denominations;
-                           }                          
-                       grades.Add(grade);
+                                grade.Denominations = denominations;
+                            }
+                            grades.Add(grade);
+                        }
+                        flourTransfer.Grades = grades;
                     }
-                    flourTransfer.Grades = grades;                    
                 }
+
+                return flourTransfer;
             }
-            
-            return flourTransfer;
+            return null;
         }
 
 

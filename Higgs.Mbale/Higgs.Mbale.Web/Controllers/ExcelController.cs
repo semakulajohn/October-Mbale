@@ -7,6 +7,7 @@ using System.Configuration;
 using Higgs.Mbale.Helpers;
 using Higgs.Mbale.BAL.Interface;
 using Higgs.Mbale.Models;
+using Rotativa;
 
 namespace Higgs.Mbale.Web.Controllers
 {
@@ -187,6 +188,25 @@ namespace Higgs.Mbale.Web.Controllers
             Response.AddHeader("Content-Disposition", "attachment; filename=" + nameOfReport + "_Report_" + DateTime.Now.ToString("yyyy-MM-dd-mm-ss") + ".xlsx");
             return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
+
+        public ActionResult SupplyReport(int id)
+        {
+
+            ViewBag.supplier = "Sentongo";
+            ViewBag.wwn = "334";
+
+            return View();
+        }
+
+        public ActionResult ExportSupplyAsPDF(int id)
+        {
+            return new ActionAsPdf("SupplyReport", new {id = id })
+            {
+                FileName = "FileName.pdf"
+            };
+        }
+
+      
 
         public ActionResult SupplierSupply(int reportTypeId,string  supplierId)
         {

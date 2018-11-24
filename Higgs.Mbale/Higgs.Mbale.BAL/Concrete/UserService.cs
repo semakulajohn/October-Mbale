@@ -246,43 +246,49 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>AspNet Models Object</returns>
         private AspNetUser MapEFToModel(EF.Models.AspNetUser data)
         {
-            var user = new AspNetUser()
+            if (data != null)
             {
-                Id = data.Id,
-                FirstName = data.FirstName,
-                LastName = data.LastName,
-                Email = data.Email,
-                UserName = data.UserName,
-                MiddleName = data.MiddleName,
-                UniqueNumber = data.UniqueNumber,
-                PhoneNumber = data.PhoneNumber,
-                Mobile = data.Mobile,
-                PasswordHash = data.PasswordHash,
-                GenderId = data.GenderId,
-                CreatedBy = data.CreatedBy,
-                UpdatedBy = data.UpdatedBy,
-                TimeStamp = data.TimeStamp,
-                DateOfBirth = data.DateOfBirth,
-                CreatedOn = data.CreatedOn,
-                RoleName = data.AspNetRoles.FirstOrDefault().Name
-            };
 
 
-            List<string> userroles = new List<string>();
-
-            var dbUserRoles = data.AspNetRoles;
-            var numberOfRoles = dbUserRoles.Count;
-            EF.Models.AspNetRole[] roles = new EF.Models.AspNetRole[numberOfRoles];
-            if (dbUserRoles != null)
-            {
-                dbUserRoles.CopyTo(roles, 0);
-                foreach (var role in roles)
+                var user = new AspNetUser()
                 {
-                    userroles.Add(role.Name);
+                    Id = data.Id,
+                    FirstName = data.FirstName,
+                    LastName = data.LastName,
+                    Email = data.Email,
+                    UserName = data.UserName,
+                    MiddleName = data.MiddleName,
+                    UniqueNumber = data.UniqueNumber,
+                    PhoneNumber = data.PhoneNumber,
+                    Mobile = data.Mobile,
+                    PasswordHash = data.PasswordHash,
+                    GenderId = data.GenderId,
+                    CreatedBy = data.CreatedBy,
+                    UpdatedBy = data.UpdatedBy,
+                    TimeStamp = data.TimeStamp,
+                    DateOfBirth = data.DateOfBirth,
+                    CreatedOn = data.CreatedOn,
+                    RoleName = data.AspNetRoles.FirstOrDefault().Name
+                };
+
+
+                List<string> userroles = new List<string>();
+
+                var dbUserRoles = data.AspNetRoles;
+                var numberOfRoles = dbUserRoles.Count;
+                EF.Models.AspNetRole[] roles = new EF.Models.AspNetRole[numberOfRoles];
+                if (dbUserRoles != null)
+                {
+                    dbUserRoles.CopyTo(roles, 0);
+                    foreach (var role in roles)
+                    {
+                        userroles.Add(role.Name);
+                    }
                 }
+                user.UserRoles = userroles;
+                return user;
             }
-            user.UserRoles = userroles;
-            return user;
+            return null;
         }
 
 

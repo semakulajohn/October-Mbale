@@ -193,7 +193,19 @@
                                                 <i class="fa-fw fa fa-check"></i><span>OutPut of Flour doesn't Match with OutPut in Grade Section</span>
                                             </div>
 
-
+                                            <div class="check-element sample-show-hide alert alert-danger animate-show" ng-show="showMessageNoGradeSelected" style="clear:both;">
+                                                <i class="fa-fw fa fa-check"></i><span>You have not Selected Any Grade</span>
+                                            </div>
+                                            <div class="check-element sample-show-hide alert alert-danger animate-show" ng-show="showMessageNotEnoughBuvera" style="clear:both;">
+                                                <i class="fa-fw fa fa-check"></i><span>There is no Enough buvera in Store</span>
+                                            </div>
+                                            <div class="check-element sample-show-hide alert alert-danger animate-show" ng-show="showMessageNoGradeBuvera" style="clear:both;">
+                                                <i class="fa-fw fa fa-check"></i><span>There are no Buveras For Selected Grade</span>
+                                            </div>
+                                            <div class="check-element sample-show-hide alert alert-danger animate-show" ng-show="showMessageBatchAlreadyHasOutput" style="clear:both;">
+                                                <i class="fa-fw fa fa-check"></i><span>Batch Already has OutPut Saved, Contact admin</span>
+                                            </div>
+                                            
                                         </div>
                                     </div>
 

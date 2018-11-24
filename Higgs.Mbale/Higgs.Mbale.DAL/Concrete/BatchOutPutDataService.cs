@@ -53,64 +53,73 @@ namespace Higgs.Mbale.DAL.Concrete
         public long SaveBatchOutPut(BatchOutPutDTO batchOutPutDTO, string userId)
         {
             long batchOutPutId = 0;
-            
-            if (batchOutPutDTO.BatchOutPutId == 0)
+            var resultBatch = this.UnitOfWork.Get<BatchOutPut>().AsQueryable()
+                    .FirstOrDefault(e => e.BatchId == batchOutPutDTO.BatchId);
+            if (resultBatch != null && batchOutPutDTO.BatchOutPutId == 0)
             {
-           
-                var batchOutPut = new BatchOutPut()
-                {
-                    Loss = batchOutPutDTO.Loss,
-                    FlourOutPut = batchOutPutDTO.FlourOutPut,
-                    BrandOutPut = batchOutPutDTO.BrandOutPut,
-                    BatchId = batchOutPutDTO.BatchId,
-                    LossPercentage = batchOutPutDTO.LossPercentage,
-                    BrandPercentage = batchOutPutDTO.BrandPercentage,
-                    FlourPercentage = batchOutPutDTO.FlourPercentage,
-               BranchId = batchOutPutDTO.BranchId,
-               SectorId = batchOutPutDTO.SectorId,
-                    CreatedOn = DateTime.Now,
-                    TimeStamp = DateTime.Now,
-                    CreatedBy = userId,
-                    Deleted = false,
-                    
- 
-
-                };
-
-                this.UnitOfWork.Get<BatchOutPut>().AddNew(batchOutPut);
-                this.UnitOfWork.SaveChanges();
-                batchOutPutId = batchOutPut.BatchOutPutId;
-                            
-                
                 return batchOutPutId;
             }
-
             else
             {
-                var result = this.UnitOfWork.Get<BatchOutPut>().AsQueryable()
-                    .FirstOrDefault(e => e.BatchOutPutId == batchOutPutDTO.BatchOutPutId);
-                if (result != null)
+                if (batchOutPutDTO.BatchOutPutId == 0)
                 {
-                    result.Loss = batchOutPutDTO.Loss;
-                    result.FlourOutPut = batchOutPutDTO.FlourOutPut;
-                    result.BrandOutPut = batchOutPutDTO.BrandOutPut;
-                    result.BatchId = batchOutPutDTO.BatchId;       
-                    result.LossPercentage = batchOutPutDTO.LossPercentage;
-                    result.BrandPercentage = batchOutPutDTO.BrandPercentage;
-                    result.FlourPercentage = batchOutPutDTO.FlourPercentage;
-                    result.SectorId = batchOutPutDTO.SectorId;
-                    result.BranchId = batchOutPutDTO.BranchId;
-                    result.UpdatedBy = userId;
-                    result.TimeStamp = DateTime.Now;
-                    result.Deleted = batchOutPutDTO.Deleted;
-                    result.DeletedBy = batchOutPutDTO.DeletedBy;
-                    result.DeletedOn = batchOutPutDTO.DeletedOn;
 
-                    this.UnitOfWork.Get<BatchOutPut>().Update(result);
+                    var batchOutPut = new BatchOutPut()
+                    {
+                        Loss = batchOutPutDTO.Loss,
+                        FlourOutPut = batchOutPutDTO.FlourOutPut,
+                        BrandOutPut = batchOutPutDTO.BrandOutPut,
+                        BatchId = batchOutPutDTO.BatchId,
+                        LossPercentage = batchOutPutDTO.LossPercentage,
+                        BrandPercentage = batchOutPutDTO.BrandPercentage,
+                        FlourPercentage = batchOutPutDTO.FlourPercentage,
+                        BranchId = batchOutPutDTO.BranchId,
+                        SectorId = batchOutPutDTO.SectorId,
+                        CreatedOn = DateTime.Now,
+                        TimeStamp = DateTime.Now,
+                        CreatedBy = userId,
+                        Deleted = false,
+
+
+
+                    };
+
+                    this.UnitOfWork.Get<BatchOutPut>().AddNew(batchOutPut);
                     this.UnitOfWork.SaveChanges();
+                    batchOutPutId = batchOutPut.BatchOutPutId;
+
+
+                    return batchOutPutId;
                 }
-                return batchOutPutDTO.BatchOutPutId;
-            }           
+
+                else
+                {
+                    var result = this.UnitOfWork.Get<BatchOutPut>().AsQueryable()
+                        .FirstOrDefault(e => e.BatchOutPutId == batchOutPutDTO.BatchOutPutId);
+                    if (result != null)
+                    {
+                        result.Loss = batchOutPutDTO.Loss;
+                        result.FlourOutPut = batchOutPutDTO.FlourOutPut;
+                        result.BrandOutPut = batchOutPutDTO.BrandOutPut;
+                        result.BatchId = batchOutPutDTO.BatchId;
+                        result.LossPercentage = batchOutPutDTO.LossPercentage;
+                        result.BrandPercentage = batchOutPutDTO.BrandPercentage;
+                        result.FlourPercentage = batchOutPutDTO.FlourPercentage;
+                        result.SectorId = batchOutPutDTO.SectorId;
+                        result.BranchId = batchOutPutDTO.BranchId;
+                        result.UpdatedBy = userId;
+                        result.TimeStamp = DateTime.Now;
+                        result.Deleted = batchOutPutDTO.Deleted;
+                        result.DeletedBy = batchOutPutDTO.DeletedBy;
+                        result.DeletedOn = batchOutPutDTO.DeletedOn;
+
+                        this.UnitOfWork.Get<BatchOutPut>().Update(result);
+                        this.UnitOfWork.SaveChanges();
+                    }
+                    return batchOutPutDTO.BatchOutPutId;
+                }    
+            }
+                  
         }
 
         public void MarkAsDeleted(long batchOutPutId, string userId)

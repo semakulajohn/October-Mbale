@@ -23,17 +23,17 @@ namespace Higgs.Mbale.BAL.Concrete
         private IUserService _userService;
       private ISupplyDataService _supplyDataService;
       private IStockService _stockService;
-      private IBuveraDataService _buveraDataService; 
+      private IBuveraService _buveraService; 
                 
 
         public BatchOutPutService(IBatchOutPutDataService dataService,IUserService userService,ISupplyDataService supplyDataService,
-            IStockService stockService,IBuveraDataService buveraDataService)
+            IStockService stockService,IBuveraService buveraService)
         {
             this._dataService = dataService;
             this._userService = userService;
             this._supplyDataService = supplyDataService;
             this._stockService = stockService;
-            this._buveraDataService = buveraDataService;
+            this._buveraService = buveraService;
            
         }
 
@@ -117,132 +117,190 @@ namespace Higgs.Mbale.BAL.Concrete
             }
             return totalQuantity;
         }
+
+        public long CheckForBuveraInStore(List<Grade> grades,long storeId)
+        {
+            
+            foreach (var grade in grades)
+            {
+                //var result = _buveraService.GetStoreBuveraGradeSize(grade.GradeId, storeId);
+                if (grade.Denominations != null)
+                {
+                    foreach (var denomination in grade.Denominations)
+                    {
+                        var result = _buveraService.GetStoreBuveraGradeSize(grade.GradeId, denomination.DenominationId, storeId);
+                        if (result == null)
+                        {
+                            return -2;
+                        }
+                        else
+                        {
+                            if (result.Quantity < denomination.Quantity)
+                            {
+                                return -1;
+                            }
+                        }
+                    }
+                }
+               
+                
+            }
+            return 1; 
+        }
         public long SaveBatchOutPut(BatchOutPut batchOutPut, string userId)
         {
-            //check buvera in store
-
+            long batchOutPutId = 0;
             List<StockGradeSize> stockGradeSizeList = new List<StockGradeSize>();
-            double batchQuantity = BatchQuantity(batchOutPut.BatchId);
-            var batchOutPutDTO = new DTO.BatchOutPutDTO()
+
+            if (batchOutPut.Grades != null)
             {
-                BatchId = batchOutPut.BatchId,
-                BrandOutPut = batchOutPut.BrandOutPut,
-                FlourOutPut = batchOutPut.FlourOutPut,
-                BranchId = batchOutPut.BranchId,
-                SectorId = batchOutPut.SectorId,
-                Loss = ComputeBatchLoss(batchOutPut.BrandOutPut,batchOutPut.FlourOutPut,batchQuantity),
-                FlourPercentage = ComputePercentageBatchFlourOutPut(batchOutPut.FlourOutPut, batchQuantity),
-               BrandPercentage = ComputePercentageBatchBrandOutPut(batchOutPut.BrandOutPut,batchQuantity),
-               LossPercentage = ComputePercentageBatchLoss(batchOutPut.BrandOutPut,batchOutPut.FlourOutPut,batchQuantity),
-                Deleted = batchOutPut.Deleted,
-                CreatedBy = batchOutPut.CreatedBy,
-                CreatedOn = batchOutPut.CreatedOn
-            };
+              var gradeStore =  CheckForBuveraInStore(batchOutPut.Grades,batchOutPut.StoreId);
+              if (gradeStore == -2)
+              {
+                  batchOutPutId = gradeStore;
+                  return batchOutPutId;
+              }
+              else if (gradeStore == -1)
+              {
+                  batchOutPutId = gradeStore;
+                  return batchOutPutId;
+              }
+              else
+              {
 
-           var batchOutPutId = this._dataService.SaveBatchOutPut(batchOutPutDTO, userId);
+                double batchQuantity = BatchQuantity(batchOutPut.BatchId);
+                var batchOutPutDTO = new DTO.BatchOutPutDTO()
+                {
+                    BatchId = batchOutPut.BatchId,
+                    BrandOutPut = batchOutPut.BrandOutPut,
+                    FlourOutPut = batchOutPut.FlourOutPut,
+                    BranchId = batchOutPut.BranchId,
+                    SectorId = batchOutPut.SectorId,
+                    Loss = ComputeBatchLoss(batchOutPut.BrandOutPut, batchOutPut.FlourOutPut, batchQuantity),
+                    FlourPercentage = ComputePercentageBatchFlourOutPut(batchOutPut.FlourOutPut, batchQuantity),
+                    BrandPercentage = ComputePercentageBatchBrandOutPut(batchOutPut.BrandOutPut, batchQuantity),
+                    LossPercentage = ComputePercentageBatchLoss(batchOutPut.BrandOutPut, batchOutPut.FlourOutPut, batchQuantity),
+                    Deleted = batchOutPut.Deleted,
+                    CreatedBy = batchOutPut.CreatedBy,
+                    CreatedOn = batchOutPut.CreatedOn
+                };
 
-           if (batchOutPut.Grades != null)
-           {
-               double totalBuveraQuantity = 0;
-               if (batchOutPut.Grades.Any())
-               {
-                   List<BatchGradeSize> batchGradeSizeList = new List<BatchGradeSize>();
+                batchOutPutId = this._dataService.SaveBatchOutPut(batchOutPutDTO, userId);
 
-                   foreach (var grade in batchOutPut.Grades)
-                   {   
-                       var gradeId = grade.GradeId;
-                       if (grade.Denominations != null)
-                       {
-                           if (grade.Denominations.Any())
-                           {
-                               foreach (var denomination in grade.Denominations)
-                               {
-                                   var batchGradeSize = new BatchGradeSize()
-                                   {
-                                       GradeId = gradeId,
-                                       SizeId = denomination.DenominationId,
-                                       BatchOutPutId = batchOutPutId,
-                                       Quantity = denomination.Quantity,
-                                       TimeStamp = DateTime.Now
-                                   };
-                                   batchGradeSizeList.Add(batchGradeSize);
+                if (batchOutPutId == 0)
+                {
+                    batchOutPutId = -3;
+                    return batchOutPutId;
+                }
+                else
+                {
+                    double totalBuveraQuantity = 0;
+                    if (batchOutPut.Grades.Any())
+                    {
+                        List<BatchGradeSize> batchGradeSizeList = new List<BatchGradeSize>();
 
-                                   var stockGradeSize = new StockGradeSize()
-                                   {
-                                       GradeId = gradeId,
-                                       SizeId = denomination.DenominationId,
-                                       Quantity = denomination.Quantity,
-                                       TimeStamp = DateTime.Now
-                                   };
-                                   stockGradeSizeList.Add(stockGradeSize);
+                        foreach (var grade in batchOutPut.Grades)
+                        {
+                            var gradeId = grade.GradeId;
+                            if (grade.Denominations != null)
+                            {
+                                if (grade.Denominations.Any())
+                                {
+                                    foreach (var denomination in grade.Denominations)
+                                    {
+                                        var batchGradeSize = new BatchGradeSize()
+                                        {
+                                            GradeId = gradeId,
+                                            SizeId = denomination.DenominationId,
+                                            BatchOutPutId = batchOutPutId,
+                                            Quantity = denomination.Quantity,
+                                            TimeStamp = DateTime.Now
+                                        };
+                                        batchGradeSizeList.Add(batchGradeSize);
+
+                                        var stockGradeSize = new StockGradeSize()
+                                        {
+                                            GradeId = gradeId,
+                                            SizeId = denomination.DenominationId,
+                                            Quantity = denomination.Quantity,
+                                            TimeStamp = DateTime.Now
+                                        };
+                                        stockGradeSizeList.Add(stockGradeSize);
 
 
 
-                                  var  inOrOut = false;
-                                   //Method that updates buvera into storeBuveraGradeSize table(storeBuvera stock)
-                                   var storeBuveraGradeSize = new StoreBuveraGradeSizeDTO()
-                                   {
-                                       StoreId = batchOutPut.StoreId,
-                                       GradeId = batchGradeSize.GradeId,
-                                       SizeId = batchGradeSize.SizeId,
-                                       Quantity = batchGradeSize.Quantity,
-                                   };
+                                        var inOrOut = false;
+                                        //Method that updates buvera into storeBuveraGradeSize table(storeBuvera stock)
+                                        var storeBuveraGradeSize = new StoreBuveraGradeSize()
+                                        {
+                                            StoreId = batchOutPut.StoreId,
+                                            GradeId = batchGradeSize.GradeId,
+                                            SizeId = batchGradeSize.SizeId,
+                                            Quantity = batchGradeSize.Quantity,
+                                        };
 
-                                   this._buveraDataService.SaveStoreBuveraGradeSize(storeBuveraGradeSize, inOrOut);
-                                   totalBuveraQuantity = denomination.Quantity + totalBuveraQuantity;
-                               }
-                           }
-                       }
-                   }
+                                        this._buveraService.SaveStoreBuveraGradeSize(storeBuveraGradeSize, inOrOut);
+                                        totalBuveraQuantity = denomination.Quantity + totalBuveraQuantity;
+                                    }
+                                }
+                            }
+                        }
 
-                   var buveraDTO = new DTO.BuveraDTO()
-                   {
-            
-                       TotalQuantity = totalBuveraQuantity,
-                       BranchId = batchOutPut.BranchId,
-                       FromSupplier = Convert.ToString(batchOutPut.StoreId),
-                       ToReceiver = Convert.ToString(batchOutPut.BatchId),
-                       StoreId = batchOutPut.StoreId,
-                       
-                   };
+                        var buvera = new Buvera()
+                        {
 
-                   var buveraId = this._buveraDataService.SaveBuvera(buveraDTO, userId);
-                   this._dataService.PurgeBatchGradeSize(batchOutPutId);
-                   this.SaveBatchGradeSizeList(batchGradeSizeList);
-                   
-               }
-           }
-           UpdateBatchSupply(batchOutPut.BatchId, supplyStatusIdComplete, userId);
-           if (batchOutPut.BrandOutPut != 0 && batchOutPut.FlourOutPut !=0)
-           {
-               var stock = new Stock()
-               {
-                   SectorId = batchOutPut.SectorId,
-                   BranchId = batchOutPut.BranchId,
-                   BatchId = batchOutPut.BatchId,
-                   InOrOut = true,
-                   StoreId = batchOutPut.StoreId,
-                   ProductId = brandId,
-                   ProductOutPut = batchOutPut.BrandOutPut,
-                   
-               };
-               _stockService.SaveStock(stock, userId);
-               var flourStock = new Stock()
-               {
-                   SectorId = batchOutPut.SectorId,
-                   BranchId = batchOutPut.BranchId,
-                   BatchId = batchOutPut.BatchId,
-                   InOrOut = true,
-                   StoreId = batchOutPut.StoreId,
-                   ProductId = flourId,
-                   ProductOutPut = batchOutPut.FlourOutPut,
-                   StockGradeSize = stockGradeSizeList
+                            TotalQuantity = totalBuveraQuantity,
+                            BranchId = batchOutPut.BranchId,
+                            FromSupplier = Convert.ToString(batchOutPut.StoreId),
+                            ToReceiver = Convert.ToString(batchOutPut.BatchId),
+                            StoreId = batchOutPut.StoreId,
 
-               };
-               _stockService.SaveStock(flourStock, userId);
-           }
-                     
-           return batchOutPutId;
+                        };
+
+                        var buveraId = this._buveraService.SaveBuveraOnBatchUsage(buvera, userId);
+                        this._dataService.PurgeBatchGradeSize(batchOutPutId);
+                        this.SaveBatchGradeSizeList(batchGradeSizeList);
+
+                    }
+
+                    UpdateBatchSupply(batchOutPut.BatchId, supplyStatusIdComplete, userId);
+                    if (batchOutPut.BrandOutPut != 0 && batchOutPut.FlourOutPut != 0)
+                    {
+                        var stock = new Stock()
+                        {
+                            SectorId = batchOutPut.SectorId,
+                            BranchId = batchOutPut.BranchId,
+                            BatchId = batchOutPut.BatchId,
+                            InOrOut = true,
+                            StoreId = batchOutPut.StoreId,
+                            ProductId = brandId,
+                            ProductOutPut = batchOutPut.BrandOutPut,
+
+                        };
+                        _stockService.SaveStock(stock, userId);
+                        var flourStock = new Stock()
+                        {
+                            SectorId = batchOutPut.SectorId,
+                            BranchId = batchOutPut.BranchId,
+                            BatchId = batchOutPut.BatchId,
+                            InOrOut = true,
+                            StoreId = batchOutPut.StoreId,
+                            ProductId = flourId,
+                            ProductOutPut = batchOutPut.FlourOutPut,
+                            StockGradeSize = stockGradeSizeList
+
+                        };
+                        _stockService.SaveStock(flourStock, userId);
+                    }
+
+                    return batchOutPutId;
+                }
+            }
+        }
+            else
+            {
+                return batchOutPutId;
+            }
                       
         }
 
@@ -318,81 +376,83 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>BatchOutPut Model Object.</returns>
         public BatchOutPut MapEFToModel(EF.Models.BatchOutPut data)
         {
-            
-            var batchOutPut = new BatchOutPut()
+            if (data != null)
             {
-                BatchOutPutId = data.BatchOutPutId,
-                BatchId = data.BatchId,
-                FlourOutPut = data.FlourOutPut,
-                BrandOutPut = data.BrandOutPut,
-                BrandPercentage = data.BrandPercentage,
-                FlourPercentage = data.FlourPercentage,
-                Loss = data.Loss,
-                LossPercentage = data.LossPercentage,
-                BranchId = data.BranchId,
-                BranchName = data.Branch != null? data.Branch.Name :"",
-                SectorId = data.SectorId,
-                SectorName = data.Sector != null? data.Sector.Name : "",
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
-                BatchName = data.Batch != null? data.Batch.Name:"",
-            };
-                       
-          
-            if (data.BatchGradeSizes!= null)
-            {
-                if (data.BatchGradeSizes.Any())
+                var batchOutPut = new BatchOutPut()
                 {
-                    List<Grade> grades = new List<Grade>();
-                    var distinctGrades = data.BatchGradeSizes.GroupBy(g => g.GradeId).Select(o => o.First()).ToList();
-                    foreach (var batchGradeSize in distinctGrades)
+                    BatchOutPutId = data.BatchOutPutId,
+                    BatchId = data.BatchId,
+                    FlourOutPut = data.FlourOutPut,
+                    BrandOutPut = data.BrandOutPut,
+                    BrandPercentage = data.BrandPercentage,
+                    FlourPercentage = data.FlourPercentage,
+                    Loss = data.Loss,
+                    LossPercentage = data.LossPercentage,
+                    BranchId = data.BranchId,
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    SectorId = data.SectorId,
+                    SectorName = data.Sector != null ? data.Sector.Name : "",
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+                    BatchName = data.Batch != null ? data.Batch.Name : "",
+                };
+
+
+                if (data.BatchGradeSizes != null)
+                {
+                    if (data.BatchGradeSizes.Any())
                     {
-                        var grade = new Grade()
+                        List<Grade> grades = new List<Grade>();
+                        var distinctGrades = data.BatchGradeSizes.GroupBy(g => g.GradeId).Select(o => o.First()).ToList();
+                        foreach (var batchGradeSize in distinctGrades)
                         {
-                            GradeId = batchGradeSize.Grade.GradeId,
-                            Value = batchGradeSize.Grade.Value,
-                            CreatedOn = batchGradeSize.Grade.CreatedOn,
-                            TimeStamp = batchGradeSize.Grade.TimeStamp,
-                            Deleted = batchGradeSize.Grade.Deleted,
-                            CreatedBy = _userService.GetUserFullName(batchGradeSize.Grade.AspNetUser),
-                            UpdatedBy = _userService.GetUserFullName(batchGradeSize.Grade.AspNetUser1),
-                        };
-                        List<Denomination> denominations = new List<Denomination>();
-                        if (batchGradeSize.Grade.BatchGradeSizes!= null)
-                        {
-                            if (batchGradeSize.Grade.BatchGradeSizes.Any())
+                            var grade = new Grade()
                             {
-                                var distinctSizes = batchGradeSize.Grade.BatchGradeSizes.GroupBy(s => s.SizeId).Select(o => o.First()).ToList();
-                                foreach (var ogs in distinctSizes)
+                                GradeId = batchGradeSize.Grade.GradeId,
+                                Value = batchGradeSize.Grade.Value,
+                                CreatedOn = batchGradeSize.Grade.CreatedOn,
+                                TimeStamp = batchGradeSize.Grade.TimeStamp,
+                                Deleted = batchGradeSize.Grade.Deleted,
+                                CreatedBy = _userService.GetUserFullName(batchGradeSize.Grade.AspNetUser),
+                                UpdatedBy = _userService.GetUserFullName(batchGradeSize.Grade.AspNetUser1),
+                            };
+                            List<Denomination> denominations = new List<Denomination>();
+                            if (batchGradeSize.Grade.BatchGradeSizes != null)
+                            {
+                                if (batchGradeSize.Grade.BatchGradeSizes.Any())
                                 {
-                                    var denomination = new Denomination()
+                                    var distinctSizes = batchGradeSize.Grade.BatchGradeSizes.GroupBy(s => s.SizeId).Select(o => o.First()).ToList();
+                                    foreach (var ogs in distinctSizes)
                                     {
-                                        DenominationId = ogs.SizeId,
-                                        Value = ogs.Size != null ? ogs.Size.Value : 0,
-                                        Quantity = ogs.Quantity,
-                                        Rate = ogs.Size.Rate,
-                                        Amount = ogs.Quantity*(Convert.ToDouble(ogs.Size.Rate)),
-                                    };
-                                    batchOutPut.TotalQuantity += (ogs.Quantity * ogs.Size.Value);
-                                    batchOutPut.TotalBuveraCost += denomination.Amount;
-                                    denominations.Add(denomination);
+                                        var denomination = new Denomination()
+                                        {
+                                            DenominationId = ogs.SizeId,
+                                            Value = ogs.Size != null ? ogs.Size.Value : 0,
+                                            Quantity = ogs.Quantity,
+                                            Rate = ogs.Size.Rate,
+                                            Amount = ogs.Quantity * (Convert.ToDouble(ogs.Size.Rate)),
+                                        };
+                                        batchOutPut.TotalQuantity += (ogs.Quantity * ogs.Size.Value);
+                                        batchOutPut.TotalBuveraCost += denomination.Amount;
+                                        denominations.Add(denomination);
+                                    }
                                 }
+                                grade.Denominations = denominations;
                             }
-                            grade.Denominations = denominations;
+                            grades.Add(grade);
                         }
-                        grades.Add(grade);
+                        batchOutPut.Grades = grades;
+
                     }
-                    batchOutPut.Grades = grades;
-                   
+
                 }
-           
+
+                return batchOutPut;
             }
-          
-            return batchOutPut;
-            
+            return null;
            
         }
 

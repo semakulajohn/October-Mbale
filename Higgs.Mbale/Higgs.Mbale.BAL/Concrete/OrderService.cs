@@ -190,46 +190,48 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>Order Model Object.</returns>
         public Order MapEFToModel(EF.Models.Order data)
         {
-          
-            var order = new Order()
+            if (data != null)
             {
-                CustomerName = _userService.GetUserFullName(data.AspNetUser1),
-                Amount = data.Amount,
-                ProductId = data.ProductId,
-                ProductName = data.Product!=null?data.Product.Name:"",
-                BranchName = data.Branch !=null? data.Branch.Name:"",               
-                BranchId = data.BranchId,
-                StatusId = data.StatusId,
-                OrderId = data.OrderId,
-                StatusName = data.Status!=null? data.Status.Name:"",
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser2)            
-            };
 
-            if (data.OrderGradeSizes != null)
-            {
-              
-                if (data.OrderGradeSizes.Any())
+                var order = new Order()
                 {
-                    List<Grade> grades = new List<Grade>();
-                    var distinctGrades = data.OrderGradeSizes.GroupBy(g => g.GradeId).Select(o => o.First()).ToList();
-                    foreach (var orderGradeSize in distinctGrades)
+                    CustomerName = _userService.GetUserFullName(data.AspNetUser1),
+                    Amount = data.Amount,
+                    ProductId = data.ProductId,
+                    ProductName = data.Product != null ? data.Product.Name : "",
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    BranchId = data.BranchId,
+                    StatusId = data.StatusId,
+                    OrderId = data.OrderId,
+                    StatusName = data.Status != null ? data.Status.Name : "",
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser2)
+                };
+
+                if (data.OrderGradeSizes != null)
+                {
+
+                    if (data.OrderGradeSizes.Any())
                     {
-                        var grade = new Grade()
+                        List<Grade> grades = new List<Grade>();
+                        var distinctGrades = data.OrderGradeSizes.GroupBy(g => g.GradeId).Select(o => o.First()).ToList();
+                        foreach (var orderGradeSize in distinctGrades)
                         {
-                            GradeId = orderGradeSize.Grade.GradeId,
-                            Value = orderGradeSize.Grade.Value,
-                            CreatedOn = orderGradeSize.Grade.CreatedOn,
-                            TimeStamp = orderGradeSize.Grade.TimeStamp,
-                            Deleted = orderGradeSize.Grade.Deleted,
-                            CreatedBy = _userService.GetUserFullName(orderGradeSize.Grade.AspNetUser),
-                            UpdatedBy = _userService.GetUserFullName(orderGradeSize.Grade.AspNetUser1),
-                        };
-                        List<Denomination> denominations = new List<Denomination>();
-                           if (orderGradeSize.Grade.OrderGradeSizes != null)
+                            var grade = new Grade()
+                            {
+                                GradeId = orderGradeSize.Grade.GradeId,
+                                Value = orderGradeSize.Grade.Value,
+                                CreatedOn = orderGradeSize.Grade.CreatedOn,
+                                TimeStamp = orderGradeSize.Grade.TimeStamp,
+                                Deleted = orderGradeSize.Grade.Deleted,
+                                CreatedBy = _userService.GetUserFullName(orderGradeSize.Grade.AspNetUser),
+                                UpdatedBy = _userService.GetUserFullName(orderGradeSize.Grade.AspNetUser1),
+                            };
+                            List<Denomination> denominations = new List<Denomination>();
+                            if (orderGradeSize.Grade.OrderGradeSizes != null)
                             {
                                 if (orderGradeSize.Grade.OrderGradeSizes.Any())
                                 {
@@ -247,15 +249,17 @@ namespace Higgs.Mbale.BAL.Concrete
                                         denominations.Add(denomination);
                                     }
                                 }
-                               grade.Denominations = denominations;
-                           }                          
-                       grades.Add(grade);
+                                grade.Denominations = denominations;
+                            }
+                            grades.Add(grade);
+                        }
+                        order.Grades = grades;
                     }
-                    order.Grades = grades;                    
                 }
+
+                return order;
             }
-            
-            return order;
+            return null;
         }
 
 

@@ -159,37 +159,42 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>CasualActivity Model Object.</returns>
         public CasualActivity MapEFToModel(EF.Models.CasualActivity data)
         {
-            string casualName = string.Empty;
-            if (data.CasualWorker != null)
+            if (data != null)
             {
-                casualName = data.CasualWorker.FirstName + " " + data.CasualWorker.LastName;
-            }
-          
-            var casualActivity = new CasualActivity()
-            {
-                CasualActivityId = data.CasualActivityId,
-                Amount = data.Amount,
-                SectorId = data.SectorId,
-                BranchId = data.BranchId,
-                BatchId = data.BatchId,
-                Notes = data.Notes,
-                BatchNumber = data.Batch != null? data.Batch.Name:"",
-                Quantity = data.Quantity,
-                ActivityId = data.ActivityId,
-                ActivityName = data.Activity != null ? data.Activity.Name : "",
-                CasualWorkerId = data.CasualWorkerId,
-                CasualWorkerName = casualName,
-                BranchName = data.Branch != null ? data.Branch.Name : "",
-                SectorName = data.Sector != null ? data.Sector.Name : "",
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                 Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
-               
 
-            };
-            return casualActivity;
+                string casualName = string.Empty;
+                if (data.CasualWorker != null)
+                {
+                    casualName = data.CasualWorker.FirstName + " " + data.CasualWorker.LastName;
+                }
+
+                var casualActivity = new CasualActivity()
+                {
+                    CasualActivityId = data.CasualActivityId,
+                    Amount = data.Amount,
+                    SectorId = data.SectorId,
+                    BranchId = data.BranchId,
+                    BatchId = data.BatchId,
+                    Notes = data.Notes,
+                    BatchNumber = data.Batch != null ? data.Batch.Name : "",
+                    Quantity = data.Quantity,
+                    ActivityId = data.ActivityId,
+                    ActivityName = data.Activity != null ? data.Activity.Name : "",
+                    CasualWorkerId = data.CasualWorkerId,
+                    CasualWorkerName = casualName,
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    SectorName = data.Sector != null ? data.Sector.Name : "",
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+
+
+                };
+                return casualActivity;
+            }
+            return null;
         }
 
 

@@ -121,18 +121,57 @@
 
                                 batchOutPutId = payload.data;
 
-                                $scope.showMessageSave = true;
-                                usSpinnerService.stop('global-spinner');
+                                if (batchOutPutId == 0) {
+                                    $scope.showMessageNoGradeSelected = true;
+                                    usSpinnerService.stop('global-spinner');
 
-                                $timeout(function () {
-                                    $scope.showMessageSave = false;
-                                  
-                                    if (action == "create") {
-                                        $state.go('batchoutput-batch-edit', { 'action': 'edit', 'batchOutPutId': batchOutPutId, 'batchId': batchId });
-                                    }
+                                    $timeout(function () {
+                                        $scope.showMessageNoGradeSelected = false;
 
-                                }, 1500);
+                                    }, 4000);
+                                }
+                                else if (batchOutPutId == -1) {
+                                    $scope.showMessageNotEnoughBuvera = true;
+                                    usSpinnerService.stop('global-spinner');
 
+                                    $timeout(function () {
+                                        $scope.showMessageNotEnoughBuvera = false;
+
+                                    }, 4000);
+                                }
+                                else if (batchOutPutId == -3) {
+                                    $scope.showMessageBatchAlreadyHasOutput = true;
+                                    usSpinnerService.stop('global-spinner');
+
+                                    $timeout(function () {
+                                        $scope.showMessageBatchAlreadyHasOutput = false;
+
+                                    }, 4000);
+                                }
+                                else if (batchOutPutId == -2) {
+                                    $scope.showMessageNoGradeBuvera = true;
+                                    usSpinnerService.stop('global-spinner');
+
+                                    $timeout(function () {
+                                        $scope.showMessageNoGradeBuvera = false;
+
+                                    }, 4000);
+                                }
+                                else {
+
+
+                                    $scope.showMessageSave = true;
+                                    usSpinnerService.stop('global-spinner');
+
+                                    $timeout(function () {
+                                        $scope.showMessageSave = false;
+
+                                        if (action == "create") {
+                                            $state.go('batchoutput-batch-edit', { 'action': 'edit', 'batchOutPutId': batchOutPutId, 'batchId': batchId });
+                                        }
+
+                                    }, 1500);
+                                }
 
                             });
                     }

@@ -18,6 +18,7 @@ namespace Higgs.Mbale.BAL.Concrete
       private string supplyTransactionSubTypeId = ConfigurationManager.AppSettings["SupplyTransactionSubTypeId"];
       private string offLoadingTransactionSubTypeId = ConfigurationManager.AppSettings["OffLoadingTransactionSubTypeId"];
       private string offloadingRate = ConfigurationManager.AppSettings["OffloadingRate"];
+      private string stoneRate = ConfigurationManager.AppSettings["StoneRate"];
       private string sectorId = ConfigurationManager.AppSettings["SectorId"];
 
          ILog logger = log4net.LogManager.GetLogger(typeof(SupplyService));
@@ -256,7 +257,7 @@ namespace Higgs.Mbale.BAL.Concrete
 
         public long SaveSupply(Supply supply, string userId)
         {
-            double amount = 0, totalBags = 0,offloadingFee = 0,amountToPay = 0;
+            double amount = 0, totalBags = 0,offloadingFee = 0,amountToPay = 0,stoneBags =0,stoneBagsFee = 0,amountafterOffloading =0;
             amount = (supply.Price * supply.Quantity);
 
             var supplies = GetAllSuppliesForAParticularSupplier(supply.SupplierId);
@@ -277,12 +278,16 @@ namespace Higgs.Mbale.BAL.Concrete
 
                 totalBags = supply.NormalBags + supply.BagsOfStones;
                 offloadingFee = totalBags * (Convert.ToDouble(offloadingRate));
-                amountToPay = amount - offloadingFee;
+               amountafterOffloading = amount - offloadingFee;
+               stoneBagsFee = Convert.ToDouble(supply.BagsOfStones) * Convert.ToDouble(stoneRate);
+               amountToPay = amountafterOffloading - stoneBagsFee;
 
             }
             else
             {
-                amountToPay = amount;
+                stoneBagsFee = Convert.ToDouble(supply.BagsOfStones) * Convert.ToDouble(stoneRate);
+                
+                amountToPay = amount - stoneBagsFee;
             }
             var supplyDTO = new DTO.SupplyDTO()
             {
@@ -343,7 +348,29 @@ namespace Higgs.Mbale.BAL.Concrete
            };
            var accountActivityId = this._accountTransactionActivityService.SaveAccountTransactionActivity(accountActivity, userId);
 
-         
+           if (supply.BagsOfStones > 0)
+           {
+               var stoneBagNotes = "stone bags fee";
+               var accountActivityBagStones = new AccountTransactionActivity()
+               {
+
+                   AspNetUserId = supply.SupplierId,
+
+                   Amount = stoneBagsFee,
+                   Notes = stoneBagNotes,
+                   Action = "-",
+                   BranchId = supply.BranchId,
+                   TransactionSubTypeId = Convert.ToInt64(offLoadingTransactionSubTypeId),
+                   SectorId = Convert.ToInt64(sectorId),
+                   Deleted = supply.Deleted,
+                   CreatedBy = userId,
+                   SupplyId = supplyId,
+
+               };
+               var accountActivityBagsOfStoneId = this._accountTransactionActivityService.SaveAccountTransactionActivity(accountActivityBagStones, userId);
+
+
+           }
 
                var offLoadingNotes = "Offloading fee";
                var accountActivityOffloading = new AccountTransactionActivity()
@@ -459,41 +486,45 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>Supply Model Object.</returns>
         public Supply MapEFToModel(EF.Models.Supply data)
         {
-            
-            var Supply = new Supply()
+            if (data != null)
             {
-                Quantity = data.Quantity,
-                SupplyDate = data.SupplyDate,
-                SupplyId =data.SupplyId,
-                //SupplyNumber = data.SupplyNumber,
-                BranchId = data.BranchId,
-                SupplierId = data.SupplierId,
-                Amount = data.Amount,
-                AmountToPay = data.AmountToPay,
-                TruckNumber = data.TruckNumber,
-                Price = data.Price,
-                Used =data.Used,
-                StoreId = data.StoreId,
-                StoreName = data.Store != null?data.Store.Name:"",
-                StatusId = data.StatusId,
-                IsPaid = data.IsPaid,
-                NormalBags = data.NormalBags,
-                BagsOfStones = data.BagsOfStones,
-                MoistureContent = data.MoistureContent,
-                WeightNoteNumber = data.WeightNoteNumber,
-                Offloading = data.Offloading,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted, 
-                StatusName = data.Status != null? data.Status.Name:"",
-                SupplierName = _userService.GetUserFullName(data.AspNetUser2),
-                SupplierNumber = data.AspNetUser2.UniqueNumber,
-                BranchName = data.Branch !=null? data.Branch.Name:"",
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),               
 
-            };
-            return Supply;
+                var Supply = new Supply()
+                {
+                    Quantity = data.Quantity,
+                    SupplyDate = data.SupplyDate,
+                    SupplyId = data.SupplyId,
+                    //SupplyNumber = data.SupplyNumber,
+                    BranchId = data.BranchId,
+                    SupplierId = data.SupplierId,
+                    Amount = data.Amount,
+                    AmountToPay = data.AmountToPay,
+                    TruckNumber = data.TruckNumber,
+                    Price = data.Price,
+                    Used = data.Used,
+                    StoreId = data.StoreId,
+                    StoreName = data.Store != null ? data.Store.Name : "",
+                    StatusId = data.StatusId,
+                    IsPaid = data.IsPaid,
+                    NormalBags = data.NormalBags,
+                    BagsOfStones = data.BagsOfStones,
+                    MoistureContent = data.MoistureContent,
+                    WeightNoteNumber = data.WeightNoteNumber,
+                    Offloading = data.Offloading,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    StatusName = data.Status != null ? data.Status.Name : "",
+                    SupplierName = _userService.GetUserFullName(data.AspNetUser2),
+                    SupplierNumber = data.AspNetUser2.UniqueNumber,
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+
+                };
+                return Supply;
+            }
+            return null;
         }
       
         public IEnumerable<StoreMaizeStock> MapEFToModel(IEnumerable<EF.Models.StoreMaizeStock> data)
@@ -514,25 +545,30 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>StoreMaizeStock Model Object.</returns>
         public StoreMaizeStock MapEFToModel(EF.Models.StoreMaizeStock data)
         {
-
-            var storeMaizeStock = new StoreMaizeStock()
+            if (data != null)
             {
-                Quantity = data.Quantity,
-               StockBalance = data.StockBalance,
-               StartStock = data.StartStock,
-                SupplyId = data.SupplyId,
-                //SupplyNumber = data.Supply != null ? Convert.ToString(data.Supply.SupplyNumber) :"",
-                BranchId = data.BranchId,
-                StoreId = data.StoreId,
-                StoreName = data.Store != null ? data.Store.Name : "",
-                TimeStamp = data.TimeStamp,
-                BranchName = data.Branch != null ? data.Branch.Name : "",
-                SectorId = data.SectorId,
-                SectorName = data.Sector != null? data.Sector.Name : "",
-                StoreMaizeStockId  = data.StoreMaizeStockId,
-                MaizeInOrOut = (data.InOrOut == true)?"Maize In":"Maize Out",
-            };
-            return storeMaizeStock;
+
+
+                var storeMaizeStock = new StoreMaizeStock()
+                {
+                    Quantity = data.Quantity,
+                    StockBalance = data.StockBalance,
+                    StartStock = data.StartStock,
+                    SupplyId = data.SupplyId,
+                    //SupplyNumber = data.Supply != null ? Convert.ToString(data.Supply.SupplyNumber) :"",
+                    BranchId = data.BranchId,
+                    StoreId = data.StoreId,
+                    StoreName = data.Store != null ? data.Store.Name : "",
+                    TimeStamp = data.TimeStamp,
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    SectorId = data.SectorId,
+                    SectorName = data.Sector != null ? data.Sector.Name : "",
+                    StoreMaizeStockId = data.StoreMaizeStockId,
+                    MaizeInOrOut = (data.InOrOut == true) ? "Maize In" : "Maize Out",
+                };
+                return storeMaizeStock;
+            }
+            return null;
         }
 
 

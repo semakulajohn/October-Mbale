@@ -78,10 +78,18 @@
                                                 <td>&nbsp;&nbsp;&nbsp;</td>
                                                 <td width="30%">
 
-                                                    <span class="header-search">
+                                                    <!--<span class="header-search">
                                                         Supplier : &nbsp;&nbsp;
                                                         <select style="border: none" name="supplier" class="form-control col-sm-12" data-ng-model="accountTransaction.Id"
                                                                 data-ng-options="i.Id as i.UniqueNumber for i in suppliers">
+                                                            <option value="">Please select</option>
+                                                        </select>
+
+                                                    </span>-->
+                                                    <span class="header-search">
+                                                        Supplier/Customer : &nbsp;&nbsp;
+                                                        <select style="border: none" name="account" class="form-control col-sm-12" data-ng-model="accountTransaction.Id"
+                                                                data-ng-options="i.Id as i.LastName for i in accounts">
                                                             <option value="">Please select</option>
                                                         </select>
 
@@ -108,59 +116,34 @@
                             </div>
                         </div>
                         <div ng-show="data.length > 0">
-                            <table ng-table="tableParams" id="reportTable">
+                            <table  id="reportTable">
                                 <thead>
                                     <tr>
-                                        <th class="sortable" ng-class="{
-                                        'sort-asc': tableParams.isSortBy('StartAmount', 'asc'),
-                                        'sort-desc': tableParams.isSortBy('StartAmount', 'desc')
-                                        }"
-                                            ng-click="tableParams.sorting({'StartAmount' : tableParams.isSortBy('StartAmount', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        <th>
                                             <div>StartAmount</div>
                                         </th>
-                                        <th class="sortable" ng-class="{
-                                        'sort-asc': tableParams.isSortBy('Action', 'asc'),
-                                        'sort-desc': tableParams.isSortBy('Action', 'desc')
-                                        }"
-                                            ng-click="tableParams.sorting({'Action' : tableParams.isSortBy('Action', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        <th>
                                             <div>Action</div>
                                         </th>
 
-                                        <th class="sortable"
-                                            ng-click="tableParams.sorting({'Amount' : tableParams.isSortBy('Amount', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        <th>
                                             <div>Amount</div>
                                         </th>
 
-                                        <th class="sortable" ng-class="{
-                                    'sort-asc': tableParams.isSortBy('Balance', 'asc'),
-                                    'sort-desc': tableParams.isSortBy('Balance', 'desc')
-                                    }"
-                                            ng-click="tableParams.sorting({'Balance' : tableParams.isSortBy('Balance', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        <th>
                                             <div>Balance</div>
                                         </th>
 
-                                        <th class="sortable" ng-class="{
-                                    'sort-asc': tableParams.isSortBy('BranchName', 'asc'),
-                                    'sort-desc': tableParams.isSortBy('BranchName', 'desc')
-                                    }"
-                                            ng-click="tableParams.sorting({'BranchName' : tableParams.isSortBy('BranchName', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        <th>
                                             <div>Branch</div>
                                         </th>
 
-                                        <th class="sortable" ng-class="{
-                                    'sort-asc': tableParams.isSortBy('Notes', 'asc'),
-                                    'sort-desc': tableParams.isSortBy('Notes', 'desc')
-                                    }"
-                                            ng-click="tableParams.sorting({'Notes' : tableParams.isSortBy('Notes', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        <th>
                                             <div>Notes</div>
                                         </th>
 
 
-                                        <th class="sortable" ng-class="{
-                                    'sort-asc': tableParams.isSortBy('CreatedOn', 'asc'),
-                                    'sort-desc': tableParams.isSortBy('CreatedOn', 'desc')
-                                    }"
-                                            ng-click="tableParams.sorting({'CreatedOn' : tableParams.isSortBy('CreatedOn', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                        <th>
                                             <div>CreatedOn</div>
                                         </th>
 
@@ -168,15 +151,16 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="accountTransaction in data">
-                                        <td width="10%">{{accountTransaction.StartAmount}}</td>
-                                        <td width="3%">{{accountTransaction.Action}}</td>
-                                        <td width="20%">{{accountTransaction.Amount}}</td>
-                                        <td width="12%">{{ accountTransaction.Balance }}</td>
-                                        <td width="10%"> {{accountTransaction.BranchName}}</td>
 
-                                        <td width="15%">{{ accountTransaction.Notes }}</td>
-                                        <td width="12%">{{ accountTransaction.CreatedOn | date:"yyyy-MM-dd hh:mm" }}</td>
-
+                                        <td style="font-size: 18px !important;" width="10%">{{accountTransaction.StartAmount | number}}</td>
+                                        <td style="font-size: 18px !important;" width="3%">{{accountTransaction.Action}}</td>
+                                        <td style="font-size: 18px !important;" width="10%">{{accountTransaction.Amount| number}}</td>
+                                        <td style="font-size: 18px !important;" width="10%">{{accountTransaction.Balance| number}}</td>
+                                        
+                                        <td style="font-size: 18px !important;" width="20%">{{accountTransaction.BranchName}}</td>
+                                       
+                                        <td style="font-size: 18px !important;" width="20%">{{ accountTransaction.Notes }}</td>
+                                        <td style="font-size: 18px !important;" width="10%">{{  accountTransaction.CreatedOn | date:"yyyy-MM-dd hh:mm" }}</td>
 
 
                                     </tr>

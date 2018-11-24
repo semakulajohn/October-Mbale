@@ -110,29 +110,34 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>CasualWorker Model Object.</returns>
         public CasualWorker MapEFToModel(EF.Models.CasualWorker data)
         {
-          
-            var casualWorker = new CasualWorker()
+            if (data != null)
             {
-                CasualWorkerId = data.CasualWorkerId,
-                FirstName = data.FirstName,
-                BranchId = data.BranchId,
-                BranchName = data.Branch != null ? data.Branch.Name : "",
-                LastName = data.LastName,
-                Address = data.Address,
-                PhoneNumber = data.PhoneNumber,
-                NINNumber = data.NINNumber,
-                NextOfKeen = data.NextOfKeen,
-                UniqueNumber = data.UniqueNumber,
-                EmailAddress = data.EmailAddress,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
-               
 
-            };
-            return casualWorker;
+
+                var casualWorker = new CasualWorker()
+                {
+                    CasualWorkerId = data.CasualWorkerId,
+                    FirstName = data.FirstName,
+                    BranchId = data.BranchId,
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    LastName = data.LastName,
+                    Address = data.Address,
+                    PhoneNumber = data.PhoneNumber,
+                    NINNumber = data.NINNumber,
+                    NextOfKeen = data.NextOfKeen,
+                    UniqueNumber = data.UniqueNumber,
+                    EmailAddress = data.EmailAddress,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+
+
+                };
+                return casualWorker;
+            }
+            return null;
         }
 
 

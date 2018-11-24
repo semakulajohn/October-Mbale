@@ -167,7 +167,27 @@ namespace Higgs.Mbale.BAL.Concrete
 
         }
 
+        public StoreBuveraGradeSize GetStoreBuveraGradeSize(long gradeId,long sizeId, long storeId)
+        {
+            var result = this._dataService.GetStoreBuveraGradeSize(gradeId,sizeId, storeId);
+            return MapEFToModel(result);
+        }
 
+        public long SaveBuveraOnBatchUsage(Buvera buvera, string userId)
+        {
+            var buveraDTO = new BuveraDTO()
+            {
+
+                TotalQuantity = buvera.TotalQuantity,
+                BranchId = buvera.BranchId,
+                FromSupplier =buvera.FromSupplier,
+                ToReceiver = buvera.ToReceiver,
+                StoreId = buvera.StoreId,
+
+            };
+            var buveraId = this._dataService.SaveBuvera(buveraDTO, userId);
+            return buveraId;
+        }
         public long SaveBuvera(Buvera buvera, string userId)
         {
             bool inOrOut = false;
@@ -264,6 +284,18 @@ namespace Higgs.Mbale.BAL.Concrete
             }            
         }
 
+        public void SaveStoreBuveraGradeSize(StoreBuveraGradeSize storeBuveraGradeSize, bool inOrOut)
+        {
+            var storeBuveraGradeSizeDTO = new StoreBuveraGradeSizeDTO()
+            {
+                StoreId = storeBuveraGradeSize.StoreId,
+                GradeId = storeBuveraGradeSize.GradeId,
+                SizeId = storeBuveraGradeSize.SizeId,
+                Quantity = storeBuveraGradeSize.Quantity,
+            };
+
+            this._dataService.SaveStoreBuveraGradeSize(storeBuveraGradeSizeDTO, inOrOut);
+        }
 
         public StoreGrade GetStoreBuveraStock(long storeId)
         {
@@ -271,6 +303,7 @@ namespace Higgs.Mbale.BAL.Concrete
             var storeGrade = GetStoreBuveraStockForView(MapEFToModel(result));
             return storeGrade;
         }
+
         public StoreGrade GetStoreBuveraStockForView(IEnumerable<Models.StoreBuveraGradeSize> list)
         {
             var storeGrade = new StoreGrade()
@@ -344,47 +377,48 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>Buvera Model Object.</returns>
         public Buvera MapEFToModel(EF.Models.Buvera data)
         {
-          
-            var buvera = new Buvera()
+            if (data != null)
             {
-              
-              TotalCost = data.TotalCost,
-               BranchName = data.Branch !=null? data.Branch.Name:"",               
-                BranchId = data.BranchId,
-                TotalQuantity = data.TotalQuantity,
-                StoreId = data.StoreId,
-                BuveraId = data.BuveraId,
-                FromSupplier = data.FromSupplier,
-                ToReceiver = data.ToReceiver,
-                InvoiceNumber = data.InvoiceNumber,
-                StoreName = data.Store!=null? data.Store.Name:"",
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser2)            
-            };
-
-            if (data.BuveraGradeSizes != null)
-            {
-                if (data.BuveraGradeSizes.Any())
+                var buvera = new Buvera()
                 {
-                    List<Grade> grades = new List<Grade>();
-                    var distinctGrades = data.BuveraGradeSizes.GroupBy(g => g.GradeId).Select(o => o.First()).ToList();
-                    foreach (var buveraGradeSize in distinctGrades)
+
+                    TotalCost = data.TotalCost,
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    BranchId = data.BranchId,
+                    TotalQuantity = data.TotalQuantity,
+                    StoreId = data.StoreId,
+                    BuveraId = data.BuveraId,
+                    FromSupplier = data.FromSupplier,
+                    ToReceiver = data.ToReceiver,
+                    InvoiceNumber = data.InvoiceNumber,
+                    StoreName = data.Store != null ? data.Store.Name : "",
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser2)
+                };
+
+                if (data.BuveraGradeSizes != null)
+                {
+                    if (data.BuveraGradeSizes.Any())
                     {
-                        var grade = new Grade()
+                        List<Grade> grades = new List<Grade>();
+                        var distinctGrades = data.BuveraGradeSizes.GroupBy(g => g.GradeId).Select(o => o.First()).ToList();
+                        foreach (var buveraGradeSize in distinctGrades)
                         {
-                            GradeId = buveraGradeSize.Grade.GradeId,
-                            Value = buveraGradeSize.Grade.Value,
-                            CreatedOn = buveraGradeSize.Grade.CreatedOn,
-                            TimeStamp = buveraGradeSize.Grade.TimeStamp,
-                            Deleted = buveraGradeSize.Grade.Deleted,
-                            CreatedBy = _userService.GetUserFullName(buveraGradeSize.Grade.AspNetUser),
-                            UpdatedBy = _userService.GetUserFullName(buveraGradeSize.Grade.AspNetUser1),
-                        };
-                        List<Denomination> denominations = new List<Denomination>();
-                           if (buveraGradeSize.Grade.BuveraGradeSizes != null)
+                            var grade = new Grade()
+                            {
+                                GradeId = buveraGradeSize.Grade.GradeId,
+                                Value = buveraGradeSize.Grade.Value,
+                                CreatedOn = buveraGradeSize.Grade.CreatedOn,
+                                TimeStamp = buveraGradeSize.Grade.TimeStamp,
+                                Deleted = buveraGradeSize.Grade.Deleted,
+                                CreatedBy = _userService.GetUserFullName(buveraGradeSize.Grade.AspNetUser),
+                                UpdatedBy = _userService.GetUserFullName(buveraGradeSize.Grade.AspNetUser1),
+                            };
+                            List<Denomination> denominations = new List<Denomination>();
+                            if (buveraGradeSize.Grade.BuveraGradeSizes != null)
                             {
                                 if (buveraGradeSize.Grade.BuveraGradeSizes.Any())
                                 {
@@ -397,46 +431,52 @@ namespace Higgs.Mbale.BAL.Concrete
                                             Value = ogs.Size != null ? ogs.Size.Value : 0,
                                             Quantity = ogs.Quantity
                                         };
-                                      //  Buvera.TotalQuantity += (ogs.Quantity * ogs.Size.Value);
+                                        //  Buvera.TotalQuantity += (ogs.Quantity * ogs.Size.Value);
                                         denominations.Add(denomination);
                                     }
                                 }
-                               grade.Denominations = denominations;
-                           }                          
-                       grades.Add(grade);
+                                grade.Denominations = denominations;
+                            }
+                            grades.Add(grade);
+                        }
+                        buvera.Grades = grades;
                     }
-                    buvera.Grades = grades;                    
                 }
+
+                return buvera;
             }
-            
-            return buvera;
+            return null;
         }
 
 
         public StoreBuveraGradeSize MapEFToModel(EF.Models.StoreBuveraGradeSize data)
         {
-            var storeBuveraGradeSize = new StoreBuveraGradeSize()
+            if (data != null)
             {
 
-                GradeId = data.GradeId,
-                Quantity = data.Quantity,
-                SizeId = data.SizeId,
-                SizeValue = data.Size.Value,
-                GradeValue = data.Grade.Value,
-                StoreId = data.StoreId,
-                StoreName = data.Store != null ? data.Store.Name : "",
-                TimeStamp = data.TimeStamp,
 
-            };
-            return storeBuveraGradeSize;
+                var storeBuveraGradeSize = new StoreBuveraGradeSize()
+                {
 
+                    GradeId = data.GradeId,
+                    Quantity = data.Quantity,
+                    SizeId = data.SizeId,
+                    SizeValue = data.Size.Value,
+                    GradeValue = data.Grade.Value,
+                    StoreId = data.StoreId,
+                    StoreName = data.Store != null ? data.Store.Name : "",
+                    TimeStamp = data.TimeStamp,
+
+                };
+                return storeBuveraGradeSize;
+            }
+            return null;
         }
 
 
         private IEnumerable<StoreBuveraGradeSize> MapEFToModel(IEnumerable<EF.Models.StoreBuveraGradeSize> data)
         {
             var list = new List<StoreBuveraGradeSize>();
-
             foreach (var result in data)
             {
                 list.Add(MapEFToModel(result));

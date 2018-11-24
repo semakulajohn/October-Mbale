@@ -679,6 +679,16 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
 
         }
     })
+         .state('admin-batches-list', {
+             url: "/batches",
+             templateUrl: "/app/views/batch/admin-view.html",
+             data: {
+                 pageTitle: 'Batches',
+             },
+             controller: function ($scope, $stateParams) {
+
+             }
+         })
 
 
     .state('branch-batches-list', {
@@ -1453,7 +1463,15 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
              pageTitle: 'Reports'
          }
      })
-        
+                //reports
+     .state('reports.index', {
+     
+         url: "/reports",
+         templateUrl: "/app/views/report/index.html",
+         data: {
+             pageTitle: 'Reports'
+         }
+     })
      .state('reports.transactionlist', {
          url: "/reports",
          templateUrl: "/app/views/report/transactions.html",
@@ -1570,6 +1588,16 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
 
              }
          })
+          .state('reports.buveraTransferlist', {
+              url: "/reports",
+              templateUrl: "/app/views/report/buveraTransfer.html",
+              data: {
+                  pageTitle: 'Buvera Transfers',
+              },
+              controller: function ($scope, $stateParams) {
+
+              }
+          })
          .state('reports.machineRepairlist', {
              url: "/reports",
              templateUrl: "/app/views/report/machinerepairs.html",

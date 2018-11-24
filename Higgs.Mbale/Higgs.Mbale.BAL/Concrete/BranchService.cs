@@ -100,23 +100,26 @@ public    class BranchService : IBranchService
         /// <returns>Branch Model Object.</returns>
         public Branch MapEFToModel(EF.Models.Branch data)
         {
-          
-            var branch = new Branch()
+            if (data != null)
             {
-                BranchId = data.BranchId,
-                Name = data.Name,
-                PhoneNumber = data.PhoneNumber,
-                Location = data.Location,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                MillingChargeRate = data.MillingChargeRate,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
-               
+                var branch = new Branch()
+                {
+                    BranchId = data.BranchId,
+                    Name = data.Name,
+                    PhoneNumber = data.PhoneNumber,
+                    Location = data.Location,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    MillingChargeRate = data.MillingChargeRate,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
 
-            };
-            return branch;
+
+                };
+                return branch;
+            }
+            return null;
         }
 
 

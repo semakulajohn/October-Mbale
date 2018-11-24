@@ -106,27 +106,32 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>OtherExpense Model Object.</returns>
         public OtherExpense MapEFToModel(EF.Models.OtherExpense data)
         {
-          
-            var otherExpense = new OtherExpense()
+            if (data != null)
             {
-                OtherExpenseId = data.OtherExpenseId,
-                Amount = data.Amount,
-                SectorId = data.SectorId,
-                BranchId = data.BranchId,
-                BatchId = data.BatchId,
-                Description = data.Description,
-                BranchName = data.Branch != null ? data.Branch.Name : "",
-                SectorName = data.Sector != null ? data.Sector.Name : "",
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                 Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
-                BatchNumber = data.Batch !=null? data.Batch.Name:"",
-               
 
-            };
-            return otherExpense;
+
+                var otherExpense = new OtherExpense()
+                {
+                    OtherExpenseId = data.OtherExpenseId,
+                    Amount = data.Amount,
+                    SectorId = data.SectorId,
+                    BranchId = data.BranchId,
+                    BatchId = data.BatchId,
+                    Description = data.Description,
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    SectorName = data.Sector != null ? data.Sector.Name : "",
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+                    BatchNumber = data.Batch != null ? data.Batch.Name : "",
+
+
+                };
+                return otherExpense;
+            }
+            return null;
         }
 
 

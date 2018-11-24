@@ -137,27 +137,32 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>FactoryExpense Model Object.</returns>
         public FactoryExpense MapEFToModel(EF.Models.FactoryExpense data)
         {
-          
-            var factoryExpense = new FactoryExpense()
+            if (data != null)
             {
-                FactoryExpenseId = data.FactoryExpenseId,
-                Amount = data.Amount,
-                SectorId = data.SectorId,
-                BranchId = data.BranchId,
-                BatchId = data.BatchId,
-                Description = data.Description,
-                BranchName = data.Branch != null ? data.Branch.Name : "",
-                SectorName = data.Sector != null ? data.Sector.Name : "",
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                 Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
-                BatchNumber = data.Batch != null? data.Batch.Name:"",
-               
 
-            };
-            return factoryExpense;
+
+                var factoryExpense = new FactoryExpense()
+                {
+                    FactoryExpenseId = data.FactoryExpenseId,
+                    Amount = data.Amount,
+                    SectorId = data.SectorId,
+                    BranchId = data.BranchId,
+                    BatchId = data.BatchId,
+                    Description = data.Description,
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    SectorName = data.Sector != null ? data.Sector.Name : "",
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+                    BatchNumber = data.Batch != null ? data.Batch.Name : "",
+
+
+                };
+                return factoryExpense;
+            }
+            return null;
         }
 
 

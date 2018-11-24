@@ -64,7 +64,7 @@ function charts_flotCtrl($scope) {
         xaxis: {
             tickDecimals: 0
         },
-        colors: ["#62cb31"],
+        colors: ["#3498db"],
         grid: {
             show: false
         },
@@ -152,7 +152,7 @@ function charts_flotCtrl($scope) {
     ];
 
     $scope.pieChartDataDas = [
-        { label: "Data 1", data: 16, color: "#62cb31", },
+        { label: "Data 1", data: 16, color: "#3498db", },
         { label: "Data 2", data: 6, color: "#A4E585", },
         { label: "Data 3", data: 22, color: "#368410", },
         { label: "Data 4", data: 32, color: "#8DE563", }

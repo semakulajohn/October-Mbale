@@ -303,44 +303,48 @@ namespace Higgs.Mbale.BAL.Concrete
         public AccountTransactionActivity MapEFToModel(EF.Models.AccountTransactionActivity data)
         {
             var accountName = string.Empty;
-            
-            if (data.AspNetUser != null)
+            if (data != null)
             {
-                              
-              accountName = _userService.GetUserFullName(data.AspNetUser);
-             
+
+                if (data.AspNetUser != null)
+                {
+
+                    accountName = _userService.GetUserFullName(data.AspNetUser);
+
+                }
+                else
+                {
+                    accountName = data.CasualWorker.FirstName + ' ' + data.CasualWorker.LastName;
+
+                }
+
+                var accountTransactionActivity = new AccountTransactionActivity()
+                {
+                    AspNetUserId = data.AspNetUserId,
+                    CasualWorkerId = data.CasualWorkerId,
+                    Action = data.Action,
+                    StartAmount = data.StartAmount,
+                    Balance = data.Balance,
+                    Amount = data.Amount,
+                    Notes = data.Notes,
+                    AccountTransactionActivityId = data.AccountTransactionActivityId,
+                    BranchId = data.BranchId,
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    SectorId = data.SectorId,
+                    SectorName = data.Sector != null ? data.Sector.Name : "",
+                    TransactionSubTypeId = data.TransactionSubTypeId,
+                    TransactionSubTypeName = data.TransactionSubType != null ? data.TransactionSubType.Name : "",
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    AccountName = accountName,
+
+
+                };
+                return accountTransactionActivity;
             }
-            else
-            {
-                accountName = data.CasualWorker.FirstName + ' ' + data.CasualWorker.LastName;
-
-            }
-
-            var accountTransactionActivity = new AccountTransactionActivity()
-            {
-                AspNetUserId = data.AspNetUserId,
-                CasualWorkerId = data.CasualWorkerId,
-                Action = data.Action,
-                StartAmount= data.StartAmount,
-                Balance = data.Balance,
-                Amount = data.Amount,
-                Notes = data.Notes,
-                AccountTransactionActivityId = data.AccountTransactionActivityId,
-                BranchId = data.BranchId,
-                BranchName = data.Branch != null?data.Branch.Name:"",
-                SectorId = data.SectorId,
-                SectorName  = data.Sector != null?data.Sector.Name:"",
-                TransactionSubTypeId = data.TransactionSubTypeId,
-                TransactionSubTypeName = data.TransactionSubType !=null?data.TransactionSubType.Name:"",
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                AccountName = accountName,
-                            
-
-            };
-            return accountTransactionActivity;
+            return null;
         }
 
      
@@ -359,17 +363,21 @@ namespace Higgs.Mbale.BAL.Concrete
 
         private PaymentMode MapEFToModel(EF.Models.PaymentMode data)
         {
-            var paymentMode = new PaymentMode()
+            if (data != null)
             {
-                Name = data.Name,
-                PaymentModeId = data.PaymentModeId,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                
-            };
-            return paymentMode;
+                var paymentMode = new PaymentMode()
+                {
+                    Name = data.Name,
+                    PaymentModeId = data.PaymentModeId,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+
+                };
+                return paymentMode;
+            }
+            return null;
         }
         #endregion
     }

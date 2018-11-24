@@ -778,7 +778,7 @@ namespace Higgs.Mbale.BAL.Concrete
                     StoreName = data.Store != null ? data.Store.Name : "",
                     MediaId = data.MediaId,
                     DeliveryId = data.DeliveryId,
-                    
+                    Quantity = data.Quantity,
                     DriverName = data.DriverName,
                     DriverNIN = data.DriverNIN,
                     CreatedOn = data.CreatedOn,

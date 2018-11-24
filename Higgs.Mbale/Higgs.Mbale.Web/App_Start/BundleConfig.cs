@@ -46,8 +46,8 @@ namespace Higgs.Mbale.Web
                  .Include("~/bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css")
                  .Include("~/bower_components/iCheck/skins/square/green.css")
                  .Include("~/bower_components/iCheck/skins/square/purple.css")
-                 .Include("~/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css")
-                 .Include("~/fonts/pe-icon-7-stroke/css/helper.css")
+                 .Include("~/fonts/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css")
+                 .Include("~/fonts/fonts/pe-icon-7-stroke/css/helper.css")
                  .Include("~/styles/ng-table.min.css")
                  .Include("~/app/styles/isteven-multi-select.css")
                  

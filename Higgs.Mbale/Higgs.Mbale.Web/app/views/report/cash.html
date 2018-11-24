@@ -101,74 +101,34 @@
                         </div>
                     </div>
                     <div ng-show="data.length > 0">
-                        <table ng-table="tableParams" class="table table-striped">
+                        <table id="reportTable">
                             <thead>
                                 <tr>
-                                    <th class="sortable" ng-class="{
-                                        'sort-asc': tableParams.isSortBy('BranchName', 'asc'),
-                                        'sort-desc': tableParams.isSortBy('BranchName', 'desc')
-                                        }"
-                                        ng-click="tableParams.sorting({'BranchName' : tableParams.isSortBy('BranchName', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                    <th>
                                         <div>Branch</div>
                                     </th>
-                                    <th class="sortable" ng-class="{
-                                        'sort-asc': tableParams.isSortBy('TransactionSubTypeName', 'asc'),
-                                        'sort-desc': tableParams.isSortBy('TransactionSubTypeName', 'desc')
-                                        }"
-                                        ng-click="tableParams.sorting({'TransactionSubTypeName' : tableParams.isSortBy('TransactionSubTypeName', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                    <th>
                                         <div>TransactionSubTypeName</div>
                                     </th>
 
-                                    <th class="sortable" ng-class="{
-                                    'sort-asc': tableParams.isSortBy('Notes', 'asc'),
-                                    'sort-desc': tableParams.isSortBy('Notes', 'desc')
-                                    }"
-                                        ng-click="tableParams.sorting({'Notes' : tableParams.isSortBy('Notes', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                    <th>
                                         <div>Notes</div>
                                     </th>
-                                    <th class="sortable" ng-class="{
-                                    'sort-asc': tableParams.isSortBy('StartAmount', 'asc'),
-                                    'sort-desc': tableParams.isSortBy('StartAmount', 'desc')
-                                    }"
-                                        ng-click="tableParams.sorting({'StartAmount' : tableParams.isSortBy('StartAmount', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                    <th>
                                         <div>StartAmount</div>
                                     </th>
-                                    <th class="sortable" ng-class="{
-                                    'sort-asc': tableParams.isSortBy('Action', 'asc'),
-                                    'sort-desc': tableParams.isSortBy('Action', 'desc')
-                                    }"
-                                        ng-click="tableParams.sorting({'Action' : tableParams.isSortBy('Action', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                    <th>
                                         <div>Action</div>
                                     </th>
-                                    <th class="sortable" ng-class="{
-                                    'sort-asc': tableParams.isSortBy('Amount', 'asc'),
-                                    'sort-desc': tableParams.isSortBy('Amount', 'desc')
-                                    }"
-                                        ng-click="tableParams.sorting({'Amount' : tableParams.isSortBy('Action', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                    <th>
                                         <div>Amount</div>
                                     </th>
 
-                                    <th class="sortable" ng-class="{
-                                    'sort-asc': tableParams.isSortBy('Balance', 'asc'),
-                                    'sort-desc': tableParams.isSortBy('Balance', 'desc')
-                                    }"
-                                        ng-click="tableParams.sorting({'Balance' : tableParams.isSortBy('Action', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                    <th>
                                         <div>Balance</div>
                                     </th>
-                                    <th class="sortable" ng-class="{
-                                    'sort-asc': tableParams.isSortBy('SectorName', 'asc'),
-                                    'sort-desc': tableParams.isSortBy('SectorName', 'desc')
-                                    }"
-                                        ng-click="tableParams.sorting({'SectorName' : tableParams.isSortBy('Action', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                                        <div>Department</div>
-                                    </th>
 
-
-                                    <th class="sortable" ng-class="{
-                                    'sort-asc': tableParams.isSortBy('CreatedOn', 'asc'),
-                                    'sort-desc': tableParams.isSortBy('CreatedOn', 'desc')
-                                    }"
-                                        ng-click="tableParams.sorting({'CreatedOn' : tableParams.isSortBy('CreatedOn', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                                    <th>
                                         <div>CreatedOn</div>
                                     </th>
 
@@ -176,19 +136,14 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="cash in data">
-                                    <td width="15%">{{cash.BranchName}}</td>
-                                    <td width="15%">{{cash.TransactionSubTypeName}}</td>
-                                    <td width="20%">{{cash.Notes}}</td>
-                                    <td width="10%">{{cash.StartAmount | number}}</td>
-                                    <td width="5%">{{cash.Action}}</td>
-                                    <td width="10%"> {{cash.Amount |number}}</td>
-                                    <td width="10%">{{cash.Balance | number}}</td>
-                                    <td width="10%">{{cash.SectorName}}</td>
-
-                                    <td width="10%">{{cash.CreatedOn | date:"yyyy-MM-dd" }}</td>
-
-
-
+                                    <td style="font-size: 18px !important;" width="10%">{{cash.BranchName}}</td>
+                                    <td style="font-size: 18px !important;" width="10%">{{cash.TransactionSubTypeName}}</td>
+                                    <td style="font-size: 18px !important;" width="20%">{{cash.Notes}}</td>
+                                    <td style="font-size: 18px !important;" width="10%">{{cash.StartAmount | number}}</td>
+                                    <td style="font-size: 18px !important;" width="3%">{{cash.Action}}</td>
+                                    <td style="font-size: 18px !important;" width="10%"> {{cash.Amount |number}}</td>
+                                    <td style="font-size: 18px !important;" width="10%"> {{cash.Balance | number}}</td>
+                                    <td style="font-size: 18px !important;" width="10%"> {{cash.CreatedOn | date:"yyyy-MM-dd" }}</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -98,19 +98,23 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>Product Model Object.</returns>
         public Product MapEFToModel(EF.Models.Product data)
         {
-          
-            var product = new Product()
+            if (data != null)
             {
-                ProductId = data.ProductId,
-                Name = data.Name,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
 
-            };
-            return product;
+                var product = new Product()
+                {
+                    ProductId = data.ProductId,
+                    Name = data.Name,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+
+                };
+                return product;
+            }
+            return null;
         }
 
 

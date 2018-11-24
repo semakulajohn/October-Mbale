@@ -39,6 +39,7 @@
             <a href="#"><span class="nav-label">Batches</span><span class="fa arrow"></span> </a>
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('batches')}">
                 <li ui-sref-active="active"><a ui-sref="batches.list">All Batches</a></li>
+                <li ui-sref-active="active"><a ui-sref="admin-batches-list">Admin view</a></li>
             </ul>
         </li>
 
@@ -138,7 +139,8 @@
         <li ng-class="{active: $state.includes('reports')}" ng-show="isAdmin">
             <a href="#"><span class="nav-label">All Reports</span><span class="fa arrow"></span> </a>
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('reports')}">
-                <li ui-sref-active="active"><a ui-sref="reports.transactionlist">Transactions</a></li>
+                <li ui-sref-active="active"><a ui-sref="reports.index">Reports</a></li>
+              <!--  <li ui-sref-active="active"><a ui-sref="reports.transactionlist">Transactions</a></li>
                 <li ui-sref-active="active"><a ui-sref="reports.supplylist">Supplies</a></li>
                 <li ui-sref-active="active"><a ui-sref="reports.batchlist">Batches</a></li>
                 <li ui-sref-active="active"><a ui-sref="reports.cashlist">Cash</a></li>
@@ -151,8 +153,9 @@
                 <li ui-sref-active="active"><a ui-sref="reports.flourTransferlist">Flour Transfers</a></li>
                 <li ui-sref-active="active"><a ui-sref="reports.utilitylist">Utilities</a></li>
                 <li ui-sref-active="active"><a ui-sref="reports.millingbalancelist">Milling Balances</a></li>
-                <!--<li ui-sref-active="active"><a ui-sref="reports.buveralist">Buvera</a></li>-->
-                <li ui-sref-active="active"><a ui-sref="reports.accountTransactionlist">Account Transactions</a></li>
+                <li ui-sref-active="active"><a ui-sref="reports.buveralist">Buvera</a></li>
+                <li ui-sref-active="active"><a ui-sref="reports.deliverylist">Deliveries</a></li>
+                <li ui-sref-active="active"><a ui-sref="reports.accountTransactionlist">Account Transactions</a></li>-->
             </ul>
         </li>
       

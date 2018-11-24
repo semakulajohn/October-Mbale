@@ -120,7 +120,13 @@ namespace Higgs.Mbale.DAL.Concrete
 
         }
 
-
+        public StoreBuveraGradeSize GetStoreBuveraGradeSize(long gradeId, long sizeId, long storeId)
+        {
+            
+            return  this.UnitOfWork.Get<StoreBuveraGradeSize>().AsQueryable()
+           .FirstOrDefault(e => e.StoreId == storeId && e.GradeId == gradeId && e.SizeId == sizeId);
+           
+        }
       
         public void SaveStoreBuveraGradeSize(StoreBuveraGradeSizeDTO storeBuveraGradeSizeDTO, bool inOrOut)
         {
@@ -151,7 +157,7 @@ namespace Higgs.Mbale.DAL.Concrete
             {
                 if (inOrOut)
                 {
-                    sizeQuantity = result.Quantity + storeBuveraGradeSizeDTO.Quantity;
+                    sizeQuantity = Convert.ToDouble(result.Quantity) + Convert.ToDouble(storeBuveraGradeSizeDTO.Quantity);
 
                     result.StoreId = storeBuveraGradeSizeDTO.StoreId;
                     result.SizeId = storeBuveraGradeSizeDTO.SizeId;
@@ -166,7 +172,7 @@ namespace Higgs.Mbale.DAL.Concrete
                 else
                 {
                    
-                    sizeQuantity = result.Quantity - storeBuveraGradeSizeDTO.Quantity;
+                    sizeQuantity = Convert.ToDouble(result.Quantity)- Convert.ToDouble(storeBuveraGradeSizeDTO.Quantity);
 
                     result.StoreId = storeBuveraGradeSizeDTO.StoreId;
                     result.SizeId = storeBuveraGradeSizeDTO.SizeId;

@@ -6,7 +6,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>F:\GitHub\Higgz\live\mbale_2018_19_11</_PublishTargetUrl>
+    <_PublishTargetUrl>F:\GitHub\Higgz\live\mbale_2018_23_11</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="app/scripts/app.js">
@@ -25,7 +25,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/02/2018 10:07:37</publishTime>
     </File>
     <File Include="app/scripts/controllers/batchoutput.js">
-      <publishTime>08/29/2018 04:45:48</publishTime>
+      <publishTime>11/22/2018 09:22:28</publishTime>
     </File>
     <File Include="app/scripts/controllers/branch.js">
       <publishTime>09/07/2018 13:41:56</publishTime>
@@ -61,13 +61,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/28/2018 02:20:58</publishTime>
     </File>
     <File Include="app/scripts/controllers/delivery.js">
-      <publishTime>11/19/2018 06:24:54</publishTime>
+      <publishTime>11/22/2018 12:02:12</publishTime>
     </File>
     <File Include="app/scripts/controllers/factoryexpense.js">
       <publishTime>11/08/2018 03:22:48</publishTime>
     </File>
     <File Include="app/scripts/controllers/flourtransfer.js">
-      <publishTime>11/18/2018 13:58:26</publishTime>
+      <publishTime>11/19/2018 07:12:55</publishTime>
     </File>
     <File Include="app/scripts/controllers/inventory.js">
       <publishTime>09/25/2018 07:43:16</publishTime>
@@ -97,7 +97,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/20/2018 14:07:20</publishTime>
     </File>
     <File Include="app/scripts/controllers/report.js">
-      <publishTime>11/15/2018 12:47:41</publishTime>
+      <publishTime>11/22/2018 16:05:54</publishTime>
     </File>
     <File Include="app/scripts/controllers/requistion.js">
       <publishTime>09/25/2018 16:13:33</publishTime>
@@ -277,10 +277,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/09/2017 19:29:56</publishTime>
     </File>
     <File Include="app/views/activity/edit.html">
-      <publishTime>08/29/2018 04:51:36</publishTime>
+      <publishTime>11/22/2018 16:01:54</publishTime>
     </File>
     <File Include="app/views/activity/list.html">
-      <publishTime>07/09/2018 14:26:49</publishTime>
+      <publishTime>11/22/2018 16:01:54</publishTime>
+    </File>
+    <File Include="app/views/batch - Copy/branch-batch-list.html">
+      <publishTime>11/22/2018 16:01:54</publishTime>
+    </File>
+    <File Include="app/views/batch - Copy/detail.html">
+      <publishTime>11/22/2018 16:01:54</publishTime>
+    </File>
+    <File Include="app/views/batch - Copy/edit.html">
+      <publishTime>11/22/2018 16:01:54</publishTime>
+    </File>
+    <File Include="app/views/batch - Copy/list.html">
+      <publishTime>11/22/2018 16:01:54</publishTime>
     </File>
     <File Include="app/views/batch/branch-batch-list.html">
       <publishTime>08/02/2018 12:23:44</publishTime>
@@ -298,7 +310,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/06/2018 09:33:00</publishTime>
     </File>
     <File Include="app/views/batchoutput/edit.html">
-      <publishTime>08/29/2018 04:52:13</publishTime>
+      <publishTime>11/22/2018 09:23:45</publishTime>
     </File>
     <File Include="app/views/branch/dashboard.html">
       <publishTime>09/30/2018 19:46:35</publishTime>
@@ -391,7 +403,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/02/2018 11:36:33</publishTime>
     </File>
     <File Include="app/views/delivery/detail.html">
-      <publishTime>11/18/2018 08:49:34</publishTime>
+      <publishTime>11/22/2018 11:57:56</publishTime>
     </File>
     <File Include="app/views/delivery/edit.html">
       <publishTime>11/19/2018 05:38:31</publishTime>
@@ -493,16 +505,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/02/2018 08:23:50</publishTime>
     </File>
     <File Include="app/views/report/cash.html">
-      <publishTime>11/14/2018 19:28:50</publishTime>
+      <publishTime>11/22/2018 15:25:40</publishTime>
     </File>
     <File Include="app/views/report/deliveries.html">
-      <publishTime>11/02/2018 08:23:50</publishTime>
+      <publishTime>11/22/2018 15:01:07</publishTime>
     </File>
     <File Include="app/views/report/factoryExpenses.html">
       <publishTime>11/15/2018 12:34:59</publishTime>
     </File>
     <File Include="app/views/report/flourTransfer.html">
-      <publishTime>11/14/2018 08:59:45</publishTime>
+      <publishTime>11/22/2018 16:09:48</publishTime>
     </File>
     <File Include="app/views/report/labourcosts.html">
       <publishTime>11/15/2018 12:36:09</publishTime>
@@ -652,7 +664,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/31/2018 11:40:39</publishTime>
     </File>
     <File Include="app/views/_common/navigation.html">
-      <publishTime>11/15/2018 13:23:28</publishTime>
+      <publishTime>11/22/2018 14:33:09</publishTime>
     </File>
     <File Include="app/views/_common/panel_tools.html">
       <publishTime>01/09/2017 19:29:56</publishTime>
@@ -673,13 +685,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/22/2018 15:40:30</publishTime>
     </File>
     <File Include="bin/Higgs.Mbale.BAL.dll">
-      <publishTime>11/19/2018 06:27:08</publishTime>
+      <publishTime>11/23/2018 05:29:26</publishTime>
     </File>
     <File Include="bin/Higgs.Mbale.DAL.dll">
-      <publishTime>11/19/2018 06:27:05</publishTime>
+      <publishTime>11/23/2018 05:29:23</publishTime>
     </File>
     <File Include="bin/Higgs.Mbale.DependencyResolver.dll">
-      <publishTime>11/19/2018 06:27:10</publishTime>
+      <publishTime>11/23/2018 05:29:27</publishTime>
     </File>
     <File Include="bin/Higgs.Mbale.DTO.dll">
       <publishTime>11/19/2018 06:26:58</publishTime>
@@ -697,7 +709,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/19/2018 06:27:03</publishTime>
     </File>
     <File Include="bin/Higgs.Mbale.Web.dll">
-      <publishTime>11/19/2018 06:27:14</publishTime>
+      <publishTime>11/23/2018 05:29:32</publishTime>
     </File>
     <File Include="bin/log4net.dll">
       <publishTime>11/23/2017 10:29:42</publishTime>

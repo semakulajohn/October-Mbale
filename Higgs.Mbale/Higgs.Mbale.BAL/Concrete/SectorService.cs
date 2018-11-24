@@ -97,20 +97,24 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>Sector Model Object.</returns>
         public Sector MapEFToModel(EF.Models.Sector data)
         {
-          
-            var sector = new Sector()
-            {
-                SectorId = data.SectorId,
-                Name = data.Name,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
-               
 
-            };
-            return sector;
+            if (data != null)
+            {
+                var sector = new Sector()
+                {
+                    SectorId = data.SectorId,
+                    Name = data.Name,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+
+
+                };
+                return sector;
+            }
+            return null;
         }
 
 

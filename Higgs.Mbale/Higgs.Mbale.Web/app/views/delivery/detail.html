@@ -163,56 +163,66 @@
                                             </div>
 
                                         </div>
-                                        <div class="row" ng-hide="delivery.ProductId ==1">
-                                            <div class="col-sm-12 col-md-12">
-                                               <h5> Grade: </h5>
-                                            </div>
-                                            <div ng-repeat="grade in delivery.Grades" class="col-md-3 col-sm-12">
-                                                <div class="col-sm-12 col-md-12">
-                                                    <h3> {{grade.Value}}</h3>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th width="25%">Value </th>
-                                                                    <th width="35%">Quantity</th>
-                                                                    <th width="25%">Price</th>
-                                                                </tr>
-                                                                <tr ng-repeat="x in grade.Denominations">
-                                                                    <td width="25%"><p> {{ x.Value }} Kg</p></td>
-                                                                    <td width="35%">
-                                                                        <p>{{x.Quantity}}</p>
-                                                                    </td>
-                                                                    <td width="25%"><p>{{x.Price}}</p></td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <div class="col-sm-12">
+                                                    <h5>Total Quantity</h5>
+                                                    <!--<p ng-hide="delivery.ProductId==1">{{delivery.Amount}} Kgs</p>-->
+                                                    <p>{{delivery.Quantity}} Kgs</p>
+                                                    </div>
+                                                </div>
+
+                                         </div>
+                                                <div class="row" ng-hide="delivery.ProductId ==1">
+                                                    <div class="col-sm-12 col-md-12">
+                                                        <h5> Grade: </h5>
+                                                    </div>
+                                                    <div ng-repeat="grade in delivery.Grades" class="col-md-3 col-sm-12">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <h3> {{grade.Value}}</h3>
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <th width="25%">Value </th>
+                                                                            <th width="35%">Quantity</th>
+                                                                            <th width="25%">Price</th>
+                                                                        </tr>
+                                                                        <tr ng-repeat="x in grade.Denominations">
+                                                                            <td width="25%"><p> {{ x.Value }} Kg</p></td>
+                                                                            <td width="35%">
+                                                                                <p>{{x.Quantity}}</p>
+                                                                            </td>
+                                                                            <td width="25%"><p>{{x.Price}}</p></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                    <div class="hr-line-dashed"></div>
+
+                                                </div>
+
+
+
+                                                <div class="row">
+
+
+                                                    <div class="col-sm-12" style="padding-left: 0px">
+
+
+                                                        <div class="hr-line-dashed"></div>
+
+
+
+
                                                     </div>
                                                 </div>
                                             </div>
-                                            <br />
-                                            <div class="hr-line-dashed"></div>
 
-                                        </div>
-
-
-
-                                        <div class="row">
-
-
-                                            <div class="col-sm-12" style="padding-left: 0px">
-
-
-                                                <div class="hr-line-dashed"></div>
-
-
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </tab>
+</tab>
 
 
                             </tabset>

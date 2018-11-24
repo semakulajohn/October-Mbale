@@ -381,6 +381,7 @@ angular
                 { name: 'Vehicle Number', field: 'VehicleNumber' },
                 {name:'BatchNumber',field:'BatchNumber'},
                 { name: 'Branch Name', field: 'BranchName' },
+                { name: 'Quantity', field: 'Quantity' },
 
             ];
 
@@ -413,7 +414,7 @@ angular
                         VehicleNumber: b.VehicleNumber,
                         BranchName: b.BranchName,
                         Price: b.Price,
-                       
+                        Quantity : b.Quantity,
                         Amount: b.Amount,
                         Location: b.Location,
                         StoreName: b.StoreName,

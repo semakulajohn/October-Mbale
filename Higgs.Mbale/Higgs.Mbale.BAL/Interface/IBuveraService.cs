@@ -15,6 +15,9 @@ namespace Higgs.Mbale.BAL.Interface
         void MarkAsDeleted(long buveraId, string userId);
         IEnumerable<Buvera> GetAllBuverasForAParticularStore(long storeId);
         StoreGrade GetStoreBuveraStock(long storeId);
+        void SaveStoreBuveraGradeSize(StoreBuveraGradeSize storeBuveraGradeSize, bool inOrOut);
+        StoreBuveraGradeSize GetStoreBuveraGradeSize(long gradeId,long sizeId, long storeId);
+        long SaveBuveraOnBatchUsage(Buvera buvera, string userId);
                
     }
 }

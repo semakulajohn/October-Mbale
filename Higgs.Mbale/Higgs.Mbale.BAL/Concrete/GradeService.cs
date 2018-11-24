@@ -66,19 +66,22 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>Grade Model Object.</returns>
         public Grade MapEFToModel(EF.Models.Grade data)
         {
-
-            var grade = new Grade()
+            if (data != null)
             {
-                GradeId = data.GradeId,
-                Value = data.Value,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
-            };
-            List<Denomination> denominations = new List<Denomination>();
-           
+
+
+                var grade = new Grade()
+                {
+                    GradeId = data.GradeId,
+                    Value = data.Value,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+                };
+                List<Denomination> denominations = new List<Denomination>();
+
                 var sizes = GetAllSizes();
                 foreach (var size in sizes)
                 {
@@ -90,9 +93,11 @@ namespace Higgs.Mbale.BAL.Concrete
                     };
                     denominations.Add(denomination);
                 }
-                  
-            grade.Denominations = denominations;
-            return grade;
+
+                grade.Denominations = denominations;
+                return grade;
+            }
+            return null;
         }
 
         private IEnumerable<Size> MapSizeEFToModel(IEnumerable<EF.Models.Size> data)
@@ -107,19 +112,25 @@ namespace Higgs.Mbale.BAL.Concrete
 
         public Size MapSizeEFToModel(EF.Models.Size data)
         {
-            var size = new Size()
+            if (data != null)
             {
-                SizeId = data.SizeId,
-                Value = data.Value,
-                Rate = data.Rate,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
 
-            };
-            return size;
+
+                var size = new Size()
+                {
+                    SizeId = data.SizeId,
+                    Value = data.Value,
+                    Rate = data.Rate,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+
+                };
+                return size;
+            } 
+            return null;
         }
 
         #endregion

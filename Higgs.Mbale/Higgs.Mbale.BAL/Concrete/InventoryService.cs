@@ -163,34 +163,40 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>Inventory Model Object.</returns>
         public Inventory MapEFToModel(EF.Models.Inventory data)
         {
-          
-            var inventory = new Inventory()
+            if (data != null)
             {
-                ItemName = data.ItemName,
-                Amount = data.Amount,
-                Description = data.Description,
-                PurchaseDate = data.PurchaseDate,
-                Price = data.Price,
-                Quantity =data.Quantity,
-                InventoryCategoryId = data.InventoryCategoryId,
-                CategoryName = data.InventoryCategory != null? data.InventoryCategory.Name:"",
-                BranchName = data.Branch !=null? data.Branch.Name:"",
-                SectorName = data.Sector != null ? data.Sector.Name : "",
-                TransactionSubTypeId = data.TransactionSubTypeId,
-                TransactionSubTypeName = data.TransactionSubType !=null?data.TransactionSubType.Name:"",
-                StoreName = data.Store != null?data.Store.Name:"",
-                BranchId = data.BranchId,
-                StoreId = data.StoreId,
-                SectorId = data.SectorId,
-                InventoryId = data.InventoryId,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),               
 
-            };
-            return inventory;
+
+
+                var inventory = new Inventory()
+                {
+                    ItemName = data.ItemName,
+                    Amount = data.Amount,
+                    Description = data.Description,
+                    PurchaseDate = data.PurchaseDate,
+                    Price = data.Price,
+                    Quantity = data.Quantity,
+                    InventoryCategoryId = data.InventoryCategoryId,
+                    CategoryName = data.InventoryCategory != null ? data.InventoryCategory.Name : "",
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    SectorName = data.Sector != null ? data.Sector.Name : "",
+                    TransactionSubTypeId = data.TransactionSubTypeId,
+                    TransactionSubTypeName = data.TransactionSubType != null ? data.TransactionSubType.Name : "",
+                    StoreName = data.Store != null ? data.Store.Name : "",
+                    BranchId = data.BranchId,
+                    StoreId = data.StoreId,
+                    SectorId = data.SectorId,
+                    InventoryId = data.InventoryId,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+
+                };
+                return inventory;
+            }
+            return null;
         }
 
 
@@ -212,17 +218,20 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>Inventory Category Model Object.</returns>
         public InventoryCategory MapEFToModel(EF.Models.InventoryCategory data)
         {
-
-            var inventoryCategory = new InventoryCategory()
+            if (data != null)
             {
-                InventoryCategoryId = data.InventoryCategoryId,
-                Name = data.Name,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-               
+                var inventoryCategory = new InventoryCategory()
+                {
+                    InventoryCategoryId = data.InventoryCategoryId,
+                    Name = data.Name,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
 
-            };
-            return inventoryCategory;
+
+                };
+                return inventoryCategory;
+            }
+            return null;
         }
 
 

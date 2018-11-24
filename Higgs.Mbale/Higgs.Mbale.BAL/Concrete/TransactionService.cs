@@ -127,28 +127,33 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>Transaction Model Object.</returns>
         public Transaction MapEFToModel(EF.Models.Transaction data)
         {
-
-            var transaction = new Transaction()
+            if (data != null)
             {
-                TransactionId = data.TransactionId,
-                BranchId = data.BranchId,
-                SectorId = data.SectorId,
-                Amount = data.Amount,
-                TransactionSubTypeId = data.TransactionSubTypeId,
-                TransactionTypeName = data.TransactionType != null ? data.TransactionType.Name : "",
-                BranchName = data.Branch !=null? data.Branch.Name:"",
-                TransactionSubTypeName = data.TransactionSubType != null? data.TransactionSubType.Name: "",
-                SectorName = data.Sector != null? data.Sector.Name:"",
-                TransactionTypeId = data.TransactionTypeId,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser1),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser),
 
 
-            };
-            return transaction;
+                var transaction = new Transaction()
+                {
+                    TransactionId = data.TransactionId,
+                    BranchId = data.BranchId,
+                    SectorId = data.SectorId,
+                    Amount = data.Amount,
+                    TransactionSubTypeId = data.TransactionSubTypeId,
+                    TransactionTypeName = data.TransactionType != null ? data.TransactionType.Name : "",
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    TransactionSubTypeName = data.TransactionSubType != null ? data.TransactionSubType.Name : "",
+                    SectorName = data.Sector != null ? data.Sector.Name : "",
+                    TransactionTypeId = data.TransactionTypeId,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser1),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser),
+
+
+                };
+                return transaction;
+            }
+            return null;
         }
 
 

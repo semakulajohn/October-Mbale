@@ -147,35 +147,39 @@ namespace Higgs.Mbale.BAL.Concrete
         public Debtor MapEFToModel(EF.Models.Debtor data)
         {
             var accountName = string.Empty;
-            if (data.CasualWorkerId != null)
+            if (data != null)
             {
-                accountName = (data.CasualWorker.FirstName + " " + data.CasualWorker.LastName);
-            }
-            else if(data.AspNetUserId != null)
-            {
-                accountName = _userService.GetUserFullName(data.AspNetUser);
-            }
-            var debtor = new Debtor()
-            {
-                              
-                BranchName = data.Branch !=null? data.Branch.Name:"",
-                SectorName = data.Sector != null ? data.Sector.Name : "",
-                AccountName = accountName,
-                BranchId = data.BranchId,
-                AspNetUserId = data.AspNetUserId,
-                CasualWorkerId = data.CasualWorkerId,
-                Action = data.Action,
-                SectorId = data.SectorId,
-                Amount = data.Amount,
-                DebtorId = data.DebtorId,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser1),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser3),               
+                if (data.CasualWorkerId != null)
+                {
+                    accountName = (data.CasualWorker.FirstName + " " + data.CasualWorker.LastName);
+                }
+                else if (data.AspNetUserId != null)
+                {
+                    accountName = _userService.GetUserFullName(data.AspNetUser);
+                }
+                var debtor = new Debtor()
+                {
 
-            };
-            return debtor;
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    SectorName = data.Sector != null ? data.Sector.Name : "",
+                    AccountName = accountName,
+                    BranchId = data.BranchId,
+                    AspNetUserId = data.AspNetUserId,
+                    CasualWorkerId = data.CasualWorkerId,
+                    Action = data.Action,
+                    SectorId = data.SectorId,
+                    Amount = data.Amount,
+                    DebtorId = data.DebtorId,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser1),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser3),
+
+                };
+                return debtor;
+            }
+            return null;
         }
 
 

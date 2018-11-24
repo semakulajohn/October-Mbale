@@ -374,51 +374,54 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>BuveraTransfer Model Object.</returns>
         public BuveraTransfer MapEFToModel(EF.Models.BuveraTransfer data)
         {
-          
-            var buveraTransfer = new BuveraTransfer()
+            if (data != null)
             {
-              
-             
-               BranchName = data.Branch !=null? data.Branch.Name:"",               
-                BranchId = data.BranchId,
-                TotalQuantity = data.TotalQuantity,
-                StoreId = data.StoreId,
-                BuveraTransferId = data.BuveraTransferId,
-                FromSupplierStoreId = data.FromSupplierStoreId,
-                Accept = data.Accept,
-                Reject = data.Reject,
-              
-                ToReceiverStoreId = data.ToReceiverStoreId,
-                ReceiverStoreName = data.Store2 != null? data.Store2.Name:"",
-                SupplierStoreName = data.Store1 != null? data.Store1.Name:"",
-                StoreName = data.Store!=null? data.Store.Name:"",
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser2)            
-            };
 
-            if (data.BuveraTransferGradeSizes != null)
-            {
-                if (data.BuveraTransferGradeSizes.Any())
+
+                var buveraTransfer = new BuveraTransfer()
                 {
-                    List<Grade> grades = new List<Grade>();
-                    var distinctGrades = data.BuveraTransferGradeSizes.GroupBy(g => g.GradeId).Select(o => o.First()).ToList();
-                    foreach (var buveraTransferGradeSize in distinctGrades)
+
+
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    BranchId = data.BranchId,
+                    TotalQuantity = data.TotalQuantity,
+                    StoreId = data.StoreId,
+                    BuveraTransferId = data.BuveraTransferId,
+                    FromSupplierStoreId = data.FromSupplierStoreId,
+                    Accept = data.Accept,
+                    Reject = data.Reject,
+
+                    ToReceiverStoreId = data.ToReceiverStoreId,
+                    ReceiverStoreName = data.Store2 != null ? data.Store2.Name : "",
+                    SupplierStoreName = data.Store1 != null ? data.Store1.Name : "",
+                    StoreName = data.Store != null ? data.Store.Name : "",
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser2)
+                };
+
+                if (data.BuveraTransferGradeSizes != null)
+                {
+                    if (data.BuveraTransferGradeSizes.Any())
                     {
-                        var grade = new Grade()
+                        List<Grade> grades = new List<Grade>();
+                        var distinctGrades = data.BuveraTransferGradeSizes.GroupBy(g => g.GradeId).Select(o => o.First()).ToList();
+                        foreach (var buveraTransferGradeSize in distinctGrades)
                         {
-                            GradeId = buveraTransferGradeSize.Grade.GradeId,
-                            Value = buveraTransferGradeSize.Grade.Value,
-                            CreatedOn = buveraTransferGradeSize.Grade.CreatedOn,
-                            TimeStamp = buveraTransferGradeSize.Grade.TimeStamp,
-                            Deleted = buveraTransferGradeSize.Grade.Deleted,
-                            CreatedBy = _userService.GetUserFullName(buveraTransferGradeSize.Grade.AspNetUser),
-                            UpdatedBy = _userService.GetUserFullName(buveraTransferGradeSize.Grade.AspNetUser1),
-                        };
-                        List<Denomination> denominations = new List<Denomination>();
-                           if (buveraTransferGradeSize.Grade.BuveraTransferGradeSizes != null)
+                            var grade = new Grade()
+                            {
+                                GradeId = buveraTransferGradeSize.Grade.GradeId,
+                                Value = buveraTransferGradeSize.Grade.Value,
+                                CreatedOn = buveraTransferGradeSize.Grade.CreatedOn,
+                                TimeStamp = buveraTransferGradeSize.Grade.TimeStamp,
+                                Deleted = buveraTransferGradeSize.Grade.Deleted,
+                                CreatedBy = _userService.GetUserFullName(buveraTransferGradeSize.Grade.AspNetUser),
+                                UpdatedBy = _userService.GetUserFullName(buveraTransferGradeSize.Grade.AspNetUser1),
+                            };
+                            List<Denomination> denominations = new List<Denomination>();
+                            if (buveraTransferGradeSize.Grade.BuveraTransferGradeSizes != null)
                             {
                                 if (buveraTransferGradeSize.Grade.BuveraTransferGradeSizes.Any())
                                 {
@@ -431,19 +434,21 @@ namespace Higgs.Mbale.BAL.Concrete
                                             Value = ogs.Size != null ? ogs.Size.Value : 0,
                                             Quantity = ogs.Quantity
                                         };
-                                      //  BuveraTransfer.TotalQuantity += (ogs.Quantity * ogs.Size.Value);
+                                        //  BuveraTransfer.TotalQuantity += (ogs.Quantity * ogs.Size.Value);
                                         denominations.Add(denomination);
                                     }
                                 }
-                               grade.Denominations = denominations;
-                           }                          
-                       grades.Add(grade);
+                                grade.Denominations = denominations;
+                            }
+                            grades.Add(grade);
+                        }
+                        buveraTransfer.Grades = grades;
                     }
-                    buveraTransfer.Grades = grades;                    
                 }
+
+                return buveraTransfer;
             }
-            
-            return buveraTransfer;
+            return null;
         }
 
 

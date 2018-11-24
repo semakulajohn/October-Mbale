@@ -351,51 +351,53 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>Stock Model Object.</returns>
         public Stock MapEFToModel(EF.Models.Stock data)
         {
-          
-            var stock = new Stock()
+            if (data != null)
             {
-                BatchId = data.BatchId,
-                SectorId = data.SectorId,
-                SectorName = data.Sector !=null?data.Sector.Name:"",
-                ProductId = data.ProductId,
-                ProductName = data.Product!=null?data.Product.Name:"",
-                BranchName = data.Branch !=null? data.Branch.Name:"",               
-                BranchId = data.BranchId,
-                BatchNumber = data.Batch != null? data.Batch.Name:"",
-                StockId = data.StockId,
-                InOrOut = data.InOrOut,
-                StoreId = data.StoreId,
-                StoreName = data.Store != null? data.Store.Name:"",
-                StockInOrOut = (data.InOrOut == true)?"Stock In":"Stock Out",
-                SoldOut = data.SoldOut,
-                SoldOutOrNot = (data.SoldOut == true)?"Sold Out":"Not yet Done",
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1)            
-            };
 
-            if (data.StockGradeSizes != null)
-            {
-                if (data.StockGradeSizes.Any())
+                var stock = new Stock()
                 {
-                    List<Grade> grades = new List<Grade>();
-                    var distinctGrades = data.StockGradeSizes.GroupBy(g => g.GradeId).Select(o => o.First()).ToList();
-                    foreach (var stockGradeSize in distinctGrades)
+                    BatchId = data.BatchId,
+                    SectorId = data.SectorId,
+                    SectorName = data.Sector != null ? data.Sector.Name : "",
+                    ProductId = data.ProductId,
+                    ProductName = data.Product != null ? data.Product.Name : "",
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    BranchId = data.BranchId,
+                    BatchNumber = data.Batch != null ? data.Batch.Name : "",
+                    StockId = data.StockId,
+                    InOrOut = data.InOrOut,
+                    StoreId = data.StoreId,
+                    StoreName = data.Store != null ? data.Store.Name : "",
+                    StockInOrOut = (data.InOrOut == true) ? "Stock In" : "Stock Out",
+                    SoldOut = data.SoldOut,
+                    SoldOutOrNot = (data.SoldOut == true) ? "Sold Out" : "Not yet Done",
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1)
+                };
+
+                if (data.StockGradeSizes != null)
+                {
+                    if (data.StockGradeSizes.Any())
                     {
-                        var grade = new Grade()
+                        List<Grade> grades = new List<Grade>();
+                        var distinctGrades = data.StockGradeSizes.GroupBy(g => g.GradeId).Select(o => o.First()).ToList();
+                        foreach (var stockGradeSize in distinctGrades)
                         {
-                            GradeId = stockGradeSize.Grade.GradeId,
-                            Value = stockGradeSize.Grade.Value,
-                            CreatedOn = stockGradeSize.Grade.CreatedOn,
-                            TimeStamp = stockGradeSize.Grade.TimeStamp,
-                            Deleted = stockGradeSize.Grade.Deleted,
-                            CreatedBy = _userService.GetUserFullName(stockGradeSize.Grade.AspNetUser),
-                            UpdatedBy = _userService.GetUserFullName(stockGradeSize.Grade.AspNetUser1),
-                        };
-                        List<Denomination> denominations = new List<Denomination>();
-                           if (stockGradeSize.Grade.StockGradeSizes != null)
+                            var grade = new Grade()
+                            {
+                                GradeId = stockGradeSize.Grade.GradeId,
+                                Value = stockGradeSize.Grade.Value,
+                                CreatedOn = stockGradeSize.Grade.CreatedOn,
+                                TimeStamp = stockGradeSize.Grade.TimeStamp,
+                                Deleted = stockGradeSize.Grade.Deleted,
+                                CreatedBy = _userService.GetUserFullName(stockGradeSize.Grade.AspNetUser),
+                                UpdatedBy = _userService.GetUserFullName(stockGradeSize.Grade.AspNetUser1),
+                            };
+                            List<Denomination> denominations = new List<Denomination>();
+                            if (stockGradeSize.Grade.StockGradeSizes != null)
                             {
                                 if (stockGradeSize.Grade.StockGradeSizes.Any())
                                 {
@@ -411,31 +413,33 @@ namespace Higgs.Mbale.BAL.Concrete
                                         denominations.Add(denomination);
                                     }
                                 }
-                               grade.Denominations = denominations;
-                           }                          
-                       grades.Add(grade);
+                                grade.Denominations = denominations;
+                            }
+                            grades.Add(grade);
+                        }
+                        stock.Grades = grades;
                     }
-                    stock.Grades = grades;                    
                 }
-            }
 
-            var stockProduct =_dataService.GetStockProductForAStock(data.StockId);
-           
-           
-            if (stockProduct != null)
-            {
+                var stockProduct = _dataService.GetStockProductForAStock(data.StockId);
+
+
+                if (stockProduct != null)
+                {
                     var stock_Product = new StockProduct()
                     {
                         StockId = stockProduct.StockId,
-                       Quantity = stockProduct.Quantity,
+                        Quantity = stockProduct.Quantity,
 
                     };
-                stock.ProductOutPut =stock_Product.Quantity;
-             
-            }
+                    stock.ProductOutPut = stock_Product.Quantity;
 
-            
-            return stock;
+                }
+
+
+                return stock;
+            }
+            return null;
         }
 
 
@@ -457,38 +461,41 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>StoreStock Model Object.</returns>
         public StoreStock MapEFToModel(EF.Models.StoreStock data)
         {
-            
-            var stock = GetStock(data.StockId);
-           
-            var storeStock = new StoreStock()
+            if (data != null)
             {
-                
-                SectorId = data.SectorId,
-                SectorName = data.Sector != null ? data.Sector.Name : "",
-                ProductId = data.ProductId,
-                ProductName = data.Product != null ? data.Product.Name : "",
-                BranchName = data.Branch != null ? data.Branch.Name : "",
-                BranchId = data.BranchId,
-                StockId = data.StockId,
-                InOrOut = data.InOrOut,
-                Quantity = data.Quantity,
-                StockBalance = data.StockBalance,
-                StartStock = data.StartStock,
-                Balance = (data.Balance != null)? data.Balance:0,
-                StoreStockId = data.StoreStockId,
-                 BatchNumber  = stock.BatchNumber,
-                StockInOrOut = (data.InOrOut == true) ? "Stock In" : "Stock Out",
-                SoldOut = data.SoldOut,
-                SoldOutOrNot = (data.SoldOut == true)? "Stock Sold Out":"Not Yet Done",
-              SoldAmount = (data.SoldAmount != null)? data.SoldAmount : 0,
-                StoreId = data.StoreId,
-                StoreName = data.Store != null ? data.Store.Name : "",
-                 TimeStamp = data.TimeStamp,
-                 Stock = stock,
-               
-            };
+                var stock = GetStock(data.StockId);
 
-             return storeStock;
+                var storeStock = new StoreStock()
+                {
+
+                    SectorId = data.SectorId,
+                    SectorName = data.Sector != null ? data.Sector.Name : "",
+                    ProductId = data.ProductId,
+                    ProductName = data.Product != null ? data.Product.Name : "",
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    BranchId = data.BranchId,
+                    StockId = data.StockId,
+                    InOrOut = data.InOrOut,
+                    Quantity = data.Quantity,
+                    StockBalance = data.StockBalance,
+                    StartStock = data.StartStock,
+                    Balance = (data.Balance != null) ? data.Balance : 0,
+                    StoreStockId = data.StoreStockId,
+                    BatchNumber = stock.BatchNumber,
+                    StockInOrOut = (data.InOrOut == true) ? "Stock In" : "Stock Out",
+                    SoldOut = data.SoldOut,
+                    SoldOutOrNot = (data.SoldOut == true) ? "Stock Sold Out" : "Not Yet Done",
+                    SoldAmount = (data.SoldAmount != null) ? data.SoldAmount : 0,
+                    StoreId = data.StoreId,
+                    StoreName = data.Store != null ? data.Store.Name : "",
+                    TimeStamp = data.TimeStamp,
+                    Stock = stock,
+
+                };
+
+                return storeStock;
+            }
+            return null;
         }
 
 
@@ -512,60 +519,25 @@ namespace Higgs.Mbale.BAL.Concrete
         /// <returns>StoreGradeSize Model Object.</returns>
         public StoreGradeSize MapEFToModel(EF.Models.StoreGradeSize data)
         {
-
-            var storeGradeSize = new StoreGradeSize()
+            if (data != null)
             {
+                var storeGradeSize = new StoreGradeSize()
+                {
 
-                GradeId = data.GradeId,
-                Quantity = data.Quantity,
-               SizeId = data.SizeId,
-               SizeValue = data.Size.Value,
-               GradeValue = data.Grade.Value,
-                StoreId = data.StoreId,
-                StoreName = data.Store != null ? data.Store.Name : "",
-                TimeStamp = data.TimeStamp,
+                    GradeId = data.GradeId,
+                    Quantity = data.Quantity,
+                    SizeId = data.SizeId,
+                    SizeValue = data.Size.Value,
+                    GradeValue = data.Grade.Value,
+                    StoreId = data.StoreId,
+                    StoreName = data.Store != null ? data.Store.Name : "",
+                    TimeStamp = data.TimeStamp,
 
-            };
+                };
 
-            //List<Grade> grades = new List<Grade>();
-
-            //var distinctGrade = this._dataService.GetGrade(storeGradeSize.GradeId);
-
-            //var grade = new Grade()
-            //{
-            //    GradeId = distinctGrade.GradeId,
-            //    Value = distinctGrade.Value,
-
-            //};
-            //var results = this._dataService.GetStoreGradeSizeForParticularGradeAtAStore(storeGradeSize.GradeId, storeGradeSize.StoreId);
-            //foreach (var gradeItem in results)
-            //{
-            //    List<Denomination> denominations = new List<Denomination>();
-
-            //    var distinctSize = this._dataService.GetSize(gradeItem.SizeId);
-
-            //    var denomination = new Denomination()
-            //    {
-            //        DenominationId = distinctSize.SizeId,
-            //        Value = distinctSize.Value,
-            //        Quantity = data.Quantity,
-
-            //    };
-
-            //    denominations.Add(denomination);
-
-
-            //    grade.Denominations = denominations;
-            //}
-
-
-            //grades.Add(grade);
-
-            //storeGradeSize.Grades = grades;
-
-     
-
-            return storeGradeSize;
+                return storeGradeSize;
+            }
+            return null;
         }
 
 

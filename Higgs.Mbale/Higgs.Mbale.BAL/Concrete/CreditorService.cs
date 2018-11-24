@@ -148,37 +148,43 @@ namespace Higgs.Mbale.BAL.Concrete
         {
             var accountName = string.Empty;
             var accountUniqueNumber = string.Empty;
-            if (data.CasualWorkerId != null)
-            {
-                accountName = (data.CasualWorker.FirstName + " " + data.CasualWorker.LastName);
-            }
-            else if (data.AspNetUserId != null)
-            {
-                accountName = _userService.GetUserFullName(data.AspNetUser);
-                accountUniqueNumber = data.AspNetUser.UniqueNumber;
-            }
-            var creditor = new Creditor()
-            {
-                                
-                BranchName = data.Branch !=null? data.Branch.Name:"",
-                SectorName = data.Sector != null ? data.Sector.Name : "",
-                AccountName = accountName,
-                AccountUniqueNumber = accountUniqueNumber,
-                BranchId = data.BranchId,
-                AspNetUserId = data.AspNetUserId,
-                CasualWorkerId = data.CasualWorkerId,
-                Action = data.Action,
-                SectorId = data.SectorId,
-                Amount = data.Amount,
-                CreditorId = data.CreditorId,
-                CreatedOn = data.CreatedOn,
-                TimeStamp = data.TimeStamp,
-                Deleted = data.Deleted,
-                CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),               
 
-            };
-            return creditor;
+            if (data != null)
+            {
+
+                if (data.CasualWorkerId != null)
+                {
+                    accountName = (data.CasualWorker.FirstName + " " + data.CasualWorker.LastName);
+                }
+                else if (data.AspNetUserId != null)
+                {
+                    accountName = _userService.GetUserFullName(data.AspNetUser);
+                    accountUniqueNumber = data.AspNetUser.UniqueNumber;
+                }
+                var creditor = new Creditor()
+                {
+
+                    BranchName = data.Branch != null ? data.Branch.Name : "",
+                    SectorName = data.Sector != null ? data.Sector.Name : "",
+                    AccountName = accountName,
+                    AccountUniqueNumber = accountUniqueNumber,
+                    BranchId = data.BranchId,
+                    AspNetUserId = data.AspNetUserId,
+                    CasualWorkerId = data.CasualWorkerId,
+                    Action = data.Action,
+                    SectorId = data.SectorId,
+                    Amount = data.Amount,
+                    CreditorId = data.CreditorId,
+                    CreatedOn = data.CreatedOn,
+                    TimeStamp = data.TimeStamp,
+                    Deleted = data.Deleted,
+                    CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                    UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+
+                };
+                return creditor;
+            }
+            return null;
         }
 
 
