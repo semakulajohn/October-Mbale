@@ -48,6 +48,7 @@ namespace Higgs.Mbale.Models
       
        public string PaymentModeName { get; set; }
        public string OrderNumber { get; set; }
+       public long DocumentId { get; set; }
       
     }
 }

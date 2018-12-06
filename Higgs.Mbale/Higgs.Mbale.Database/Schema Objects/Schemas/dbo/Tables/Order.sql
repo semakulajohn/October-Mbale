@@ -6,6 +6,7 @@
 	[CustomerId] [nvarchar](128) NOT NULL,
 	[ProductId]  BIGINT NOT NULL,
 	[BranchId]   BIGINT NOT NULL,
+	[Balance]   FLOAT NULL,
 	[Deleted]	[bit] NULL,
 	[CreatedBy] [nvarchar](128) NULL, 
     [UpdatedBy] [nvarchar](128) NULL,     

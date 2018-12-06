@@ -250,7 +250,9 @@ angular
                 { name: 'Status', field: 'StatusName' },
                 
                 { name: 'Quantity', cellTemplate: '<div ng-if="row.entity.ProductId == 1 || row.entity.Amount == null">{{row.entity.TotalQuantity}}</div><div ng-if="row.entity.Amount != 0">{{row.entity.Amount}}</div>' },
-                { name: 'Branch Name', field: 'BranchName' },
+                 { name: 'Balance', cellTemplate: '<div ng-if="row.entity.ProductId == 1 || row.entity.Amount == null">{{row.entity.TotalQuantity}}</div><div ng-if="row.entity.Amount != 0 && row.entity.Amount != null">{{row.entity.Balance}}</div>' },
+
+               { name: 'Branch Name', field: 'BranchName' },
                 { name: 'Order Details', cellTemplate: '<div class="ui-grid-cell-contents"> <a href="#/order/detail/{{row.entity.OrderId}}"> Order Detail</a> </div>' },
             { name: 'Delivery', field: 'Id', width: '15%', cellTemplate: '<div class="ui-grid-cell-contents"><a href="#/deliveries/edit/'+$scope.retrievedCustomerId+'/{{row.entity.OrderId}}/'+$scope.deliveryId+'">Make Delivery</a></div>' },
 
@@ -299,6 +301,8 @@ angular
                 { name: 'Status', field: 'StatusName' },
 
                 { name: 'Quantity', cellTemplate: '<div ng-if="row.entity.ProductId == 1 || row.entity.Amount == null">{{row.entity.TotalQuantity}}</div><div ng-if="row.entity.Amount != 0 && row.entity.Amount != null">{{row.entity.Amount}}</div>' },
+                 { name: 'Balance', cellTemplate: '<div ng-if="row.entity.ProductId == 1 || row.entity.Amount == null">{{row.entity.TotalQuantity}}</div><div ng-if="row.entity.Amount != 0 && row.entity.Amount != null">{{row.entity.Balance}}</div>' },
+
                 { name: 'Branch Name', field: 'BranchName' },
                 { name: 'Order Details', cellTemplate: '<div class="ui-grid-cell-contents"> <a href="#/order/detail/{{row.entity.OrderId}}"> Order Detail</a> </div>' },
             { name: 'Delivery', field: 'Id', width: '15%', cellTemplate: '<div class="ui-grid-cell-contents"><a href="#/deliveries/edit/' + $scope.retrievedCustomerId + '/{{row.entity.OrderId}}/' + $scope.deliveryId + '">Make Delivery</a></div>' },
@@ -394,7 +398,7 @@ angular
                 { name: 'Status', field: 'StatusName' },
 
                 { name: 'Quantity', cellTemplate: '<div ng-if="row.entity.Amount == 0 || row.entity.Amount == null">{{row.entity.TotalQuantity}}</div><div ng-if="row.entity.Amount != 0">{{row.entity.Amount}}</div>' },
-                 { name: 'Quantityx', cellTemplate: '<div ng-if="row.entity.ProductId == 1 || row.entity.Amount == null">{{row.entity.TotalQuantity}}</div><div ng-if="row.entity.Amount != 0 && row.entity.Amount != null">{{row.entity.Amount}}</div>' },
+                 { name: 'Balance', cellTemplate: '<div ng-if="row.entity.ProductId == 1 || row.entity.Amount == null">{{row.entity.TotalQuantity}}</div><div ng-if="row.entity.Amount != 0 && row.entity.Amount != null">{{row.entity.Balance}}</div>' },
 
                { name: 'Branch Name', field: 'BranchName' },
                 { name: 'Order Details', cellTemplate: '<div class="ui-grid-cell-contents"> <a href="#/order/detail/{{row.entity.OrderId}}"> Order Detail</a> </div>' },
@@ -406,6 +410,55 @@ angular
 
 
         }]);
+
+angular
+    .module('homer').controller('CustomerInProgressOrderController', ['$scope', 'ngTableParams', '$http', '$filter', '$location', 'Utils', 'uiGridConstants',
+        function ($scope, ngTableParams, $http, $filter, $location, Utils, uiGridConstants) {
+            $scope.loadingSpinner = true;
+            var customerId = $scope.customerId;
+            var promise = $http.get('/webapi/OrderApi/GetAllInProgressOrdersForAParticularCustomer?customerId=' + customerId, {});
+            promise.then(
+                function (payload) {
+                    $scope.gridData.data = payload.data;
+                    $scope.loadingSpinner = false;
+                }
+            );
+
+            $scope.gridData = {
+                enableFiltering: true,
+                columnDefs: $scope.columns,
+                enableRowSelection: false
+            };
+            $scope.retrievedCustomerId = customerId;
+            $scope.deliveryId = 0;
+            $scope.gridData.multiSelect = false;
+
+            $scope.gridData.columnDefs = [
+
+                {
+                    name: 'Product Name', field: 'ProductName'
+
+                },
+                { name: 'Customer Name', field: 'CustomerName' },
+                { name: 'Order Number', field: 'OrderId' },
+                { name: 'Status', field: 'StatusName' },
+
+                { name: 'Quantity', cellTemplate: '<div ng-if="row.entity.Amount == 0 || row.entity.Amount == null">{{row.entity.TotalQuantity}}</div><div ng-if="row.entity.Amount != 0">{{row.entity.Amount}}</div>' },
+                 { name: 'Balance', cellTemplate: '<div ng-if="row.entity.ProductId == 1 || row.entity.Amount == null">{{row.entity.TotalQuantity}}</div><div ng-if="row.entity.Amount != 0 && row.entity.Amount != null">{{row.entity.Balance}}</div>' },
+
+               { name: 'Branch Name', field: 'BranchName' },
+                { name: 'Order Details', cellTemplate: '<div class="ui-grid-cell-contents"> <a href="#/order/detail/{{row.entity.OrderId}}"> Order Detail</a> </div>' },
+                 { name: 'Make Delivery', field: 'Id', width: '15%', cellTemplate: '<div class="ui-grid-cell-contents"><a href="#/deliveries/edit/' + $scope.retrievedCustomerId + '/{{row.entity.OrderId}}/' + $scope.deliveryId + '">Make Delivery</a></div>' },
+
+            { name: 'Delivery', field: 'Id', width: '15%', cellTemplate: '<div class="ui-grid-cell-contents"><a href="#/deliveries/{{row.entity.OrderId}}"> Deliveries</a></div>' },
+
+            ];
+
+
+
+
+        }]);
+
 
 
 

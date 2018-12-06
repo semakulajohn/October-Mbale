@@ -100,24 +100,35 @@
             $scope.selectedSupplies = [];
             $scope.filteredSupplies = [];
             var currentDate = new Date();
+            //if ($scope.selectedSupplies.length > 0) {
+                selectSupplyService.item.forEach(function (supply) {
+                    var supplies = {
+                        SupplyId: supply.SupplyId,
+                        Quantity: supply.Quantity,
+                    };
 
-            selectSupplyService.item.forEach(function (supply) {
-                var supplies = {
-                    SupplyId: supply.SupplyId,
-                    Quantity: supply.Quantity,
-                };
+                    $scope.selectedSupplies.push(supplies);
 
-                $scope.selectedSupplies.push(supplies);
-                
 
-            });
-            $scope.showMessageSupplySelected = true;
-            $timeout(function () {
-                $scope.showMessageSave = false;
-                //$scope.showMessageSupplySelected = false;
-                if ($scope.modalInstance != null)
-                    $scope.modalInstance.close();
-            }, 1500);
+                });
+                $scope.showMessageSupplySelected = true;
+                $timeout(function () {
+                    $scope.showMessageSave = false;
+                    //$scope.showMessageSupplySelected = false;
+                    if ($scope.modalInstance != null)
+                        $scope.modalInstance.close();
+                }, 1500);
+            //}
+            //else {
+
+            //    $scope.showMessageSupplyNotSelected = true;
+            //    $timeout(function () {
+                    
+            //        $scope.showMessageSupplyNotSelected = false;
+            //        if ($scope.modalInstance != null)
+            //            $scope.modalInstance.close();
+            //    }, 1500);
+            //}
 
         });
 

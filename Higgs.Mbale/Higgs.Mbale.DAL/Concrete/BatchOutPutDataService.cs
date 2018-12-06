@@ -141,6 +141,7 @@ namespace Higgs.Mbale.DAL.Concrete
                 GradeId = batchGradeSizeDTO.GradeId,
                 SizeId =  batchGradeSizeDTO.SizeId,
                 Quantity = batchGradeSizeDTO.Quantity,
+                Balance = batchGradeSizeDTO.Balance,
                 TimeStamp = DateTime.Now
             };
             this.UnitOfWork.Get<BatchGradeSize>().AddNew(batchGradeSize);
@@ -159,6 +160,13 @@ namespace Higgs.Mbale.DAL.Concrete
           return  this.UnitOfWork.Get<BatchSupply>().AsQueryable()
                 .Where(m => m.BatchId == batchId);
         }
-       
+
+        public void UpdateBatchBrandBalance(long batchId, double quantity, string userId)
+        {
+            using (var dbContext = new MbaleEntities())
+            {
+                dbContext.UpdateBatchBrandQuantity(batchId, quantity, userId);
+            }
+        }
     }
 }

@@ -27,6 +27,8 @@ namespace Higgs.Mbale.Models
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public System.DateTime TimeStamp { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
+        public Nullable<double> Balance { get; set; }
+    
 
         public List<Grade> Grades { get; set; }
     }

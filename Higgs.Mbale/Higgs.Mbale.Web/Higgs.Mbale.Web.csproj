@@ -365,12 +365,14 @@
     <Content Include="app\views\buvera\rebag.html" />
     <Content Include="app\views\buvera\store-buvera-list.html" />
     <Content Include="app\views\buvera\storebuveratransfers.html" />
+    <Content Include="app\views\cash\admin-view.html" />
     <Content Include="app\views\cash\branch-cash.html" />
     <Content Include="app\views\cash\edit.html" />
     <Content Include="app\views\cash\list.html" />
     <Content Include="app\views\casualactivity\batch-casualActivity-list.html" />
     <Content Include="app\views\casualactivity\casualworker-casualactivity-list.html" />
     <Content Include="app\views\casualactivity\edit.html" />
+    <Content Include="app\views\casualworker\admin-view.html" />
     <Content Include="app\views\casualworker\branchCasualWorkers.html" />
     <Content Include="app\views\casualworker\detail.html" />
     <Content Include="app\views\casualworker\edit.html" />
@@ -430,6 +432,7 @@
     <Content Include="app\views\report\supplies.html" />
     <Content Include="app\views\report\transactions.html" />
     <Content Include="app\views\report\utilities.html" />
+    <Content Include="app\views\requistion\admin-view.html" />
     <Content Include="app\views\requistion\branch-requistion-list.html" />
     <Content Include="app\views\requistion\edit.html" />
     <Content Include="app\views\requistion\list.html" />
@@ -2475,11 +2478,15 @@
     <Content Include="documents\receipt.html" />
     <Content Include="email-templates\ForgotPassword.html" />
     <Content Include="favicon.png" />
+    <Content Include="fonts\fonts\pe-icon-7-stroke\css\helper.css" />
+    <Content Include="fonts\fonts\pe-icon-7-stroke\css\pe-icon-7-stroke.css" />
+    <Content Include="fonts\fonts\pe-icon-7-stroke\fonts\Pe-icon-7-stroke.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="images\Av.jpg" />
     <Content Include="images\loading-bars.svg" />
+    <Content Include="images\mbale_logo.gif" />
     <Content Include="js\angular-bootstrap-nav-tree\abn_tree.css" />
     <Content Include="js\angular-bootstrap-nav-tree\abn_tree_directive.js" />
     <Content Include="js\angular-bootstrap-nav-tree\ReadMe.txt" />
@@ -2575,6 +2582,10 @@
     <Content Include="js\tinymce\themes\modern\theme.js" />
     <Content Include="js\tinymce\tinymce.js" />
     <Content Include="js\tinymce\tinymce.min.js" />
+    <Content Include="Rotativa\help-wkhtmltoimage.txt" />
+    <Content Include="Rotativa\help-wkhtmltopdf.txt" />
+    <Content Include="Rotativa\wkhtmltoimage.exe" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="bower_components\angles\.bower.json" />
@@ -3141,6 +3152,10 @@
     <Content Include="js\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="js\tinymce\skins\lightgray\fonts\tinymce.woff" />
     <Content Include="bower_components\angular-spinner\angular-spinner.min.js.map" />
+    <Content Include="App_Browsers\qt.browser" />
+    <Content Include="fonts\fonts\pe-icon-7-stroke\fonts\Pe-icon-7-stroke.eot" />
+    <Content Include="fonts\fonts\pe-icon-7-stroke\fonts\Pe-icon-7-stroke.ttf" />
+    <Content Include="fonts\fonts\pe-icon-7-stroke\fonts\Pe-icon-7-stroke.woff" />
     <None Include="Properties\PublishProfiles\Mbale.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -3218,6 +3233,8 @@
     <Content Include="Views\Excel\Index.cshtml" />
     <Content Include="Views\UsersAdmin\BranchManagers.cshtml" />
     <Content Include="Views\Excel\SupplyReport.cshtml" />
+    <Content Include="Views\Excel\Requistion.cshtml" />
+    <Content Include="Views\Excel\Document.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -38,7 +38,7 @@
         <li ng-class="{active: $state.includes('batches')}" ng-show="isAdmin">
             <a href="#"><span class="nav-label">Batches</span><span class="fa arrow"></span> </a>
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('batches')}">
-                <li ui-sref-active="active"><a ui-sref="batches.list">All Batches</a></li>
+              <!--  <li ui-sref-active="active"><a ui-sref="batches.list">All Batches</a></li>-->
                 <li ui-sref-active="active"><a ui-sref="admin-batches-list">Admin view</a></li>
             </ul>
         </li>
@@ -46,7 +46,8 @@
         <li ng-class="{active: $state.includes('cash')}" ng-show="isAdmin">
             <a href="#"><span class="nav-label">Cash</span><span class="fa arrow"></span> </a>
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('cash')}">
-                <li ui-sref-active="active"><a ui-sref="cash.list">Cash</a></li>
+               <!-- <li ui-sref-active="active"><a ui-sref="cash.list">Cash</a></li>-->
+                <li ui-sref-active="active"><a ui-sref="admin-cash-list">cash view</a></li>
             </ul>
         </li>
        
@@ -67,7 +68,8 @@
         <li ng-class="{active: $state.includes('casualWorkers')}" ng-show="isAdmin">
             <a href="#"><span class="nav-label">CasualWorkers</span><span class="fa arrow"></span> </a>
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('casualWorkers')}">
-                <li ui-sref-active="active"><a ui-sref="casualWorkers.list">All CasualWorkers</a></li>
+                <!--<li ui-sref-active="active"><a ui-sref="casualWorkers.list">All CasualWorkers</a></li>-->
+                <li ui-sref-active="active"><a ui-sref="admin-casualworkers-list">Casual view</a></li>
             </ul>
         </li>
         <!--<li ng-class="{active: $state.includes('activities')}" ng-show="isAdmin">
@@ -91,7 +93,8 @@
         <li ng-class="{active: $state.includes('requistions')}" ng-show="isAdmin">
             <a href="#"><span class="nav-label">Requistions</span><span class="fa arrow"></span> </a>
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('requistions')}">
-                <li ui-sref-active="active"><a ui-sref="requistions.list">All Requistions</a></li>
+                <!--<li ui-sref-active="active"><a ui-sref="requistions.list">All Requistions</a></li>-->
+                <li ui-sref-active="active"><a ui-sref="admin-requistions-list">Requistion view</a></li>
                 <!--<li ui-sref-active="active"><a href="#/requistions/{{status.StatusId}}">Status Requistions</a></li>-->
             </ul>
         </li>

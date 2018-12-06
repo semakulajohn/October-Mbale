@@ -15,5 +15,6 @@ namespace Higgs.Mbale.BAL.Interface
         void MarkAsDeleted(long documentId, string userId);
         IEnumerable<Document> GetAllDocumentsForAParticularCategory(long documentCategoryId);
         IEnumerable<Document> GetAllDocumentsForAParticularBranch(long branchId);
+        Document GetDocumentForAParticularItem(long itemId);
     }
 }

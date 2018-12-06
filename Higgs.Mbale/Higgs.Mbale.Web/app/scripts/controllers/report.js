@@ -596,6 +596,14 @@ angular
 
             $scope.BatchesForThisMonth = function () {
                 $scope.data = [];
+                $scope.totalMaize = 0;
+                $scope.totalFactoryExpenses = 0;
+                $scope.totalBrandKgs = 0;
+                $scope.totalFlourkgs = 0;
+                $scope.totalLabourCosts = 0;
+                $scope.totalMillingBalance = 0;
+                $scope.totalMillingCharge = 0;
+                $scope.totalBuveraCosts = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateBatchCurrentMonthReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -604,6 +612,16 @@ angular
                      $scope.reportType = 2;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalMaize = value.Quantity + $scope.totalMaize;
+                             $scope.totalFactoryExpenses = value.TotalFactoryExpenseCost + $scope.totalFactoryExpenses;
+                             $scope.totalLabourCosts = value.TotalLabourCosts + $scope.totalLabourCosts;
+                             $scope.totalMillingCharge = value.MillingCharge + $scope.totalMillingCharge;
+                             $scope.totalMillingBalance = value.MillingChargeBalance + $scope.totalMillingBalance;
+                             $scope.totalBrandKgs = value.BrandOutPut + $scope.totalBrandKgs;
+                             $scope.totalFlourkgs = value.FlourOutPut + $scope.totalFlourkgs;
+                             $scope.totalBuveraCosts = value.TotalBuveraCost + $scope.totalBuveraCosts;
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -618,6 +636,14 @@ angular
 
             $scope.TodaysBatches = function () {
                 $scope.data = [];
+                $scope.totalMaize = 0;
+                $scope.totalFactoryExpenses = 0;
+                $scope.totalBrandKgs = 0;
+                $scope.totalFlourkgs = 0;
+                $scope.totalLabourCosts = 0;
+                $scope.totalMillingBalance = 0;
+                $scope.totalMillingCharge = 0;
+                $scope.totalBuveraCosts = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateBatchTodaysReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -626,6 +652,16 @@ angular
                      $scope.reportType = 1;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalMaize = value.Quantity + $scope.totalMaize;
+                             $scope.totalFactoryExpenses = value.TotalFactoryExpenseCost + $scope.totalFactoryExpenses;
+                             $scope.totalLabourCosts = value.TotalLabourCosts + $scope.totalLabourCosts;
+                             $scope.totalMillingCharge = value.MillingCharge + $scope.totalMillingCharge;
+                             $scope.totalMillingBalance = value.MillingChargeBalance + $scope.totalMillingBalance;
+                             $scope.totalBrandKgs = value.BrandOutPut + $scope.totalBrandKgs;
+                             $scope.totalFlourkgs = value.FlourOutPut + $scope.totalFlourkgs;
+                             $scope.totalBuveraCosts = value.TotalBuveraCost + $scope.totalBuveraCosts;
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -640,6 +676,14 @@ angular
 
             $scope.WeeksBatches = function () {
                 $scope.data = [];
+                $scope.totalMaize = 0;
+                $scope.totalFactoryExpenses = 0;
+                $scope.totalBrandKgs = 0;
+                $scope.totalFlourkgs = 0;
+                $scope.totalLabourCosts = 0;
+                $scope.totalMillingBalance = 0;
+                $scope.totalMillingCharge = 0;
+                $scope.totalBuveraCosts = 0;
                 var promise = $http.get('/webapi/ReportApi/GenerateBatchCurrentWeekReport', {});
                 $scope.showDownloadLink = false;
                 promise.then(
@@ -648,6 +692,16 @@ angular
                      $scope.reportType = 3;
                      if ($scope.data.length > 0) {
                          $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalMaize = value.Quantity + $scope.totalMaize;
+                             $scope.totalFactoryExpenses = value.TotalFactoryExpenseCost + $scope.totalFactoryExpenses;
+                             $scope.totalLabourCosts = value.TotalLabourCosts + $scope.totalLabourCosts;
+                             $scope.totalMillingCharge = value.MillingCharge + $scope.totalMillingCharge;
+                             $scope.totalMillingBalance = value.MillingChargeBalance + $scope.totalMillingBalance;
+                             $scope.totalBrandKgs = value.BrandOutPut + $scope.totalBrandKgs;
+                             $scope.totalFlourkgs = value.FlourOutPut + $scope.totalFlourkgs;
+                             $scope.totalBuveraCosts = value.TotalBuveraCost + $scope.totalBuveraCosts;
+                         });
                      }
                      $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
                          total: $scope.data.length, getData: function ($defer, params) {
@@ -669,6 +723,14 @@ angular
 
             $scope.SearchBatches = function (batch) {
                 $scope.data = [];
+                $scope.totalMaize = 0;
+                $scope.totalFactoryExpenses = 0;
+                $scope.totalBrandKgs = 0;
+                $scope.totalFlourkgs = 0;
+                $scope.totalLabourCosts = 0;
+                $scope.totalMillingBalance = 0;
+                $scope.totalMillingCharge = 0;
+                $scope.totalBuveraCosts = 0;
                 var promise = $http.post('/webapi/ReportApi/GetAllBatchesBetweenTheSpecifiedDates',
                         {
                             FromDate: batch.FromDate,
@@ -682,7 +744,16 @@ angular
 
                      $scope.data = payload.data;
                      $scope.reportType = 4;
-
+                     angular.forEach($scope.data, function (value, key) {
+                         $scope.totalMaize = value.Quantity + $scope.totalMaize;
+                         $scope.totalFactoryExpenses = value.TotalFactoryExpenseCost + $scope.totalFactoryExpenses;
+                         $scope.totalLabourCosts = value.TotalLabourCosts + $scope.totalLabourCosts;
+                         $scope.totalMillingCharge = value.MillingCharge + $scope.totalMillingCharge;
+                         $scope.totalMillingBalance = value.MillingChargeBalance + $scope.totalMillingBalance;
+                         $scope.totalBrandKgs = value.BrandOutPut + $scope.totalBrandKgs;
+                         $scope.totalFlourkgs = value.FlourOutPut + $scope.totalFlourkgs;
+                         $scope.totalBuveraCosts = value.TotalBuveraCost + $scope.totalBuveraCosts;
+                     });
                      $scope.tableParams = new ngTableParams({
                          page: 1,
                          count: 10,
@@ -1127,7 +1198,8 @@ angular
 
             $scope.reportType = 0;
             $scope.showDownloadLink = false;
-
+            var branches = [];
+            var selectedBranch;
 
             $scope.FactoryExpenseForThisMonth = function () {
                 $scope.data = [];
@@ -1220,6 +1292,7 @@ angular
 
 
 
+        
             $scope.SearchFactoryExpense = function (factoryExpense) {
                 $scope.data = [];
                 $scope.totalAmount = 0;

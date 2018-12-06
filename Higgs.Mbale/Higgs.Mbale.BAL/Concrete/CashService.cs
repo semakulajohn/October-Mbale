@@ -99,6 +99,11 @@ namespace Higgs.Mbale.BAL.Concrete
 
                 if (cash.Action == "-")
                 {
+                    if (OldBalance < cash.Amount)
+                    {
+                        cashId = -1;
+                        return cashId;
+                    }
                     NewBalance = OldBalance - cash.Amount;
                 }
                 else

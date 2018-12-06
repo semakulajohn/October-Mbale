@@ -138,5 +138,14 @@ namespace Higgs.Mbale.DAL.Concrete
                 .Where(m => m.BatchId == batchId && m.SupplyId == supplyId)
                 .Delete();
         }
+
+        public void UpdateBatchBrandBalance(long batchId, double quantity, string userId)
+        {
+            using (var dbContext = new MbaleEntities())
+            {
+                dbContext.UpdateBatchBrandQuantity(batchId, quantity, userId);
+            }
+        }
+      
     }
 }

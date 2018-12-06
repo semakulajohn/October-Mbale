@@ -15,3 +15,10 @@ select,
 textarea {
     max-width: 280px;
 }
+
+
+#Content1, #Content2 {
+    border-bottom: 3px solid #4588ba; 
+    margin-bottom:10px;
+
+}

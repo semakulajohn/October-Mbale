@@ -8,7 +8,9 @@
     <div ng-include="'/app/views/_common/Breadcrumb.html'"></div>
 
     <div class="content" ng-controller="BatchEditController">
-
+        <div class="text-center" ng-show="batch.BatchId > 0">
+            <a class="btn btn-danger btn-sm">  {{batch.Name | uppercase}} </a>
+        </div>
         <span us-spinner="{radius:30, width:16, length: 16}" spinner-key="global-spinner"></span>
         <div class="row">
             <div class="col-lg-12">
@@ -145,7 +147,8 @@
                                             </button>
 
                                             <div class="btn-group">
-                                                <button ng-click="Save(batch)" class="btn btn-info dropdown-toggle" ng-disabled="!form.$valid">
+                                               
+                                                <button class="btn btn-info dropdown-toggle" ng-really-click="Save(batch)" ng-disabled="!form.$valid" ng-really-message='Are you sure you want to save this batch'>
                                                     Save
                                                 </button>
                                                 <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">

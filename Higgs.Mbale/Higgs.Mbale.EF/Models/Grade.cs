@@ -18,7 +18,6 @@ namespace Higgs.Mbale.EF.Models
         {
             this.OrderGradeSizes = new HashSet<OrderGradeSize>();
             this.StockGradeSizes = new HashSet<StockGradeSize>();
-            this.BatchGradeSizes = new HashSet<BatchGradeSize>();
             this.StoreGradeSizes = new HashSet<StoreGradeSize>();
             this.BuveraGradeSizes = new HashSet<BuveraGradeSize>();
             this.StoreBuveraGradeSizes = new HashSet<StoreBuveraGradeSize>();
@@ -27,6 +26,7 @@ namespace Higgs.Mbale.EF.Models
             this.BuveraTransferGradeSizes = new HashSet<BuveraTransferGradeSize>();
             this.StoreBuveraTransferGradeSizes = new HashSet<StoreBuveraTransferGradeSize>();
             this.StoreFlourTransferGradeSizes = new HashSet<StoreFlourTransferGradeSize>();
+            this.BatchGradeSizes = new HashSet<BatchGradeSize>();
         }
     
         public long GradeId { get; set; }
@@ -41,7 +41,6 @@ namespace Higgs.Mbale.EF.Models
     
         public virtual ICollection<OrderGradeSize> OrderGradeSizes { get; set; }
         public virtual ICollection<StockGradeSize> StockGradeSizes { get; set; }
-        public virtual ICollection<BatchGradeSize> BatchGradeSizes { get; set; }
         public virtual ICollection<StoreGradeSize> StoreGradeSizes { get; set; }
         public virtual ICollection<BuveraGradeSize> BuveraGradeSizes { get; set; }
         public virtual ICollection<StoreBuveraGradeSize> StoreBuveraGradeSizes { get; set; }
@@ -53,5 +52,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<BuveraTransferGradeSize> BuveraTransferGradeSizes { get; set; }
         public virtual ICollection<StoreBuveraTransferGradeSize> StoreBuveraTransferGradeSizes { get; set; }
         public virtual ICollection<StoreFlourTransferGradeSize> StoreFlourTransferGradeSizes { get; set; }
+        public virtual ICollection<BatchGradeSize> BatchGradeSizes { get; set; }
     }
 }

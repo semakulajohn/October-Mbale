@@ -110,7 +110,7 @@
                                                     <div class="col-sm-12 col-md-12">
                                                         <input id="grade_{{grade.GradeId}}" type="checkbox" name="grade_{{grade.GradeId}}"
                                                                checklist-model="selectedGrades"
-                                                               checklist-value="grade">
+                                                               checklist-value="grade" >
                                                         <label for="grade-{{grade.GradeId}}"> {{grade.Value}} </label>
 
                                                         <div class="table-responsive">
@@ -218,7 +218,8 @@
                                             </button>
 
                                             <div class="btn-group" ng-hide="batchOutPut.BatchOutPutId > 0">
-                                                <button ng-click="Save(batchOutPut)" class="btn btn-info dropdown-toggle" ng-disabled="!form.$valid">
+                                                
+                                                <button class="btn btn-info dropdown-toggle" ng-really-click="Save(batchOutPut)" ng-disabled="!form.$valid" ng-really-message='Are you sure you want to save this output'>
                                                     Save
                                                 </button>
                                                 <!--<button class="btn btn-info dropdown-toggle" data-toggle="dropdown">

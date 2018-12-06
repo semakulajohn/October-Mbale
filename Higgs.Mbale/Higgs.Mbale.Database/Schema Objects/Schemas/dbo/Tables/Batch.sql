@@ -5,6 +5,7 @@
 	[Name]  [nvarchar](128) NOT NULL,
 	[Qauntity] FLOAT NOT NULL,
 	[Deleted]	[bit] NULL,
+	[BrandBalance] FLOAT NOT NULL,
 	[CreatedBy] [nvarchar](128) NULL, 
     [UpdatedBy] [nvarchar](128) NULL,     
     [DeletedBy] [nvarchar](128) NULL,

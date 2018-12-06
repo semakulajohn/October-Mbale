@@ -17,5 +17,6 @@ namespace Higgs.Mbale.DAL.Interface
         IEnumerable<Document> GetAllDocumentsForAParticularCategory(long documentCategoryId);
         IEnumerable<Document> GetAllDocumentsForAParticularBranch(long branchId);
       Document GetLatestCreatedDocumentForAParticularCategory(long documentCategoryId);
+      Document GetDocumentForAParticularItem(long itemId);
     }
 }

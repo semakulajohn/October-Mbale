@@ -4,6 +4,7 @@
 	[GradeId] BIGINT NOT NULL,
 	[SizeId] BIGINT NOT NULL,
 	[Quantity] FLOAT NOT NULL,
+	[Balance]   FLOAT NULL,
 	[TimeStamp] DATETIME NOT NULL,
  CONSTRAINT [PK_dbo.OrderGradeSize] PRIMARY KEY CLUSTERED 
 (

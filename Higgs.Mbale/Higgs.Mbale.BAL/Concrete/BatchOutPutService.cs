@@ -214,6 +214,7 @@ namespace Higgs.Mbale.BAL.Concrete
                                             SizeId = denomination.DenominationId,
                                             BatchOutPutId = batchOutPutId,
                                             Quantity = denomination.Quantity,
+                                            Balance = denomination.Quantity,
                                             TimeStamp = DateTime.Now
                                         };
                                         batchGradeSizeList.Add(batchGradeSize);
@@ -277,6 +278,7 @@ namespace Higgs.Mbale.BAL.Concrete
                             ProductOutPut = batchOutPut.BrandOutPut,
 
                         };
+                        UpdateBatchBrandBalance(batchOutPut.BatchId, batchOutPut.BrandOutPut, userId);
                         _stockService.SaveStock(stock, userId);
                         var flourStock = new Stock()
                         {
@@ -332,6 +334,7 @@ namespace Higgs.Mbale.BAL.Concrete
                             GradeId = batchGradeSize.GradeId,
                             Quantity = batchGradeSize.Quantity,
                             SizeId = batchGradeSize.SizeId,
+                            Balance = batchGradeSize.Balance,
                             TimeStamp = batchGradeSize.TimeStamp
                         };
                         this.SaveBatchGradeSize(batchGradeSizeDTO);
@@ -355,7 +358,11 @@ namespace Higgs.Mbale.BAL.Concrete
             _dataService.MarkAsDeleted(batchOutPutId, userId);
         }
 
-      
+        public void UpdateBatchBrandBalance(long batchId, double quantity, string userId)
+        {
+            
+            _dataService.UpdateBatchBrandBalance(batchId, quantity, userId);
+        }
         #region Mapping Methods
 
         public IEnumerable<BatchOutPut> MapEFToModel(IEnumerable<EF.Models.BatchOutPut> data)
@@ -424,7 +431,11 @@ namespace Higgs.Mbale.BAL.Concrete
                             {
                                 if (batchGradeSize.Grade.BatchGradeSizes.Any())
                                 {
-                                    var distinctSizes = batchGradeSize.Grade.BatchGradeSizes.GroupBy(s => s.SizeId).Select(o => o.First()).ToList();
+                                    
+                                    
+                                    var distinctSizes = batchGradeSize.Grade.BatchGradeSizes.Where(a => a.BatchOutPutId == data.BatchOutPutId).GroupBy(s => s.SizeId).Select(o => o.First()).ToList();
+                                    
+                                   
                                     foreach (var ogs in distinctSizes)
                                     {
                                         var denomination = new Denomination()
@@ -434,8 +445,10 @@ namespace Higgs.Mbale.BAL.Concrete
                                             Quantity = ogs.Quantity,
                                             Rate = ogs.Size.Rate,
                                             Amount = ogs.Quantity * (Convert.ToDouble(ogs.Size.Rate)),
+                                            Balance = ogs.Balance,
                                         };
                                         batchOutPut.TotalQuantity += (ogs.Quantity * ogs.Size.Value);
+                                       
                                         batchOutPut.TotalBuveraCost += denomination.Amount;
                                         denominations.Add(denomination);
                                     }

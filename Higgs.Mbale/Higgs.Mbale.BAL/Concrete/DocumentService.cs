@@ -32,6 +32,11 @@ namespace Higgs.Mbale.BAL.Concrete
             return MapEFToModel(result);
         }
 
+        public Document GetDocumentForAParticularItem(long itemId)
+        {
+            var result = this._dataService.GetDocumentForAParticularItem(itemId);
+            return MapEFToModel(result);
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -71,12 +76,21 @@ namespace Higgs.Mbale.BAL.Concrete
        
         public long SaveDocument(Document document, string userId)
         {
-            long documentNumber = GetDocumentNumber(document.DocumentCategoryId);       
+            long documentNumber = 0;
+            if (document.DocumentId == 0)
+            {
+                documentNumber = GetDocumentNumber(document.DocumentCategoryId);       
 
+            }
+            else
+            {
+                documentNumber = document.DocumentNumber;
+            }
+           
                  var documentDTO = new DTO.DocumentDTO()
                 {
                     DocumentId = document.DocumentId,
-                    Name = document.Name,
+                   
                     UserId = document.UserId,
                     DocumentCategoryId = document.DocumentCategoryId,
                     Amount = document.Amount,
@@ -85,6 +99,7 @@ namespace Higgs.Mbale.BAL.Concrete
                     Description = document.Description,
                     Quantity = document.Quantity,
                     DocumentNumber = documentNumber,
+                    AmountInWords = document.AmountInWords,
                     CreatedOn = document.CreatedOn,
                     TimeStamp = document.TimeStamp,
                     CreatedBy = document.CreatedBy,
@@ -121,33 +136,41 @@ namespace Higgs.Mbale.BAL.Concrete
         {
 
             var userName = string.Empty;
-            var user = _userService.GetAspNetUser(data.UserId);
-            if (user != null)
+            if (data != null)
             {
-                userName = user.FirstName + ' ' + user.LastName;
+                var user = _userService.GetAspNetUser(data.UserId);
+                if (user != null)
+                {
+                    userName = user.FirstName + ' ' + user.LastName;
+                }
+                var document = new Document()
+                   {
+                       DocumentId = data.DocumentId,
+                       UserId = data.UserId,
+                       DocumentCategoryId = data.DocumentCategoryId,
+                       DocumentCategoryName = data.DocumentCategory != null ? data.DocumentCategory.Name : "",
+                       Amount = data.Amount,
+                       ItemId = data.ItemId,
+                       BranchId = data.BranchId,
+                       BranchName = data.Branch != null ? data.Branch.Name : "",
+                       Description = data.Description,
+                       Quantity = Convert.ToDouble(data.Quantity),
+                       UserName = userName,
+                       DocumentNumber = data.DocumentNumber,
+                       AmountInWords = data.AmountInWords,
+                       CreatedOn = data.CreatedOn,
+                       TimeStamp = data.TimeStamp,
+                       CreatedBy = _userService.GetUserFullName(data.AspNetUser),
+                       UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+
+                   };
+
+                return document;
             }
-            var document = new Document()
-               {
-                   Name = data.Name,
-                   UserId = data.UserId,
-                   DocumentCategoryId = data.DocumentCategoryId,
-                   DocumentCategoryName = data.DocumentCategory != null ? data.DocumentCategory.Name : "",
-                   Amount = data.Amount,
-                   ItemId = data.ItemId,
-                   BranchId = data.BranchId,
-                   BranchName = data.Branch != null ? data.Branch.Name : "",
-                   Description = data.Description,
-                   Quantity = Convert.ToDouble(data.Quantity),
-                   UserName = userName,
-                   DocumentNumber = data.DocumentNumber,
-                   CreatedOn = data.CreatedOn,
-                   TimeStamp = data.TimeStamp,
-                   CreatedBy = _userService.GetUserFullName(data.AspNetUser),
-                   UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
-
-               };
-
-            return document;
+            else
+            {
+                return null;
+            }
 
         }
 

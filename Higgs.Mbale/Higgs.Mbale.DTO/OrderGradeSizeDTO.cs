@@ -13,5 +13,7 @@ namespace Higgs.Mbale.DTO
         public long SizeId { get; set; }
         public double Quantity { get; set; }
         public System.DateTime TimeStamp { get; set; }
+        public Nullable<double> Balance { get; set; }
+    
     }
 }

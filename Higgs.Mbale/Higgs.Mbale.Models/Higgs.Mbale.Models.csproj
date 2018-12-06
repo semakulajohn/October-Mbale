@@ -51,6 +51,7 @@
     <Compile Include="AspNetUser.cs" />
     <Compile Include="Batch.cs" />
     <Compile Include="BatchBranch.cs" />
+    <Compile Include="BatchDeliveryDetails.cs" />
     <Compile Include="BatchFactoryExpense.cs" />
     <Compile Include="BatchGrade.cs" />
     <Compile Include="BatchGradeSize.cs" />

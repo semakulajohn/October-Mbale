@@ -378,7 +378,11 @@ div#offer h1 {
     color: #006621 !important;
 }
 
+#Content1, #Content2 {
+    border-bottom: 3px solid #4588ba; 
+    margin-bottom:10px;
 
+}
 .multi-document-download-container {
 margin: 20px 0;
 border: 0;

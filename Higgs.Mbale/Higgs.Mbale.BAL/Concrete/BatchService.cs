@@ -432,6 +432,7 @@ namespace Higgs.Mbale.BAL.Concrete
                     BranchMillingChargeRate = data.Branch != null ? data.Branch.MillingChargeRate : 0,
                     CreatedBy = _userService.GetUserFullName(data.AspNetUser),
                     UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
+                    BrandBalance = data.BrandBalance,
                 };
 
 
@@ -443,6 +444,7 @@ namespace Higgs.Mbale.BAL.Concrete
                     {
                         var batchOutPut = new BatchOutPut()
                         {
+                            BatchOutPutId = outPut.BatchOutPutId,
                             Grades = outPut.Grades,
                             TotalBuveraCost = outPut.TotalBuveraCost,
                             TotalQuantity = outPut.TotalQuantity,
@@ -465,7 +467,7 @@ namespace Higgs.Mbale.BAL.Concrete
                         batch.FlourPercentage = batchOutPut.FlourPercentage;
                         batch.Grades = batchOutPut.Grades;
                     }
-
+                    batch.BatchOutPuts = batchOutPutList;
                 }
                 batch.MillingCharge = batch.BranchMillingChargeRate * batch.FlourOutPut;
 
@@ -612,7 +614,11 @@ namespace Higgs.Mbale.BAL.Concrete
            
         }
 
+        public void UpdateBatchBrandBalance(long batchId, double quantity, string userId)
+        {
 
+            _dataService.UpdateBatchBrandBalance(batchId, quantity, userId);
+        }
 
        #endregion
     }

@@ -69,8 +69,8 @@
                                                     <h5>Rejected</h5>
                                                     <p>{{buveraTransfer.Reject}}</p>
                                                     <p>
-
-                                                        <button ng-click="Reject(buveraTransfer)" class="btn btn-danger">Reject</button>
+                                                        
+                                                        <button ng-really-click="Reject(buveraTransfer)" ng-really-message='Are you sure you want to reject this transfer' class="btn btn-danger">Reject</button>
                                                     </p>
                                                 </div>
                                             </div>
@@ -79,8 +79,9 @@
                                                     <h5>Accepted</h5>
                                                     <p>{{buveraTransfer.Accept}}</p>
                                                     <p>
+                                                        <button ng-really-click="Accept(buveraTransfer)" ng-really-message='Are you sure you want to accept this transfer' class="btn btn-succcess">Accept</button>
 
-                                                        <button ng-click="Accept(buveraTransfer)" class="btn btn-success">Accept</button>
+                                                        <button 
                                                     </p>
                                                 </div>
                                             </div>

@@ -19,6 +19,7 @@ namespace Higgs.Mbale.EF.Models
         public long SizeId { get; set; }
         public double Quantity { get; set; }
         public System.DateTime TimeStamp { get; set; }
+        public Nullable<double> Balance { get; set; }
     
         public virtual Grade Grade { get; set; }
         public virtual Size Size { get; set; }

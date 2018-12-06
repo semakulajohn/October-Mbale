@@ -16,11 +16,11 @@ namespace Higgs.Mbale.EF.Models
     {
         public CasualWorker()
         {
+            this.AccountTransactionActivities = new HashSet<AccountTransactionActivity>();
             this.ActivityBatchCasuals = new HashSet<ActivityBatchCasual>();
             this.CasualActivities = new HashSet<CasualActivity>();
             this.Creditors = new HashSet<Creditor>();
             this.Debtors = new HashSet<Debtor>();
-            this.AccountTransactionActivities = new HashSet<AccountTransactionActivity>();
         }
     
         public long CasualWorkerId { get; set; }
@@ -29,6 +29,10 @@ namespace Higgs.Mbale.EF.Models
         public long BranchId { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
+        public string NINNumber { get; set; }
+        public string NextOfKeen { get; set; }
+        public string EmailAddress { get; set; }
+        public string UniqueNumber { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
@@ -36,19 +40,15 @@ namespace Higgs.Mbale.EF.Models
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public System.DateTime TimeStamp { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
-        public string NINNumber { get; set; }
-        public string NextOfKeen { get; set; }
-        public string EmailAddress { get; set; }
-        public string UniqueNumber { get; set; }
     
-        public virtual Branch Branch { get; set; }
-        public virtual ICollection<ActivityBatchCasual> ActivityBatchCasuals { get; set; }
-        public virtual ICollection<CasualActivity> CasualActivities { get; set; }
-        public virtual ICollection<Creditor> Creditors { get; set; }
-        public virtual ICollection<Debtor> Debtors { get; set; }
         public virtual ICollection<AccountTransactionActivity> AccountTransactionActivities { get; set; }
+        public virtual ICollection<ActivityBatchCasual> ActivityBatchCasuals { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual AspNetUser AspNetUser2 { get; set; }
+        public virtual Branch Branch { get; set; }
+        public virtual ICollection<CasualActivity> CasualActivities { get; set; }
+        public virtual ICollection<Creditor> Creditors { get; set; }
+        public virtual ICollection<Debtor> Debtors { get; set; }
     }
 }

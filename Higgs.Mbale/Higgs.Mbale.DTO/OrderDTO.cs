@@ -22,6 +22,8 @@ namespace Higgs.Mbale.DTO
         public System.DateTime TimeStamp { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public List<long> Grades { get; set; }
+        public Nullable<double> Balance { get; set; }
+    
     
     }
 }

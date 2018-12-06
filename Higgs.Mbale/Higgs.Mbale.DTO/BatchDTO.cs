@@ -24,6 +24,7 @@ namespace Higgs.Mbale.DTO
         public Nullable<double> LossPercentage { get; set; }
         public Nullable<double> FlourPercentage { get; set; }
         public Nullable<double> BrandPercentage { get; set; }
+        public double BrandBalance { get; set; }
 
         
         public List<long> Grades { get; set; }

@@ -19,9 +19,10 @@ namespace Higgs.Mbale.DAL.Interface
        // void SaveOrderGrade(OrderGradeDTO orderGradeDTO);
         void SaveOrderGradeSize(OrderGradeSizeDTO orderGradeSizeDTO);
         void PurgeOrderGradeSize(long orderId);
-        void UpdateOrderWithCompletedStatus(long orderId, long statusId, string userId);
+        void UpdateOrderWithCompletedStatus(long orderId, long statusId,double balance, string userId);
         IEnumerable<Order> GetAllCompletedOrdersForAParticularCustomer(string customerId, long statusId);
         IEnumerable<Order> GetAllOpenOrdersForAParticularCustomer(string customerId, long statusId);
-        void UpdateOrderWithInProgressStatus(long orderId, long statusId, string userId);
+        void UpdateOrderWithInProgressStatus(long orderId, long statusId,double balance, string userId);
+        void UpdateOrderWithBalance(long orderId, double balance, string userId);
     }
 }

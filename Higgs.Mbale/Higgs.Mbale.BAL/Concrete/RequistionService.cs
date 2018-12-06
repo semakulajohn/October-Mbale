@@ -18,15 +18,23 @@ namespace Higgs.Mbale.BAL.Concrete
  public   class RequistionService : IRequistionService
     {
      private long requistionStatusIdComplete = Convert.ToInt64(ConfigurationManager.AppSettings["StatusIdComplete"]);
+     private long paymentVoucherId = Convert.ToInt64(ConfigurationManager.AppSettings["PaymentVoucher"]);
+     private long debitId = Convert.ToInt64(ConfigurationManager.AppSettings["DebitId"]);
+     private long sectorId = Convert.ToInt64(ConfigurationManager.AppSettings["SectorId"]);
        ILog logger = log4net.LogManager.GetLogger(typeof(RequistionService));
         private IRequistionDataService _dataService;
         private IUserService _userService;
+        private IDocumentService _documentService;
+        private ICashService _cashService;
         
 
-        public RequistionService(IRequistionDataService dataService,IUserService userService)
+        public RequistionService(IRequistionDataService dataService,IUserService userService,IDocumentService documentService,
+            ICashService cashService)
         {
             this._dataService = dataService;
             this._userService = userService;
+            this._documentService = documentService;
+            this._cashService = cashService;
         }
 
         /// <summary>
@@ -60,8 +68,37 @@ namespace Higgs.Mbale.BAL.Concrete
             var results = this._dataService.GetAllRequistionsForAParticularStatus(statusId);
             return MapEFToModel(results);
         }
+
+
+
+
+        private long GetRequistionNumber()
+        {
+            long requistionNumber = 0;
+            var latestRequistion = _dataService.GetLatestCreatedRequistion();
+            if (latestRequistion != null)
+            {
+                requistionNumber = Convert.ToInt64(latestRequistion.RequistionNumber) + 1;
+            }
+            else
+            {
+                requistionNumber = requistionNumber + 1;
+
+            }
+            return requistionNumber;
+        }
         public long SaveRequistion(Requistion requistion, string userId)
         {
+            long requistionNumber = 0;
+            if (requistion.RequistionId == 0)
+            {
+                requistionNumber = GetRequistionNumber();
+
+            }
+            else
+            {
+                requistionNumber = Convert.ToInt64(requistion.RequistionNumber);
+            }
             var requistionDTO = new DTO.RequistionDTO()
             {
                 RequistionId = requistion.RequistionId,
@@ -69,6 +106,9 @@ namespace Higgs.Mbale.BAL.Concrete
                 StatusId = requistion.StatusId,
                 RequistionNumber = requistion.RequistionNumber,
                 Amount = requistion.Amount,
+                Approved = requistion.Approved,
+                AmountInWords = requistion.AmountInWords,
+                Rejected = requistion.Rejected,
                 ApprovedById = requistion.ApprovedById,
                 BranchId = requistion.BranchId,
                 Description = requistion.Description,
@@ -79,14 +119,56 @@ namespace Higgs.Mbale.BAL.Concrete
             };
 
            var requistionId = this._dataService.SaveRequistion(requistionDTO, userId);
-           if (requistion.ApprovedById != null)
+           if (requistion.Approved && requistion.ApprovedById != null)
            {
-               UpdateRequistion(requistion.RequistionId, requistionStatusIdComplete, requistion.ApprovedById);
+               var cash = new Cash()
+               {
+
+                   Amount = requistion.Amount,
+                   Notes = requistion.Description,
+                   Action = "-",
+                   BranchId = requistion.BranchId,
+                   TransactionSubTypeId = debitId,
+                   SectorId = sectorId,
+
+                   CreatedBy = requistion.ApprovedById,
+
+               };
+              var  cashId = _cashService.SaveCash(cash, userId);
+              if (cashId == -1)
+              {
+                  return requistionId;
+              }
+              else
+              {
+                  UpdateRequistion(requistion.RequistionId, requistionStatusIdComplete, requistion.ApprovedById);
+
+                  var document = new Document()
+                  {
+                      DocumentId = 0,
+
+                      UserId = requistion.CreatedBy,
+                      DocumentCategoryId = paymentVoucherId,
+                      Amount = requistion.Amount,
+                      BranchId = requistion.BranchId,
+                      ItemId = requistionId,
+                      Description = requistion.Description,
+                      AmountInWords = requistion.AmountInWords,
+
+
+
+                  };
+
+                  var documentId = _documentService.SaveDocument(document, userId);
+
+              }
+             
+             
            }
-           else
-           {
-               SendEmail(requistionDTO, userId);
-           }
+           //else
+           //{
+           //    SendEmail(requistionDTO, userId);
+           //}
           
            return requistionId;
                       
@@ -163,8 +245,14 @@ namespace Higgs.Mbale.BAL.Concrete
         public Requistion MapEFToModel(EF.Models.Requistion data)
         {
             string statusName = string.Empty;
+            long documentId = 0;
             if (data != null)
             {
+                var document = _documentService.GetDocumentForAParticularItem(data.RequistionId);
+                if (document != null)
+                {
+                    documentId = document.DocumentId;
+                }
                 if (data.Status != null)
                 {
                     if (data.Status.StatusId == 2)
@@ -192,9 +280,13 @@ namespace Higgs.Mbale.BAL.Concrete
                     Description = data.Description,
                     CreatedOn = data.CreatedOn,
                     TimeStamp = data.TimeStamp,
+                    Approved = data.Approved,
+                    Rejected = data.Rejected,
+                    AmountInWords = data.AmountInWords,
                     Deleted = data.Deleted,
                     CreatedBy = _userService.GetUserFullName(data.AspNetUser1),
                     UpdatedBy = _userService.GetUserFullName(data.AspNetUser2),
+                    DocumentId = documentId,
 
 
                 };

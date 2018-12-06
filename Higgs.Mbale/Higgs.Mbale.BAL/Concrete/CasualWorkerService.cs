@@ -49,9 +49,8 @@ namespace Higgs.Mbale.BAL.Concrete
         {
             var results = this._dataService.GetAllCasualWorkers();
             return MapEFToModel(results);
-        } 
+        }
 
-       
         public long SaveCasualWorker(CasualWorker casualWorker, string userId)
         {
             var casualWorkerDTO = new DTO.CasualWorkerDTO()

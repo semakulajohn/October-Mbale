@@ -13,6 +13,7 @@ namespace Higgs.Mbale.Models
         public long SizeId { get; set; }
         public double Quantity { get; set; }
         public System.DateTime TimeStamp { get; set; }
+        public double Balance { get; set; }
         public  Batch Batch { get; set; }
         public  Grade Grade { get; set; }
         public  Size Size { get; set; }

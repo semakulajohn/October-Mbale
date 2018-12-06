@@ -40,9 +40,6 @@ namespace Higgs.Mbale.EF.Models
             this.CasualActivities = new HashSet<CasualActivity>();
             this.CasualActivities1 = new HashSet<CasualActivity>();
             this.CasualActivities2 = new HashSet<CasualActivity>();
-            this.CasualWorkers = new HashSet<CasualWorker>();
-            this.CasualWorkers1 = new HashSet<CasualWorker>();
-            this.CasualWorkers2 = new HashSet<CasualWorker>();
             this.Creditors = new HashSet<Creditor>();
             this.Creditors1 = new HashSet<Creditor>();
             this.Creditors2 = new HashSet<Creditor>();
@@ -53,10 +50,6 @@ namespace Higgs.Mbale.EF.Models
             this.Debtors1 = new HashSet<Debtor>();
             this.Debtors2 = new HashSet<Debtor>();
             this.Debtors3 = new HashSet<Debtor>();
-            this.Documents = new HashSet<Document>();
-            this.Documents1 = new HashSet<Document>();
-            this.Documents2 = new HashSet<Document>();
-            this.Documents3 = new HashSet<Document>();
             this.Factories = new HashSet<Factory>();
             this.Factories1 = new HashSet<Factory>();
             this.Factories2 = new HashSet<Factory>();
@@ -75,10 +68,6 @@ namespace Higgs.Mbale.EF.Models
             this.Products = new HashSet<Product>();
             this.Products1 = new HashSet<Product>();
             this.Products2 = new HashSet<Product>();
-            this.Requistions = new HashSet<Requistion>();
-            this.Requistions1 = new HashSet<Requistion>();
-            this.Requistions2 = new HashSet<Requistion>();
-            this.Requistions3 = new HashSet<Requistion>();
             this.Sectors = new HashSet<Sector>();
             this.Sectors1 = new HashSet<Sector>();
             this.Sectors2 = new HashSet<Sector>();
@@ -135,6 +124,16 @@ namespace Higgs.Mbale.EF.Models
             this.FlourTransfers = new HashSet<FlourTransfer>();
             this.FlourTransfers1 = new HashSet<FlourTransfer>();
             this.FlourTransfers2 = new HashSet<FlourTransfer>();
+            this.Requistions = new HashSet<Requistion>();
+            this.Requistions1 = new HashSet<Requistion>();
+            this.Requistions2 = new HashSet<Requistion>();
+            this.Requistions3 = new HashSet<Requistion>();
+            this.Documents = new HashSet<Document>();
+            this.Documents1 = new HashSet<Document>();
+            this.Documents2 = new HashSet<Document>();
+            this.CasualWorkers = new HashSet<CasualWorker>();
+            this.CasualWorkers1 = new HashSet<CasualWorker>();
+            this.CasualWorkers2 = new HashSet<CasualWorker>();
         }
     
         public string Id { get; set; }
@@ -193,9 +192,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<CasualActivity> CasualActivities { get; set; }
         public virtual ICollection<CasualActivity> CasualActivities1 { get; set; }
         public virtual ICollection<CasualActivity> CasualActivities2 { get; set; }
-        public virtual ICollection<CasualWorker> CasualWorkers { get; set; }
-        public virtual ICollection<CasualWorker> CasualWorkers1 { get; set; }
-        public virtual ICollection<CasualWorker> CasualWorkers2 { get; set; }
         public virtual ICollection<Creditor> Creditors { get; set; }
         public virtual ICollection<Creditor> Creditors1 { get; set; }
         public virtual ICollection<Creditor> Creditors2 { get; set; }
@@ -206,10 +202,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Debtor> Debtors1 { get; set; }
         public virtual ICollection<Debtor> Debtors2 { get; set; }
         public virtual ICollection<Debtor> Debtors3 { get; set; }
-        public virtual ICollection<Document> Documents { get; set; }
-        public virtual ICollection<Document> Documents1 { get; set; }
-        public virtual ICollection<Document> Documents2 { get; set; }
-        public virtual ICollection<Document> Documents3 { get; set; }
         public virtual ICollection<Factory> Factories { get; set; }
         public virtual ICollection<Factory> Factories1 { get; set; }
         public virtual ICollection<Factory> Factories2 { get; set; }
@@ -228,10 +220,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Product> Products { get; set; }
         public virtual ICollection<Product> Products1 { get; set; }
         public virtual ICollection<Product> Products2 { get; set; }
-        public virtual ICollection<Requistion> Requistions { get; set; }
-        public virtual ICollection<Requistion> Requistions1 { get; set; }
-        public virtual ICollection<Requistion> Requistions2 { get; set; }
-        public virtual ICollection<Requistion> Requistions3 { get; set; }
         public virtual ICollection<Sector> Sectors { get; set; }
         public virtual ICollection<Sector> Sectors1 { get; set; }
         public virtual ICollection<Sector> Sectors2 { get; set; }
@@ -288,5 +276,15 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<FlourTransfer> FlourTransfers { get; set; }
         public virtual ICollection<FlourTransfer> FlourTransfers1 { get; set; }
         public virtual ICollection<FlourTransfer> FlourTransfers2 { get; set; }
+        public virtual ICollection<Requistion> Requistions { get; set; }
+        public virtual ICollection<Requistion> Requistions1 { get; set; }
+        public virtual ICollection<Requistion> Requistions2 { get; set; }
+        public virtual ICollection<Requistion> Requistions3 { get; set; }
+        public virtual ICollection<Document> Documents { get; set; }
+        public virtual ICollection<Document> Documents1 { get; set; }
+        public virtual ICollection<Document> Documents2 { get; set; }
+        public virtual ICollection<CasualWorker> CasualWorkers { get; set; }
+        public virtual ICollection<CasualWorker> CasualWorkers1 { get; set; }
+        public virtual ICollection<CasualWorker> CasualWorkers2 { get; set; }
     }
 }

@@ -23,6 +23,7 @@ namespace Higgs.Mbale.Models
         public System.DateTime CreatedOn { get; set; }
         public System.DateTime TimeStamp { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
+        public double BrandBalance { get; set; }
 
         public double Loss { get; set; }
         public double BrandOutPut { get; set; }

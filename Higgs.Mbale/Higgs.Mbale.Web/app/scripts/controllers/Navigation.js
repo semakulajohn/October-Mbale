@@ -5,7 +5,7 @@
         $scope.isSupplier = false;
         $scope.isCustomer = false;
         $scope.isBranchManager = false;
-        $scope.richard = 'richard';
+       
         var promise = $http.get('/webapi/UserApi/GetLoggedInUser', {});
         promise.then(
             function (payload) {

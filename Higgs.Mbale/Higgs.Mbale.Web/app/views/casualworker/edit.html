@@ -26,7 +26,19 @@
                                         <span ng-if="loadingSpinner" class="loadingSpinner">
                                             <img src="/images/loading-bars.svg" width="45" height="45" /> processing...
                                         </span>
-
+                                        <div class="row">
+                                           
+                                            <div class="col-sm-6">
+                                            <label>ID Number</label>
+                                            <input ng-readonly="readOnly" name="id" class="form-control" ng-model="casualWorker.UniqueNumber" required ng-maxlength="50" ng-class="{ errorinput: form.id.$invalid }">
+                                             <span ng-show="form.id.$invalid">
+                                             <span ng-show="form.id.$error.required" class="help-block error"><i class="fa fa-warning"></i> ID Number is a required field.</span>
+                                             <span ng-show="form.id.$error.maxlength" class="help-block error"><i class="fa fa-warning"></i>ID Number should not exceed 50 characters.</span>
+                                            </span>
+                                         </div>
+                                        </div>
+                                        
+                                        
                                         <div class="row">
                                             <div class="form-group col-sm-6">
                                                 <div class="col-sm-12">
@@ -115,7 +127,7 @@
                                             <div class="form-group col-sm-6">
                                                 <div class="col-sm-12">
                                                     <label>NIN Number</label>
-                                                    <input ng-readonly="readOnly" name="nin" class="form-control" ng-model="casualWorker.NINNumber" required ng-maxlength="50" ng-class="{ errorinput: form.nin.$invalid }">
+                                                    <input ng-readonly="readOnly" name="nin" class="form-control" ng-model="casualWorker.NINNumber"  ng-maxlength="50" ng-class="{ errorinput: form.nin.$invalid }">
                                                     <span ng-show="form.nin.$invalid">
                                                         <span ng-show="form.nin.$error.required" class="help-block error"><i class="fa fa-warning"></i> NIN Number is a required field.</span>
                                                         <span ng-show="form.nin.$error.maxlength" class="help-block error"><i class="fa fa-warning"></i>NIN Number should not exceed 50 characters.</span>
@@ -123,30 +135,28 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group col-sm-6">
-                                                <div class="col-sm-12">
+                                            
+                                                <div class="form-group col-sm-6">
+                                                    <div class="col-sm-12">
+                                                        <label>Next Of Keen Number</label>
+                                                        <input ng-readonly="readOnly" name="keen" class="form-control" ng-model="casualWorker.NextOfKeen" ng-maxlength="50" ng-class="{ errorinput: form.keen.$invalid }">
+                                                        <span ng-show="form.keen.$invalid">
+                                                            <span ng-show="form.keen.$error.required" class="help-block error"><i class="fa fa-warning"></i> Next Of Keen Number is a required field.</span>
+                                                            <span ng-show="form.keen.$error.maxlength" class="help-block error"><i class="fa fa-warning"></i>Next Of Keen Number should not exceed 50 characters.</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!--<div class="col-sm-12">
                                                     <label>ID Number</label>
-                                                    <input ng-readonly="readOnly" name="id" class="form-control" ng-model="casualWorker.UniqueNumber" required ng-maxlength="50" ng-class="{ errorinput: form.id.$invalid }">
+                                                    <input ng-readonly="readOnly" name="id" class="form-control" ng-model="casualWorker.UniqueNumber"  ng-maxlength="50" ng-class="{ errorinput: form.id.$invalid }">
                                                     <span ng-show="form.id.$invalid">
                                                         <span ng-show="form.id.$error.required" class="help-block error"><i class="fa fa-warning"></i> ID Number is a required field.</span>
                                                         <span ng-show="form.id.$error.maxlength" class="help-block error"><i class="fa fa-warning"></i>ID Number should not exceed 50 characters.</span>
                                                     </span>
                                                 </div>
-                                            </div>
+                                            </div>-->
                                         </div>
-                                        <div class="row">
-                                          
-                                            <div class="form-group col-sm-6">
-                                                <div class="col-sm-12">
-                                                    <label>Next Of Keen Number</label>
-                                                    <input ng-readonly="readOnly" name="keen" class="form-control" ng-model="casualWorker.NextOfKeen" required ng-maxlength="50" ng-class="{ errorinput: form.keen.$invalid }">
-                                                    <span ng-show="form.keen.$invalid">
-                                                        <span ng-show="form.keen.$error.required" class="help-block error"><i class="fa fa-warning"></i> Next Of Keen Number is a required field.</span>
-                                                        <span ng-show="form.keen.$error.maxlength" class="help-block error"><i class="fa fa-warning"></i>Next Of Keen Number should not exceed 50 characters.</span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                       
                                         <div class="form-group">
                                             <div class="col-md-2">
                                             </div>
@@ -179,7 +189,8 @@
                                                 </button>
 
                                                 <div class="btn-group">
-                                                    <button ng-click="Save(casualWorker)" class="btn btn-info dropdown-toggle" ng-disabled="!form.$valid">
+                                                    
+                                                    <button ng-really-click="Save(casualWorker)" class="btn btn-info dropdown-toggle" ng-really-message='Are you sure you want to save this worker' ng-disabled=" !form.$valid">
                                                         Save
                                                     </button>
                                                     <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">

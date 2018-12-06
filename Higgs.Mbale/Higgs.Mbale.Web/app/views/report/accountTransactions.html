@@ -119,49 +119,59 @@
                             <table  id="reportTable">
                                 <thead>
                                     <tr>
-                                        <th>
-                                            <div>StartAmount</div>
-                                        </th>
-                                        <th>
-                                            <div>Action</div>
-                                        </th>
-
-                                        <th>
-                                            <div>Amount</div>
-                                        </th>
-
-                                        <th>
-                                            <div>Balance</div>
-                                        </th>
-
-                                        <th>
-                                            <div>Branch</div>
-                                        </th>
-
-                                        <th>
-                                            <div>Notes</div>
-                                        </th>
-
 
                                         <th>
                                             <div>CreatedOn</div>
                                         </th>
+                                        <th>
+                                            <div>Notes</div>
+                                        </th>
+                                        <th>
+                                            <div>Branch</div>
+                                        </th>
+
+                                        <!--<th>
+                                            <div>StartAmount</div>
+                                        </th>-->
+                                        <!--<th>
+                                            <div>Action</div>
+                                        </th>-->
+
+                                        <!--<th>
+                                            <div>Amount</div>
+                                        </th>-->
+                                        <th>
+                                            <div>Debit</div>
+                                        </th>
+                                        <th>
+                                            <div>Credit</div>
+                                        </th>
+                                        <th>
+                                            <div>Balance</div>
+                                        </th>
+
+                                       
+                                       
+
+
 
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="accountTransaction in data">
-
-                                        <td style="font-size: 18px !important;" width="10%">{{accountTransaction.StartAmount | number}}</td>
-                                        <td style="font-size: 18px !important;" width="3%">{{accountTransaction.Action}}</td>
-                                        <td style="font-size: 18px !important;" width="10%">{{accountTransaction.Amount| number}}</td>
-                                        <td style="font-size: 18px !important;" width="10%">{{accountTransaction.Balance| number}}</td>
-                                        
-                                        <td style="font-size: 18px !important;" width="20%">{{accountTransaction.BranchName}}</td>
-                                       
+                                        <td style="font-size: 18px !important;" width="10%">{{  accountTransaction.CreatedOn | date:"yy-MM-dd" }}</td>
                                         <td style="font-size: 18px !important;" width="20%">{{ accountTransaction.Notes }}</td>
-                                        <td style="font-size: 18px !important;" width="10%">{{  accountTransaction.CreatedOn | date:"yyyy-MM-dd hh:mm" }}</td>
 
+                                        <td style="font-size: 18px !important;" width="20%">{{accountTransaction.BranchName}}</td>
+                                        <td style="font-size: 18px !important;" width="10%" ng-if="accountTransaction.Action =='-'">{{accountTransaction.Amount |number}}</td><td style="font-size: 18px !important;" width="10%" ng-if="accountTransaction.Action !='-'"></td>
+                                        <td style="font-size: 18px !important;" width="10%" ng-if="accountTransaction.Action =='+'">{{accountTransaction.Amount |number}}</td><td style="font-size: 18px !important;" width="10%" ng-if="accountTransaction.Action !='+'"></td>
+
+                                        <!--<td style="font-size: 18px !important;" width="10%">{{accountTransaction.StartAmount | number}}</td>
+                                        <td style="font-size: 18px !important;" width="3%">{{accountTransaction.Action}}</td>-->
+                                        <!--<td style="font-size: 18px !important;" width="10%">{{accountTransaction.Amount| number}}</td>-->
+                                        <td style="font-size: 18px !important;" width="10%">{{accountTransaction.Balance| number}}</td>
+                                     
+                                      
 
                                     </tr>
                                 </tbody>

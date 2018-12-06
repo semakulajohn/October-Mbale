@@ -43,6 +43,21 @@ public    class RequistionDataService : DataServiceBase,IRequistionDataService
                 );
         }
 
+        public Requistion GetLatestCreatedRequistion()
+        {
+            Requistion requistion = new Requistion();
+            var requistions = this.UnitOfWork.Get<Requistion>().AsQueryable().Where(e => e.Deleted == false); 
+            if (requistions.Any())
+            {
+                requistion = requistions.AsQueryable().OrderByDescending(e => e.CreatedOn).First();
+                return requistion;
+            }
+            else
+            {
+                return requistion;
+            }
+
+        }
         /// <summary>
         /// Saves a new Requistion or updates an already existing Requistion.
         /// </summary>
@@ -65,7 +80,10 @@ public    class RequistionDataService : DataServiceBase,IRequistionDataService
                     Response = requistionDTO.Response,
                     Amount = requistionDTO.Amount,
                     Description = requistionDTO.Description,
+                    Approved = requistionDTO.Approved,
+                    Rejected = requistionDTO.Rejected,
                     ApprovedById = requistionDTO.ApprovedById,
+                    AmountInWords = requistionDTO.AmountInWords,
                     RequistionNumber = requistionDTO.RequistionNumber,
                     CreatedOn = DateTime.Now,
                     TimeStamp = DateTime.Now,
@@ -93,8 +111,11 @@ public    class RequistionDataService : DataServiceBase,IRequistionDataService
                     result.Amount = requistionDTO.Amount;
                     result.UpdatedBy = userId;
                     result.Response = requistionDTO.Response;
+                    result.Approved = requistionDTO.Approved;
+                    result.Rejected = requistionDTO.Rejected;
                     result.BranchId = requistionDTO.BranchId;
                     result.RequistionNumber = requistionDTO.RequistionNumber;
+                    result.AmountInWords = requistionDTO.AmountInWords;
                     result.TimeStamp = DateTime.Now;
                     result.Deleted = requistionDTO.Deleted;
                     result.DeletedBy = requistionDTO.DeletedBy;

@@ -32,7 +32,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<Branch> Branches { get; set; }
-        public virtual DbSet<CasualWorker> CasualWorkers { get; set; }
         public virtual DbSet<ExtensionType> ExtensionTypes { get; set; }
         public virtual DbSet<Factory> Factories { get; set; }
         public virtual DbSet<MediaType> MediaTypes { get; set; }
@@ -57,7 +56,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual DbSet<Stock> Stocks { get; set; }
         public virtual DbSet<StockGradeSize> StockGradeSizes { get; set; }
         public virtual DbSet<CasualActivity> CasualActivities { get; set; }
-        public virtual DbSet<BatchGradeSize> BatchGradeSizes { get; set; }
         public virtual DbSet<StockProduct> StockProducts { get; set; }
         public virtual DbSet<UserBranch> UserBranches { get; set; }
         public virtual DbSet<StoreStock> StoreStocks { get; set; }
@@ -68,14 +66,12 @@ namespace Higgs.Mbale.EF.Models
         public virtual DbSet<StoreBuveraGradeSize> StoreBuveraGradeSizes { get; set; }
         public virtual DbSet<Inventory> Inventories { get; set; }
         public virtual DbSet<InventoryCategory> InventoryCategories { get; set; }
-        public virtual DbSet<Requistion> Requistions { get; set; }
         public virtual DbSet<DeliveryGradeSize> DeliveryGradeSizes { get; set; }
         public virtual DbSet<Creditor> Creditors { get; set; }
         public virtual DbSet<Debtor> Debtors { get; set; }
         public virtual DbSet<Application> Applications { get; set; }
         public virtual DbSet<DocumentCategory> DocumentCategories { get; set; }
         public virtual DbSet<AccountTransactionActivity> AccountTransactionActivities { get; set; }
-        public virtual DbSet<Document> Documents { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<Cash> Cashes { get; set; }
         public virtual DbSet<Batch> Batches { get; set; }
@@ -99,6 +95,10 @@ namespace Higgs.Mbale.EF.Models
         public virtual DbSet<DeliveryBatch> DeliveryBatches { get; set; }
         public virtual DbSet<FlourTransfer> FlourTransfers { get; set; }
         public virtual DbSet<FlourTransferBatch> FlourTransferBatches { get; set; }
+        public virtual DbSet<Requistion> Requistions { get; set; }
+        public virtual DbSet<Document> Documents { get; set; }
+        public virtual DbSet<CasualWorker> CasualWorkers { get; set; }
+        public virtual DbSet<BatchGradeSize> BatchGradeSizes { get; set; }
     
         public virtual int Mark_FactoryExpense_AsDeleted(Nullable<long> inPutFactoryExpenseId, string userId)
         {
@@ -216,7 +216,7 @@ namespace Higgs.Mbale.EF.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateStoreStockWithSoldOut", inPutStockIdParameter, soldOutParameter, inPutProductIdParameter, userIdParameter);
         }
     
-        public virtual int UpdateOrderWithCompletedStatus(Nullable<long> inPutOrderId, Nullable<long> statusId, string userId)
+        public virtual int UpdateOrderWithCompletedStatus(Nullable<long> inPutOrderId, Nullable<long> statusId, Nullable<double> balance, string userId)
         {
             var inPutOrderIdParameter = inPutOrderId.HasValue ?
                 new ObjectParameter("inPutOrderId", inPutOrderId) :
@@ -226,11 +226,15 @@ namespace Higgs.Mbale.EF.Models
                 new ObjectParameter("statusId", statusId) :
                 new ObjectParameter("statusId", typeof(long));
     
+            var balanceParameter = balance.HasValue ?
+                new ObjectParameter("balance", balance) :
+                new ObjectParameter("balance", typeof(double));
+    
             var userIdParameter = userId != null ?
                 new ObjectParameter("userId", userId) :
                 new ObjectParameter("userId", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateOrderWithCompletedStatus", inPutOrderIdParameter, statusIdParameter, userIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateOrderWithCompletedStatus", inPutOrderIdParameter, statusIdParameter, balanceParameter, userIdParameter);
         }
     
         public virtual int Mark_Utility_AsDeleted(Nullable<long> inPutUtilityId, string userId)
@@ -276,7 +280,7 @@ namespace Higgs.Mbale.EF.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateRequistionWithCompletedStatus", inPutRequistionIdParameter, statusIdParameter, userIdParameter);
         }
     
-        public virtual int UpdateOrderWithInProgressStatus(Nullable<long> inPutOrderId, Nullable<long> statusId, string userId)
+        public virtual int UpdateOrderWithInProgressStatus(Nullable<long> inPutOrderId, Nullable<long> statusId, Nullable<double> balance, string userId)
         {
             var inPutOrderIdParameter = inPutOrderId.HasValue ?
                 new ObjectParameter("inPutOrderId", inPutOrderId) :
@@ -286,11 +290,49 @@ namespace Higgs.Mbale.EF.Models
                 new ObjectParameter("statusId", statusId) :
                 new ObjectParameter("statusId", typeof(long));
     
+            var balanceParameter = balance.HasValue ?
+                new ObjectParameter("balance", balance) :
+                new ObjectParameter("balance", typeof(double));
+    
             var userIdParameter = userId != null ?
                 new ObjectParameter("userId", userId) :
                 new ObjectParameter("userId", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateOrderWithInProgressStatus", inPutOrderIdParameter, statusIdParameter, userIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateOrderWithInProgressStatus", inPutOrderIdParameter, statusIdParameter, balanceParameter, userIdParameter);
+        }
+    
+        public virtual int UpdateBatchBrandQuantity(Nullable<long> inPutBatchId, Nullable<double> quantity, string userId)
+        {
+            var inPutBatchIdParameter = inPutBatchId.HasValue ?
+                new ObjectParameter("inPutBatchId", inPutBatchId) :
+                new ObjectParameter("inPutBatchId", typeof(long));
+    
+            var quantityParameter = quantity.HasValue ?
+                new ObjectParameter("quantity", quantity) :
+                new ObjectParameter("quantity", typeof(double));
+    
+            var userIdParameter = userId != null ?
+                new ObjectParameter("userId", userId) :
+                new ObjectParameter("userId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateBatchBrandQuantity", inPutBatchIdParameter, quantityParameter, userIdParameter);
+        }
+    
+        public virtual int UpdateOrderWithBalanceQuantity(Nullable<long> inPutOrderId, Nullable<double> quantity, string userId)
+        {
+            var inPutOrderIdParameter = inPutOrderId.HasValue ?
+                new ObjectParameter("inPutOrderId", inPutOrderId) :
+                new ObjectParameter("inPutOrderId", typeof(long));
+    
+            var quantityParameter = quantity.HasValue ?
+                new ObjectParameter("quantity", quantity) :
+                new ObjectParameter("quantity", typeof(double));
+    
+            var userIdParameter = userId != null ?
+                new ObjectParameter("userId", userId) :
+                new ObjectParameter("userId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateOrderWithBalanceQuantity", inPutOrderIdParameter, quantityParameter, userIdParameter);
         }
     }
 }

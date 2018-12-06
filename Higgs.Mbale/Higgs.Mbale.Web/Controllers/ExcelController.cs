@@ -29,6 +29,8 @@ namespace Higgs.Mbale.Web.Controllers
         private IFlourTransferService _flourTransferService;
         private IMachineRepairService _machineRepairService;
         private IUtilityService _utilityService;
+        private IRequistionService _requistionService;
+        private IDocumentService _documentService;
 
         public ExcelController()
         {
@@ -40,7 +42,7 @@ namespace Higgs.Mbale.Web.Controllers
             IBatchService batchService,IDeliveryService deliveryService,ICashService cashService,IOrderService orderService,
             ILabourCostService labourCostService, IOtherExpenseService otherExpenseService, IFactoryExpenseService factoryExpenseService,
             IBatchOutPutService batchOutPutService, IFlourTransferService flourTransferService, IMachineRepairService machineRepairService,
-            IUtilityService utilityService)
+            IUtilityService utilityService,IRequistionService requistionService,IDocumentService documentService)
         {
             this._transactionService = transactionService;
             this._reportService = reportService;
@@ -57,6 +59,8 @@ namespace Higgs.Mbale.Web.Controllers
             this._flourTransferService = flourTransferService;
             this._machineRepairService = machineRepairService;
             this._utilityService = utilityService;
+            this._requistionService = requistionService;
+            this._documentService = documentService;
         }
         // GET: Excel
         public ActionResult Index(int id)
@@ -205,9 +209,7 @@ namespace Higgs.Mbale.Web.Controllers
                 FileName = "FileName.pdf"
             };
         }
-
-      
-
+     
         public ActionResult SupplierSupply(int reportTypeId,string  supplierId)
         {
             int reportType = reportTypeId;
@@ -1020,7 +1022,94 @@ namespace Higgs.Mbale.Web.Controllers
         }
 
 
+        #region generating pdf
+        #region Requistion
+        // GET: Report
+        public ActionResult Requistion(long requistionId)
+        {
+            var requistion = _requistionService.GetRequistion(requistionId);
+            if (requistion != null)
+            {
+                var requistionPdf = new Requistion()
+                {
+                    RequistionId = requistion.RequistionId,
 
+                    Amount = requistion.Amount,
+
+                    Description = requistion.Description,
+
+                    RequistionNumber = requistion.RequistionNumber,
+
+                    CreatedBy = requistion.CreatedBy,
+                    AmountInWords = requistion.AmountInWords,
+
+                    CreatedOn = requistion.CreatedOn,
+
+                    BranchName = requistion.BranchName,
+                    StatusName = requistion.StatusName,
+                    ApprovedByName = requistion.ApprovedByName,
+
+                };
+                ViewBag.requistionPdf = requistionPdf;
+            }
+           
+
+            return View();
+        }
+
+        public ActionResult ExportRequistionAsPDF(long requistionId)
+        {
+            return new ActionAsPdf("Requistion", new { requistionId = requistionId })
+            {
+                FileName = "Requistion.pdf"
+            };
+        }
+        #endregion
+
+        #region document
+        // GET: Report
+        public ActionResult Document(long documentId)
+        {
+            var document = _documentService.GetDocument(documentId);
+            if (document != null)
+            {
+                var documentPdf = new Document()
+                {
+                    DocumentId = document.DocumentId,
+
+                    Amount = document.Amount,
+
+                    Description = document.Description,
+
+                    DocumentNumber = document.DocumentNumber,
+
+                    CreatedBy = document.CreatedBy,
+                    UserId = document.UserId,
+                    AmountInWords = document.AmountInWords,
+
+                    CreatedOn = document.CreatedOn,
+
+                    BranchName = document.BranchName,
+
+                    DocumentCategoryName = document.DocumentCategoryName,
+
+                };
+                ViewBag.documentPdf = documentPdf;
+            }
+           
+
+            return View();
+        }
+
+        public ActionResult ExportDocumentAsPDF(long documentId)
+        {
+            return new ActionAsPdf("Document", new { documentId = documentId })
+            {
+                FileName = "Document.pdf"
+            };
+        }
+        #endregion
+        #endregion
       
     }
 }

@@ -16,5 +16,7 @@ namespace Higgs.Mbale.Models
         public  Grade Grade { get; set; }
         public  Order Order { get; set; }
         public  Size Size { get; set; }
+        public Nullable<double> Balance { get; set; }
+    
     }
 }

@@ -22,7 +22,9 @@ namespace Higgs.Mbale.BAL.Concrete
         private long orderStatusIdInProgress = Convert.ToInt64(ConfigurationManager.AppSettings["StatusIdInProgress"]);
         private long flourTransactionSubTypeId = Convert.ToInt64(ConfigurationManager.AppSettings["FlourSaleTransactionSubTypeId"]);
         private long branTransactionSubTypeId = Convert.ToInt64(ConfigurationManager.AppSettings["BranSaleTransactionSubTypeId"]);
-        private double orderBalance = 0;
+        private long invoiceId = Convert.ToInt64(ConfigurationManager.AppSettings["Invoice"]);
+        private long receiptId = Convert.ToInt64(ConfigurationManager.AppSettings["Receipt"]);
+        private double orderBalance = 0,batchBrandBalance=0;
         ILog logger = log4net.LogManager.GetLogger(typeof(DeliveryService));
         private IDeliveryDataService _dataService;
         private IUserService _userService;
@@ -34,10 +36,11 @@ namespace Higgs.Mbale.BAL.Concrete
         private IAccountTransactionActivityService _accountTransactionActivityService;
         private ICashService _cashService;
         private IBatchService _batchService;
+        private IDocumentService _documentService;
         
 
         public DeliveryService(IDeliveryDataService dataService,IUserService userService,ITransactionDataService transactionDataService,
-            ITransactionSubTypeService transactionSubTypeService,
+            ITransactionSubTypeService transactionSubTypeService,IDocumentService documentService,
             IOrderService orderService,IStockService stockService,IStockDataService stockDataService,
             IAccountTransactionActivityService accountTransactionActivityService,ICashService cashService,
             IBatchService batchService)
@@ -46,6 +49,7 @@ namespace Higgs.Mbale.BAL.Concrete
             this._userService = userService;
             this._transactionDataService = transactionDataService;
             this._transactionSubTypeService = transactionSubTypeService;
+            this._documentService = documentService;
             this._orderService = orderService;
             this._stockService = stockService;
             this._stockDataService = stockDataService;
@@ -128,13 +132,13 @@ namespace Higgs.Mbale.BAL.Concrete
 
                     };
 
-                   
+
                     makeDelivery = new MakeDelivery()
-                    { 
+                    {
                         StockReduced = soldOut,
                         OrderQuantityBalance = orderBalance,
                     };
-                   
+
                     var storeStockId = UpdateStoreStockDetailsOnTransfer(storeStockUpdate);
                     return makeDelivery;
                 }
@@ -207,15 +211,117 @@ namespace Higgs.Mbale.BAL.Concrete
 
                     var storeStockId = UpdateStoreStockDetailsOnTransfer(storeStockUpdate);
                     return makeDelivery;
-                   
-                    
+
+
                 }
 
             }
             return makeDelivery;
         }
-       
 
+        private MakeDelivery ReduceBatchBrandStock(Batch batch,double orderQuantity,double totalQuantity, string userId)
+        {
+            var soldOut = false;
+            MakeDelivery makeDelivery = new MakeDelivery();
+            if (orderQuantity >= totalQuantity)
+            {
+
+                if (batch != null)
+                {
+                    if(orderQuantity >= totalQuantity)
+                    {
+                        if (totalQuantity > batch.BrandBalance)
+                        {
+                            orderBalance = orderQuantity - batch.BrandBalance;
+                        }
+                        else
+                        {
+                            orderBalance = orderQuantity - totalQuantity;
+                        }
+                       
+                         if ( totalQuantity <= batch.BrandBalance)
+                            {
+                                batchBrandBalance = batch.BrandBalance - totalQuantity;
+                             _batchService.UpdateBatchBrandBalance(batch.BatchId,batchBrandBalance, userId);
+                             if (batchBrandBalance > 0)
+                             {
+                                 makeDelivery = new MakeDelivery()
+                                 {
+                                     StockReduced = soldOut,
+                                     OrderQuantityBalance = orderBalance,
+                                     BatchBrandBalance = batchBrandBalance,
+                                 };
+
+                                
+
+                                 return makeDelivery;
+                             }
+                             else
+                             {
+                                 makeDelivery = new MakeDelivery()
+                                 {
+                                     StockReduced = true,
+                                     OrderQuantityBalance = orderBalance,
+                                     BatchBrandBalance = batchBrandBalance,
+                                 };
+                                 return makeDelivery;
+                             }
+                            
+                            }
+                         else
+                         {
+                             batchBrandBalance = 0;
+                             _batchService.UpdateBatchBrandBalance(batch.BatchId, batchBrandBalance, userId);
+                             orderBalance = orderQuantity - batch.BrandBalance;
+                             makeDelivery = new MakeDelivery()
+                             {
+                                StockReduced = true,
+                                OrderQuantityBalance = orderBalance,
+                                BatchBrandBalance = batchBrandBalance,
+                             };
+                             return makeDelivery;
+                         }
+                       
+                    }
+                    else
+                    {
+                        
+                        batchBrandBalance = batch.BrandBalance - orderQuantity;
+                        orderBalance = batchBrandBalance - orderQuantity;
+                        _batchService.UpdateBatchBrandBalance(batch.BatchId, batchBrandBalance, userId);
+                        if (batchBrandBalance > 0)
+                        {
+                            makeDelivery = new MakeDelivery()
+                            {
+                                StockReduced = soldOut,
+                                OrderQuantityBalance = orderBalance,
+                                BatchBrandBalance = batchBrandBalance,
+                            };
+                            return makeDelivery;
+                        }
+                        else
+                        {
+                            makeDelivery = new MakeDelivery()
+                            {
+                                StockReduced = true,
+                                OrderQuantityBalance = orderBalance,
+                                BatchBrandBalance = batchBrandBalance,
+                            };
+                            return makeDelivery;
+                        }
+                    }
+                   
+                  
+
+                }
+                else 
+                {
+                    //batch doesn't have enough quantities
+                }
+            } 
+            return makeDelivery;
+        }
+       
         #region flour delivery
         private bool CheckIfStockHasOrderGrade(long orderGrade, List<long> stockGrades)
         {
@@ -368,7 +474,7 @@ namespace Higgs.Mbale.BAL.Concrete
         private MakeDelivery MakeBrandDeliveryRecord(long storeId, Delivery delivery, string userId)
         {
             var makeDelivery = new MakeDelivery();
-
+            
             if (delivery.Batches == null || !delivery.Batches.Any())
             {
                 return makeDelivery;
@@ -385,32 +491,60 @@ namespace Higgs.Mbale.BAL.Concrete
                 List<Batch> SortedBatchList = batchesList.OrderBy(o => o.CreatedOn).ToList();
                 foreach (var batch in SortedBatchList)
                 {
-                    makeDelivery = ReduceBatchStock(batch.BatchId, delivery.ProductId, delivery.StoreId, delivery.Quantity, userId);
-                    if (makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance == 0)
+                    var order = _orderService.GetOrder(delivery.OrderId);
+
+                    if (batch.BrandBalance > 0)
                     {
-                        makeDelivery = new MakeDelivery()
+                        makeDelivery = ReduceBatchBrandStock(batch, Convert.ToDouble(order.Balance), delivery.Quantity, userId);
+                        if (makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance == 0)
                         {
-                            StockReduced = true,
-                            OrderQuantityBalance = 0,
-                        };
-                        return makeDelivery;
-                    }
-                    else if (!makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance == 0)
-                    {
-                        makeDelivery = new MakeDelivery()
-                        {
-                            StockReduced = true,
-                            OrderQuantityBalance = 0,
-                        };
-                        return makeDelivery;
-                    }
-                    else
-                    {
-                        if (orderBalance > 0)
-                        {
-                            makeDelivery = ReduceBatchStock(batch.BatchId, delivery.ProductId, delivery.StoreId, orderBalance, userId);
+                            makeDelivery = new MakeDelivery()
+                            {
+                                StockReduced = true,
+                                OrderQuantityBalance = 0,
+                            };
+                            orderBalance = makeDelivery.OrderQuantityBalance;
+                            _orderService.UpdateOrderWithBalance(order.OrderId, makeDelivery.OrderQuantityBalance, userId);
+
+                            return makeDelivery;
                         }
+                        else if (!makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance == 0)
+                        {
+                            makeDelivery = new MakeDelivery()
+                            {
+                                StockReduced = true,
+                                OrderQuantityBalance = 0,
+                            };
+                            _orderService.UpdateOrderWithBalance(order.OrderId, makeDelivery.OrderQuantityBalance, userId);
+                            orderBalance = makeDelivery.OrderQuantityBalance;
+                            return makeDelivery;
+                        }
+
+                        else if (!makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance > 0)
+                        {
+                            makeDelivery = new MakeDelivery()
+                            {
+                                StockReduced = false,
+                                OrderQuantityBalance = 0,
+                            };
+                            _orderService.UpdateOrderWithBalance(order.OrderId, makeDelivery.OrderQuantityBalance, userId);
+                            orderBalance = makeDelivery.OrderQuantityBalance;
+                            
+                        }
+                        else if (makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance > 0)
+                        {
+                            makeDelivery = new MakeDelivery()
+                            {
+                                StockReduced = true,
+                                OrderQuantityBalance = makeDelivery.OrderQuantityBalance,
+                            };
+                            _orderService.UpdateOrderWithBalance(order.OrderId, makeDelivery.OrderQuantityBalance, userId);
+                            orderBalance = makeDelivery.OrderQuantityBalance;
+
+                        }
+                       
                     }
+                   
                 }
             }
             return makeDelivery;
@@ -425,9 +559,10 @@ namespace Higgs.Mbale.BAL.Concrete
 
             if (delivery.OrderId != 0)
             {
-            
+                #region deliver brand
                 if (delivery.ProductId == 2)
                 {
+
                     var deliveryDTO = new DTO.DeliveryDTO()
                     {
                         StoreId = delivery.StoreId,
@@ -438,7 +573,7 @@ namespace Higgs.Mbale.BAL.Concrete
                         BranchId = delivery.BranchId,
                         SectorId = delivery.SectorId,
                         PaymentModeId = delivery.PaymentModeId,
-                        
+
                         Price = delivery.Price,
                         Quantity = delivery.Quantity,
                         ProductId = delivery.ProductId,
@@ -455,154 +590,446 @@ namespace Higgs.Mbale.BAL.Concrete
 
 
                     };
-                     makeDelivery =   MakeBrandDeliveryRecord(delivery.StoreId, delivery,userId);
-                    if (makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance == 0 )
+                    makeDelivery = MakeBrandDeliveryRecord(delivery.StoreId, delivery, userId);
+                    if (makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance == 0)
                     {
                         deliveryId = this._dataService.SaveDelivery(deliveryDTO, userId);
-    
-                        _orderService.UpdateOrderWithCompletedStatus(delivery.OrderId, orderStatusIdComplete, userId);
 
-                        //if (deliveryDTO.PaymentModeId == 2 || deliveryDTO.PaymentModeId == 1)
-                        //{
-                        //    //generate receipt
-                        // throw new   NotImplementedException();
-                        //}
-                        //else
-                        //{
-                        //    //Generate  Invoice
-                        //    throw new NotImplementedException();
-                        //}
-                        
+                        _orderService.UpdateOrderWithCompletedStatus(delivery.OrderId, orderStatusIdComplete, makeDelivery.OrderQuantityBalance, userId);
+                        #region generate documents
+                        if (deliveryDTO.PaymentModeId == 2 || deliveryDTO.PaymentModeId == 1)
+                        {
+                            //generate receipt
+                            // throw new NotImplementedException();
+                            var username = string.Empty;
+                            var user = _userService.GetAspNetUser(delivery.CustomerId);
+                            if (user != null)
+                            {
+                                username = user.FirstName + " " + user.LastName;
+                            }
+                            var document = new Document()
+                            {
+                                DocumentId = 0,
+
+                                UserId = username,
+                                DocumentCategoryId = receiptId,
+                                Amount = delivery.Amount,
+                                BranchId = delivery.BranchId,
+                                ItemId = deliveryId,
+                                Description = "Delivery of maize brand of " + delivery.Quantity.ToString() + " kgs",
+
+
+
+                            };
+
+                            var documentId = _documentService.SaveDocument(document, userId);
+                        }
+                        else
+                        {
+                            //Generate  Invoice
+                            // throw new NotImplementedException();
+                            var username = string.Empty;
+                            var user = _userService.GetAspNetUser(delivery.CustomerId);
+                            if (user != null)
+                            {
+                                username = user.FirstName + " " + user.LastName;
+                            }
+                            var document = new Document()
+                            {
+                                DocumentId = 0,
+
+                                UserId = username,
+                                DocumentCategoryId = invoiceId,
+                                Amount = delivery.Amount,
+                                BranchId = delivery.BranchId,
+                                ItemId = deliveryId,
+                                Description = "Delivery of maize brand of " + delivery.Quantity.ToString() + " kgs",
+
+
+
+                            };
+
+                            var documentId = _documentService.SaveDocument(document, userId);
+                        }
+                        #endregion
+
+
+
                     }
-                    
+
                     else if (!makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance <= 0)
                     {
                         // no batches were selected
                         return -1;
                     }
-
-                }
-                else
-                {
-
-                    //if order.ProductId == 1
-                    var deliveryDTO = new DTO.DeliveryDTO()
-                    {
-                        StoreId = delivery.StoreId,
-                        CustomerId = delivery.CustomerId,
-                        DeliveryCost = delivery.DeliveryCost,
-                        OrderId = delivery.OrderId,
-                        VehicleNumber = delivery.VehicleNumber,
-                        BranchId = delivery.BranchId,
-                        SectorId = delivery.SectorId,
-                        PaymentModeId = delivery.PaymentModeId,
-                      
-                        Price = delivery.Price,
-                        ProductId = delivery.ProductId,
-                        Amount = delivery.Amount,
-                        Quantity = delivery.Quantity,
-                        Location = delivery.Location,
-                        TransactionSubTypeId = delivery.TransactionSubTypeId,
-                        MediaId = delivery.MediaId,
-                        DeliveryId = delivery.DeliveryId,
-                        DriverName = delivery.DriverName,
-                        DriverNIN = delivery.DriverNIN,
-                        Deleted = delivery.Deleted,
-                        CreatedBy = delivery.CreatedBy,
-                        CreatedOn = delivery.CreatedOn,
-
-
-                    };
-                    makeDelivery = MakeFlourDeliveryRecord(delivery.StoreId, delivery, userId);
-                    if (makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance == 0)
+                    else if (!makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance == 0)
                     {
                         deliveryId = this._dataService.SaveDelivery(deliveryDTO, userId);
-                        if (delivery.Batches != null )
-                        {
-                            foreach (var batch in delivery.Batches)
-                            {
-                                var deliveryBatchDTO = new DeliveryBatchDTO()
-                                {
-                                    BatchId = batch.BatchId,
-                                    DeliveryId = deliveryId,
 
-                                };
-                                this._dataService.SaveDeliveryBatch(deliveryBatchDTO);
+                        _orderService.UpdateOrderWithInProgressStatus(delivery.OrderId, orderStatusIdInProgress, makeDelivery.OrderQuantityBalance, userId);
+
+
+                        #region generate documents
+                        if (deliveryDTO.PaymentModeId == 2 || deliveryDTO.PaymentModeId == 1)
+                        {
+                            //generate receipt
+                            // throw new NotImplementedException();
+                            var username = string.Empty;
+                            var user = _userService.GetAspNetUser(delivery.CustomerId);
+                            if (user != null)
+                            {
+                                username = user.FirstName + " " + user.LastName;
+                            }
+                            var document = new Document()
+                            {
+                                DocumentId = 0,
+
+                                UserId = username,
+                                DocumentCategoryId = receiptId,
+                                Amount = delivery.Amount,
+                                BranchId = delivery.BranchId,
+                                ItemId = deliveryId,
+                                Description = "Delivery of maize brand of " + delivery.Quantity.ToString() + " kgs",
+
+
+
+                            };
+
+                            var documentId = _documentService.SaveDocument(document, userId);
+                        }
+                        else
+                        {
+                            //Generate  Invoice
+                            // throw new NotImplementedException();
+                            var username = string.Empty;
+                            var user = _userService.GetAspNetUser(delivery.CustomerId);
+                            if (user != null)
+                            {
+                                username = user.FirstName + " " + user.LastName;
+                            }
+                            var document = new Document()
+                            {
+                                DocumentId = 0,
+
+                                UserId = username,
+                                DocumentCategoryId = invoiceId,
+                                Amount = delivery.Amount,
+                                BranchId = delivery.BranchId,
+                                ItemId = deliveryId,
+                                Description = "Delivery of maize brand of " + delivery.Quantity.ToString() + " kgs",
+
+
+
+                            };
+
+                            var documentId = _documentService.SaveDocument(document, userId);
+                        }
+                        #endregion
+                    }
+
+                    else if (!makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance > 0)
+                    {
+                        deliveryId = this._dataService.SaveDelivery(deliveryDTO, userId);
+
+                        _orderService.UpdateOrderWithInProgressStatus(delivery.OrderId, orderStatusIdInProgress, makeDelivery.OrderQuantityBalance, userId);
+
+                        #region generate documents
+                        if (deliveryDTO.PaymentModeId == 2 || deliveryDTO.PaymentModeId == 1)
+                        {
+                            //generate receipt
+                            // throw new NotImplementedException();
+                            var username = string.Empty;
+                            var user = _userService.GetAspNetUser(delivery.CustomerId);
+                            if (user != null)
+                            {
+                                username = user.FirstName + " " + user.LastName;
+                            }
+                            var document = new Document()
+                            {
+                                DocumentId = 0,
+
+                                UserId = username,
+                                DocumentCategoryId = receiptId,
+                                Amount = delivery.Amount,
+                                BranchId = delivery.BranchId,
+                                ItemId = deliveryId,
+                                Description = "Delivery of maize brand of " + delivery.Quantity.ToString() + " kgs",
+
+
+
+                            };
+
+                            var documentId = _documentService.SaveDocument(document, userId);
+                        }
+                        else
+                        {
+                            //Generate  Invoice
+                            // throw new NotImplementedException();
+                            var username = string.Empty;
+                            var user = _userService.GetAspNetUser(delivery.CustomerId);
+                            if (user != null)
+                            {
+                                username = user.FirstName + " " + user.LastName;
+                            }
+                            var document = new Document()
+                            {
+                                DocumentId = 0,
+
+                                UserId = username,
+                                DocumentCategoryId = invoiceId,
+                                Amount = delivery.Amount,
+                                BranchId = delivery.BranchId,
+                                ItemId = deliveryId,
+                                Description = "Delivery of maize brand of " + delivery.Quantity.ToString() + " kgs",
+
+
+
+                            };
+
+                            var documentId = _documentService.SaveDocument(document, userId);
+                        }
+                        #endregion
+                    }
+                    else if (makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance > 0)
+                    {
+                        deliveryId = this._dataService.SaveDelivery(deliveryDTO, userId);
+
+                        _orderService.UpdateOrderWithInProgressStatus(delivery.OrderId, orderStatusIdInProgress, makeDelivery.OrderQuantityBalance, userId);
+
+                        #region generate documents
+                        if (deliveryDTO.PaymentModeId == 2 || deliveryDTO.PaymentModeId == 1)
+                        {
+                            //generate receipt
+                            // throw new NotImplementedException();
+                            var username = string.Empty;
+                            var user = _userService.GetAspNetUser(delivery.CustomerId);
+                            if (user != null)
+                            {
+                                username = user.FirstName + " " + user.LastName;
+                            }
+                            var document = new Document()
+                            {
+                                DocumentId = 0,
+
+                                UserId = username,
+                                DocumentCategoryId = receiptId,
+                                Amount = delivery.Amount,
+                                BranchId = delivery.BranchId,
+                                ItemId = deliveryId,
+                                Description = "Delivery of maize brand of " + delivery.Quantity.ToString() + " kgs",
+
+
+
+                            };
+
+                            var documentId = _documentService.SaveDocument(document, userId);
+                        }
+                        else
+                        {
+                            //Generate  Invoice
+                            // throw new NotImplementedException();
+                            var username = string.Empty;
+                            var user = _userService.GetAspNetUser(delivery.CustomerId);
+                            if (user != null)
+                            {
+                                username = user.FirstName + " " + user.LastName;
+                            }
+                            var document = new Document()
+                            {
+                                DocumentId = 0,
+
+                                UserId = username,
+                                DocumentCategoryId = invoiceId,
+                                Amount = delivery.Amount,
+                                BranchId = delivery.BranchId,
+                                ItemId = deliveryId,
+                                Description = "Delivery of maize brand of " + delivery.Quantity.ToString() + " kgs",
+
+
+
+                            };
+
+                            var documentId = _documentService.SaveDocument(document, userId);
+                        }
+                        #endregion
+                    }
+                }
+                #endregion
+
+                #region deliver flour
+                else
+                    {
+                        
+                        //if order.ProductId == 1
+                        var deliveryDTO = new DTO.DeliveryDTO()
+                        {
+                            StoreId = delivery.StoreId,
+                            CustomerId = delivery.CustomerId,
+                            DeliveryCost = delivery.DeliveryCost,
+                            OrderId = delivery.OrderId,
+                            VehicleNumber = delivery.VehicleNumber,
+                            BranchId = delivery.BranchId,
+                            SectorId = delivery.SectorId,
+                            PaymentModeId = delivery.PaymentModeId,
+
+                            Price = delivery.Price,
+                            ProductId = delivery.ProductId,
+                            Amount = delivery.Amount,
+                            Quantity = delivery.Quantity,
+                            Location = delivery.Location,
+                            TransactionSubTypeId = delivery.TransactionSubTypeId,
+                            MediaId = delivery.MediaId,
+                            DeliveryId = delivery.DeliveryId,
+                            DriverName = delivery.DriverName,
+                            DriverNIN = delivery.DriverNIN,
+                            Deleted = delivery.Deleted,
+                            CreatedBy = delivery.CreatedBy,
+                            CreatedOn = delivery.CreatedOn,
+
+
+                        };
+                        makeDelivery = MakeFlourDeliveryRecord(delivery.StoreId, delivery, userId);
+                        if (makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance == 0)
+                        {
+                            deliveryId = this._dataService.SaveDelivery(deliveryDTO, userId);
+                            if (delivery.Batches != null)
+                            {
+                                foreach (var batch in delivery.Batches)
+                                {
+                                    var deliveryBatchDTO = new DeliveryBatchDTO()
+                                    {
+                                        BatchId = batch.BatchId,
+                                        DeliveryId = deliveryId,
+
+                                    };
+                                    this._dataService.SaveDeliveryBatch(deliveryBatchDTO);
+                                }
+
                             }
 
-                        }
 
-                        
-                        _orderService.UpdateOrderWithCompletedStatus(delivery.OrderId, orderStatusIdComplete, userId);
-                        List<DeliveryGradeSize> deliveryGradeSizeList = new List<DeliveryGradeSize>();
-                            
-                        foreach (var grade in delivery.Grades)
-                        {
-                            long sizeId = 0;
-                            double amount =0,price=0,quantity=0 ;
-                           
-                            foreach (var denomination in grade.Denominations)
-	                            {
-                                sizeId = denomination.DenominationId;
-                                price = denomination.Price;
-                                quantity = denomination.Quantity;
-                                amount = (denomination.Quantity * denomination.Price);
+                            //_orderService.UpdateOrderWithCompletedStatus(delivery.OrderId, orderStatusIdComplete, userId);
+                            List<DeliveryGradeSize> deliveryGradeSizeList = new List<DeliveryGradeSize>();
 
-                                var deliveryGradeSize = new DeliveryGradeSize()
+                            foreach (var grade in delivery.Grades)
+                            {
+                                long sizeId = 0;
+                                double amount = 0, price = 0, quantity = 0;
+
+                                foreach (var denomination in grade.Denominations)
                                 {
-                                    DeliveryId = deliveryId,
-                                    GradeId = grade.GradeId,
-                                    SizeId = sizeId,
-                                    Quantity = quantity,
-                                    Price = price,
-                                    Amount = amount,
-                                    TimeStamp = DateTime.Now,
+                                    sizeId = denomination.DenominationId;
+                                    price = denomination.Price;
+                                    quantity = denomination.Quantity;
+                                    amount = (denomination.Quantity * denomination.Price);
+
+                                    var deliveryGradeSize = new DeliveryGradeSize()
+                                    {
+                                        DeliveryId = deliveryId,
+                                        GradeId = grade.GradeId,
+                                        SizeId = sizeId,
+                                        Quantity = quantity,
+                                        Price = price,
+                                        Amount = amount,
+                                        TimeStamp = DateTime.Now,
+
+                                    };
+                                    deliveryGradeSizeList.Add(deliveryGradeSize);
+
+
+                                }
+
+                            }
+                            this._dataService.PurgeDeliveryGradeSize(deliveryId);
+                            this.SaveDeliveryGradeSizeList(deliveryGradeSizeList);
+                            #region generate documents
+                            if (deliveryDTO.PaymentModeId == 2 || deliveryDTO.PaymentModeId == 1)
+                            {
+                                //generate receipt
+                                //throw new NotImplementedException();
+                                var username = string.Empty;
+                                var user = _userService.GetAspNetUser(delivery.CustomerId);
+                                if (user != null)
+                                {
+                                    username = user.FirstName + " " + user.LastName;
+                                }
+                                var document = new Document()
+                                {
+                                    DocumentId = 0,
+
+                                    UserId = username,
+                                    DocumentCategoryId = receiptId,
+                                    Amount = delivery.Amount,
+                                    BranchId = delivery.BranchId,
+                                    ItemId = deliveryId,
+                                    Description = "Delivery of maize flour of " + delivery.Quantity.ToString() + " kgs",
+
+
 
                                 };
-                                deliveryGradeSizeList.Add(deliveryGradeSize);
 
-		 
-	                     }
-                           
+                                var documentId = _documentService.SaveDocument(document, userId);
+                            }
+                            else
+                            {
+                                //Generate  Invoice
+                                //throw new NotImplementedException();
+                                var username = string.Empty;
+                                var user = _userService.GetAspNetUser(delivery.CustomerId);
+                                if (user != null)
+                                {
+                                    username = user.FirstName + " " + user.LastName;
+                                }
+                                var document = new Document()
+                                {
+                                    DocumentId = 0,
+
+                                    UserId = username,
+                                    DocumentCategoryId = invoiceId,
+                                    Amount = delivery.Amount,
+                                    BranchId = delivery.BranchId,
+                                    ItemId = deliveryId,
+                                    Description = "Delivery of maize flour of " + delivery.Quantity.ToString() + " kgs",
+
+
+
+                                };
+
+                                var documentId = _documentService.SaveDocument(document, userId);
+                            }
+                            #endregion
+
+
                         }
-                        this._dataService.PurgeDeliveryGradeSize(deliveryId);
-                        this.SaveDeliveryGradeSizeList(deliveryGradeSizeList);
-                        //if (deliveryDTO.PaymentModeId == 2 || deliveryDTO.PaymentModeId == 1)
-                        //{
-                        //    //generate receipt
-                        //    throw new NotImplementedException();
-                        //}
-                        //else
-                        //{
-                        //    //Generate  Invoice
-                        //    throw new NotImplementedException();
-                        //}
-                    }
-                   
-                    else if (!makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance < 0)
-                    {
-                        // no batches were selected
-                        return -1;
-                    }
-                   
+                #endregion
+
+             }
+               
+                    //else if (!makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance < 0)
+                    //{
+                    //    // no batches were selected
+                    //    return -1;
+                    //}
+
+                    #region transactions
 
                     long transactionSubTypeId = 0;
                     var notes = string.Empty;
                     if (delivery.ProductId == 1)
                     {
                         transactionSubTypeId = flourTransactionSubTypeId;
-                         notes = "Maize Flour Sale";
+                        notes = "Maize Flour Sale";
                     }
-                    else if(delivery.ProductId ==2)
+                    else if (delivery.ProductId == 2)
                     {
                         transactionSubTypeId = branTransactionSubTypeId;
-                         notes = "Bran Sale";
+                        notes = "Bran Sale";
                     }
                     var paymentMode = _accountTransactionActivityService.GetPaymentMode(delivery.PaymentModeId);
                     var paymentModeName = paymentMode.Name;
                     if (paymentModeName == "Credit")
                     {
-                        
+
                         var accountActivity = new AccountTransactionActivity()
                         {
 
@@ -626,7 +1053,7 @@ namespace Higgs.Mbale.BAL.Concrete
 
                         var cash = new Cash()
                         {
-                       
+
                             Amount = delivery.Amount,
                             Notes = notes,
                             Action = "+",
@@ -634,12 +1061,12 @@ namespace Higgs.Mbale.BAL.Concrete
                             TransactionSubTypeId = transactionSubTypeId,
                             SectorId = delivery.SectorId,
 
-                        }; 
-                        _cashService.SaveCash(cash,userId);
+                        };
+                        _cashService.SaveCash(cash, userId);
 
-                        
+
                     }
-                   
+
 
                     if (delivery.Amount == 0)
                     {
@@ -670,13 +1097,13 @@ namespace Higgs.Mbale.BAL.Concrete
                         var transactionId = _transactionDataService.SaveTransaction(transaction, userId);
                         return deliveryId;
                     }
-                   
-                  
 
                 }
+                    #endregion
+                
                
 
-            }
+            
             return deliveryId;
         }
         
@@ -748,9 +1175,14 @@ namespace Higgs.Mbale.BAL.Concrete
         public Delivery MapEFToModel(EF.Models.Delivery data)
         {
             var delivery = new Delivery();
-
+            long documentId = 0;
             if (data != null)
             {
+                var document = _documentService.GetDocumentForAParticularItem(data.DeliveryId);
+                if (document != null)
+                {
+                    documentId = document.DocumentId;
+                }
                 var customerName = string.Empty;
                 var customer = _userService.GetAspNetUser(data.CustomerId);
                 if (customer != null)
@@ -780,6 +1212,7 @@ namespace Higgs.Mbale.BAL.Concrete
                     DeliveryId = data.DeliveryId,
                     Quantity = data.Quantity,
                     DriverName = data.DriverName,
+                    
                     DriverNIN = data.DriverNIN,
                     CreatedOn = data.CreatedOn,
                     TimeStamp = data.TimeStamp,
@@ -787,7 +1220,7 @@ namespace Higgs.Mbale.BAL.Concrete
                     ProductName = data.Product != null? data.Product.Name:"",
                     Amount = data.Amount,
                     Price = data.Price,
-                   
+                   DocumentId = documentId,
                     CreatedBy = _userService.GetUserFullName(data.AspNetUser),
                     UpdatedBy = _userService.GetUserFullName(data.AspNetUser1),
 
@@ -844,7 +1277,7 @@ namespace Higgs.Mbale.BAL.Concrete
                                              Quantity = ogs.Quantity,
                                              Price = ogs.Price,
                                          };
-                                         delivery.Quantity += (ogs.Quantity * ogs.Size.Value);
+                                         //delivery.Quantity += (ogs.Quantity * ogs.Size.Value);
                                          denominations.Add(denomination);
                                      }
                                  }

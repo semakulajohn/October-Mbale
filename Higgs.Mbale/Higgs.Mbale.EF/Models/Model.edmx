@@ -163,6 +163,7 @@
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
           <Property Name="TimeStamp" Type="datetime" Nullable="false" />
           <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="BrandBalance" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="BatchGradeSize">
           <Key>
@@ -175,6 +176,7 @@
           <Property Name="SizeId" Type="bigint" Nullable="false" />
           <Property Name="Quantity" Type="float" Nullable="false" />
           <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="Balance" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="BatchOutPut">
           <Key>
@@ -366,9 +368,9 @@
           <Property Name="LastName" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="BranchId" Type="bigint" Nullable="false" />
           <Property Name="Address" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="NINNumber" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="NextOfKeen" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="128" />
+          <Property Name="NINNumber" Type="nvarchar(max)" />
+          <Property Name="NextOfKeen" Type="nvarchar" MaxLength="50" />
           <Property Name="EmailAddress" Type="nvarchar(max)" />
           <Property Name="UniqueNumber" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Deleted" Type="bit" />
@@ -487,14 +489,13 @@
             <PropertyRef Name="DocumentId" />
           </Key>
           <Property Name="DocumentId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Amount" Type="float" Nullable="false" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" />
           <Property Name="ItemId" Type="bigint" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="DocumentNumber" Type="bigint" Nullable="false" />
           <Property Name="DocumentCategoryId" Type="bigint" Nullable="false" />
-          <Property Name="Quantity" Type="float" Nullable="false" />
+          <Property Name="Quantity" Type="float" />
           <Property Name="BranchId" Type="bigint" Nullable="false" />
           <Property Name="Deleted" Type="bit" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
@@ -503,6 +504,7 @@
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="TimeStamp" Type="datetime" Nullable="false" />
           <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="AmountInWords" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="DocumentCategory">
           <Key>
@@ -727,6 +729,7 @@
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
           <Property Name="TimeStamp" Type="datetime" Nullable="false" />
           <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="Balance" Type="float" />
         </EntityType>
         <EntityType Name="OrderGradeSize">
           <Key>
@@ -739,6 +742,7 @@
           <Property Name="SizeId" Type="bigint" Nullable="false" />
           <Property Name="Quantity" Type="float" Nullable="false" />
           <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="Balance" Type="float" />
         </EntityType>
         <EntityType Name="OtherExpense">
           <Key>
@@ -800,9 +804,12 @@
           <Property Name="RequistionId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StatusId" Type="bigint" Nullable="false" />
           <Property Name="BranchId" Type="bigint" Nullable="false" />
+          <Property Name="Amount" Type="float" Nullable="false" />
           <Property Name="ApprovedById" Type="nvarchar" MaxLength="128" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Response" Type="nvarchar(max)" />
+          <Property Name="Approved" Type="bit" Nullable="false" />
+          <Property Name="Rejected" Type="bit" Nullable="false" />
           <Property Name="RequistionNumber" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Deleted" Type="bit" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
@@ -811,7 +818,7 @@
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="TimeStamp" Type="datetime" Nullable="false" />
           <Property Name="DeletedOn" Type="datetime" />
-          <Property Name="Amount" Type="float" Nullable="false" />
+          <Property Name="AmountInWords" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Sector">
           <Key>
@@ -3000,18 +3007,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Document_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="Document" Type="Self.Document" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Document">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Factory_BranchId">
           <End Role="Branch" Type="Self.Branch" Multiplicity="1" />
           <End Role="Factory" Type="Self.Factory" Multiplicity="*" />
@@ -4544,14 +4539,26 @@
           <Parameter Name="inPutUtilityId" Type="bigint" Mode="In" />
           <Parameter Name="userId" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="UpdateBatchBrandQuantity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="inPutBatchId" Type="bigint" Mode="In" />
+          <Parameter Name="quantity" Type="float" Mode="In" />
+          <Parameter Name="userId" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="UpdateOrderWithBalanceQuantity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="inPutOrderId" Type="bigint" Mode="In" />
+          <Parameter Name="quantity" Type="float" Mode="In" />
+          <Parameter Name="userId" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="UpdateOrderWithCompletedStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="inPutOrderId" Type="bigint" Mode="In" />
           <Parameter Name="statusId" Type="bigint" Mode="In" />
+          <Parameter Name="balance" Type="float" Mode="In" />
           <Parameter Name="userId" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="UpdateOrderWithInProgressStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="inPutOrderId" Type="bigint" Mode="In" />
           <Parameter Name="statusId" Type="bigint" Mode="In" />
+          <Parameter Name="balance" Type="float" Mode="In" />
           <Parameter Name="userId" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="UpdateRequistionWithCompletedStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -5243,10 +5250,6 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Document" EntitySet="Document" />
           </AssociationSet>
-          <AssociationSet Name="FK_Document_UserId" Association="Self.FK_Document_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Document" EntitySet="Document" />
-          </AssociationSet>
           <AssociationSet Name="FK_Factory_BranchId" Association="Self.FK_Factory_BranchId">
             <End Role="Branch" EntitySet="Branch" />
             <End Role="Factory" EntitySet="Factory" />
@@ -5798,7 +5801,6 @@
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="CasualWorkers" Relationship="Self.FK_CasualWorker_BranchId" FromRole="Branch" ToRole="CasualWorker" />
           <NavigationProperty Name="Factories" Relationship="Self.FK_Factory_BranchId" FromRole="Branch" ToRole="Factory" />
           <NavigationProperty Name="Stores" Relationship="Self.FK_Store_BranchId" FromRole="Branch" ToRole="Store" />
           <NavigationProperty Name="BranchSectors" Relationship="Higgs.MbaleModel.FK_dbo_BranchSector_dbo_Branch_BranchId" FromRole="Branch" ToRole="BranchSector" />
@@ -5812,11 +5814,9 @@
           <NavigationProperty Name="StoreStocks" Relationship="Higgs.MbaleModel.FK_StoreStock_BranchId" FromRole="Branch" ToRole="StoreStock" />
           <NavigationProperty Name="StoreMaizeStocks" Relationship="Higgs.MbaleModel.FK_StoreMaizeStock_BranchId" FromRole="Branch" ToRole="StoreMaizeStock" />
           <NavigationProperty Name="Inventories" Relationship="Higgs.MbaleModel.FK_Inventory_BranchId" FromRole="Branch" ToRole="Inventory" />
-          <NavigationProperty Name="Requistions" Relationship="Higgs.MbaleModel.FK_Requistion_BranchId" FromRole="Branch" ToRole="Requistion" />
           <NavigationProperty Name="Creditors" Relationship="Higgs.MbaleModel.FK_Creditor_BranchId" FromRole="Branch" ToRole="Creditor" />
           <NavigationProperty Name="Debtors" Relationship="Higgs.MbaleModel.FK_Debtor_BranchId" FromRole="Branch" ToRole="Debtor" />
           <NavigationProperty Name="AccountTransactionActivities" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_BranchId" FromRole="Branch" ToRole="AccountTransactionActivity" />
-          <NavigationProperty Name="Documents" Relationship="Higgs.MbaleModel.FK_Document_BranchId" FromRole="Branch" ToRole="Document" />
           <NavigationProperty Name="Transactions" Relationship="Higgs.MbaleModel.FK_Transaction_BranchId" FromRole="Branch" ToRole="Transaction" />
           <NavigationProperty Name="Cashes" Relationship="Higgs.MbaleModel.FK_Cash_BranchId" FromRole="Branch" ToRole="Cash" />
           <NavigationProperty Name="Batches" Relationship="Higgs.MbaleModel.FK_Batch_Branch" FromRole="Branch" ToRole="Batch" />
@@ -5834,37 +5834,9 @@
           <NavigationProperty Name="BuveraTransfers" Relationship="Higgs.MbaleModel.FK_BuveraTransfer_BranchId" FromRole="Branch" ToRole="BuveraTransfer" />
           <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_BranchId" FromRole="Branch" ToRole="Delivery" />
           <NavigationProperty Name="FlourTransfers" Relationship="Higgs.MbaleModel.FK_FlourTransfer_BranchId" FromRole="Branch" ToRole="FlourTransfer" />
-        </EntityType>
-        <EntityType Name="CasualWorker">
-          <Key>
-            <PropertyRef Name="CasualWorkerId" />
-          </Key>
-          <Property Name="CasualWorkerId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="BranchId" Type="Int64" Nullable="false" />
-          <Property Name="Address" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Deleted" Type="Boolean" />
-          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
-          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Branch" Relationship="Self.FK_CasualWorker_BranchId" FromRole="CasualWorker" ToRole="Branch" />
-          <Property Name="NINNumber" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="NextOfKeen" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EmailAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="UniqueNumber" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ActivityBatchCasuals" Relationship="Higgs.MbaleModel.FK_dbo_ActivityBatchCasual_CasualWorkerId" FromRole="CasualWorker" ToRole="ActivityBatchCasual" />
-          <NavigationProperty Name="CasualActivities" Relationship="Higgs.MbaleModel.FK_CasualActivity_CasualWorkerId" FromRole="CasualWorker" ToRole="CasualActivity" />
-          <NavigationProperty Name="Creditors" Relationship="Higgs.MbaleModel.FK_Creditor_CasualWorkerId" FromRole="CasualWorker" ToRole="Creditor" />
-          <NavigationProperty Name="Debtors" Relationship="Higgs.MbaleModel.FK_Debtor_CasualWorkerId" FromRole="CasualWorker" ToRole="Debtor" />
-          <NavigationProperty Name="AccountTransactionActivities" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_CasualWorkerId" FromRole="CasualWorker" ToRole="AccountTransactionActivity" />
-          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_CasualWorker_CreatedBy" FromRole="CasualWorker" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_CasualWorker_DeletedBy" FromRole="CasualWorker" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_CasualWorker_UpdatedBy" FromRole="CasualWorker" ToRole="AspNetUser" />
+          <NavigationProperty Name="Requistions" Relationship="Higgs.MbaleModel.FK_Requistion_BranchId" FromRole="Branch" ToRole="Requistion" />
+          <NavigationProperty Name="Documents" Relationship="Higgs.MbaleModel.FK_Document_BranchId" FromRole="Branch" ToRole="Document" />
+          <NavigationProperty Name="CasualWorkers" Relationship="Higgs.MbaleModel.FK_CasualWorker_BranchId" FromRole="Branch" ToRole="CasualWorker" />
         </EntityType>
         <EntityType Name="ExtensionType">
           <Key>
@@ -5943,7 +5915,6 @@
           <NavigationProperty Name="OrderGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_OrderGradeSize_dbo_Size_SizeId" FromRole="Size" ToRole="OrderGradeSize" />
           <Property Name="Rate" Type="Double" />
           <NavigationProperty Name="StockGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StockGradeSize_dbo_Size_SizeId" FromRole="Size" ToRole="StockGradeSize" />
-          <NavigationProperty Name="BatchGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_Size_SizeId" FromRole="Size" ToRole="BatchGradeSize" />
           <NavigationProperty Name="StoreGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StoreGradeSize_dbo_Size_SizeId" FromRole="Size" ToRole="StoreGradeSize" />
           <NavigationProperty Name="BuveraGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_BuveraGradeSize_dbo_Size_SizeId" FromRole="Size" ToRole="BuveraGradeSize" />
           <NavigationProperty Name="StoreBuveraGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StoreBuveraGradeSize_dbo_Size_SizeId" FromRole="Size" ToRole="StoreBuveraGradeSize" />
@@ -5955,6 +5926,7 @@
           <NavigationProperty Name="BuveraTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_BuveraTransferGradeSize_dbo_Size_SizeId" FromRole="Size" ToRole="BuveraTransferGradeSize" />
           <NavigationProperty Name="StoreBuveraTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StoreBuveraTransferGradeSize_dbo_Size_SizeId" FromRole="Size" ToRole="StoreBuveraTransferGradeSize" />
           <NavigationProperty Name="StoreFlourTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StoreFlourTransferGradeSize_dbo_Size_SizeId" FromRole="Size" ToRole="StoreFlourTransferGradeSize" />
+          <NavigationProperty Name="BatchGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_Size_SizeId" FromRole="Size" ToRole="BatchGradeSize" />
         </EntityType>
         <EntityType Name="Status">
           <Key>
@@ -5970,11 +5942,11 @@
           <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Supplies" Relationship="Higgs.MbaleModel.FK_Supply_StatusId" FromRole="Status" ToRole="Supply" />
-          <NavigationProperty Name="Requistions" Relationship="Higgs.MbaleModel.FK_Requistion_StatusId" FromRole="Status" ToRole="Requistion" />
           <NavigationProperty Name="Orders" Relationship="Higgs.MbaleModel.FK_Order_StatusId" FromRole="Status" ToRole="Order" />
           <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Status_CreatedBy" FromRole="Status" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Status_DeletedBy" FromRole="Status" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Status_UpdatedBy" FromRole="Status" ToRole="AspNetUser" />
+          <NavigationProperty Name="Requistions" Relationship="Higgs.MbaleModel.FK_Requistion_StatusId" FromRole="Status" ToRole="Requistion" />
         </EntityType>
         <EntityType Name="Store">
           <Key>
@@ -6015,18 +5987,6 @@
           <NavigationProperty Name="FlourTransfers1" Relationship="Higgs.MbaleModel.FK_FlourTransfer_StoreId" FromRole="Store" ToRole="FlourTransfer" />
           <NavigationProperty Name="FlourTransfers2" Relationship="Higgs.MbaleModel.FK_FlourTransfer_ToReceiverStoreId" FromRole="Store" ToRole="FlourTransfer" />
           </EntityType>
-        <Association Name="FK_CasualWorker_BranchId">
-          <End Role="Branch" Type="Self.Branch" Multiplicity="1" />
-          <End Role="CasualWorker" Type="Self.CasualWorker" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Branch">
-              <PropertyRef Name="BranchId" />
-            </Principal>
-            <Dependent Role="CasualWorker">
-              <PropertyRef Name="BranchId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Factory_BranchId">
           <End Role="Branch" Type="Self.Branch" Multiplicity="1" />
           <End Role="Factory" Type="Self.Factory" Multiplicity="*" />
@@ -6068,7 +6028,6 @@
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
           <EntitySet Name="Branches" EntityType="Self.Branch" />
-          <EntitySet Name="CasualWorkers" EntityType="Self.CasualWorker" />
           <EntitySet Name="ExtensionTypes" EntityType="Self.ExtensionType" />
           <EntitySet Name="Factories" EntityType="Self.Factory" />
           <EntitySet Name="MediaTypes" EntityType="Self.MediaType" />
@@ -6076,10 +6035,6 @@
           <EntitySet Name="Sizes" EntityType="Self.Size" />
           <EntitySet Name="Status" EntityType="Self.Status" />
           <EntitySet Name="Stores" EntityType="Self.Store" />
-          <AssociationSet Name="FK_CasualWorker_BranchId" Association="Self.FK_CasualWorker_BranchId">
-            <End Role="Branch" EntitySet="Branches" />
-            <End Role="CasualWorker" EntitySet="CasualWorkers" />
-          </AssociationSet>
           <AssociationSet Name="FK_Factory_BranchId" Association="Self.FK_Factory_BranchId">
             <End Role="Branch" EntitySet="Branches" />
             <End Role="Factory" EntitySet="Factories" />
@@ -6129,10 +6084,6 @@
             <End Role="UserBranchManager" EntitySet="UserBranchManagers" />
           </AssociationSet>
           <EntitySet Name="ActivityBatchCasuals" EntityType="Higgs.MbaleModel.ActivityBatchCasual" />
-          <AssociationSet Name="FK_dbo_ActivityBatchCasual_CasualWorkerId" Association="Higgs.MbaleModel.FK_dbo_ActivityBatchCasual_CasualWorkerId">
-            <End Role="CasualWorker" EntitySet="CasualWorkers" />
-            <End Role="ActivityBatchCasual" EntitySet="ActivityBatchCasuals" />
-          </AssociationSet>
           <EntitySet Name="Activities" EntityType="Higgs.MbaleModel.Activity" />
           <EntitySet Name="ActivityBranches" EntityType="Higgs.MbaleModel.ActivityBranch" />
           <AssociationSet Name="FK_dbo_ActivityBranch_dbo_Activity_ActivityId" Association="Higgs.MbaleModel.FK_dbo_ActivityBranch_dbo_Activity_ActivityId">
@@ -6209,10 +6160,6 @@
             <End Role="Branch" EntitySet="Branches" />
             <End Role="CasualActivity" EntitySet="CasualActivities" />
           </AssociationSet>
-          <AssociationSet Name="FK_CasualActivity_CasualWorkerId" Association="Higgs.MbaleModel.FK_CasualActivity_CasualWorkerId">
-            <End Role="CasualWorker" EntitySet="CasualWorkers" />
-            <End Role="CasualActivity" EntitySet="CasualActivities" />
-          </AssociationSet>
           <AssociationSet Name="FK_CasualActivity_SectorId" Association="Higgs.MbaleModel.FK_CasualActivity_SectorId">
             <End Role="Sector" EntitySet="Sectors" />
             <End Role="CasualActivity" EntitySet="CasualActivities" />
@@ -6225,15 +6172,6 @@
             <Parameter Name="inPutOtherExpenseId" Mode="In" Type="Int64" />
             <Parameter Name="userId" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="BatchGradeSizes" EntityType="Higgs.MbaleModel.BatchGradeSize" />
-          <AssociationSet Name="FK_dbo_BatchGradeSize_dbo_Grade_GradeId" Association="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_Grade_GradeId">
-            <End Role="Grade" EntitySet="Grades" />
-            <End Role="BatchGradeSize" EntitySet="BatchGradeSizes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_BatchGradeSize_dbo_Size_SizeId" Association="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_Size_SizeId">
-            <End Role="Size" EntitySet="Sizes" />
-            <End Role="BatchGradeSize" EntitySet="BatchGradeSizes" />
-          </AssociationSet>
           <AssociationSet Name="FK_Supply_StatusId" Association="Higgs.MbaleModel.FK_Supply_StatusId">
             <End Role="Status" EntitySet="Status" />
             <End Role="Supply" EntitySet="Supplies" />
@@ -6338,6 +6276,7 @@
           <FunctionImport Name="UpdateOrderWithCompletedStatus">
             <Parameter Name="inPutOrderId" Mode="In" Type="Int64" />
             <Parameter Name="statusId" Mode="In" Type="Int64" />
+            <Parameter Name="balance" Mode="In" Type="Double" />
             <Parameter Name="userId" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="BuveraGradeSizes" EntityType="Higgs.MbaleModel.BuveraGradeSize" />
@@ -6392,15 +6331,6 @@
             <End Role="InventoryCategory" EntitySet="InventoryCategories" />
             <End Role="Inventory" EntitySet="Inventories" />
           </AssociationSet>
-          <EntitySet Name="Requistions" EntityType="Higgs.MbaleModel.Requistion" />
-          <AssociationSet Name="FK_Requistion_BranchId" Association="Higgs.MbaleModel.FK_Requistion_BranchId">
-            <End Role="Branch" EntitySet="Branches" />
-            <End Role="Requistion" EntitySet="Requistions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Requistion_StatusId" Association="Higgs.MbaleModel.FK_Requistion_StatusId">
-            <End Role="Status" EntitySet="Status" />
-            <End Role="Requistion" EntitySet="Requistions" />
-          </AssociationSet>
           <FunctionImport Name="Mark_Requistion_AsDeleted">
             <Parameter Name="inPutRequistionId" Mode="In" Type="Int64" />
             <Parameter Name="userId" Mode="In" Type="String" />
@@ -6422,6 +6352,7 @@
           <FunctionImport Name="UpdateOrderWithInProgressStatus">
             <Parameter Name="inPutOrderId" Mode="In" Type="Int64" />
             <Parameter Name="statusId" Mode="In" Type="Int64" />
+            <Parameter Name="balance" Mode="In" Type="Double" />
             <Parameter Name="userId" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="Creditors" EntityType="Higgs.MbaleModel.Creditor" />
@@ -6432,14 +6363,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_Debtor_BranchId" Association="Higgs.MbaleModel.FK_Debtor_BranchId">
             <End Role="Branch" EntitySet="Branches" />
-            <End Role="Debtor" EntitySet="Debtors" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Creditor_CasualWorkerId" Association="Higgs.MbaleModel.FK_Creditor_CasualWorkerId">
-            <End Role="CasualWorker" EntitySet="CasualWorkers" />
-            <End Role="Creditor" EntitySet="Creditors" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Debtor_CasualWorkerId" Association="Higgs.MbaleModel.FK_Debtor_CasualWorkerId">
-            <End Role="CasualWorker" EntitySet="CasualWorkers" />
             <End Role="Debtor" EntitySet="Debtors" />
           </AssociationSet>
           <AssociationSet Name="FK_Creditor_Creditor" Association="Higgs.MbaleModel.FK_Creditor_Creditor">
@@ -6461,10 +6384,6 @@
             <End Role="Branch" EntitySet="Branches" />
             <End Role="AccountTransactionActivity" EntitySet="AccountTransactionActivities" />
           </AssociationSet>
-          <AssociationSet Name="FK_AccountTransactionActivity_CasualWorkerId" Association="Higgs.MbaleModel.FK_AccountTransactionActivity_CasualWorkerId">
-            <End Role="CasualWorker" EntitySet="CasualWorkers" />
-            <End Role="AccountTransactionActivity" EntitySet="AccountTransactionActivities" />
-          </AssociationSet>
           <AssociationSet Name="FK_AccountTransactionActivity_SectorId" Association="Higgs.MbaleModel.FK_AccountTransactionActivity_SectorId">
             <End Role="Sector" EntitySet="Sectors" />
             <End Role="AccountTransactionActivity" EntitySet="AccountTransactionActivities" />
@@ -6472,15 +6391,6 @@
           <AssociationSet Name="FK_AccountTransactionActivity_TransactionSubTypeId" Association="Higgs.MbaleModel.FK_AccountTransactionActivity_TransactionSubTypeId">
             <End Role="TransactionSubType" EntitySet="TransactionSubTypes" />
             <End Role="AccountTransactionActivity" EntitySet="AccountTransactionActivities" />
-          </AssociationSet>
-          <EntitySet Name="Documents" EntityType="Higgs.MbaleModel.Document" />
-          <AssociationSet Name="FK_Document_BranchId" Association="Higgs.MbaleModel.FK_Document_BranchId">
-            <End Role="Branch" EntitySet="Branches" />
-            <End Role="Document" EntitySet="Documents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Document_DocumentCategoryId" Association="Higgs.MbaleModel.FK_Document_DocumentCategoryId">
-            <End Role="DocumentCategory" EntitySet="DocumentCategories" />
-            <End Role="Document" EntitySet="Documents" />
           </AssociationSet>
           <EntitySet Name="Transactions" EntityType="Higgs.MbaleModel.Transaction" />
           <AssociationSet Name="FK_Transaction_BranchId" Association="Higgs.MbaleModel.FK_Transaction_BranchId">
@@ -6662,18 +6572,6 @@
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="CasualActivity" EntitySet="CasualActivities" />
           </AssociationSet>
-          <AssociationSet Name="FK_CasualWorker_CreatedBy" Association="Higgs.MbaleModel.FK_CasualWorker_CreatedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="CasualWorker" EntitySet="CasualWorkers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CasualWorker_DeletedBy" Association="Higgs.MbaleModel.FK_CasualWorker_DeletedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="CasualWorker" EntitySet="CasualWorkers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CasualWorker_UpdatedBy" Association="Higgs.MbaleModel.FK_CasualWorker_UpdatedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="CasualWorker" EntitySet="CasualWorkers" />
-          </AssociationSet>
           <AssociationSet Name="FK_Creditor_AspNetUserId" Association="Higgs.MbaleModel.FK_Creditor_AspNetUserId">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="Creditor" EntitySet="Creditors" />
@@ -6713,22 +6611,6 @@
           <AssociationSet Name="FK_Debtor_UpdatedBy" Association="Higgs.MbaleModel.FK_Debtor_UpdatedBy">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="Debtor" EntitySet="Debtors" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Document_CreatedBy" Association="Higgs.MbaleModel.FK_Document_CreatedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Document" EntitySet="Documents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Document_DeletedBy" Association="Higgs.MbaleModel.FK_Document_DeletedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Document" EntitySet="Documents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Document_UpdatedBy" Association="Higgs.MbaleModel.FK_Document_UpdatedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Document" EntitySet="Documents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Document_UserId" Association="Higgs.MbaleModel.FK_Document_UserId">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Document" EntitySet="Documents" />
           </AssociationSet>
           <AssociationSet Name="FK_Factory_CreatedBy" Association="Higgs.MbaleModel.FK_Factory_CreatedBy">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
@@ -6801,22 +6683,6 @@
           <AssociationSet Name="FK_Product_UpdatedBy" Association="Higgs.MbaleModel.FK_Product_UpdatedBy">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="Product" EntitySet="Products" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Requistion_ApprovedById" Association="Higgs.MbaleModel.FK_Requistion_ApprovedById">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Requistion" EntitySet="Requistions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Requistion_CreatedBy" Association="Higgs.MbaleModel.FK_Requistion_CreatedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Requistion" EntitySet="Requistions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Requistion_DeletedBy" Association="Higgs.MbaleModel.FK_Requistion_DeletedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Requistion" EntitySet="Requistions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Requistion_UpdatedBy" Association="Higgs.MbaleModel.FK_Requistion_UpdatedBy">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Requistion" EntitySet="Requistions" />
           </AssociationSet>
           <AssociationSet Name="FK_Sector_CreatedBy" Association="Higgs.MbaleModel.FK_Sector_CreatedBy">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
@@ -7039,10 +6905,6 @@
           <AssociationSet Name="FK_Utility_Batch" Association="Higgs.MbaleModel.FK_Utility_Batch">
             <End Role="Batch" EntitySet="Batches" />
             <End Role="Utility" EntitySet="Utilities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_BatchGradeSize_dbo_BatchOutPut_BatchId" Association="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_BatchOutPut_BatchId">
-            <End Role="BatchOutPut" EntitySet="BatchOutPuts" />
-            <End Role="BatchGradeSize" EntitySet="BatchGradeSizes" />
           </AssociationSet>
           <AssociationSet Name="FK_BatchOutPut_BranchId" Association="Higgs.MbaleModel.FK_BatchOutPut_BranchId">
             <End Role="Branch" EntitySet="Branches" />
@@ -7293,6 +7155,112 @@
             <End Role="FlourTransfer" EntitySet="FlourTransfers" />
             <End Role="FlourTransferBatch" EntitySet="FlourTransferBatches" />
           </AssociationSet>
+          <EntitySet Name="Requistions" EntityType="Higgs.MbaleModel.Requistion" />
+          <AssociationSet Name="FK_Requistion_ApprovedById" Association="Higgs.MbaleModel.FK_Requistion_ApprovedById">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Requistion" EntitySet="Requistions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requistion_CreatedBy" Association="Higgs.MbaleModel.FK_Requistion_CreatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Requistion" EntitySet="Requistions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requistion_DeletedBy" Association="Higgs.MbaleModel.FK_Requistion_DeletedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Requistion" EntitySet="Requistions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requistion_UpdatedBy" Association="Higgs.MbaleModel.FK_Requistion_UpdatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Requistion" EntitySet="Requistions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requistion_BranchId" Association="Higgs.MbaleModel.FK_Requistion_BranchId">
+            <End Role="Branch" EntitySet="Branches" />
+            <End Role="Requistion" EntitySet="Requistions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requistion_StatusId" Association="Higgs.MbaleModel.FK_Requistion_StatusId">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Requistion" EntitySet="Requistions" />
+          </AssociationSet>
+          <EntitySet Name="Documents" EntityType="Higgs.MbaleModel.Document" />
+          <AssociationSet Name="FK_Document_CreatedBy" Association="Higgs.MbaleModel.FK_Document_CreatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Document_DeletedBy" Association="Higgs.MbaleModel.FK_Document_DeletedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Document_UpdatedBy" Association="Higgs.MbaleModel.FK_Document_UpdatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Document_BranchId" Association="Higgs.MbaleModel.FK_Document_BranchId">
+            <End Role="Branch" EntitySet="Branches" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Document_DocumentCategoryId" Association="Higgs.MbaleModel.FK_Document_DocumentCategoryId">
+            <End Role="DocumentCategory" EntitySet="DocumentCategories" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <EntitySet Name="CasualWorkers" EntityType="Higgs.MbaleModel.CasualWorker" />
+          <AssociationSet Name="FK_AccountTransactionActivity_CasualWorkerId" Association="Higgs.MbaleModel.FK_AccountTransactionActivity_CasualWorkerId">
+            <End Role="CasualWorker" EntitySet="CasualWorkers" />
+            <End Role="AccountTransactionActivity" EntitySet="AccountTransactionActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ActivityBatchCasual_CasualWorkerId" Association="Higgs.MbaleModel.FK_dbo_ActivityBatchCasual_CasualWorkerId">
+            <End Role="CasualWorker" EntitySet="CasualWorkers" />
+            <End Role="ActivityBatchCasual" EntitySet="ActivityBatchCasuals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CasualWorker_CreatedBy" Association="Higgs.MbaleModel.FK_CasualWorker_CreatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="CasualWorker" EntitySet="CasualWorkers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CasualWorker_DeletedBy" Association="Higgs.MbaleModel.FK_CasualWorker_DeletedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="CasualWorker" EntitySet="CasualWorkers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CasualWorker_UpdatedBy" Association="Higgs.MbaleModel.FK_CasualWorker_UpdatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="CasualWorker" EntitySet="CasualWorkers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CasualWorker_BranchId" Association="Higgs.MbaleModel.FK_CasualWorker_BranchId">
+            <End Role="Branch" EntitySet="Branches" />
+            <End Role="CasualWorker" EntitySet="CasualWorkers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CasualActivity_CasualWorkerId" Association="Higgs.MbaleModel.FK_CasualActivity_CasualWorkerId">
+            <End Role="CasualWorker" EntitySet="CasualWorkers" />
+            <End Role="CasualActivity" EntitySet="CasualActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Creditor_CasualWorkerId" Association="Higgs.MbaleModel.FK_Creditor_CasualWorkerId">
+            <End Role="CasualWorker" EntitySet="CasualWorkers" />
+            <End Role="Creditor" EntitySet="Creditors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Debtor_CasualWorkerId" Association="Higgs.MbaleModel.FK_Debtor_CasualWorkerId">
+            <End Role="CasualWorker" EntitySet="CasualWorkers" />
+            <End Role="Debtor" EntitySet="Debtors" />
+          </AssociationSet>
+          <EntitySet Name="BatchGradeSizes" EntityType="Higgs.MbaleModel.BatchGradeSize" />
+          <AssociationSet Name="FK_dbo_BatchGradeSize_dbo_BatchOutPut_BatchId" Association="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_BatchOutPut_BatchId">
+            <End Role="BatchOutPut" EntitySet="BatchOutPuts" />
+            <End Role="BatchGradeSize" EntitySet="BatchGradeSizes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_BatchGradeSize_dbo_Grade_GradeId" Association="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_Grade_GradeId">
+            <End Role="Grade" EntitySet="Grades" />
+            <End Role="BatchGradeSize" EntitySet="BatchGradeSizes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_BatchGradeSize_dbo_Size_SizeId" Association="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_Size_SizeId">
+            <End Role="Size" EntitySet="Sizes" />
+            <End Role="BatchGradeSize" EntitySet="BatchGradeSizes" />
+          </AssociationSet>
+          <FunctionImport Name="UpdateBatchBrandQuantity">
+            <Parameter Name="inPutBatchId" Mode="In" Type="Int64" />
+            <Parameter Name="quantity" Mode="In" Type="Double" />
+            <Parameter Name="userId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateOrderWithBalanceQuantity">
+            <Parameter Name="inPutOrderId" Mode="In" Type="Int64" />
+            <Parameter Name="quantity" Mode="In" Type="Double" />
+            <Parameter Name="userId" Mode="In" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="Media">
           <Key>
@@ -7500,7 +7468,6 @@
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <NavigationProperty Name="OrderGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_OrderGradeSize_dbo_Grade_GradeId" FromRole="Grade" ToRole="OrderGradeSize" />
           <NavigationProperty Name="StockGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StockGradeSize_dbo_Grade_GradeId" FromRole="Grade" ToRole="StockGradeSize" />
-          <NavigationProperty Name="BatchGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_Grade_GradeId" FromRole="Grade" ToRole="BatchGradeSize" />
           <NavigationProperty Name="StoreGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StoreGradeSize_dbo_Grade_GradeId" FromRole="Grade" ToRole="StoreGradeSize" />
           <NavigationProperty Name="BuveraGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_BuveraGradeSize_dbo_Grade_GradeId" FromRole="Grade" ToRole="BuveraGradeSize" />
           <NavigationProperty Name="StoreBuveraGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StoreBuveraGradeSize_dbo_Grade_GradeId" FromRole="Grade" ToRole="StoreBuveraGradeSize" />
@@ -7512,6 +7479,7 @@
           <NavigationProperty Name="BuveraTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_BuveraTransferGradeSize_dbo_Grade_GradeId" FromRole="Grade" ToRole="BuveraTransferGradeSize" />
           <NavigationProperty Name="StoreBuveraTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StoreBuveraTransferGradeSize_dbo_Grade_GradeId" FromRole="Grade" ToRole="StoreBuveraTransferGradeSize" />
           <NavigationProperty Name="StoreFlourTransferGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_StoreFlourTransferGradeSize_dbo_Grade_GradeId" FromRole="Grade" ToRole="StoreFlourTransferGradeSize" />
+          <NavigationProperty Name="BatchGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_Grade_GradeId" FromRole="Grade" ToRole="BatchGradeSize" />
         </EntityType>
         <EntityType Name="UserBranchManager">
           <Key>
@@ -7554,25 +7522,13 @@
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="CasualWorker" Relationship="Higgs.MbaleModel.FK_dbo_ActivityBatchCasual_CasualWorkerId" FromRole="ActivityBatchCasual" ToRole="CasualWorker" />
           <NavigationProperty Name="Activity" Relationship="Higgs.MbaleModel.FK_dbo_ActivityBatchCasual_ActivityId" FromRole="ActivityBatchCasual" ToRole="Activity" />
           <NavigationProperty Name="Batch" Relationship="Higgs.MbaleModel.FK_dbo_ActivityBatchCasual_BatchId" FromRole="ActivityBatchCasual" ToRole="Batch" />
           <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_ActivityBatchCasual_CreatedBy" FromRole="ActivityBatchCasual" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_ActivityBatchCasual_DeletedBy" FromRole="ActivityBatchCasual" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_ActivityBatchCasual_UpdatedBy" FromRole="ActivityBatchCasual" ToRole="AspNetUser" />
+          <NavigationProperty Name="CasualWorker" Relationship="Higgs.MbaleModel.FK_dbo_ActivityBatchCasual_CasualWorkerId" FromRole="ActivityBatchCasual" ToRole="CasualWorker" />
         </EntityType>
-        <Association Name="FK_dbo_ActivityBatchCasual_CasualWorkerId">
-          <End Type="Higgs.MbaleModel.CasualWorker" Role="CasualWorker" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.ActivityBatchCasual" Role="ActivityBatchCasual" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CasualWorker">
-              <PropertyRef Name="CasualWorkerId" />
-            </Principal>
-            <Dependent Role="ActivityBatchCasual">
-              <PropertyRef Name="CasualWorkerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Activity">
           <Key>
             <PropertyRef Name="ActivityId" />
@@ -7660,6 +7616,7 @@
           <NavigationProperty Name="Grade" Relationship="Higgs.MbaleModel.FK_dbo_OrderGradeSize_dbo_Grade_GradeId" FromRole="OrderGradeSize" ToRole="Grade" />
           <NavigationProperty Name="Size" Relationship="Higgs.MbaleModel.FK_dbo_OrderGradeSize_dbo_Size_SizeId" FromRole="OrderGradeSize" ToRole="Size" />
           <NavigationProperty Name="Order" Relationship="Higgs.MbaleModel.FK_dbo_OrderGradeSize_dbo_Order_OrderId" FromRole="OrderGradeSize" ToRole="Order" />
+          <Property Name="Balance" Type="Double" />
         </EntityType>
         <Association Name="FK_dbo_OrderGradeSize_dbo_Grade_GradeId">
           <End Type="Higgs.MbaleModel.Grade" Role="Grade" Multiplicity="1">
@@ -7905,12 +7862,12 @@
           <Property Name="ActivityId" Type="Int64" Nullable="false" />
           <NavigationProperty Name="Activity" Relationship="Higgs.MbaleModel.FK_CasualActivity_ActivityId" FromRole="CasualActivity" ToRole="Activity" />
           <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_CasualActivity_BranchId" FromRole="CasualActivity" ToRole="Branch" />
-          <NavigationProperty Name="CasualWorker" Relationship="Higgs.MbaleModel.FK_CasualActivity_CasualWorkerId" FromRole="CasualActivity" ToRole="CasualWorker" />
           <NavigationProperty Name="Sector" Relationship="Higgs.MbaleModel.FK_CasualActivity_SectorId" FromRole="CasualActivity" ToRole="Sector" />
           <NavigationProperty Name="Batch" Relationship="Higgs.MbaleModel.FK_CasualActivity_BatchId" FromRole="CasualActivity" ToRole="Batch" />
           <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_CasualActivity_CreatedBy" FromRole="CasualActivity" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_CasualActivity_DeletedBy" FromRole="CasualActivity" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_CasualActivity_UpdatedBy" FromRole="CasualActivity" ToRole="AspNetUser" />
+          <NavigationProperty Name="CasualWorker" Relationship="Higgs.MbaleModel.FK_CasualActivity_CasualWorkerId" FromRole="CasualActivity" ToRole="CasualWorker" />
         </EntityType>
         <Association Name="FK_CasualActivity_ActivityId">
           <End Type="Higgs.MbaleModel.Activity" Role="Activity" Multiplicity="1" />
@@ -7936,18 +7893,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CasualActivity_CasualWorkerId">
-          <End Type="Higgs.MbaleModel.CasualWorker" Role="CasualWorker" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.CasualActivity" Role="CasualActivity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CasualWorker">
-              <PropertyRef Name="CasualWorkerId" />
-            </Principal>
-            <Dependent Role="CasualActivity">
-              <PropertyRef Name="CasualWorkerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CasualActivity_SectorId">
           <End Type="Higgs.MbaleModel.Sector" Role="Sector" Multiplicity="1" />
           <End Type="Higgs.MbaleModel.CasualActivity" Role="CasualActivity" Multiplicity="*" />
@@ -7957,49 +7902,6 @@
             </Principal>
             <Dependent Role="CasualActivity">
               <PropertyRef Name="SectorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="BatchGradeSize">
-          <Key>
-            <PropertyRef Name="BatchOutPutId" />
-            <PropertyRef Name="GradeId" />
-            <PropertyRef Name="SizeId" />
-          </Key>
-          <Property Name="BatchOutPutId" Type="Int64" Nullable="false" />
-          <Property Name="GradeId" Type="Int64" Nullable="false" />
-          <Property Name="SizeId" Type="Int64" Nullable="false" />
-          <Property Name="Quantity" Type="Double" Nullable="false" />
-          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Grade" Relationship="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_Grade_GradeId" FromRole="BatchGradeSize" ToRole="Grade" />
-          <NavigationProperty Name="Size" Relationship="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_Size_SizeId" FromRole="BatchGradeSize" ToRole="Size" />
-          <NavigationProperty Name="BatchOutPut" Relationship="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_BatchOutPut_BatchId" FromRole="BatchGradeSize" ToRole="BatchOutPut" />
-        </EntityType>
-        <Association Name="FK_dbo_BatchGradeSize_dbo_Grade_GradeId">
-          <End Type="Higgs.MbaleModel.Grade" Role="Grade" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Higgs.MbaleModel.BatchGradeSize" Role="BatchGradeSize" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Grade">
-              <PropertyRef Name="GradeId" />
-            </Principal>
-            <Dependent Role="BatchGradeSize">
-              <PropertyRef Name="GradeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_BatchGradeSize_dbo_Size_SizeId">
-          <End Type="Higgs.MbaleModel.Size" Role="Size" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Higgs.MbaleModel.BatchGradeSize" Role="BatchGradeSize" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Size">
-              <PropertyRef Name="SizeId" />
-            </Principal>
-            <Dependent Role="BatchGradeSize">
-              <PropertyRef Name="SizeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8571,56 +8473,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Requistion">
-          <Key>
-            <PropertyRef Name="RequistionId" />
-          </Key>
-          <Property Name="RequistionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StatusId" Type="Int64" Nullable="false" />
-          <Property Name="BranchId" Type="Int64" Nullable="false" />
-          <Property Name="ApprovedById" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Response" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="RequistionNumber" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Deleted" Type="Boolean" />
-          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
-          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
-          <Property Name="Amount" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_Requistion_BranchId" FromRole="Requistion" ToRole="Branch" />
-          <NavigationProperty Name="Status" Relationship="Higgs.MbaleModel.FK_Requistion_StatusId" FromRole="Requistion" ToRole="Status" />
-          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Requistion_ApprovedById" FromRole="Requistion" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Requistion_CreatedBy" FromRole="Requistion" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Requistion_DeletedBy" FromRole="Requistion" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser3" Relationship="Higgs.MbaleModel.FK_Requistion_UpdatedBy" FromRole="Requistion" ToRole="AspNetUser" />
-        </EntityType>
-        <Association Name="FK_Requistion_BranchId">
-          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Requistion" Role="Requistion" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Branch">
-              <PropertyRef Name="BranchId" />
-            </Principal>
-            <Dependent Role="Requistion">
-              <PropertyRef Name="BranchId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Requistion_StatusId">
-          <End Type="Higgs.MbaleModel.Status" Role="Status" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Requistion" Role="Requistion" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Status">
-              <PropertyRef Name="StatusId" />
-            </Principal>
-            <Dependent Role="Requistion">
-              <PropertyRef Name="StatusId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="DeliveryGradeSize">
           <Key>
             <PropertyRef Name="DeliveryId" />
@@ -8685,7 +8537,6 @@
           <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_Creditor_BranchId" FromRole="Creditor" ToRole="Branch" />
-          <NavigationProperty Name="CasualWorker" Relationship="Higgs.MbaleModel.FK_Creditor_CasualWorkerId" FromRole="Creditor" ToRole="CasualWorker" />
           <NavigationProperty Name="Creditor1" Relationship="Higgs.MbaleModel.FK_Creditor_Creditor" FromRole="Creditor" ToRole="Creditor1" />
           <NavigationProperty Name="Creditor2" Relationship="Higgs.MbaleModel.FK_Creditor_Creditor" FromRole="Creditor1" ToRole="Creditor" />
           <NavigationProperty Name="Sector" Relationship="Higgs.MbaleModel.FK_Creditor_SectorId" FromRole="Creditor" ToRole="Sector" />
@@ -8693,6 +8544,7 @@
           <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Creditor_CreatedBy" FromRole="Creditor" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Creditor_DeletedBy" FromRole="Creditor" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser3" Relationship="Higgs.MbaleModel.FK_Creditor_UpdatedBy" FromRole="Creditor" ToRole="AspNetUser" />
+          <NavigationProperty Name="CasualWorker" Relationship="Higgs.MbaleModel.FK_Creditor_CasualWorkerId" FromRole="Creditor" ToRole="CasualWorker" />
         </EntityType>
         <EntityType Name="Debtor">
           <Key>
@@ -8713,12 +8565,12 @@
           <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_Debtor_BranchId" FromRole="Debtor" ToRole="Branch" />
-          <NavigationProperty Name="CasualWorker" Relationship="Higgs.MbaleModel.FK_Debtor_CasualWorkerId" FromRole="Debtor" ToRole="CasualWorker" />
           <NavigationProperty Name="Sector" Relationship="Higgs.MbaleModel.FK_Debtor_SectorId" FromRole="Debtor" ToRole="Sector" />
           <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Debtor_AspNetUserId" FromRole="Debtor" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Debtor_CreatedBy" FromRole="Debtor" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Debtor_DeletedBy" FromRole="Debtor" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser3" Relationship="Higgs.MbaleModel.FK_Debtor_UpdatedBy" FromRole="Debtor" ToRole="AspNetUser" />
+          <NavigationProperty Name="CasualWorker" Relationship="Higgs.MbaleModel.FK_Debtor_CasualWorkerId" FromRole="Debtor" ToRole="CasualWorker" />
         </EntityType>
         <Association Name="FK_Creditor_BranchId">
           <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="0..1" />
@@ -8741,30 +8593,6 @@
             </Principal>
             <Dependent Role="Debtor">
               <PropertyRef Name="BranchId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Creditor_CasualWorkerId">
-          <End Type="Higgs.MbaleModel.CasualWorker" Role="CasualWorker" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Creditor" Role="Creditor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CasualWorker">
-              <PropertyRef Name="CasualWorkerId" />
-            </Principal>
-            <Dependent Role="Creditor">
-              <PropertyRef Name="CasualWorkerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Debtor_CasualWorkerId">
-          <End Type="Higgs.MbaleModel.CasualWorker" Role="CasualWorker" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Debtor" Role="Debtor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CasualWorker">
-              <PropertyRef Name="CasualWorkerId" />
-            </Principal>
-            <Dependent Role="Debtor">
-              <PropertyRef Name="CasualWorkerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8845,12 +8673,12 @@
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <Property Name="SupplyId" Type="Int64" />
           <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_BranchId" FromRole="AccountTransactionActivity" ToRole="Branch" />
-          <NavigationProperty Name="CasualWorker" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_CasualWorkerId" FromRole="AccountTransactionActivity" ToRole="CasualWorker" />
           <NavigationProperty Name="Sector" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_SectorId" FromRole="AccountTransactionActivity" ToRole="Sector" />
           <NavigationProperty Name="TransactionSubType" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_TransactionSubTypeId" FromRole="AccountTransactionActivity" ToRole="TransactionSubType" />
           <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_AspNetUserId" FromRole="AccountTransactionActivity" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_CreatedBy" FromRole="AccountTransactionActivity" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_DeletedBy" FromRole="AccountTransactionActivity" ToRole="AspNetUser" />
+          <NavigationProperty Name="CasualWorker" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_CasualWorkerId" FromRole="AccountTransactionActivity" ToRole="CasualWorker" />
         </EntityType>
         <Association Name="FK_AccountTransactionActivity_BranchId">
           <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="0..1" />
@@ -8861,18 +8689,6 @@
             </Principal>
             <Dependent Role="AccountTransactionActivity">
               <PropertyRef Name="BranchId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AccountTransactionActivity_CasualWorkerId">
-          <End Type="Higgs.MbaleModel.CasualWorker" Role="CasualWorker" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.AccountTransactionActivity" Role="AccountTransactionActivity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CasualWorker">
-              <PropertyRef Name="CasualWorkerId" />
-            </Principal>
-            <Dependent Role="AccountTransactionActivity">
-              <PropertyRef Name="CasualWorkerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8897,58 +8713,6 @@
             </Principal>
             <Dependent Role="AccountTransactionActivity">
               <PropertyRef Name="TransactionSubTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Document">
-          <Key>
-            <PropertyRef Name="DocumentId" />
-          </Key>
-          <Property Name="DocumentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Amount" Type="Double" Nullable="false" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="ItemId" Type="Int64" Nullable="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DocumentNumber" Type="Int64" Nullable="false" />
-          <Property Name="DocumentCategoryId" Type="Int64" Nullable="false" />
-          <Property Name="Quantity" Type="Double" Nullable="false" />
-          <Property Name="BranchId" Type="Int64" Nullable="false" />
-          <Property Name="Deleted" Type="Boolean" />
-          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
-          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_Document_BranchId" FromRole="Document" ToRole="Branch" />
-          <NavigationProperty Name="DocumentCategory" Relationship="Higgs.MbaleModel.FK_Document_DocumentCategoryId" FromRole="Document" ToRole="DocumentCategory" />
-          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Document_CreatedBy" FromRole="Document" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Document_DeletedBy" FromRole="Document" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Document_UpdatedBy" FromRole="Document" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser3" Relationship="Higgs.MbaleModel.FK_Document_UserId" FromRole="Document" ToRole="AspNetUser" />
-        </EntityType>
-        <Association Name="FK_Document_BranchId">
-          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Document" Role="Document" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Branch">
-              <PropertyRef Name="BranchId" />
-            </Principal>
-            <Dependent Role="Document">
-              <PropertyRef Name="BranchId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Document_DocumentCategoryId">
-          <End Type="Higgs.MbaleModel.DocumentCategory" Role="DocumentCategory" Multiplicity="1" />
-          <End Type="Higgs.MbaleModel.Document" Role="Document" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DocumentCategory">
-              <PropertyRef Name="DocumentCategoryId" />
-            </Principal>
-            <Dependent Role="Document">
-              <PropertyRef Name="DocumentCategoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9120,6 +8884,7 @@
           <NavigationProperty Name="Utilities" Relationship="Higgs.MbaleModel.FK_Utility_Batch" FromRole="Batch" ToRole="Utility" />
           <NavigationProperty Name="DeliveryBatches" Relationship="Higgs.MbaleModel.FK_DeliveryBatch_BatchId" FromRole="Batch" ToRole="DeliveryBatch" />
           <NavigationProperty Name="FlourTransferBatches" Relationship="Higgs.MbaleModel.FK_FlourTransferBatch_BatchId" FromRole="Batch" ToRole="FlourTransferBatch" />
+          <Property Name="BrandBalance" Type="Double" Nullable="false" />
         </EntityType>
         <Association Name="FK_dbo_ActivityBatchCasual_BatchId">
           <End Type="Higgs.MbaleModel.Batch" Role="Batch" Multiplicity="1" />
@@ -9263,6 +9028,7 @@
           <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Order_DeletedBy" FromRole="Order" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser3" Relationship="Higgs.MbaleModel.FK_Order_UpdatedBy" FromRole="Order" ToRole="AspNetUser" />
           <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_OrderId" FromRole="Order" ToRole="Delivery" />
+          <Property Name="Balance" Type="Double" />
         </EntityType>
         <Association Name="FK_Order_BranchId">
           <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
@@ -9371,9 +9137,6 @@
           <NavigationProperty Name="CasualActivities" Relationship="Higgs.MbaleModel.FK_CasualActivity_CreatedBy" FromRole="AspNetUser" ToRole="CasualActivity" />
           <NavigationProperty Name="CasualActivities1" Relationship="Higgs.MbaleModel.FK_CasualActivity_DeletedBy" FromRole="AspNetUser" ToRole="CasualActivity" />
           <NavigationProperty Name="CasualActivities2" Relationship="Higgs.MbaleModel.FK_CasualActivity_UpdatedBy" FromRole="AspNetUser" ToRole="CasualActivity" />
-          <NavigationProperty Name="CasualWorkers" Relationship="Higgs.MbaleModel.FK_CasualWorker_CreatedBy" FromRole="AspNetUser" ToRole="CasualWorker" />
-          <NavigationProperty Name="CasualWorkers1" Relationship="Higgs.MbaleModel.FK_CasualWorker_DeletedBy" FromRole="AspNetUser" ToRole="CasualWorker" />
-          <NavigationProperty Name="CasualWorkers2" Relationship="Higgs.MbaleModel.FK_CasualWorker_UpdatedBy" FromRole="AspNetUser" ToRole="CasualWorker" />
           <NavigationProperty Name="Creditors" Relationship="Higgs.MbaleModel.FK_Creditor_AspNetUserId" FromRole="AspNetUser" ToRole="Creditor" />
           <NavigationProperty Name="Creditors1" Relationship="Higgs.MbaleModel.FK_Creditor_CreatedBy" FromRole="AspNetUser" ToRole="Creditor" />
           <NavigationProperty Name="Creditors2" Relationship="Higgs.MbaleModel.FK_Creditor_DeletedBy" FromRole="AspNetUser" ToRole="Creditor" />
@@ -9384,10 +9147,6 @@
           <NavigationProperty Name="Debtors1" Relationship="Higgs.MbaleModel.FK_Debtor_CreatedBy" FromRole="AspNetUser" ToRole="Debtor" />
           <NavigationProperty Name="Debtors2" Relationship="Higgs.MbaleModel.FK_Debtor_DeletedBy" FromRole="AspNetUser" ToRole="Debtor" />
           <NavigationProperty Name="Debtors3" Relationship="Higgs.MbaleModel.FK_Debtor_UpdatedBy" FromRole="AspNetUser" ToRole="Debtor" />
-          <NavigationProperty Name="Documents" Relationship="Higgs.MbaleModel.FK_Document_CreatedBy" FromRole="AspNetUser" ToRole="Document" />
-          <NavigationProperty Name="Documents1" Relationship="Higgs.MbaleModel.FK_Document_DeletedBy" FromRole="AspNetUser" ToRole="Document" />
-          <NavigationProperty Name="Documents2" Relationship="Higgs.MbaleModel.FK_Document_UpdatedBy" FromRole="AspNetUser" ToRole="Document" />
-          <NavigationProperty Name="Documents3" Relationship="Higgs.MbaleModel.FK_Document_UserId" FromRole="AspNetUser" ToRole="Document" />
           <NavigationProperty Name="Factories" Relationship="Higgs.MbaleModel.FK_Factory_CreatedBy" FromRole="AspNetUser" ToRole="Factory" />
           <NavigationProperty Name="Factories1" Relationship="Higgs.MbaleModel.FK_Factory_DeletedBy" FromRole="AspNetUser" ToRole="Factory" />
           <NavigationProperty Name="Factories2" Relationship="Higgs.MbaleModel.FK_Factory_UpdatedBy" FromRole="AspNetUser" ToRole="Factory" />
@@ -9406,10 +9165,6 @@
           <NavigationProperty Name="Products" Relationship="Higgs.MbaleModel.FK_Product_CreatedBy" FromRole="AspNetUser" ToRole="Product" />
           <NavigationProperty Name="Products1" Relationship="Higgs.MbaleModel.FK_Product_DeletedBy" FromRole="AspNetUser" ToRole="Product" />
           <NavigationProperty Name="Products2" Relationship="Higgs.MbaleModel.FK_Product_UpdatedBy" FromRole="AspNetUser" ToRole="Product" />
-          <NavigationProperty Name="Requistions" Relationship="Higgs.MbaleModel.FK_Requistion_ApprovedById" FromRole="AspNetUser" ToRole="Requistion" />
-          <NavigationProperty Name="Requistions1" Relationship="Higgs.MbaleModel.FK_Requistion_CreatedBy" FromRole="AspNetUser" ToRole="Requistion" />
-          <NavigationProperty Name="Requistions2" Relationship="Higgs.MbaleModel.FK_Requistion_DeletedBy" FromRole="AspNetUser" ToRole="Requistion" />
-          <NavigationProperty Name="Requistions3" Relationship="Higgs.MbaleModel.FK_Requistion_UpdatedBy" FromRole="AspNetUser" ToRole="Requistion" />
           <NavigationProperty Name="Sectors" Relationship="Higgs.MbaleModel.FK_Sector_CreatedBy" FromRole="AspNetUser" ToRole="Sector" />
           <NavigationProperty Name="Sectors1" Relationship="Higgs.MbaleModel.FK_Sector_DeletedBy" FromRole="AspNetUser" ToRole="Sector" />
           <NavigationProperty Name="Sectors2" Relationship="Higgs.MbaleModel.FK_Sector_UpdatedBy" FromRole="AspNetUser" ToRole="Sector" />
@@ -9466,6 +9221,16 @@
           <NavigationProperty Name="FlourTransfers" Relationship="Higgs.MbaleModel.FK_FlourTransfer_CreatedBy" FromRole="AspNetUser" ToRole="FlourTransfer" />
           <NavigationProperty Name="FlourTransfers1" Relationship="Higgs.MbaleModel.FK_FlourTransfer_DeletedBy" FromRole="AspNetUser" ToRole="FlourTransfer" />
           <NavigationProperty Name="FlourTransfers2" Relationship="Higgs.MbaleModel.FK_FlourTransfer_UpdatedBy" FromRole="AspNetUser" ToRole="FlourTransfer" />
+          <NavigationProperty Name="Requistions" Relationship="Higgs.MbaleModel.FK_Requistion_ApprovedById" FromRole="AspNetUser" ToRole="Requistion" />
+          <NavigationProperty Name="Requistions1" Relationship="Higgs.MbaleModel.FK_Requistion_CreatedBy" FromRole="AspNetUser" ToRole="Requistion" />
+          <NavigationProperty Name="Requistions2" Relationship="Higgs.MbaleModel.FK_Requistion_DeletedBy" FromRole="AspNetUser" ToRole="Requistion" />
+          <NavigationProperty Name="Requistions3" Relationship="Higgs.MbaleModel.FK_Requistion_UpdatedBy" FromRole="AspNetUser" ToRole="Requistion" />
+          <NavigationProperty Name="Documents" Relationship="Higgs.MbaleModel.FK_Document_CreatedBy" FromRole="AspNetUser" ToRole="Document" />
+          <NavigationProperty Name="Documents1" Relationship="Higgs.MbaleModel.FK_Document_DeletedBy" FromRole="AspNetUser" ToRole="Document" />
+          <NavigationProperty Name="Documents2" Relationship="Higgs.MbaleModel.FK_Document_UpdatedBy" FromRole="AspNetUser" ToRole="Document" />
+          <NavigationProperty Name="CasualWorkers" Relationship="Higgs.MbaleModel.FK_CasualWorker_CreatedBy" FromRole="AspNetUser" ToRole="CasualWorker" />
+          <NavigationProperty Name="CasualWorkers1" Relationship="Higgs.MbaleModel.FK_CasualWorker_DeletedBy" FromRole="AspNetUser" ToRole="CasualWorker" />
+          <NavigationProperty Name="CasualWorkers2" Relationship="Higgs.MbaleModel.FK_CasualWorker_UpdatedBy" FromRole="AspNetUser" ToRole="CasualWorker" />
           </EntityType>
         <EntityType Name="FlourTransferGradeSize">
           <Key>
@@ -9782,42 +9547,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CasualWorker_CreatedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.CasualWorker" Role="CasualWorker" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CasualWorker">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CasualWorker_DeletedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.CasualWorker" Role="CasualWorker" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CasualWorker">
-              <PropertyRef Name="DeletedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CasualWorker_UpdatedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.CasualWorker" Role="CasualWorker" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CasualWorker">
-              <PropertyRef Name="UpdatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Creditor_AspNetUserId">
           <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
           <End Type="Higgs.MbaleModel.Creditor" Role="Creditor" Multiplicity="*" />
@@ -9939,54 +9668,6 @@
             </Principal>
             <Dependent Role="Debtor">
               <PropertyRef Name="UpdatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Document_CreatedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Document" Role="Document" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Document">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Document_DeletedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Document" Role="Document" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Document">
-              <PropertyRef Name="DeletedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Document_UpdatedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Document" Role="Document" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Document">
-              <PropertyRef Name="UpdatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Document_UserId">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Document" Role="Document" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Document">
-              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -10202,54 +9883,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Product">
-              <PropertyRef Name="UpdatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Requistion_ApprovedById">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Requistion" Role="Requistion" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Requistion">
-              <PropertyRef Name="ApprovedById" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Requistion_CreatedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Requistion" Role="Requistion" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Requistion">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Requistion_DeletedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Requistion" Role="Requistion" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Requistion">
-              <PropertyRef Name="DeletedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Requistion_UpdatedBy">
-          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="Higgs.MbaleModel.Requistion" Role="Requistion" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Requistion">
               <PropertyRef Name="UpdatedBy" />
             </Dependent>
           </ReferentialConstraint>
@@ -10625,9 +10258,9 @@
           <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_BatchOutPut_DeletedBy" FromRole="BatchOutPut" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_BatchOutPut_UpdatedBy" FromRole="BatchOutPut" ToRole="AspNetUser" />
           <NavigationProperty Name="Batch" Relationship="Higgs.MbaleModel.FK_BatchOutPut_BatchId" FromRole="BatchOutPut" ToRole="Batch" />
-          <NavigationProperty Name="BatchGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_BatchOutPut_BatchId" FromRole="BatchOutPut" ToRole="BatchGradeSize" />
           <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_BatchOutPut_BranchId" FromRole="BatchOutPut" ToRole="Branch" />
           <NavigationProperty Name="Sector" Relationship="Higgs.MbaleModel.FK_BatchOutPut_SectorId" FromRole="BatchOutPut" ToRole="Sector" />
+          <NavigationProperty Name="BatchGradeSizes" Relationship="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_BatchOutPut_BatchId" FromRole="BatchOutPut" ToRole="BatchGradeSize" />
         </EntityType>
         <EntityType Name="FactoryExpense">
           <Key>
@@ -11053,20 +10686,6 @@
             </Principal>
             <Dependent Role="Utility">
               <PropertyRef Name="BatchId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_BatchGradeSize_dbo_BatchOutPut_BatchId">
-          <End Type="Higgs.MbaleModel.BatchOutPut" Role="BatchOutPut" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Higgs.MbaleModel.BatchGradeSize" Role="BatchGradeSize" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BatchOutPut">
-              <PropertyRef Name="BatchOutPutId" />
-            </Principal>
-            <Dependent Role="BatchGradeSize">
-              <PropertyRef Name="BatchOutPutId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -12008,6 +11627,391 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Requistion">
+          <Key>
+            <PropertyRef Name="RequistionId" />
+          </Key>
+          <Property Name="RequistionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatusId" Type="Int64" Nullable="false" />
+          <Property Name="BranchId" Type="Int64" Nullable="false" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <Property Name="ApprovedById" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Response" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Approved" Type="Boolean" Nullable="false" />
+          <Property Name="Rejected" Type="Boolean" Nullable="false" />
+          <Property Name="RequistionNumber" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Requistion_ApprovedById" FromRole="Requistion" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Requistion_CreatedBy" FromRole="Requistion" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Requistion_DeletedBy" FromRole="Requistion" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser3" Relationship="Higgs.MbaleModel.FK_Requistion_UpdatedBy" FromRole="Requistion" ToRole="AspNetUser" />
+          <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_Requistion_BranchId" FromRole="Requistion" ToRole="Branch" />
+          <NavigationProperty Name="Status" Relationship="Higgs.MbaleModel.FK_Requistion_StatusId" FromRole="Requistion" ToRole="Status" />
+          <Property Name="AmountInWords" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Requistion_ApprovedById">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Requistion" Role="Requistion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Requistion">
+              <PropertyRef Name="ApprovedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requistion_CreatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Requistion" Role="Requistion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Requistion">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requistion_DeletedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Requistion" Role="Requistion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Requistion">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requistion_UpdatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Requistion" Role="Requistion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Requistion">
+              <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requistion_BranchId">
+          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Requistion" Role="Requistion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="Requistion">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requistion_StatusId">
+          <End Type="Higgs.MbaleModel.Status" Role="Status" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Requistion" Role="Requistion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="Requistion">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="DocumentId" />
+          </Key>
+          <Property Name="DocumentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ItemId" Type="Int64" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentNumber" Type="Int64" Nullable="false" />
+          <Property Name="DocumentCategoryId" Type="Int64" Nullable="false" />
+          <Property Name="Quantity" Type="Double" />
+          <Property Name="BranchId" Type="Int64" Nullable="false" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_Document_CreatedBy" FromRole="Document" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_Document_DeletedBy" FromRole="Document" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_Document_UpdatedBy" FromRole="Document" ToRole="AspNetUser" />
+          <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_Document_BranchId" FromRole="Document" ToRole="Branch" />
+          <NavigationProperty Name="DocumentCategory" Relationship="Higgs.MbaleModel.FK_Document_DocumentCategoryId" FromRole="Document" ToRole="DocumentCategory" />
+          <Property Name="AmountInWords" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Document_CreatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Document" Role="Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Document_DeletedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Document" Role="Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Document_UpdatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Document" Role="Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Document_BranchId">
+          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Document" Role="Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Document_DocumentCategoryId">
+          <End Type="Higgs.MbaleModel.DocumentCategory" Role="DocumentCategory" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.Document" Role="Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentCategory">
+              <PropertyRef Name="DocumentCategoryId" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="DocumentCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CasualWorker">
+          <Key>
+            <PropertyRef Name="CasualWorkerId" />
+          </Key>
+          <Property Name="CasualWorkerId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="BranchId" Type="Int64" Nullable="false" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="NINNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NextOfKeen" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmailAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UniqueNumber" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AccountTransactionActivities" Relationship="Higgs.MbaleModel.FK_AccountTransactionActivity_CasualWorkerId" FromRole="CasualWorker" ToRole="AccountTransactionActivity" />
+          <NavigationProperty Name="ActivityBatchCasuals" Relationship="Higgs.MbaleModel.FK_dbo_ActivityBatchCasual_CasualWorkerId" FromRole="CasualWorker" ToRole="ActivityBatchCasual" />
+          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_CasualWorker_CreatedBy" FromRole="CasualWorker" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_CasualWorker_DeletedBy" FromRole="CasualWorker" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_CasualWorker_UpdatedBy" FromRole="CasualWorker" ToRole="AspNetUser" />
+          <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_CasualWorker_BranchId" FromRole="CasualWorker" ToRole="Branch" />
+          <NavigationProperty Name="CasualActivities" Relationship="Higgs.MbaleModel.FK_CasualActivity_CasualWorkerId" FromRole="CasualWorker" ToRole="CasualActivity" />
+          <NavigationProperty Name="Creditors" Relationship="Higgs.MbaleModel.FK_Creditor_CasualWorkerId" FromRole="CasualWorker" ToRole="Creditor" />
+          <NavigationProperty Name="Debtors" Relationship="Higgs.MbaleModel.FK_Debtor_CasualWorkerId" FromRole="CasualWorker" ToRole="Debtor" />
+        </EntityType>
+        <Association Name="FK_AccountTransactionActivity_CasualWorkerId">
+          <End Type="Higgs.MbaleModel.CasualWorker" Role="CasualWorker" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.AccountTransactionActivity" Role="AccountTransactionActivity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CasualWorker">
+              <PropertyRef Name="CasualWorkerId" />
+            </Principal>
+            <Dependent Role="AccountTransactionActivity">
+              <PropertyRef Name="CasualWorkerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ActivityBatchCasual_CasualWorkerId">
+          <End Type="Higgs.MbaleModel.CasualWorker" Role="CasualWorker" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.ActivityBatchCasual" Role="ActivityBatchCasual" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CasualWorker">
+              <PropertyRef Name="CasualWorkerId" />
+            </Principal>
+            <Dependent Role="ActivityBatchCasual">
+              <PropertyRef Name="CasualWorkerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CasualWorker_CreatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.CasualWorker" Role="CasualWorker" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CasualWorker">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CasualWorker_DeletedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.CasualWorker" Role="CasualWorker" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CasualWorker">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CasualWorker_UpdatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.CasualWorker" Role="CasualWorker" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CasualWorker">
+              <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CasualWorker_BranchId">
+          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.CasualWorker" Role="CasualWorker" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="CasualWorker">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CasualActivity_CasualWorkerId">
+          <End Type="Higgs.MbaleModel.CasualWorker" Role="CasualWorker" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.CasualActivity" Role="CasualActivity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CasualWorker">
+              <PropertyRef Name="CasualWorkerId" />
+            </Principal>
+            <Dependent Role="CasualActivity">
+              <PropertyRef Name="CasualWorkerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Creditor_CasualWorkerId">
+          <End Type="Higgs.MbaleModel.CasualWorker" Role="CasualWorker" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Creditor" Role="Creditor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CasualWorker">
+              <PropertyRef Name="CasualWorkerId" />
+            </Principal>
+            <Dependent Role="Creditor">
+              <PropertyRef Name="CasualWorkerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Debtor_CasualWorkerId">
+          <End Type="Higgs.MbaleModel.CasualWorker" Role="CasualWorker" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.Debtor" Role="Debtor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CasualWorker">
+              <PropertyRef Name="CasualWorkerId" />
+            </Principal>
+            <Dependent Role="Debtor">
+              <PropertyRef Name="CasualWorkerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="BatchGradeSize">
+          <Key>
+            <PropertyRef Name="BatchOutPutId" />
+            <PropertyRef Name="GradeId" />
+            <PropertyRef Name="SizeId" />
+          </Key>
+          <Property Name="BatchOutPutId" Type="Int64" Nullable="false" />
+          <Property Name="GradeId" Type="Int64" Nullable="false" />
+          <Property Name="SizeId" Type="Int64" Nullable="false" />
+          <Property Name="Quantity" Type="Double" Nullable="false" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Balance" Type="Double" Nullable="false" />
+          <NavigationProperty Name="BatchOutPut" Relationship="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_BatchOutPut_BatchId" FromRole="BatchGradeSize" ToRole="BatchOutPut" />
+          <NavigationProperty Name="Grade" Relationship="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_Grade_GradeId" FromRole="BatchGradeSize" ToRole="Grade" />
+          <NavigationProperty Name="Size" Relationship="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_Size_SizeId" FromRole="BatchGradeSize" ToRole="Size" />
+        </EntityType>
+        <Association Name="FK_dbo_BatchGradeSize_dbo_BatchOutPut_BatchId">
+          <End Type="Higgs.MbaleModel.BatchOutPut" Role="BatchOutPut" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Higgs.MbaleModel.BatchGradeSize" Role="BatchGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BatchOutPut">
+              <PropertyRef Name="BatchOutPutId" />
+            </Principal>
+            <Dependent Role="BatchGradeSize">
+              <PropertyRef Name="BatchOutPutId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_BatchGradeSize_dbo_Grade_GradeId">
+          <End Type="Higgs.MbaleModel.Grade" Role="Grade" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Higgs.MbaleModel.BatchGradeSize" Role="BatchGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grade">
+              <PropertyRef Name="GradeId" />
+            </Principal>
+            <Dependent Role="BatchGradeSize">
+              <PropertyRef Name="GradeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_BatchGradeSize_dbo_Size_SizeId">
+          <End Type="Higgs.MbaleModel.Size" Role="Size" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Higgs.MbaleModel.BatchGradeSize" Role="BatchGradeSize" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Size">
+              <PropertyRef Name="SizeId" />
+            </Principal>
+            <Dependent Role="BatchGradeSize">
+              <PropertyRef Name="SizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -12050,29 +12054,6 @@
                 <ScalarProperty Name="BranchId" ColumnName="BranchId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Location" ColumnName="Location" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
-                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CasualWorkers">
-            <EntityTypeMapping TypeName="Higgs.MbaleModel.CasualWorker">
-              <MappingFragment StoreEntitySet="CasualWorker">
-                <ScalarProperty Name="UniqueNumber" ColumnName="UniqueNumber" />
-                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
-                <ScalarProperty Name="NextOfKeen" ColumnName="NextOfKeen" />
-                <ScalarProperty Name="NINNumber" ColumnName="NINNumber" />
-                <ScalarProperty Name="CasualWorkerId" ColumnName="CasualWorkerId" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -12324,6 +12305,7 @@
           <EntitySetMapping Name="OrderGradeSizes">
             <EntityTypeMapping TypeName="Higgs.MbaleModel.OrderGradeSize">
               <MappingFragment StoreEntitySet="OrderGradeSize">
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="SizeId" ColumnName="SizeId" />
@@ -12436,17 +12418,6 @@
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="Mark_CasualActivity_AsDeleted" FunctionName="Higgs.MbaleModel.Store.Mark_CasualActivity_AsDeleted" />
           <FunctionImportMapping FunctionImportName="Mark_OtherExpense_AsDeleted" FunctionName="Higgs.MbaleModel.Store.Mark_OtherExpense_AsDeleted" />
-          <EntitySetMapping Name="BatchGradeSizes">
-            <EntityTypeMapping TypeName="Higgs.MbaleModel.BatchGradeSize">
-              <MappingFragment StoreEntitySet="BatchGradeSize">
-                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="SizeId" ColumnName="SizeId" />
-                <ScalarProperty Name="GradeId" ColumnName="GradeId" />
-                <ScalarProperty Name="BatchOutPutId" ColumnName="BatchOutPutId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="UpdateSupplyWithCompletedStatus" FunctionName="Higgs.MbaleModel.Store.UpdateSupplyWithCompletedStatus" />
           <EntitySetMapping Name="StockProducts">
             <EntityTypeMapping TypeName="Higgs.MbaleModel.StockProduct">
@@ -12589,27 +12560,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Requistions">
-            <EntityTypeMapping TypeName="Higgs.MbaleModel.Requistion">
-              <MappingFragment StoreEntitySet="Requistion">
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
-                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="RequistionNumber" ColumnName="RequistionNumber" />
-                <ScalarProperty Name="Response" ColumnName="Response" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ApprovedById" ColumnName="ApprovedById" />
-                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="RequistionId" ColumnName="RequistionId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="Mark_Requistion_AsDeleted" FunctionName="Higgs.MbaleModel.Store.Mark_Requistion_AsDeleted" />
           <FunctionImportMapping FunctionImportName="UpdateRequistionWithCompletedStatus" FunctionName="Higgs.MbaleModel.Store.UpdateRequistionWithCompletedStatus" />
           <EntitySetMapping Name="DeliveryGradeSizes">
@@ -12709,29 +12659,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Documents">
-            <EntityTypeMapping TypeName="Higgs.MbaleModel.Document">
-              <MappingFragment StoreEntitySet="Document">
-                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
-                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="DocumentCategoryId" ColumnName="DocumentCategoryId" />
-                <ScalarProperty Name="DocumentNumber" ColumnName="DocumentNumber" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Transactions">
             <EntityTypeMapping TypeName="Higgs.MbaleModel.Transaction">
               <MappingFragment StoreEntitySet="Transaction">
@@ -12776,6 +12703,7 @@
           <EntitySetMapping Name="Batches">
             <EntityTypeMapping TypeName="Higgs.MbaleModel.Batch">
               <MappingFragment StoreEntitySet="Batch">
+                <ScalarProperty Name="BrandBalance" ColumnName="BrandBalance" />
                 <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
@@ -12806,6 +12734,7 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="Higgs.MbaleModel.Order">
               <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
                 <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
@@ -13161,6 +13090,90 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Requistions">
+            <EntityTypeMapping TypeName="Higgs.MbaleModel.Requistion">
+              <MappingFragment StoreEntitySet="Requistion">
+                <ScalarProperty Name="AmountInWords" ColumnName="AmountInWords" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="RequistionNumber" ColumnName="RequistionNumber" />
+                <ScalarProperty Name="Rejected" ColumnName="Rejected" />
+                <ScalarProperty Name="Approved" ColumnName="Approved" />
+                <ScalarProperty Name="Response" ColumnName="Response" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ApprovedById" ColumnName="ApprovedById" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="RequistionId" ColumnName="RequistionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Documents">
+            <EntityTypeMapping TypeName="Higgs.MbaleModel.Document">
+              <MappingFragment StoreEntitySet="Document">
+                <ScalarProperty Name="AmountInWords" ColumnName="AmountInWords" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="DocumentCategoryId" ColumnName="DocumentCategoryId" />
+                <ScalarProperty Name="DocumentNumber" ColumnName="DocumentNumber" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CasualWorkers">
+            <EntityTypeMapping TypeName="Higgs.MbaleModel.CasualWorker">
+              <MappingFragment StoreEntitySet="CasualWorker">
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="UniqueNumber" ColumnName="UniqueNumber" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="NextOfKeen" ColumnName="NextOfKeen" />
+                <ScalarProperty Name="NINNumber" ColumnName="NINNumber" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="CasualWorkerId" ColumnName="CasualWorkerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BatchGradeSizes">
+            <EntityTypeMapping TypeName="Higgs.MbaleModel.BatchGradeSize">
+              <MappingFragment StoreEntitySet="BatchGradeSize">
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="SizeId" ColumnName="SizeId" />
+                <ScalarProperty Name="GradeId" ColumnName="GradeId" />
+                <ScalarProperty Name="BatchOutPutId" ColumnName="BatchOutPutId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="UpdateBatchBrandQuantity" FunctionName="Higgs.MbaleModel.Store.UpdateBatchBrandQuantity" />
+          <FunctionImportMapping FunctionImportName="UpdateOrderWithBalanceQuantity" FunctionName="Higgs.MbaleModel.Store.UpdateOrderWithBalanceQuantity" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -10,6 +10,7 @@
         var branches = [];
         var selectedBranch;
         $scope.selectedGrades = [];
+        $scope.batches = [];
         var transactionSubTypeId = 2;
         var deliveryId = $scope.deliveryId;
         var orderId = $scope.orderId;
@@ -38,7 +39,21 @@
             });
             $http.get('/webapi/BatchApi/GetAllBatchesForAParticularBranchToTransfer?branchId=' + selectedBranchId + '&productId=' + $scope.order.ProductId
                      ).then(function (responses) {
-                $scope.batches = responses.data;
+                         $scope.retrievedBatches = responses.data;
+                         //angular.forEach($scope.retrievedBatches, function ($scope.retrievedBatches) {
+                         //    if (retrievedBatches.BrandBalance > 0)
+                         //    {
+                         //        $scope.batches = $scope.batches.concat(value);
+                         //    }
+                         //});
+                         angular.forEach($scope.retrievedBatches, function (value, key) {
+                             if (value.BrandBalance > 0)
+                                     {
+                                         $scope.batches = $scope.batches.concat(value);
+                                     }
+                         });
+                        
+               
 
             });
         }
@@ -110,6 +125,7 @@
                         CustomerName: b.CustomerName,
                         Amount: b.Amount,
                         ProductId: b.ProductId,
+                        Balance : b.Balance,
                         BranchId: b.BranchId,
                         StatusId: b.StatusId,
                         TimeStamp: b.TimeStamp,
@@ -135,7 +151,9 @@
             $scope.DenominationQuantity = 0;
             $scope.DenominationAmount = 0;
             $scope.showMessageSave = false;
-            if (delivery.Grades !=null) {
+            $scope.showMessageCheckGrade = false;
+
+            if (delivery.Grades !=null && productId ==1) {
                 angular.forEach(delivery.Grades, function (value, key) {
                     var denominations = value.Denominations;
                     angular.forEach(denominations, function (denominations) {
@@ -147,9 +165,20 @@
                     
                 });
             }
-            else {
+            else if(delivery.Grades == null && productId ==2)
+            {
                 $scope.TotalAmount = delivery.Price * delivery.Quantity;
                 $scope.TotalQuantity = delivery.Quantity;
+            }
+            else {
+                $scope.showMessageCheckGrade = true;
+                
+                $timeout(function () {
+                    $scope.showMessageCheckGrade = false;
+                                     
+                    $state.go('delivery-order-list', { 'orderId': orderId });
+                    
+                }, 2000);
             }
 
             usSpinnerService.spin('global-spinner');
@@ -169,7 +198,7 @@
                     Location : delivery.Location,
                     SectorId: delivery.SectorId,
                     StoreId: delivery.StoreId,
-                    
+                    SelectedBatchesToDeliver : delivery.SelectedGrades,
                     TransactionSubTypeId : transactionSubTypeId,
                     DriverName: delivery.DriverName,
                     DriverNIN: delivery.DriverNIN,
@@ -333,7 +362,9 @@ angular
                 {name:'BatchNumber',field:'BatchNumber'},
                 { name: 'Branch Name', field: 'BranchName' },
                  { name: 'Delivery Details', cellTemplate: '<div class="ui-grid-cell-contents"> <a href="#/deliveries/detail/{{row.entity.DeliveryId}}"> Delivery Detail</a> </div>' },
-
+                 {
+                        name: 'Print', cellTemplate: '<div class="ui-grid-cell-contents" ><a  href="/Excel/Document?documentId={{row.entity.DocumentId}}">Print</a></div>'
+                 },
             ];
 
 

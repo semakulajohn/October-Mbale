@@ -231,7 +231,10 @@
                                                 </button>
 
                                                 <div class="btn-group">
-                                                    <button ng-click="Save(supply)" class="btn btn-info dropdown-toggle" ng-disabled="!form.$valid">
+                                                    <!--<button ng-click="Save(supply)" class="btn btn-info dropdown-toggle" ng-disabled="!form.$valid">
+                                                        Save
+                                                    </button>-->
+                                                    <button  class="btn btn-info dropdown-toggle" ng-disabled="!form.$valid" ng-really-message='Are you sure you want to save this Supply' ng-really-click="Save(supply)">
                                                         Save
                                                     </button>
                                                     <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">
@@ -242,6 +245,9 @@
                                                         <li ng-show="supply.SupplyId > 0">
                                                             <a ng-really-message='Are you sure you want to delete this Supply' ng-disabled="!form.$valid" class="btn text-align-left" href="" ng-really-click="Delete(Supply.SupplyId)" data-original-title="Delete">Delete</a>
                                                         </li>
+                                                        <!--<li>
+                                                        <a data-toggle="modal" data-target="#supplyModal">Confirm</a>
+                                                        </li>-->
                                                     </ul>
                                                 </div>
 

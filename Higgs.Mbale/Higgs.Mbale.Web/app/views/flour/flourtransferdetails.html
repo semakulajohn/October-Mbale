@@ -92,7 +92,7 @@
                                                     <p>{{flourTransfer.Reject}}</p>
                                                     <p>
                                                         
-                                                        <button ng-click="Reject(flourTransfer)" class="btn btn-danger">Reject</button>
+                                                        <button ng-really-click="Reject(flourTransfer)" ng-really-message='Are you sure you want to reject this transfer' class="btn btn-danger">Reject</button>
                                                     </p>
                                                 </div>
                                             </div>
@@ -102,7 +102,7 @@
                                                     <p>{{flourTransfer.Accept}}</p>
                                                     <p >
                                                         
-                                                        <button ng-click="Accept(flourTransfer)" class="btn btn-success">Accept</button>
+                                                        <button ng-really-click="Accept(flourTransfer)" ng-really-message='Are you sure you want to accept this transfer' class="btn btn-success">Accept</button>
                                                     </p>
                                                 </div>
                                             </div>

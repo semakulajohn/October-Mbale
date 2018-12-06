@@ -202,7 +202,7 @@ angular
             $scope.gridData.columnDefs = [
 
                 {
-                    name: 'SupplyDate', 
+                    name: 'SupplyDate', field: 'SupplyDate', type: 'date', cellFilter: 'date:\'yy-MM-dd\'',
                     sort: {
                         direction: uiGridConstants.DESC,
                         priority: 1
@@ -281,7 +281,7 @@ angular
             $scope.gridData.columnDefs = [
 
                 {
-                    name: 'SupplyDate',
+                    name: 'SupplyDate', field: 'SupplyDate', type: 'date', cellFilter: 'date:\'yy-MM-dd\'',
                     sort: {
                         direction: uiGridConstants.DESC,
                         priority: 1
@@ -343,7 +343,7 @@ angular
             $scope.gridData.columnDefs = [
 
                 {
-                    name: 'SupplyDate',
+                    name: 'SupplyDate', field: 'SupplyDate', type: 'date', cellFilter: 'date:\'yy-MM-dd\'',
                     sort: {
                         direction: uiGridConstants.ASC,
                         priority: 1
@@ -492,7 +492,7 @@ angular
             $scope.gridData.columnDefs = [
 
                 {
-                    name: 'SupplyDate',
+                    name: 'SupplyDate', field: 'SupplyDate', type: 'date', cellFilter: 'date:\'yy-MM-dd\'',
                     sort: {
                         direction: uiGridConstants.DESC,
                         priority: 1
@@ -593,7 +593,7 @@ angular
             $scope.gridData.columnDefs = [
 
                 {
-                    name: 'SupplyDate',
+                    name: 'SupplyDate', field: 'SupplyDate', type: 'date', cellFilter: 'date:\'yy-MM-dd\'',
                     sort: {
                         direction: uiGridConstants.DESC,
                         priority: 1
@@ -656,7 +656,7 @@ angular
             $scope.gridData.columnDefs = [
 
                 {
-                    name: 'SupplyDate',
+                    name: 'SupplyDate', field: 'SupplyDate', type: 'date', cellFilter: 'date:\'yy-MM-dd\'',
                     sort: {
                         direction: uiGridConstants.DESC,
                         priority: 1
@@ -710,7 +710,7 @@ angular
             $scope.gridData.columnDefs = [
 
                 {
-                    name: 'SupplyDate',
+                    name: 'SupplyDate', field: 'SupplyDate', type: 'date', cellFilter: 'date:\'yy-MM-dd\'',
                     sort: {
                         direction: uiGridConstants.DESC,
                         priority: 1

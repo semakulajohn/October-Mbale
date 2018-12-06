@@ -17,5 +17,6 @@ namespace Higgs.Mbale.DAL.Interface
         IEnumerable<Requistion> GetAllRequistionsForAParticularStatus(long statusId);
         IEnumerable<Requistion> GetAllRequistionsForAParticularBranch(long branchId);
         void UpdateRequistionWithCompletedStatus(long requistionId, long statusId, string userId);
+        Requistion GetLatestCreatedRequistion();
     }
 }

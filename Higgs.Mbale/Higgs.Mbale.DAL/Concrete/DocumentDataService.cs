@@ -46,6 +46,14 @@ namespace Higgs.Mbale.DAL.Concrete
                 );
         }
 
+        public Document GetDocumentForAParticularItem(long itemId)
+        {
+            return this.UnitOfWork.Get<Document>().AsQueryable()
+                 .FirstOrDefault(c =>
+                    c.ItemId == itemId &&
+                    c.Deleted == false
+                );
+        }
         public Document GetLatestCreatedDocumentForAParticularCategory(long documentCategoryId)
         {
             Document document = new Document();
@@ -71,7 +79,7 @@ namespace Higgs.Mbale.DAL.Concrete
            
                 var document = new Document()
                 {
-                    Name = documentDTO.Name,
+                    
                     UserId = documentDTO.UserId,
                     DocumentCategoryId = documentDTO.DocumentCategoryId,
                     Amount = documentDTO.Amount,
@@ -80,6 +88,7 @@ namespace Higgs.Mbale.DAL.Concrete
                     Description = documentDTO.Description,
                     Quantity = documentDTO.Quantity,
                     DocumentNumber = documentDTO.DocumentNumber,
+                    AmountInWords = documentDTO.AmountInWords,
                     CreatedOn = DateTime.Now,
                     TimeStamp = DateTime.Now,
                     CreatedBy = userId,
@@ -98,7 +107,7 @@ namespace Higgs.Mbale.DAL.Concrete
                     .FirstOrDefault(e => e.DocumentId == documentDTO.DocumentId);
                 if (result != null)
                 {
-                    result.Name = documentDTO.Name;
+                    
                     result.DocumentNumber = documentDTO.DocumentNumber;
                     result.Description = documentDTO.Description;
                     result.DocumentCategoryId = documentDTO.DocumentCategoryId;
@@ -107,6 +116,7 @@ namespace Higgs.Mbale.DAL.Concrete
                     result.ItemId = documentDTO.ItemId;
                     result.BranchId = documentDTO.BranchId;
                     result.UserId = documentDTO.UserId;
+                    result.AmountInWords = documentDTO.AmountInWords;
                     result.UpdatedBy = userId;
                     result.TimeStamp = DateTime.Now;
                     result.Deleted = documentDTO.Deleted;

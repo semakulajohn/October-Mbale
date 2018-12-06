@@ -182,23 +182,40 @@ angular
 
             $scope.gridData.columnDefs = [
 
-                {
-                    name: 'AccountTransactionActivityId',
-                    sort: {
-                        direction: uiGridConstants.DESC,
-                        priority: 1
-                    }
-                },
-                { name: 'Account', field: 'AccountName'},
-                { name: 'TransactionSubTypeName', field: 'TransactionSubTypeName' },
-                { name: 'Notes', field: 'Notes', field:'Notes'},
-                { name: 'Start Amount', field: 'StartAmount' },
-                { name: 'Action', field: 'Action' },
+                //{
+                //    name: 'AccountTransactionActivityId',
+                //    sort: {
+                //        direction: uiGridConstants.DESC,
+                //        priority: 1
+                //    }
+                //},
+                //{ name: 'Account', field: 'AccountName'},
+                //{ name: 'TransactionSubTypeName', field: 'TransactionSubTypeName' },
+                //{ name: 'Notes', field: 'Notes', field:'Notes'},
+                //{ name: 'Start Amount', field: 'StartAmount' },
+                //{ name: 'Action', field: 'Action' },
                
-                { name: 'Amount', field: 'Amount' },
+                //{ name: 'Amount', field: 'Amount' },
+                // { name: 'Balance', field: 'Balance' },
+                // { name: 'Branch', field: 'BranchName' },
+                // { name: 'Department', field: 'SectorName' },
+                  {
+                      name: 'CreatedOn', field: 'CreatedOn',
+                      sort: {
+                          direction: uiGridConstants.ASC,
+                          priority: 1
+                      }
+                  },
+
+
+                { name: 'Notes', field: 'Notes' },
+              
+                { name: 'Debit', cellTemplate: '<div ng-if="row.entity.Action ==\'-\'">{{row.entity.Amount}}</div>' },
+                 { name: 'Credit', cellTemplate: '<div ng-if="row.entity.Action ==\'+\'">{{row.entity.Amount}}</div>' },
+
+             
                  { name: 'Balance', field: 'Balance' },
-                 { name: 'Branch', field: 'BranchName' },
-                 { name: 'Department', field: 'SectorName' },
+
 
             ];
 
@@ -216,7 +233,7 @@ angular
             var accountId = $scope.accountId;
             $scope.accountName = "";
             $scope.loadingSpinner = true;
-
+            
             var promise = $http.get('/webapi/UserApi/GetUser?userId=' + accountId, {});
             promise.then(
                 function (payload) {
@@ -255,22 +272,40 @@ angular
 
             
                  
-                { name: 'Account', field: 'AccountName' },
-                { name: 'TransactionSubTypeName', field: 'TransactionSubTypeName' },
-                { name: 'Notes', field: 'Notes'},
-                { name: 'Start Amount', field: 'StartAmount' },
-                { name: 'Action', field: 'Action' },
+                //{ name: 'Account', field: 'AccountName' },
+                //{ name: 'TransactionSubTypeName', field: 'TransactionSubTypeName' },
+                //{ name: 'Notes', field: 'Notes'},
+                //{ name: 'Start Amount', field: 'StartAmount' },
+                //{ name: 'Action', field: 'Action' },
 
-                { name: 'Amount', field: 'Amount' },
-                 { name: 'Balance', field: 'Balance' },
+                //{ name: 'Amount', field: 'Amount' },
+                // { name: 'Balance', field: 'Balance' },
+                // {
+                //     name: 'CreatedOn', field: 'CreatedOn',
+                //     sort: {
+                //         direction: uiGridConstants.ASC,
+                //         priority: 1
+                //     }
+                // },
+
                  {
                      name: 'CreatedOn', field: 'CreatedOn',
                      sort: {
-                         direction: uiGridConstants.DESC,
+                         direction: uiGridConstants.ASC,
                          priority: 1
                      }
                  },
+                
+                
+                { name: 'Notes', field: 'Notes' },
+                //{ name: 'Start Amount', field: 'StartAmount' },
+                //{ name: 'Action', field: 'Action' },
+                {name :'Debit',cellTemplate: '<div ng-if="row.entity.Action ==\'-\'">{{row.entity.Amount}}</div>' },
+                 { name: 'Credit', cellTemplate: '<div ng-if="row.entity.Action ==\'+\'">{{row.entity.Amount}}</div>' },
 
+                //{ name: 'Amount', field: 'Amount' },
+                 { name: 'Balance', field: 'Balance' },
+                
 
             ];
 
@@ -313,23 +348,39 @@ angular
 
             $scope.gridData.columnDefs = [
 
+                  {
+                      name: 'CreatedOn', field: 'CreatedOn',
+                      sort: {
+                          direction: uiGridConstants.ASC,
+                          priority: 1
+                      }
+                  },
 
 
-                { name: 'Account', field: 'AccountName' },
-              
                 { name: 'Notes', field: 'Notes' },
-                { name: 'Start Amount', field: 'StartAmount' },
-                { name: 'Action', field: 'Action' },
+                
+                { name: 'Debit', cellTemplate: '<div ng-if="row.entity.Action ==\'-\'">{{row.entity.Amount}}</div>' },
+                 { name: 'Credit', cellTemplate: '<div ng-if="row.entity.Action ==\'+\'">{{row.entity.Amount}}</div>' },
 
-                { name: 'Amount', field: 'Amount' },
+           
                  { name: 'Balance', field: 'Balance' },
-                 {
-                     name: 'CreatedOn', field: 'CreatedOn',
-                     sort: {
-                         direction: uiGridConstants.DESC,
-                         priority: 1
-                     }
-                 },
+
+
+                //{ name: 'Account', field: 'AccountName' },
+              
+                //{ name: 'Notes', field: 'Notes' },
+                //{ name: 'Start Amount', field: 'StartAmount' },
+                //{ name: 'Action', field: 'Action' },
+
+                //{ name: 'Amount', field: 'Amount' },
+                // { name: 'Balance', field: 'Balance' },
+                // {
+                //     name: 'CreatedOn', field: 'CreatedOn',
+                //     sort: {
+                //         direction: uiGridConstants.DESC,
+                //         priority: 1
+                //     }
+                // },
 
 
             ];

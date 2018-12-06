@@ -54,9 +54,13 @@
                         Response: b.Response,
                         StatusId: b.StatusId,
                         Amount : b.Amount,
-                        BranchId : b.BranchId,
+                        BranchId: b.BranchId,
+                        Approved: b.Approved,
+                        Rejected: b.Rejected,
+                        DocumentId : b.DocumentId,
                         Description: b.Description,
                         ApprovedById: b.ApprovedById,
+                        AmountInWords : b.AmountInWords,
                         RequistionNumber : b.RequistionNumber,
                         TimeStamp: b.TimeStamp,
                         CreatedOn: b.CreatedOn,
@@ -82,7 +86,8 @@
                     BranchId: requistion.BranchId,
                     Description : requistion.Description,
                     Response: requistion.Response,
-                    Amount : requistion.Amount,
+                    Amount: requistion.Amount,
+                    AmountInWords : requistion.AmountInWords,
                     StatusId : statusId,
                     ApprovedById: requistion.ApprovedById,
                     RequistionNumber : requistion.RequistionNumber,
@@ -104,7 +109,8 @@
 
 
                             if (action == "create") {
-                                $state.go('requistion-edit', { 'action': 'edit', 'requistionId': requistionId });
+                                $state.go('requistions.list');
+
                             }
 
                         }, 1500);
@@ -125,9 +131,12 @@
                     BranchId: requistion.BranchId,
                     Description : requistion.Description,
                     Response: requistion.Response,
-                    Amount : requistion.Amount,
+                    Amount: requistion.Amount,
+                    AmountInWords : requistion.AmountInWords,
                     StatusId: approvedStatusId,
                     ApprovedById: $scope.user.Id,
+                    Approved: true,
+                    Rejected : requistion.Rejected,
                     RequistionNumber : requistion.RequistionNumber,
                     CreatedBy: requistion.CreatedBy,
                     CreatedOn: requistion.CreatedOn,
@@ -145,10 +154,8 @@
                         $timeout(function () {
                             $scope.showMessageSave = false;
 
+                            $state.go('requistions.list');
 
-                            if (action == "create") {
-                                $state.go('requistion-edit', { 'action': 'edit', 'requistionId': requistionId });
-                            }
 
                         }, 1500);
 
@@ -158,6 +165,41 @@
 
         }
 
+         $scope.Reject = function (requistion) {
+
+             usSpinnerService.spin('global-spinner');
+
+             var promise = $http.post('/webapi/RequistionApi/Save', {
+                 RequistionId: requistionId,
+                 BranchId: requistion.BranchId,
+                 Description: requistion.Description,
+                 Response: requistion.Response,
+                 Amount: requistion.Amount,
+                 AmountInWords : requistion.AmountInWords,
+                 Approved: requistion.Approved,
+                 Rejected : true,
+                 StatusId: approvedStatusId,
+                 ApprovedById: $scope.user.Id,
+                 RequistionNumber: requistion.RequistionNumber,
+                 CreatedBy: requistion.CreatedBy,
+                 CreatedOn: requistion.CreatedOn,
+                 Deleted: requistion.Deleted,
+
+             });
+
+             promise.then(
+                 function (payload) {
+
+                     requistionId = payload.data;
+                     usSpinnerService.stop('global-spinner');
+                     $timeout(function () {
+
+                         $state.go('requistions.list');
+
+
+                     }, 500);
+                 });
+         }
 
 
         $scope.Cancel = function () {
@@ -220,7 +262,8 @@ angular
                         priority: 1
                     }
                 },
-
+                { name: 'Amount', field: 'Amount' },
+                {name : 'AmountInWords',field: 'AmountInWords'},
                 { name: 'Description', field: 'Description' },
                 { name: 'Response', field: 'Response' },
                 { name: 'Status', field: 'StatusName' },
@@ -229,6 +272,11 @@ angular
                      name: 'Action', cellTemplate: '<div class="ui-grid-cell-contents"> <a href="#/requistions/edit/{{row.entity.RequistionId}}">Edit</a> </div>',
                     
                  },
+                  {
+                      name: 'Print', cellTemplate: '<div class="ui-grid-cell-contents" ng-if="row.entity.StatusId == 2"><a  href="/Excel/Document?documentId={{row.entity.DocumentId}}">Print</a></div>'
+                  },
+
+                  
 
             ];
 
@@ -268,7 +316,8 @@ angular
                         priority: 1
                     }
                 },
-
+                { name: 'Amount', field: 'Amount' },
+                  { name: 'AmountInWords', field: 'AmountInWords' },
                 { name: 'Description', field: 'Description' },
                 { name: 'Response', field: 'Response' },
                 { name: 'Status', field: 'StatusName' },
@@ -277,6 +326,15 @@ angular
                       name: 'Action', cellTemplate: '<div class="ui-grid-cell-contents"> <a href="#/requistions/edit/{{row.entity.RequistionId}}">Edit</a> </div>',
 
                   },
+                   //{
+                   //    name: 'Print', cellTemplate: '<div class="ui-grid-cell-contents"> <a  href="/Excel/Requistion?requistionId={{row.entity.RequistionId}}">Print</a> </div>',
+
+                   //},
+
+                    {
+                        name: 'Print', cellTemplate: '<div class="ui-grid-cell-contents" ng-if="row.entity.StatusId == 2"><a  href="/Excel/Document?documentId={{row.entity.DocumentId}}">Print</a></div>'
+                    },
+
 
             ];
 
@@ -318,7 +376,8 @@ angular
                         priority: 1
                     }
                 },
-
+                { name: 'Amount', field: 'Amount' },
+                 { name: 'AmountInWords', field: 'AmountInWords' },
                 { name: 'Description', field: 'Description' },
                 { name: 'Response', field: 'Response' },
                 { name: 'Status', field: 'StatusName' },

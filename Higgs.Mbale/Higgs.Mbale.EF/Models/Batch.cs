@@ -43,6 +43,7 @@ namespace Higgs.Mbale.EF.Models
         public System.DateTime CreatedOn { get; set; }
         public System.DateTime TimeStamp { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
+        public double BrandBalance { get; set; }
     
         public virtual ICollection<ActivityBatchCasual> ActivityBatchCasuals { get; set; }
         public virtual Branch Branch { get; set; }

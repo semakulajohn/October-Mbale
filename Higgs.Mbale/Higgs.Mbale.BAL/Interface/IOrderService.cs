@@ -16,11 +16,12 @@ namespace Higgs.Mbale.BAL.Interface
         void MarkAsDeleted(long orderId, string userId);
         IEnumerable<Order> GetAllOrdersForAParticularBranch(long branchId);
         IEnumerable<Order> GetAllOrdersForAParticularCustomer(string customerId);
-        void UpdateOrderWithCompletedStatus(long orderId, long statusId, string userId);
+        void UpdateOrderWithCompletedStatus(long orderId, long statusId, double balance, string userId);
         IEnumerable<Order> GetAllCompletedOrdersForAParticularCustomer(string customerId, long statusId);
         IEnumerable<Order> GetAllOpenOrdersForAParticularCustomer(string customerId, long statusId);
-        void UpdateOrderWithInProgressStatus(long orderId, long statusId, string userId);
+        void UpdateOrderWithInProgressStatus(long orderId, long statusId, double balance, string userId);
         IEnumerable<Order> MapEFToModel(IEnumerable<EF.Models.Order> data);
+        void UpdateOrderWithBalance(long orderId, double balance, string userId);
       
         
     }

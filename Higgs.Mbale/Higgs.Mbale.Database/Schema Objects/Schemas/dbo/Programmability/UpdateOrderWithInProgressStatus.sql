@@ -2,6 +2,7 @@
 
 	@inPutOrderId BIGINT,
 	@statusId BIGINT,
+	@balance FLOAT,
 	@userId NVARCHAR (128)
 		
 AS 
@@ -12,7 +13,7 @@ BEGIN TRY
 
 	
 	Update [Order]
-	SET StatusId = @statusId,UpdatedBy = @userId,[TimeStamp] = GETDATE()
+	SET StatusId = @statusId,Balance = @balance,UpdatedBy = @userId,[TimeStamp] = GETDATE()
 	WHERE OrderId = @inPutOrderId AND Deleted = 0
 	
  

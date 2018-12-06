@@ -19,6 +19,7 @@ namespace Higgs.Mbale.DAL.Interface
           void SaveBatchGradeSize(BatchGradeSizeDTO batchGradeSizeDTO);
            void PurgeBatchGradeSize(long batchOutPutId);
            IEnumerable<BatchSupply> GetBatchSupplies(long batchId);
+           void UpdateBatchBrandBalance(long batchId, double quantity, string userId);
        
     }
 }

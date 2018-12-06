@@ -140,7 +140,9 @@
                                                 <div class="check-element sample-show-hide alert alert-danger animate-show" ng-show="showMessageDeleteFailed" style="clear:both;">
                                                     <i class="fa-fw fa fa-check"></i><span>Cash has failed to be deleted</span>
                                                 </div>
-
+                                                <div class="check-element sample-show-hide alert alert-danger animate-show" ng-show="showMessageCashNotEnough" style="clear:both;">
+                                                    <i class="fa-fw fa fa-check"></i><span>Can't Spend anymore, you don't have enough cash</span>
+                                                </div>
 
 
                                             </div>
@@ -155,7 +157,8 @@
                                                 </button>
 
                                                 <div class="btn-group">
-                                                    <button ng-click="Save(cash)" class="btn btn-info dropdown-toggle" ng-disabled="!form.$valid">
+                                                   
+                                                    <button ng-really-click="Save(cash)" class="btn btn-info dropdown-toggle" ng-really-message='Are you sure you want to add this cash transaction' ng-disabled=" !form.$valid">
                                                         Save
                                                     </button>
                                                     <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">

@@ -116,7 +116,8 @@
                                                 </button>
 
                                                 <div class="btn-group">
-                                                    <button ng-click="Save(branch)" class="btn btn-info dropdown-toggle" ng-disabled="!form.$valid">
+                                                    
+                                                    <button class="btn btn-info dropdown-toggle" ng-really-click="Save(branch)" ng-disabled="!form.$valid" ng-really-message='Are you sure you want to save this branch'>
                                                         Save
                                                     </button>
                                                     <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">

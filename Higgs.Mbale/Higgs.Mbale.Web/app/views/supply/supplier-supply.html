@@ -49,7 +49,7 @@
 
                         <!--<div class="col-md-6" ng-show="$scope.row.isSelected">-->
                         <div class="col-md-6">
-                            <a ng-show="isAdmin" class="btn btn-danger btn-sm m-b-xs" ng-click="PaySupply()" ng-disabled="gridApi.grid.selection.selectedCount == 0 "> Pay Supply(s)</a>
+                            <a ng-show="isAdmin" class="btn btn-danger btn-sm m-b-xs" ng-really-click="PaySupply()" ng-really-message="Click Ok to confirm payment" ng-disabled="gridApi.grid.selection.selectedCount == 0 "> Pay Supply(s)</a>
                         </div>
 
 

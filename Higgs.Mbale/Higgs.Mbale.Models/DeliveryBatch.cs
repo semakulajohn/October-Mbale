@@ -15,5 +15,6 @@ namespace Higgs.Mbale.Models
         public System.DateTime TimeStamp { get; set; }
 
         public string BatchNumber { get; set; }
+        
     }
 }

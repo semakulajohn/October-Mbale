@@ -1121,6 +1121,17 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
                 }
             })
 
+         .state('admin-casualworkers-list', {
+             url: "/casualworkers",
+             templateUrl: "/app/views/casualworker/admin-view.html",
+             data: {
+                 pageTitle: 'Cash',
+             },
+             controller: function ($scope, $stateParams) {
+
+             }
+         })
+
         //requistions
      .state('requistions', {
          abstract: true,
@@ -1141,6 +1152,16 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
 
         }
     })
+         .state('admin-requistions-list', {
+             url: "/requistions",
+             templateUrl: "/app/views/requistion/admin-view.html",
+             data: {
+                 pageTitle: 'Requistions',
+             },
+             controller: function ($scope, $stateParams) {
+
+             }
+         })
 
           .state('branch-requistion-list', {
               url: "/requistions/branch/:branchId",
@@ -1786,7 +1807,16 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
 
          }
      })
+         .state('admin-cash-list', {
+             url: "/cash",
+             templateUrl: "/app/views/cash/admin-view.html",
+             data: {
+                 pageTitle: 'Cash',
+             },
+             controller: function ($scope, $stateParams) {
 
+             }
+         })
       .state('flour-store-transfer', {
           url: "/flours/:action/:flourTransferId/:storeId",
           templateUrl: "/app/views/flour/flourtransfer.html",

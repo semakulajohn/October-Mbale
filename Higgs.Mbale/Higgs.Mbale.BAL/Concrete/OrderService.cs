@@ -125,14 +125,18 @@ namespace Higgs.Mbale.BAL.Concrete
         }
 
 
-        public void UpdateOrderWithCompletedStatus(long orderId, long statusId, string userId)
+        public void UpdateOrderWithCompletedStatus(long orderId, long statusId,double balance, string userId)
         {
-            _dataService.UpdateOrderWithCompletedStatus(orderId, statusId, userId);
+            _dataService.UpdateOrderWithCompletedStatus(orderId, statusId,balance, userId);
         }
 
-        public void UpdateOrderWithInProgressStatus(long orderId, long statusId, string userId)
+        public void UpdateOrderWithInProgressStatus(long orderId, long statusId,double balance, string userId)
         {
-            _dataService.UpdateOrderWithInProgressStatus(orderId, statusId, userId);
+            _dataService.UpdateOrderWithInProgressStatus(orderId, statusId,balance, userId);
+        }
+        public void UpdateOrderWithBalance(long orderId, double balance, string userId)
+        {
+            _dataService.UpdateOrderWithBalance(orderId, balance, userId);
         }
         /// <summary>
         /// 
@@ -206,6 +210,7 @@ namespace Higgs.Mbale.BAL.Concrete
                     StatusName = data.Status != null ? data.Status.Name : "",
                     CreatedOn = data.CreatedOn,
                     TimeStamp = data.TimeStamp,
+                    Balance = data.Balance,
                     Deleted = data.Deleted,
                     CreatedBy = _userService.GetUserFullName(data.AspNetUser),
                     UpdatedBy = _userService.GetUserFullName(data.AspNetUser2)
@@ -217,7 +222,7 @@ namespace Higgs.Mbale.BAL.Concrete
                     if (data.OrderGradeSizes.Any())
                     {
                         List<Grade> grades = new List<Grade>();
-                        var distinctGrades = data.OrderGradeSizes.GroupBy(g => g.GradeId).Select(o => o.First()).ToList();
+                        var distinctGrades = data.OrderGradeSizes.Where(a=>a.OrderId == data.OrderId).GroupBy(g => g.GradeId).Select(o => o.First()).ToList();
                         foreach (var orderGradeSize in distinctGrades)
                         {
                             var grade = new Grade()
@@ -243,7 +248,8 @@ namespace Higgs.Mbale.BAL.Concrete
                                         {
                                             DenominationId = ogs.SizeId,
                                             Value = ogs.Size != null ? ogs.Size.Value : 0,
-                                            Quantity = ogs.Quantity
+                                            Quantity = ogs.Quantity,
+                                            Balance =Convert.ToDouble(ogs.Balance),
                                         };
                                         order.TotalQuantity += (ogs.Quantity * ogs.Size.Value);
                                         denominations.Add(denomination);

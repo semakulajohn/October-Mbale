@@ -155,12 +155,12 @@
                             <tbody>
                                 <tr ng-repeat="batchOutPut in data">
                                     <td style="font-size: 18px !important;" width="10%">{{batchOutPut.Loss | number}}</td>
-                                    <td style="font-size: 18px !important;" width="10%">{{batchOutPut.LossPercentage}}</td>
+                                    <td style="font-size: 18px !important;" width="10%">{{batchOutPut.LossPercentage | number:4}}</td>
                                     <td style="font-size: 18px !important;" width="10%">{{batchOutPut.FlourOutPut | number}}</td>
-                                    <td style="font-size: 18px !important;" width="10%">{{batchOutPut.FlourPercentage}}</td>
+                                    <td style="font-size: 18px !important;" width="10%">{{batchOutPut.FlourPercentage |number:4}}</td>
                                     
                                     <td style="font-size: 18px !important;" width="10%">{{ batchOutPut.BrandOutPut | number }}</td>
-                                    <td style="font-size: 18px !important;" width="10%">{{batchOutPut.BrandPercentage}}</td>
+                                    <td style="font-size: 18px !important;" width="10%">{{batchOutPut.BrandPercentage |number :4}}</td>
                                     <td style="font-size: 18px !important;" width="10%">{{ batchOutPut.BatchName }}</td>
                                     <td style="font-size: 18px !important;" width="10%">{{batchOutPut.BranchName}}</td>
                                     <td style="font-size: 18px !important;" width="10%">{{ batchOutPut.CreatedOn | date:"yyyy-MM-dd" }}</td>

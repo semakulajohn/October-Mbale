@@ -77,6 +77,7 @@ namespace Higgs.Mbale.DAL.Concrete
                     BranchId = orderDTO.BranchId,                   
                     CustomerId = orderDTO.CustomerId,                  
                     CreatedOn = DateTime.Now,
+                    Balance = orderDTO.Amount,
                     TimeStamp = DateTime.Now,
                     CreatedBy = userId,
                     Deleted = false,
@@ -102,6 +103,7 @@ namespace Higgs.Mbale.DAL.Concrete
                     result.Amount = orderDTO.Amount;
                     result.ProductId = orderDTO.ProductId;                    
                     result.BranchId = orderDTO.BranchId;
+                    result.Balance = orderDTO.Amount;
                     result.StatusId = orderDTO.StatusId;
                     result.UpdatedBy = userId;
                     result.TimeStamp = DateTime.Now;
@@ -131,6 +133,7 @@ namespace Higgs.Mbale.DAL.Concrete
                 GradeId = orderGradeSizeDTO.GradeId,
                 SizeId = orderGradeSizeDTO.SizeId,
                 Quantity = orderGradeSizeDTO.Quantity,
+                Balance = orderGradeSizeDTO.Quantity,
                 TimeStamp = DateTime.Now
             };
             this.UnitOfWork.Get<OrderGradeSize>().AddNew(orderGradeSize);
@@ -144,20 +147,28 @@ namespace Higgs.Mbale.DAL.Concrete
                 .Delete();
         }
 
-        public void UpdateOrderWithCompletedStatus(long orderId, long statusId, string userId)
+        public void UpdateOrderWithCompletedStatus(long orderId, long statusId,double balance, string userId)
         {
             using (var dbContext = new MbaleEntities())
             {
-                dbContext.UpdateOrderWithCompletedStatus(orderId, statusId, userId);
+                dbContext.UpdateOrderWithCompletedStatus(orderId, statusId,balance, userId);
             }
 
         }
 
-        public void UpdateOrderWithInProgressStatus(long orderId, long statusId, string userId)
+        public void UpdateOrderWithInProgressStatus(long orderId, long statusId,double balance, string userId)
         {
             using (var dbContext = new MbaleEntities())
             {
-                dbContext.UpdateOrderWithInProgressStatus(orderId, statusId, userId);
+                dbContext.UpdateOrderWithInProgressStatus(orderId, statusId,balance, userId);
+            }
+
+        }
+        public void UpdateOrderWithBalance(long orderId, double balance, string userId)
+        {
+            using (var dbContext = new MbaleEntities())
+            {
+                dbContext.UpdateOrderWithBalanceQuantity(orderId, balance, userId);
             }
 
         }

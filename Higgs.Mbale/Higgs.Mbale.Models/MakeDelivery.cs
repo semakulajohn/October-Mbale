@@ -11,5 +11,9 @@ namespace Higgs.Mbale.Models
      public bool StockReduced { get; set; }
      public long StockId { get; set; }
      public double OrderQuantityBalance { get; set; }
+     public double BatchBrandBalance { get; set; }
+     public List<BatchDeliveryDetails> BatchList { get; set; }
+
+    
     }
 }

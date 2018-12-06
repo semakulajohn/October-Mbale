@@ -94,19 +94,32 @@
 
                 promise.then(
                     function (payload) {
-
+                      
                         cashId = payload.data;
-                        $scope.showMessageSave = true;
-                        usSpinnerService.stop('global-spinner');
-                        $timeout(function () {
-                            $scope.showMessageSave = false;
 
-                            if (action == "create") {
-                                $state.go('cash.list');
-                            }
+                        if (cashId == -1) {
+                            $scope.showMessageCashNotEnough = true;
+                            usSpinnerService.stop('global-spinner');
 
-                        }, 1500);
+                            $timeout(function () {
+                                $scope.showMessageCashNotEnough = false;
 
+                            }, 4000);
+                        }
+                        else {
+                            $scope.showMessageSave = true;
+                            usSpinnerService.stop('global-spinner');
+                            $timeout(function () {
+                                $scope.showMessageSave = false;
+
+                                if (action == "create") {
+                                    $state.go('cash.list');
+                                }
+
+                            }, 1500);
+
+                        }
+                      
 
                     });
             }
@@ -211,8 +224,10 @@ angular
                     $scope.Length = payload.data.length;
                     if ($scope.Length > 0) {
 
-                        var lastIndex = $scope.Length - 1;
-                        $scope.accountBalance = payload.data[lastIndex].Balance;
+                        //var lastIndex = $scope.Length - 1;
+                        //$scope.accountBalance = payload.data[lastIndex].Balance;
+                        var firstIndex = 0;
+                        $scope.accountBalance = payload.data[firstIndex].Balance;
                     }
                     else {
                         $scope.accountBalance = 0;

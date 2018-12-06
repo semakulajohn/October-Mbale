@@ -12,6 +12,7 @@ namespace Higgs.Mbale.DTO
         public long GradeId { get; set; }
         public long SizeId { get; set; }
         public double Quantity { get; set; }
+        public double Balance { get; set; }
         public System.DateTime TimeStamp { get; set; }
     
     }

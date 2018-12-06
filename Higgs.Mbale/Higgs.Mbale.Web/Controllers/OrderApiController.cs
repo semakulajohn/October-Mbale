@@ -16,6 +16,7 @@ namespace Higgs.Mbale.Web.Controllers
     {
         private long orderStatusIdComplete = Convert.ToInt64(ConfigurationManager.AppSettings["StatusIdComplete"]);
         private long orderStatusIdOpen = Convert.ToInt64(ConfigurationManager.AppSettings["StatusIdOpen"]);
+        private long orderStatusIdInProgress = Convert.ToInt64(ConfigurationManager.AppSettings["StatusIdInProgress"]);
             private IOrderService _orderService;
             private IUserService _userService;
             ILog logger = log4net.LogManager.GetLogger(typeof(OrderApiController));
@@ -64,6 +65,13 @@ namespace Higgs.Mbale.Web.Controllers
             public IEnumerable<Order> GetAllCompletedOrdersForAParticularCustomer(string customerId)
             {
                 return _orderService.GetAllCompletedOrdersForAParticularCustomer(customerId,orderStatusIdComplete);
+            }
+
+            [HttpGet]
+            [ActionName("GetAllInProgressOrdersForAParticularCustomer")]
+            public IEnumerable<Order> GetAllInProgressOrdersForAParticularCustomer(string customerId)
+            {
+                return _orderService.GetAllCompletedOrdersForAParticularCustomer(customerId, orderStatusIdInProgress);
             }
 
             [HttpGet]

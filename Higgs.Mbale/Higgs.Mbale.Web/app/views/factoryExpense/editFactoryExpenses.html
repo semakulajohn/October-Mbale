@@ -289,9 +289,10 @@
                                                 </button>
 
                                                 <div class="btn-group">
-                                                    <button ng-click="SaveFactoryExpenses(factoryExpenses,factoryExpenses1,factoryExpenses2,factoryExpenses3,factoryExpenses4,factoryExpenses5,factoryExpenses6,factoryExpenses7,factoryExpenses8,factoryExpenses9)" class="btn btn-info dropdown-toggle" ng-disabled="!form.$valid">
+                                                    <button ng-really-click="SaveFactoryExpenses(factoryExpenses,factoryExpenses1,factoryExpenses2,factoryExpenses3,factoryExpenses4,factoryExpenses5,factoryExpenses6,factoryExpenses7,factoryExpenses8,factoryExpenses9)" ng-really-message='Are you sure you want to add  these factory expenses' class="btn btn-info dropdown-toggle" ng-disabled="!form.$valid">
                                                         Save
                                                     </button>
+
                                                     <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">
                                                         <span class="caret"></span>
                                                     </button>
