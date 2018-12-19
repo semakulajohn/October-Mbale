@@ -13,6 +13,7 @@ namespace Higgs.Mbale.Models
         public double BatchQuantity { get; set; }
         public System.DateTime CreatedOn { get; set; }
         public System.DateTime TimeStamp { get; set; }
+        public Nullable<double> Price { get; set; }
 
         public string BatchNumber { get; set; }
         

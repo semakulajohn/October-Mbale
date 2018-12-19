@@ -183,6 +183,7 @@ namespace Higgs.Mbale.DAL.Concrete
                 BatchId = deliveryBatchDTO.BatchId,
                 DeliveryId = deliveryBatchDTO.DeliveryId,
                 BatchQuantity = deliveryBatchDTO.BatchQuantity,
+                Price = deliveryBatchDTO.Price,
                 CreatedOn = DateTime.Now,
                 TimeStamp = DateTime.Now
             };

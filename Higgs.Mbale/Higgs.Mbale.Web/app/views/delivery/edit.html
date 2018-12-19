@@ -164,7 +164,7 @@
                                         </div>
                                        <div id="Content2">
                                             <div class="row">
-                                                <div class="form-group col-sm-6">
+                                                <div class="form-group col-sm-12">
                                                     <div class="col-sm-12">
                                                         <label>Batch</label>
                                                         <select style="border: none" name="batch" class="form-control col-sm-12" data-ng-model="delivery.Batches" multiple ng-class="{errorinput:form.batch.$invalid}"
@@ -228,22 +228,22 @@
                                                                                                                     <tr ng-repeat="x in grade.Denominations">
                                                                                                                         <td width="30%"><p> {{ x.Value }} Kg</p></td>
                                                                                                                         <td width="3%">
-                                                                                                                            <input ng-disabled name="balance{{x.DenominationId}}" class="form-controlx" ng-model="x.Balance" ng-pattern="/^\-?\d+((\.)\d+)?$/" ng-class="{ errorinput: form.balance{{x.DenominationId}}.$invalid }">
+                                                                                                                            <input  name="balance{{x.DenominationId}}" class="form-controlx" ng-model="x.Balance" ng-pattern="/^\-?\d+((\.)\d+)?$/" ng-class="{ errorinput: form.balance{{x.DenominationId}}.$invalid }" disabled>
                                                                                                                             <span ng-show="form.balance{{x.DenominationId}}.$invalid">
-                                                                                                                                <span ng-show="form.balance{{x.DenominationId}}.$error.pattern" class="help-block error"><i class="fa fa-warning"></i> Invalid formart, amount should be double or number</span>
+                                                                                                                                <span ng-show="form.balance{{x.DenominationId}}.$error.pattern" class="help-block error"><i class="fa fa-warning"></i> Invalid formart, balance should be double or number</span>
                                                                                                                             </span>
                                                                                                                         </td>
                                                                                                                         <td width="3%">
                                                                                                                             <input name="quantity{{x.DenominationId}}" class="form-controlx" ng-model="x.QuantityToRemove" ng-pattern="/^\-?\d+((\.)\d+)?$/" ng-class="{ errorinput: form.quantity{{x.DenominationId}}.$invalid }"  ng-disabled="">
                                                                                                                             <span ng-show="form.quantity{{x.DenominationId}}.$invalid">
-                                                                                                                                <span ng-show="form.quantity{{x.DenominationId}}.$error.pattern" class="help-block error"><i class="fa fa-warning"></i> Invalid formart, amount should be double or number</span>
+                                                                                                                                <span ng-show="form.quantity{{x.DenominationId}}.$error.pattern" class="help-block error"><i class="fa fa-warning"></i> Invalid formart, quantity should be double or number</span>
                                                                                                                             </span>
                                                                                                                         </td>
                                                                                                                         <td width="10%">
 
                                                                                                                             <input name="price{{x.DenominationId}}" class="form-controlx" ng-model="x.Price" ng-pattern="/^\-?\d+((\.)\d+)?$/" ng-class="{ errorinput: form.price{{x.DenominationId}}.$invalid }"  ng-disabled="">
                                                                                                                             <span ng-show="form.price{{x.DenominationId}}.$invalid">
-                                                                                                                                <span ng-show="form.price{{x.DenominationId}}.$error.pattern" class="help-block error"><i class="fa fa-warning"></i> Invalid formart, amount should be double or number</span>
+                                                                                                                                <span ng-show="form.price{{x.DenominationId}}.$error.pattern" class="help-block error"><i class="fa fa-warning"></i> Invalid formart, price should be double or number</span>
                                                                                                                             </span>
                                                                                                                         </td>
                                                                                                                     </tr>
@@ -317,6 +317,56 @@
                                             </div>
 
                                         </div>
+                                       
+                                        <div id="Content2">
+                                            <div class="row" ng-hide="order.ProductId !=1">
+                                               
+                                                <div ng-if="delivery.Batches.length==0 ||delivery.Batches ==null ">
+                                                    <div class="col-sm-12 col-md-12">
+                                                        Grade:
+                                                    </div>
+                                                    <div ng-repeat="grade in grades" class="checkbox col-md-3 col-sm-12">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <input id="grade_{{grade.GradeId}}" type="checkbox" name="grade_{{grade.GradeId}}"
+                                                                   checklist-model="delivery.selectedNoBatchGrades"
+                                                                   checklist-value="grade">
+                                                            <label for="grade-{{grade.GradeId}}"> {{grade.Value}} </label>
+
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <th width="40%">Value </th>
+                                                                            <th width="30%">Number Of Bags</th>
+                                                                            <th width="30%">Price</th>
+                                                                        </tr>
+                                                                        <tr ng-repeat="x in grade.Denominations">
+                                                                            <td width="40%"><p> {{ x.Value }} Kg</p></td>
+                                                                            <td width="30%">
+                                                                                <input name="amount{{x.DenominationId}}" class="form-controlx" ng-model="x.Quantity" ng-pattern="/^\-?\d+((\.)\d+)?$/" ng-class="{ errorinput: form.amount{{x.DenominationId}}.$invalid }" ng-disabled="">
+                                                                                <span ng-show="form.amount{{x.DenominationId}}.$invalid">
+                                                                                    <span ng-show="form.amount{{x.DenominationId}}.$error.pattern" class="help-block error"><i class="fa fa-warning"></i> Invalid formart, amount should be double or number</span>
+                                                                                </span>
+                                                                            </td>
+                                                                            <td width="30%">
+                                                                                <input name="price{{x.DenominationId}}" class="form-controlx" ng-model="x.Price" ng-pattern="/^\-?\d+((\.)\d+)?$/" ng-class="{ errorinput: form.price{{x.DenominationId}}.$invalid }" ng-disabled="">
+                                                                                <span ng-show="form.price{{x.DenominationId}}.$invalid">
+                                                                                    <span ng-show="form.price{{x.DenominationId}}.$error.pattern" class="help-block error"><i class="fa fa-warning"></i> Invalid formart, price should be double or number</span>
+                                                                                </span>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <br />
+                                                <div class="hr-line-dashed"></div>
+
+                                            </div>
+                                        </div>
                                         <div id="Content2" ng-show="order.ProductId ==1">
                                             <div>
                                                
@@ -337,25 +387,25 @@
                                                                     <table class="table table-bordered">
                                                                         <tbody>
                                                                             <tr>
-                                                                                <th width="30%">Value</th>
-                                                                                <th width="40%">Number Of Bags</th>
-                                                                                <th width="30%">Price</th>
+                                                                                <th width="50%">Value</th>
+                                                                                <th width="50%">Number Of Bags</th>
+                                                                               <!-- <th width="30%">Price</th>-->
                                                                             </tr>
                                                                             <tr ng-repeat="x in grade.Denominations">
-                                                                                <td width="30%"><p> {{ x.Value }} Kg</p></td>
-                                                                                <td width="40%">
-                                                                                    <input name="amount{{x.DenominationId}}" class="form-controlx" ng-model="x.Quantity" ng-pattern="/^\-?\d+((\.)\d+)?$/" ng-class="{ errorinput: form.amount{{x.DenominationId}}.$invalid }" ng-disabled="">
+                                                                                <td width="50%"><p> {{ x.Value }} Kg</p></td>
+                                                                                <td width="50%">
+                                                                                    <input name="amount{{x.DenominationId}}" class="form-controlx" ng-model="x.Quantity" ng-pattern="/^\-?\d+((\.)\d+)?$/" ng-class="{ errorinput: form.amount{{x.DenominationId}}.$invalid }" disabled>
                                                                                     <span ng-show="form.amount{{x.DenominationId}}.$invalid">
                                                                                         <span ng-show="form.amount{{x.DenominationId}}.$error.pattern" class="help-block error"><i class="fa fa-warning"></i> Invalid formart, amount should be double or number</span>
                                                                                     </span>
                                                                                 </td>
-                                                                                <td width="30%">
+                                                                                <!--<td width="30%">
 
                                                                                     <input name="price{{x.DenominationId}}" class="form-controlx" ng-model="x.Price" ng-pattern="/^\-?\d+((\.)\d+)?$/" ng-class="{ errorinput: form.price{{x.DenominationId}}.$invalid }" required ng-disabled="">
                                                                                     <span ng-show="form.price{{x.DenominationId}}.$invalid">
                                                                                         <span ng-show="form.price{{x.DenominationId}}.$error.pattern" class="help-block error"><i class="fa fa-warning"></i> Invalid formart, amount should be double or number</span>
                                                                                     </span>
-                                                                                </td>
+                                                                                </td>-->
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
@@ -421,6 +471,8 @@
 
                                             </div>
                                         </div>
+
+
 
                                         <div class="hr-line-dashed"></div>
 

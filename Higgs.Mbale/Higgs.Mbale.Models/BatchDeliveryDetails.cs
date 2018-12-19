@@ -12,6 +12,7 @@ namespace Higgs.Mbale.Models
             public string BatchNumber { get; set; }
             public long BatchId { get; set; }
             public double BatchQuantity { get; set; }
+            public double Price { get; set; }
         
     }
 }

@@ -20,6 +20,7 @@ namespace Higgs.Mbale.DAL.Interface
         void SaveBatchSupply(BatchSupplyDTO batchSupplyDTO);
         void PurgeBatchSupply(long batchId,long supplyId);
         void UpdateBatchBrandBalance(long batchId, double quantity, string userId);
+        IEnumerable<Batch> GetAllBatchesForBrandDelivery(long branchId);
        
        
     }

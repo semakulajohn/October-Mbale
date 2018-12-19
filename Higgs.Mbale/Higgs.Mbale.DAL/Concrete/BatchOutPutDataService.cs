@@ -155,6 +155,24 @@ namespace Higgs.Mbale.DAL.Concrete
                 .Delete();
         }
 
+        public void UpdateBatchGradeSizes(BatchGradeSizeDTO batchGradeSize )
+        {
+            var result = this.UnitOfWork.Get<BatchGradeSize>().AsQueryable()
+                       .FirstOrDefault(e => e.BatchOutPutId == batchGradeSize.BatchOutPutId && e.GradeId == batchGradeSize.GradeId && e.SizeId ==batchGradeSize.SizeId);
+            if (result != null)
+            {
+                result.SizeId = result.SizeId;
+                result.GradeId = result.GradeId;
+                result.Quantity = result.Quantity;
+                result.BatchOutPutId = result.BatchOutPutId;
+                result.Balance = batchGradeSize.Balance;
+                result.TimeStamp = DateTime.Now;
+
+
+                this.UnitOfWork.Get<BatchGradeSize>().Update(result);
+                this.UnitOfWork.SaveChanges();
+            }
+        }
         public IEnumerable<BatchSupply> GetBatchSupplies(long batchId)
         {
           return  this.UnitOfWork.Get<BatchSupply>().AsQueryable()

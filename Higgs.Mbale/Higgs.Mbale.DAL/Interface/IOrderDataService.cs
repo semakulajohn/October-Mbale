@@ -24,5 +24,7 @@ namespace Higgs.Mbale.DAL.Interface
         IEnumerable<Order> GetAllOpenOrdersForAParticularCustomer(string customerId, long statusId);
         void UpdateOrderWithInProgressStatus(long orderId, long statusId,double balance, string userId);
         void UpdateOrderWithBalance(long orderId, double balance, string userId);
+        void UpdateOrderGradeSizes(long orderId, long gradeId, long sizeId, double quantity, double balance);
+  
     }
 }

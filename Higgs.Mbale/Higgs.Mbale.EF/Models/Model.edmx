@@ -459,6 +459,7 @@
           <Property Name="BatchQuantity" Type="float" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
           <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="Price" Type="float" />
         </EntityType>
         <EntityType Name="DeliveryGradeSize">
           <Key>
@@ -4544,6 +4545,13 @@
           <Parameter Name="quantity" Type="float" Mode="In" />
           <Parameter Name="userId" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="UpdateOrderGradeSizes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="orderId" Type="bigint" Mode="In" />
+          <Parameter Name="gradeId" Type="bigint" Mode="In" />
+          <Parameter Name="sizeId" Type="bigint" Mode="In" />
+          <Parameter Name="quantity" Type="float" Mode="In" />
+          <Parameter Name="balance" Type="float" Mode="In" />
+        </Function>
         <Function Name="UpdateOrderWithBalanceQuantity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="inPutOrderId" Type="bigint" Mode="In" />
           <Parameter Name="quantity" Type="float" Mode="In" />
@@ -7260,6 +7268,13 @@
             <Parameter Name="inPutOrderId" Mode="In" Type="Int64" />
             <Parameter Name="quantity" Mode="In" Type="Double" />
             <Parameter Name="userId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateOrderGradeSizes">
+            <Parameter Name="orderId" Mode="In" Type="Int64" />
+            <Parameter Name="gradeId" Mode="In" Type="Int64" />
+            <Parameter Name="sizeId" Mode="In" Type="Int64" />
+            <Parameter Name="quantity" Mode="In" Type="Double" />
+            <Parameter Name="balance" Mode="In" Type="Double" />
           </FunctionImport>
           </EntityContainer>
         <EntityType Name="Media">
@@ -11291,6 +11306,7 @@
           <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Batch" Relationship="Higgs.MbaleModel.FK_DeliveryBatch_BatchId" FromRole="DeliveryBatch" ToRole="Batch" />
           <NavigationProperty Name="Delivery" Relationship="Higgs.MbaleModel.FK_DeliveryBatch_DeliveryId" FromRole="DeliveryBatch" ToRole="Delivery" />
+          <Property Name="Price" Type="Double" />
         </EntityType>
         <Association Name="FK_Delivery_CreatedBy">
           <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
@@ -13051,6 +13067,7 @@
           <EntitySetMapping Name="DeliveryBatches">
             <EntityTypeMapping TypeName="Higgs.MbaleModel.DeliveryBatch">
               <MappingFragment StoreEntitySet="DeliveryBatch">
+                <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="BatchQuantity" ColumnName="BatchQuantity" />
@@ -13174,6 +13191,7 @@
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="UpdateBatchBrandQuantity" FunctionName="Higgs.MbaleModel.Store.UpdateBatchBrandQuantity" />
           <FunctionImportMapping FunctionImportName="UpdateOrderWithBalanceQuantity" FunctionName="Higgs.MbaleModel.Store.UpdateOrderWithBalanceQuantity" />
+          <FunctionImportMapping FunctionImportName="UpdateOrderGradeSizes" FunctionName="Higgs.MbaleModel.Store.UpdateOrderGradeSizes" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

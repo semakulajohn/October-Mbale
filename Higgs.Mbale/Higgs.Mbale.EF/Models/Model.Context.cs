@@ -334,5 +334,30 @@ namespace Higgs.Mbale.EF.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateOrderWithBalanceQuantity", inPutOrderIdParameter, quantityParameter, userIdParameter);
         }
+    
+        public virtual int UpdateOrderGradeSizes(Nullable<long> orderId, Nullable<long> gradeId, Nullable<long> sizeId, Nullable<double> quantity, Nullable<double> balance)
+        {
+            var orderIdParameter = orderId.HasValue ?
+                new ObjectParameter("orderId", orderId) :
+                new ObjectParameter("orderId", typeof(long));
+    
+            var gradeIdParameter = gradeId.HasValue ?
+                new ObjectParameter("gradeId", gradeId) :
+                new ObjectParameter("gradeId", typeof(long));
+    
+            var sizeIdParameter = sizeId.HasValue ?
+                new ObjectParameter("sizeId", sizeId) :
+                new ObjectParameter("sizeId", typeof(long));
+    
+            var quantityParameter = quantity.HasValue ?
+                new ObjectParameter("quantity", quantity) :
+                new ObjectParameter("quantity", typeof(double));
+    
+            var balanceParameter = balance.HasValue ?
+                new ObjectParameter("balance", balance) :
+                new ObjectParameter("balance", typeof(double));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateOrderGradeSizes", orderIdParameter, gradeIdParameter, sizeIdParameter, quantityParameter, balanceParameter);
+        }
     }
 }

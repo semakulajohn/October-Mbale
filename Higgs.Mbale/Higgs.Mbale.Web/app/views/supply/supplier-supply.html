@@ -91,7 +91,9 @@
                                 <div class="form-group col-sm-6">
                                     <div class="col-sm-12">
                                         <label>Amount</label>
-                                        <input name="amount" class="form-control" disabled data-ng-model="supply.PaymentAmount" ng-change="UpdateSupplyAmount()" ng-maxlength="50" required ng-class="{ errorinput: form.amount.$invalid }">
+                                        <!--<input name="amount" class="form-control" disabled data-ng-model="supply.PaymentAmount" ng-change="UpdateSupplyAmount()" ng-maxlength="50" required ng-class="{ errorinput: form.amount.$invalid }">-->
+                                        
+                                        <input name="amount" class="form-control"  data-ng-model="supply.PaymentAmount" ng-change="UpdateSupplyAmount()" ng-maxlength="50" required ng-class="{ errorinput: form.amount.$invalid }">
                                         <span ng-show="form.amount.$invalid">
                                             <span ng-show="form.amount.$error.required" class="help-block error"><i class="fa fa-warning"></i> This is a required field.</span>
                                         </span>

@@ -3,6 +3,7 @@
 	[BatchId]    BIGINT NOT NULL,
 	[DeliveryId] BIGINT NOT NULL,
 	[BatchQuantity] FLOAT NOT NULL,
+	[Price]         FLOAT NULL,
 	[CreatedOn]	[datetime] NOT NULL,
 	[TimeStamp]	[datetime] NOT NULL DEFAULT GETDATE(),	
 

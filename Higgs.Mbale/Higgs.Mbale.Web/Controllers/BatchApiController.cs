@@ -56,6 +56,13 @@ namespace Higgs.Mbale.Web.Controllers
                 return _batchService.GetBatchesForAParticularBranchToTransfer(branchId,productId);
             }
             [HttpGet]
+            [ActionName("GetAllBatchesForBrandDelivery")]
+            public IEnumerable<Batch> GetAllBatchesForBrandDelivery(long branchId)
+            {
+                return _batchService.GetAllBatchesForBrandDelivery(branchId);
+            }
+
+            [HttpGet]
             [ActionName("Delete")]
             public void DeleteBatch(long batchId)
             {

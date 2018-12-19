@@ -156,6 +156,15 @@ namespace Higgs.Mbale.DAL.Concrete
 
         }
 
+        public void UpdateOrderGradeSizes(long orderId, long gradeId, long sizeId,double quantity,double balance)
+        {
+            using (var dbContext = new MbaleEntities())
+            {
+                dbContext.UpdateOrderGradeSizes(orderId, gradeId,sizeId,quantity, balance);
+            }
+
+        }
+
         public void UpdateOrderWithInProgressStatus(long orderId, long statusId,double balance, string userId)
         {
             using (var dbContext = new MbaleEntities())

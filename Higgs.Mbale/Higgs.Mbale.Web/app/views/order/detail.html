@@ -90,12 +90,16 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <th width="40%">Value </th>
-                                                                    <th width="60%">Quantity</th>
+                                                                    <th width="35%">Quantity</th>
+                                                                    <th width="25%">Balance</th>
                                                                 </tr>
                                                                 <tr ng-repeat="x in grade.Denominations">
                                                                     <td width="40%"><p> {{ x.Value }} Kg</p></td>
-                                                                    <td width="60%">
+                                                                    <td width="35%">
                                                                         <p>{{x.Quantity}}</p>
+                                                                    </td>
+                                                                    <td width="35%">
+                                                                        <p>{{x.Balance}}</p>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>

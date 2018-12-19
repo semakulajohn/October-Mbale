@@ -29,6 +29,7 @@ namespace Higgs.Mbale.Models
       public double Amount { get; set; }
       public double Price { get; set; }
       public double Balance { get; set; }
+      public double QuantityToRemove { get; set; }
   }
 
 }

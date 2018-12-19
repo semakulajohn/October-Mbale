@@ -22,7 +22,10 @@ namespace Higgs.Mbale.BAL.Interface
         void UpdateOrderWithInProgressStatus(long orderId, long statusId, double balance, string userId);
         IEnumerable<Order> MapEFToModel(IEnumerable<EF.Models.Order> data);
         void UpdateOrderWithBalance(long orderId, double balance, string userId);
-      
+        void SaveOrderGradeSizeList(List<OrderGradeSize> orderGradeSizeList);
+        void PurgeOrderGradeSize(long orderId);
+        void UpdateOrderGradeSizes(long orderId, long gradeId, long sizeId, double quantity, double balance);
+  
         
     }
 }

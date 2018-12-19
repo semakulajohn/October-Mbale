@@ -19,6 +19,7 @@ namespace Higgs.Mbale.EF.Models
         public double BatchQuantity { get; set; }
         public System.DateTime CreatedOn { get; set; }
         public System.DateTime TimeStamp { get; set; }
+        public Nullable<double> Price { get; set; }
     
         public virtual Batch Batch { get; set; }
         public virtual Delivery Delivery { get; set; }

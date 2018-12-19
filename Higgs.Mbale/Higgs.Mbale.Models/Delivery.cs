@@ -34,6 +34,7 @@ namespace Higgs.Mbale.Models
         public System.DateTime TimeStamp { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public double Quantity { get; set; }
+        public List<Grade> SelectedDeliveryGrades { get; set; }
 
         public List<Grade> Grades { get; set; }
         public List<Batch> Batches { get; set; }

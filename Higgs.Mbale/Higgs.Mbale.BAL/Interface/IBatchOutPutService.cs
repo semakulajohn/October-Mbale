@@ -16,6 +16,7 @@ namespace Higgs.Mbale.BAL.Interface
         IEnumerable<BatchOutPut> GetAllBatchOutPutsForAParticularBatch(long batchId);
         IEnumerable<BatchOutPut> MapEFToModel(IEnumerable<EF.Models.BatchOutPut> data);
         void UpdateBatchBrandBalance(long batchId, double quantity, string userId);
+        void UpdateBatchGradeSizes(List<BatchGradeSize> batchGradeSizeList);
        
     }
 }

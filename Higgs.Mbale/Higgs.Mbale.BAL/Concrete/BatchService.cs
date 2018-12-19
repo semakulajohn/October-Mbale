@@ -75,6 +75,11 @@ namespace Higgs.Mbale.BAL.Concrete
             return MapEFToModel(results);
         }
 
+        public IEnumerable<Batch> GetAllBatchesForBrandDelivery(long branchId)
+        {
+            var results = this._dataService.GetAllBatchesForBrandDelivery(branchId);
+            return MapEFToModel(results);
+        }
 
         public IEnumerable<Batch> GetAllBatchesForAParticularBranch(long branchId)
         {
@@ -393,7 +398,14 @@ namespace Higgs.Mbale.BAL.Concrete
             }
             return batches;
         }
-      
+
+        public void UpdateBatchGradeSizes(List<BatchGradeSize> batchGradeSizeList)
+        {
+            _batchOutPutService.UpdateBatchGradeSizes(batchGradeSizeList);
+        }
+
+       
+
         #region Mapping Methods
 
         public IEnumerable<Batch> MapEFToModel(IEnumerable<EF.Models.Batch> data)

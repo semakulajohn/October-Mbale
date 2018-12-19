@@ -18,6 +18,8 @@ namespace Higgs.Mbale.BAL.Interface
         IEnumerable<LabourCost> GenerateLabourCosts(long batchId,string userId);
         IEnumerable<Batch> GetBatchesForAParticularBranchToTransfer(long branchId,long productId);
         void UpdateBatchBrandBalance(long batchId, double quantity, string userId);
+        IEnumerable<Batch> GetAllBatchesForBrandDelivery(long branchId);
+        void UpdateBatchGradeSizes(List<BatchGradeSize> batchGradeSizeList);
        
     }
 }

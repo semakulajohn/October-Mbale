@@ -148,16 +148,29 @@
                     function (payload) {
 
                         requistionId = payload.data;
+                        if (requistionId == -1) {
+                            $scope.showMessageCashNotEnough = true;
+                            usSpinnerService.stop('global-spinner');
 
-                        $scope.showMessageSave = true;
-                        usSpinnerService.stop('global-spinner');
-                        $timeout(function () {
-                            $scope.showMessageSave = false;
+                            $timeout(function () {
+                                $scope.showMessageCashNotEnough = false;
 
-                            $state.go('requistions.list');
+                            }, 4000);
+                        }
+                        else {
+                            $scope.showMessageSave = true;
+                            usSpinnerService.stop('global-spinner');
+                            $timeout(function () {
+                                $scope.showMessageSave = false;
+
+                                $state.go('requistions.list');
 
 
-                        }, 1500);
+                            }, 1500);
+
+                        }
+
+                       
 
 
                     });
@@ -178,7 +191,7 @@
                  AmountInWords : requistion.AmountInWords,
                  Approved: requistion.Approved,
                  Rejected : true,
-                 StatusId: approvedStatusId,
+                 StatusId: statusId,
                  ApprovedById: $scope.user.Id,
                  RequistionNumber: requistion.RequistionNumber,
                  CreatedBy: requistion.CreatedBy,

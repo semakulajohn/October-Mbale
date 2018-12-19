@@ -89,16 +89,17 @@ namespace Higgs.Mbale.BAL.Concrete
         }
         public long SaveRequistion(Requistion requistion, string userId)
         {
-            long requistionNumber = 0;
-            if (requistion.RequistionId == 0)
-            {
-                requistionNumber = GetRequistionNumber();
+            long requistionId = 0;
+            //long requistionNumber = 0;
+            //if (requistion.RequistionId == 0)
+            //{
+            //    requistionNumber = GetRequistionNumber();
 
-            }
-            else
-            {
-                requistionNumber = Convert.ToInt64(requistion.RequistionNumber);
-            }
+            //}
+            //else
+            //{
+            //    requistionNumber = Convert.ToInt64(requistion.RequistionNumber);
+            //}
             var requistionDTO = new DTO.RequistionDTO()
             {
                 RequistionId = requistion.RequistionId,
@@ -118,7 +119,7 @@ namespace Higgs.Mbale.BAL.Concrete
 
             };
 
-           var requistionId = this._dataService.SaveRequistion(requistionDTO, userId);
+          
            if (requistion.Approved && requistion.ApprovedById != null)
            {
                var cash = new Cash()
@@ -137,10 +138,12 @@ namespace Higgs.Mbale.BAL.Concrete
               var  cashId = _cashService.SaveCash(cash, userId);
               if (cashId == -1)
               {
+                  requistionId = cashId;
                   return requistionId;
               }
               else
               {
+                   requistionId = this._dataService.SaveRequistion(requistionDTO, userId);
                   UpdateRequistion(requistion.RequistionId, requistionStatusIdComplete, requistion.ApprovedById);
 
                   var document = new Document()
@@ -155,20 +158,18 @@ namespace Higgs.Mbale.BAL.Concrete
                       Description = requistion.Description,
                       AmountInWords = requistion.AmountInWords,
 
-
-
                   };
 
                   var documentId = _documentService.SaveDocument(document, userId);
-
               }
              
              
            }
-           //else
-           //{
+           else
+           {
            //    SendEmail(requistionDTO, userId);
-           //}
+                requistionId = this._dataService.SaveRequistion(requistionDTO, userId);
+           }
           
            return requistionId;
                       

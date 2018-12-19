@@ -13,5 +13,6 @@ namespace Higgs.Mbale.DTO
         public double BatchQuantity { get; set; }
         public System.DateTime CreatedOn { get; set; }
         public System.DateTime TimeStamp { get; set; }
+        public Nullable<double> Price { get; set; }
     }
 }

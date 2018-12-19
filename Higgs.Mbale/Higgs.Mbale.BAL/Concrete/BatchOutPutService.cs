@@ -363,6 +363,35 @@ namespace Higgs.Mbale.BAL.Concrete
             
             _dataService.UpdateBatchBrandBalance(batchId, quantity, userId);
         }
+
+        public void UpdateBatchGradeSizes(List<BatchGradeSize> batchGradeSizeList)
+        {
+            if (batchGradeSizeList != null)
+            {
+                if (batchGradeSizeList.Any())
+                {
+                    foreach (var batchGradeSize in batchGradeSizeList)
+                    {
+                        var batchGradeSizeDTO = new DTO.BatchGradeSizeDTO()
+                        {
+                            BatchOutPutId = batchGradeSize.BatchOutPutId,
+                            GradeId = batchGradeSize.GradeId,
+                            Quantity = batchGradeSize.Quantity,
+                            SizeId = batchGradeSize.SizeId,
+                            Balance = batchGradeSize.Balance,
+                            TimeStamp = batchGradeSize.TimeStamp
+                        };
+                        this.UpdateBatchGradeSize(batchGradeSizeDTO);
+                    }
+                }
+            }
+        }
+
+        public void UpdateBatchGradeSize(BatchGradeSizeDTO batchGradeSizeDTO)
+        {
+            _dataService.UpdateBatchGradeSizes(batchGradeSizeDTO);
+        }
+
         #region Mapping Methods
 
         public IEnumerable<BatchOutPut> MapEFToModel(IEnumerable<EF.Models.BatchOutPut> data)

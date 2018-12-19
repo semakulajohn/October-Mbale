@@ -10,6 +10,7 @@
         var branches = [];
         var selectedBranch;
         $scope.selectedGrades = [];
+        $scope.selectedNoBatchGrades = [];
         $scope.batches = [];
         var transactionSubTypeId = 2;
         var deliveryId = $scope.deliveryId;
@@ -29,6 +30,9 @@
             }
         });
 
+        $http.get('webapi/GradeApi/GetAllGrades').success(function (data, status) {
+            $scope.grades = data;
+        });
        
         $scope.OnBranchChange = function (delivery) {
             var selectedBranchId = delivery.BranchId
@@ -37,25 +41,38 @@
                 $scope.stores = responses.data;
 
             });
-            $http.get('/webapi/BatchApi/GetAllBatchesForAParticularBranchToTransfer?branchId=' + selectedBranchId + '&productId=' + $scope.order.ProductId
-                     ).then(function (responses) {
-                         $scope.retrievedBatches = responses.data;
-                         //angular.forEach($scope.retrievedBatches, function ($scope.retrievedBatches) {
-                         //    if (retrievedBatches.BrandBalance > 0)
-                         //    {
-                         //        $scope.batches = $scope.batches.concat(value);
-                         //    }
-                         //});
-                         angular.forEach($scope.retrievedBatches, function (value, key) {
-                             if (value.BrandBalance > 0)
-                                     {
-                                         $scope.batches = $scope.batches.concat(value);
-                                     }
-                         });
-                        
-               
+            if ($scope.order.ProductId == 2) {
+                $http.get('/webapi/BatchApi/GetAllBatchesForBrandDelivery?branchId=' + selectedBranchId
+                    ).then(function (responses) {
+                        $scope.retrievedBatches = responses.data;
+                       
+                        angular.forEach($scope.retrievedBatches, function (value, key) {
+                            if (value.BrandBalance > 0) {
+                                $scope.batches = $scope.batches.concat(value);
+                            }
+                        });
 
-            });
+
+
+                    });
+            }
+            else {
+                $http.get('/webapi/BatchApi/GetAllBatchesForAParticularBranchToTransfer?branchId=' + selectedBranchId + '&productId=' + $scope.order.ProductId
+                    ).then(function (responses) {
+                        $scope.retrievedBatches = responses.data;
+                        $scope.batches = $scope.retrievedBatches;
+
+                        //angular.forEach($scope.retrievedBatches, function (value, key) {
+                        //    if (value.BrandBalance > 0) {
+                        //        $scope.batches = $scope.batches.concat(value);
+                        //    }
+                        //});
+
+
+
+                    });
+            }
+           
         }
 
         $http.get('/webapi/SectorApi/GetAllSectors').success(function (data, status) {
@@ -153,8 +170,37 @@
             $scope.showMessageSave = false;
             $scope.showMessageCheckGrade = false;
 
-            if (delivery.Grades !=null && productId ==1) {
-                angular.forEach(delivery.Grades, function (value, key) {
+            //if (delivery.Grades !=null && productId ==1) {
+            //    angular.forEach(delivery.Grades, function (value, key) {
+            //        var denominations = value.Denominations;
+            //        angular.forEach(denominations, function (denominations) {
+            //            $scope.DenominationAmount = (denominations.Price * denominations.Quantity) + $scope.DenominationAmount;
+            //            $scope.DenominationQuantity = (denominations.Quantity * denominations.Value) + $scope.DenominationQuantity;
+            //        });
+            //        $scope.TotalAmount = $scope.DenominationAmount;
+            //        $scope.TotalQuantity = $scope.DenominationQuantity;
+                    
+            //    });
+            //}
+            if (delivery.Grades != null && productId == 1 && delivery.SelectedGrades) {
+                angular.forEach(delivery.SelectedGrades, function (value, key) {
+                    var denominations = value.Denominations;
+                    angular.forEach(denominations, function (denominations) {
+                        $scope.DenominationAmount = (denominations.Price * denominations.QuantityToRemove) + $scope.DenominationAmount;
+                        $scope.DenominationQuantity = (denominations.QuantityToRemove * denominations.Value) + $scope.DenominationQuantity;
+                    });
+                    $scope.TotalAmount = $scope.DenominationAmount;
+                    $scope.TotalQuantity = $scope.DenominationQuantity;
+
+                });
+            }
+            else if(delivery.Grades == null && productId ==2)
+            {
+                $scope.TotalAmount = delivery.Price * delivery.Quantity;
+                $scope.TotalQuantity = delivery.Quantity;
+            }
+            else if (delivery.selectedNoBatchGrades != null && delivery.selectedNoBatchGrades !== 'undefined') {
+                angular.forEach(delivery.selectedNoBatchGrades, function (value, key) {
                     var denominations = value.Denominations;
                     angular.forEach(denominations, function (denominations) {
                         $scope.DenominationAmount = (denominations.Price * denominations.Quantity) + $scope.DenominationAmount;
@@ -162,13 +208,8 @@
                     });
                     $scope.TotalAmount = $scope.DenominationAmount;
                     $scope.TotalQuantity = $scope.DenominationQuantity;
-                    
+
                 });
-            }
-            else if(delivery.Grades == null && productId ==2)
-            {
-                $scope.TotalAmount = delivery.Price * delivery.Quantity;
-                $scope.TotalQuantity = delivery.Quantity;
             }
             else {
                 $scope.showMessageCheckGrade = true;
@@ -208,6 +249,7 @@
                     Grades: delivery.Grades,
                     Batches: delivery.Batches,
                     DeliveryBatches: delivery.DeliveryBatches,
+                    SelectedDeliveryGrades : delivery.selectedNoBatchGrades,
                 });
 
                 promise.then(
@@ -230,11 +272,10 @@
                                 $scope.showMessageSave = false;
 
                                 if (action == "create") {
-                                    $state.go('delivery-branch-list', { 'branchId': delivery.BranchId });
-
+                                    $state.go('delivery-order-list', { 'orderId': orderId });
                                 }
 
-                            }, 2000);
+                            }, 3000);
                         }
                        
 

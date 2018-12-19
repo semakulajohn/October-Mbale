@@ -181,24 +181,40 @@ angular
 
             $scope.gridData.columnDefs = [
 
-                
-                { name: 'Branch', field: 'BranchName' },
-                { name: 'TransactionSubTypeName', field: 'TransactionSubTypeName' },
-                { name: 'Notes', field: 'Notes', field: 'Notes' },
-                { name: 'Start Amount', field: 'StartAmount' },
-                { name: 'Action', field: 'Action' },
+                    {
+                        name: 'CreatedOn', field: 'CreatedOn',
+                        sort: {
+                            direction: uiGridConstants.ASC,
+                            priority: 1
+                        }
+                    },
 
-                { name: 'Amount', field: 'Amount' },
+
+                { name: 'Notes', field: 'Notes' },
+                 { name: 'Income', cellTemplate: '<div ng-if="row.entity.Action ==\'+\'">{{row.entity.Amount}}</div>' },
+
+                { name: 'Expense', cellTemplate: '<div ng-if="row.entity.Action ==\'-\'">{{row.entity.Amount}}</div>' },
+                
+
                  { name: 'Balance', field: 'Balance' },
+
+                //{ name: 'Branch', field: 'BranchName' },
+                //{ name: 'TransactionSubTypeName', field: 'TransactionSubTypeName' },
+                //{ name: 'Notes', field: 'Notes', field: 'Notes' },
+                //{ name: 'Start Amount', field: 'StartAmount' },
+                //{ name: 'Action', field: 'Action' },
+
+                //{ name: 'Amount', field: 'Amount' },
+                // { name: 'Balance', field: 'Balance' },
                  
-                 { name: 'Department', field: 'SectorName' },
-                 {
-                     name: 'CreatedOn', field: 'CreatedOn',
-                     sort: {
-                         direction: uiGridConstants.DESC,
-                         priority:1
-                     }
-                 },
+                // { name: 'Department', field: 'SectorName' },
+                // {
+                //     name: 'CreatedOn', field: 'CreatedOn',
+                //     sort: {
+                //         direction: uiGridConstants.DESC,
+                //         priority:1
+                //     }
+                // },
 
             ];
 
@@ -224,10 +240,10 @@ angular
                     $scope.Length = payload.data.length;
                     if ($scope.Length > 0) {
 
-                        //var lastIndex = $scope.Length - 1;
-                        //$scope.accountBalance = payload.data[lastIndex].Balance;
-                        var firstIndex = 0;
-                        $scope.accountBalance = payload.data[firstIndex].Balance;
+                        var lastIndex = $scope.Length - 1;
+                        $scope.accountBalance = payload.data[lastIndex].Balance;
+                        //var firstIndex = 0;
+                        //$scope.accountBalance = payload.data[firstIndex].Balance;
                     }
                     else {
                         $scope.accountBalance = 0;
@@ -245,23 +261,38 @@ angular
 
             $scope.gridData.columnDefs = [
 
-
-
-                { name: 'Branch', field: 'BranchName' },
-                { name: 'TransactionSubTypeName', field: 'TransactionSubTypeName' },
-                { name: 'Notes', field: 'Notes' },
-                { name: 'Start Amount', field: 'StartAmount' },
-                { name: 'Action', field: 'Action' },
-
-                { name: 'Amount', field: 'Amount' },
-                 { name: 'Balance', field: 'Balance' },
                  {
                      name: 'CreatedOn', field: 'CreatedOn',
                      sort: {
-                         direction: uiGridConstants.DESC,
+                         direction: uiGridConstants.ASC,
                          priority: 1
                      }
                  },
+
+
+                { name: 'Notes', field: 'Notes' },
+                 { name: 'Income', cellTemplate: '<div ng-if="row.entity.Action ==\'+\'">{{row.entity.Amount}}</div>' },
+
+                { name: 'Expense', cellTemplate: '<div ng-if="row.entity.Action ==\'-\'">{{row.entity.Amount}}</div>' },
+
+
+                 { name: 'Balance', field: 'Balance' },
+
+                //{ name: 'Branch', field: 'BranchName' },
+                //{ name: 'TransactionSubTypeName', field: 'TransactionSubTypeName' },
+                //{ name: 'Notes', field: 'Notes' },
+                //{ name: 'Start Amount', field: 'StartAmount' },
+                //{ name: 'Action', field: 'Action' },
+
+                //{ name: 'Amount', field: 'Amount' },
+                // { name: 'Balance', field: 'Balance' },
+                // {
+                //     name: 'CreatedOn', field: 'CreatedOn',
+                //     sort: {
+                //         direction: uiGridConstants.DESC,
+                //         priority: 1
+                //     }
+                // },
 
 
             ];

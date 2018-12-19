@@ -171,6 +171,7 @@
     <Build Include="Schema Objects\Schemas\dbo\Tables\FlourTransferBatch.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Programmability\UpdateBatchBrandQuantity.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Programmability\UpdateOrderWithBalanceQuantity.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\UpdateOrderGradeSizes.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Higgs.Mbale.Database.publish.xml" />

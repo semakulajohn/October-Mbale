@@ -32,7 +32,10 @@ namespace Higgs.Mbale.DAL.Concrete
         {
             return this.UnitOfWork.Get<Batch>().AsQueryable().Where(e => e.Deleted == false && e.BranchId == branchId);
         }
-
+        public IEnumerable<Batch> GetAllBatchesForBrandDelivery(long branchId)
+        {
+            return this.UnitOfWork.Get<Batch>().AsQueryable().Where(e => e.Deleted == false && e.BranchId == branchId && e.BrandBalance != null && e.BrandBalance > 0);
+        }
 
         public Batch GetBatch(long batchId)
         {

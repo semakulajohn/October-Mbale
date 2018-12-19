@@ -23,5 +23,5 @@ namespace Higgs.Mbale.DAL.Interface
         void PurgeDeliveryGradeSize(long deliveryId);
         void SaveDeliveryBatch(DeliveryBatchDTO deliveryBatchDTO);
         IEnumerable<DeliveryBatch> GetAllBatchesForADelivery(long deliveryId);
-    }
+          }
 }

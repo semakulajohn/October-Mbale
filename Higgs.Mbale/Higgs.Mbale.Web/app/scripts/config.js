@@ -1125,7 +1125,7 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
              url: "/casualworkers",
              templateUrl: "/app/views/casualworker/admin-view.html",
              data: {
-                 pageTitle: 'Cash',
+                 pageTitle: 'CasualWorkers',
              },
              controller: function ($scope, $stateParams) {
 
