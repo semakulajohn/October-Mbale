@@ -338,6 +338,27 @@
           <Property Name="TimeStamp" Type="datetime" Nullable="false" />
           <Property Name="DeletedOn" Type="datetime" />
         </EntityType>
+        <EntityType Name="CashTransfer">
+          <Key>
+            <PropertyRef Name="CashTransferId" />
+          </Key>
+          <Property Name="CashTransferId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Response" Type="nvarchar(max)" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="ToReceiverBranchId" Type="bigint" Nullable="false" />
+          <Property Name="Accept" Type="bit" Nullable="false" />
+          <Property Name="Reject" Type="bit" Nullable="false" />
+          <Property Name="FromBranchId" Type="bigint" Nullable="false" />
+          <Property Name="Amount" Type="float" Nullable="false" />
+          <Property Name="AmountInWords" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="DeletedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="SectorId" Type="bigint" Nullable="false" />
+        </EntityType>
         <EntityType Name="CasualActivity">
           <Key>
             <PropertyRef Name="CasualActivityId" />
@@ -1659,6 +1680,78 @@
             </Principal>
             <Dependent Role="Cash">
               <PropertyRef Name="TransactionSubTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CashTransfer_CreatedBy">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="CashTransfer" Type="Self.CashTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CashTransfer">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CashTransfer_DeletedBy">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="CashTransfer" Type="Self.CashTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CashTransfer">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CashTransfer_FromBranchId">
+          <End Role="Branch" Type="Self.Branch" Multiplicity="1" />
+          <End Role="CashTransfer" Type="Self.CashTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="CashTransfer">
+              <PropertyRef Name="FromBranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CashTransfer_SectorId">
+          <End Role="Sector" Type="Self.Sector" Multiplicity="1" />
+          <End Role="CashTransfer" Type="Self.CashTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sector">
+              <PropertyRef Name="SectorId" />
+            </Principal>
+            <Dependent Role="CashTransfer">
+              <PropertyRef Name="SectorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CashTransfer_ToReceiverBranchId">
+          <End Role="Branch" Type="Self.Branch" Multiplicity="1" />
+          <End Role="CashTransfer" Type="Self.CashTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="CashTransfer">
+              <PropertyRef Name="ToReceiverBranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CashTransfer_UpdatedBy">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="CashTransfer" Type="Self.CashTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CashTransfer">
+              <PropertyRef Name="UpdatedBy" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4508,6 +4601,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetOrderToDeliver" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="orderId" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="Mark_Activity_AsDeleted" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="inPutActivityId" Type="bigint" Mode="In" />
           <Parameter Name="userId" Type="nvarchar" Mode="In" />
@@ -4608,6 +4704,7 @@
           <EntitySet Name="BuveraTransfer" EntityType="Self.BuveraTransfer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BuveraTransferGradeSize" EntityType="Self.BuveraTransferGradeSize" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cash" EntityType="Self.Cash" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CashTransfer" EntityType="Self.CashTransfer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CasualActivity" EntityType="Self.CasualActivity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CasualWorker" EntityType="Self.CasualWorker" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Creditor" EntityType="Self.Creditor" Schema="dbo" store:Type="Tables" />
@@ -4841,6 +4938,30 @@
           <AssociationSet Name="FK_Cash_TransactionSubTypeId" Association="Self.FK_Cash_TransactionSubTypeId">
             <End Role="TransactionSubType" EntitySet="TransactionSubType" />
             <End Role="Cash" EntitySet="Cash" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CashTransfer_CreatedBy" Association="Self.FK_CashTransfer_CreatedBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="CashTransfer" EntitySet="CashTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CashTransfer_DeletedBy" Association="Self.FK_CashTransfer_DeletedBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="CashTransfer" EntitySet="CashTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CashTransfer_FromBranchId" Association="Self.FK_CashTransfer_FromBranchId">
+            <End Role="Branch" EntitySet="Branch" />
+            <End Role="CashTransfer" EntitySet="CashTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CashTransfer_SectorId" Association="Self.FK_CashTransfer_SectorId">
+            <End Role="Sector" EntitySet="Sector" />
+            <End Role="CashTransfer" EntitySet="CashTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CashTransfer_ToReceiverBranchId" Association="Self.FK_CashTransfer_ToReceiverBranchId">
+            <End Role="Branch" EntitySet="Branch" />
+            <End Role="CashTransfer" EntitySet="CashTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CashTransfer_UpdatedBy" Association="Self.FK_CashTransfer_UpdatedBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="CashTransfer" EntitySet="CashTransfer" />
           </AssociationSet>
           <AssociationSet Name="FK_CasualActivity_ActivityId" Association="Self.FK_CasualActivity_ActivityId">
             <End Role="Activity" EntitySet="Activity" />
@@ -5845,7 +5966,9 @@
           <NavigationProperty Name="Requistions" Relationship="Higgs.MbaleModel.FK_Requistion_BranchId" FromRole="Branch" ToRole="Requistion" />
           <NavigationProperty Name="Documents" Relationship="Higgs.MbaleModel.FK_Document_BranchId" FromRole="Branch" ToRole="Document" />
           <NavigationProperty Name="CasualWorkers" Relationship="Higgs.MbaleModel.FK_CasualWorker_BranchId" FromRole="Branch" ToRole="CasualWorker" />
-        </EntityType>
+          <NavigationProperty Name="CashTransfers" Relationship="Higgs.MbaleModel.FK_CashTransfer_FromBranchId" FromRole="Branch" ToRole="CashTransfer" />
+          <NavigationProperty Name="CashTransfers1" Relationship="Higgs.MbaleModel.FK_CashTransfer_ToReceiverBranchId" FromRole="Branch" ToRole="CashTransfer" />
+          </EntityType>
         <EntityType Name="ExtensionType">
           <Key>
             <PropertyRef Name="ExtensionTypeId" />
@@ -7276,6 +7399,34 @@
             <Parameter Name="quantity" Mode="In" Type="Double" />
             <Parameter Name="balance" Mode="In" Type="Double" />
           </FunctionImport>
+          <FunctionImport Name="GetOrderToDeliver" ReturnType="Collection(Higgs.MbaleModel.GetOrderToDeliver_Result)">
+          <Parameter Name="orderId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <EntitySet Name="CashTransfers" EntityType="Higgs.MbaleModel.CashTransfer" />
+          <AssociationSet Name="FK_CashTransfer_CreatedBy" Association="Higgs.MbaleModel.FK_CashTransfer_CreatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="CashTransfer" EntitySet="CashTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CashTransfer_DeletedBy" Association="Higgs.MbaleModel.FK_CashTransfer_DeletedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="CashTransfer" EntitySet="CashTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CashTransfer_UpdatedBy" Association="Higgs.MbaleModel.FK_CashTransfer_UpdatedBy">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="CashTransfer" EntitySet="CashTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CashTransfer_FromBranchId" Association="Higgs.MbaleModel.FK_CashTransfer_FromBranchId">
+            <End Role="Branch" EntitySet="Branches" />
+            <End Role="CashTransfer" EntitySet="CashTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CashTransfer_ToReceiverBranchId" Association="Higgs.MbaleModel.FK_CashTransfer_ToReceiverBranchId">
+            <End Role="Branch" EntitySet="Branches" />
+            <End Role="CashTransfer" EntitySet="CashTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CashTransfer_SectorId" Association="Higgs.MbaleModel.FK_CashTransfer_SectorId">
+            <End Role="Sector" EntitySet="Sectors" />
+            <End Role="CashTransfer" EntitySet="CashTransfers" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Media">
           <Key>
@@ -7439,6 +7590,7 @@
           <NavigationProperty Name="OtherExpenses" Relationship="Higgs.MbaleModel.FK_OtherExpense_Sector" FromRole="Sector" ToRole="OtherExpense" />
           <NavigationProperty Name="Utilities" Relationship="Higgs.MbaleModel.FK_Utility_Sector" FromRole="Sector" ToRole="Utility" />
           <NavigationProperty Name="Deliveries" Relationship="Higgs.MbaleModel.FK_Delivery_SectorId" FromRole="Sector" ToRole="Delivery" />
+          <NavigationProperty Name="CashTransfers" Relationship="Higgs.MbaleModel.FK_CashTransfer_SectorId" FromRole="Sector" ToRole="CashTransfer" />
         </EntityType>
         <Association Name="FK_dbo_BranchSector_dbo_Branch_BranchId">
           <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1">
@@ -9246,6 +9398,9 @@
           <NavigationProperty Name="CasualWorkers" Relationship="Higgs.MbaleModel.FK_CasualWorker_CreatedBy" FromRole="AspNetUser" ToRole="CasualWorker" />
           <NavigationProperty Name="CasualWorkers1" Relationship="Higgs.MbaleModel.FK_CasualWorker_DeletedBy" FromRole="AspNetUser" ToRole="CasualWorker" />
           <NavigationProperty Name="CasualWorkers2" Relationship="Higgs.MbaleModel.FK_CasualWorker_UpdatedBy" FromRole="AspNetUser" ToRole="CasualWorker" />
+          <NavigationProperty Name="CashTransfers" Relationship="Higgs.MbaleModel.FK_CashTransfer_CreatedBy" FromRole="AspNetUser" ToRole="CashTransfer" />
+          <NavigationProperty Name="CashTransfers1" Relationship="Higgs.MbaleModel.FK_CashTransfer_DeletedBy" FromRole="AspNetUser" ToRole="CashTransfer" />
+          <NavigationProperty Name="CashTransfers2" Relationship="Higgs.MbaleModel.FK_CashTransfer_UpdatedBy" FromRole="AspNetUser" ToRole="CashTransfer" />
           </EntityType>
         <EntityType Name="FlourTransferGradeSize">
           <Key>
@@ -12028,6 +12183,121 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="GetOrderToDeliver_Result">
+          <Property Type="Int64" Name="OrderId" Nullable="false" />
+          <Property Type="Double" Name="Amount" Nullable="true" />
+          <Property Type="Int64" Name="StatusId" Nullable="false" />
+          <Property Type="String" Name="CustomerId" Nullable="false" MaxLength="128" />
+          <Property Type="Int64" Name="ProductId" Nullable="false" />
+          <Property Type="Int64" Name="BranchId" Nullable="false" />
+          <Property Type="Boolean" Name="Deleted" Nullable="true" />
+          <Property Type="String" Name="CreatedBy" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="UpdatedBy" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="DeletedBy" Nullable="true" MaxLength="128" />
+          <Property Type="DateTime" Name="CreatedOn" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="TimeStamp" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="DeletedOn" Nullable="true" Precision="23" />
+          <Property Type="Double" Name="Balance" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="CashTransfer">
+          <Key>
+            <PropertyRef Name="CashTransferId" />
+          </Key>
+          <Property Name="CashTransferId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Response" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="ToReceiverBranchId" Type="Int64" Nullable="false" />
+          <Property Name="Accept" Type="Boolean" Nullable="false" />
+          <Property Name="Reject" Type="Boolean" Nullable="false" />
+          <Property Name="FromBranchId" Type="Int64" Nullable="false" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <Property Name="AmountInWords" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="SectorId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="Higgs.MbaleModel.FK_CashTransfer_CreatedBy" FromRole="CashTransfer" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser1" Relationship="Higgs.MbaleModel.FK_CashTransfer_DeletedBy" FromRole="CashTransfer" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser2" Relationship="Higgs.MbaleModel.FK_CashTransfer_UpdatedBy" FromRole="CashTransfer" ToRole="AspNetUser" />
+          <NavigationProperty Name="Branch" Relationship="Higgs.MbaleModel.FK_CashTransfer_FromBranchId" FromRole="CashTransfer" ToRole="Branch" />
+          <NavigationProperty Name="Branch1" Relationship="Higgs.MbaleModel.FK_CashTransfer_ToReceiverBranchId" FromRole="CashTransfer" ToRole="Branch" />
+          <NavigationProperty Name="Sector" Relationship="Higgs.MbaleModel.FK_CashTransfer_SectorId" FromRole="CashTransfer" ToRole="Sector" />
+        </EntityType>
+        <Association Name="FK_CashTransfer_CreatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.CashTransfer" Role="CashTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CashTransfer">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CashTransfer_DeletedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.CashTransfer" Role="CashTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CashTransfer">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CashTransfer_UpdatedBy">
+          <End Type="Higgs.MbaleModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="Higgs.MbaleModel.CashTransfer" Role="CashTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CashTransfer">
+              <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CashTransfer_FromBranchId">
+          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.CashTransfer" Role="CashTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="CashTransfer">
+              <PropertyRef Name="FromBranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CashTransfer_ToReceiverBranchId">
+          <End Type="Higgs.MbaleModel.Branch" Role="Branch" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.CashTransfer" Role="CashTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="CashTransfer">
+              <PropertyRef Name="ToReceiverBranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CashTransfer_SectorId">
+          <End Type="Higgs.MbaleModel.Sector" Role="Sector" Multiplicity="1" />
+          <End Type="Higgs.MbaleModel.CashTransfer" Role="CashTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sector">
+              <PropertyRef Name="SectorId" />
+            </Principal>
+            <Dependent Role="CashTransfer">
+              <PropertyRef Name="SectorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -13192,6 +13462,48 @@
           <FunctionImportMapping FunctionImportName="UpdateBatchBrandQuantity" FunctionName="Higgs.MbaleModel.Store.UpdateBatchBrandQuantity" />
           <FunctionImportMapping FunctionImportName="UpdateOrderWithBalanceQuantity" FunctionName="Higgs.MbaleModel.Store.UpdateOrderWithBalanceQuantity" />
           <FunctionImportMapping FunctionImportName="UpdateOrderGradeSizes" FunctionName="Higgs.MbaleModel.Store.UpdateOrderGradeSizes" />
+          <FunctionImportMapping FunctionImportName="GetOrderToDeliver" FunctionName="Higgs.MbaleModel.Store.GetOrderToDeliver">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Higgs.MbaleModel.GetOrderToDeliver_Result">
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="CashTransfers">
+            <EntityTypeMapping TypeName="Higgs.MbaleModel.CashTransfer">
+              <MappingFragment StoreEntitySet="CashTransfer">
+                <ScalarProperty Name="SectorId" ColumnName="SectorId" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="AmountInWords" ColumnName="AmountInWords" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="FromBranchId" ColumnName="FromBranchId" />
+                <ScalarProperty Name="Reject" ColumnName="Reject" />
+                <ScalarProperty Name="Accept" ColumnName="Accept" />
+                <ScalarProperty Name="ToReceiverBranchId" ColumnName="ToReceiverBranchId" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="Response" ColumnName="Response" />
+                <ScalarProperty Name="CashTransferId" ColumnName="CashTransferId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

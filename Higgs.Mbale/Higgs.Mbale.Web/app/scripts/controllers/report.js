@@ -2198,3 +2198,56 @@ angular
             };
 
         }]);
+
+
+angular
+    .module('homer').controller('ReportCreditorController', ['$scope', 'ngTableParams', '$http', '$filter', '$location', 'Utils', 'uiGridConstants', '$window',
+        function ($scope, ngTableParams, $http, $filter, $location, Utils, uiGridConstants, $window) {
+            $scope.loadingSpinner = true;
+
+            $scope.reportType = 0;
+            $scope.showDownloadLink = false;
+
+
+         
+            $scope.GenerateCreditorList = function () {
+                $scope.data = [];
+                $scope.creditors = [];
+                $scope.totalAmount = 0;
+                var promise = $http.get('/webapi/CreditorApi/GetCreditorView', {});
+                $scope.showDownloadLink = false;
+                promise.then(
+                 function (payload) {
+                    
+                     $scope.data = payload.data;
+                     $scope.reportType = 1;
+                     if ($scope.data.length > 0) {
+                         $scope.showDownloadLink = true;
+                         angular.forEach($scope.data, function (value, key) {
+                             $scope.totalAmount = value.Amount + $scope.totalAmount;
+
+                         });
+                     }
+                     $scope.tableParams = new ngTableParams({ page: 1, count: 20, sorting: { CreatedOn: 'desc' } }, {
+                         total: $scope.data.length, getData: function ($defer, params) {
+                             var orderData = params.sorting() ?
+                                                 $filter('orderBy')($scope.data, params.orderBy()) :
+                                                 $scope.data;
+                             $defer.resolve(orderData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                         }
+                     });
+                 });
+            }
+
+         
+
+        
+
+
+       
+
+            $scope.DownloadExcelFile = function () {
+                $window.open("/Excel/Creditor/" + $scope.reportType);
+            };
+
+        }]);

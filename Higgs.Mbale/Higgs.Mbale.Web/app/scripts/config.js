@@ -1068,7 +1068,7 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
          url: "/casualWorkers",
          templateUrl: "/app/views/_common/content_empty.html",
          data: {
-             pageTitle: 'CasualWorkers'
+             pageTitle: 'Workers'
          }
      })
 
@@ -1076,7 +1076,7 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
         url: "/casualWorkers",
         templateUrl: "/app/views/casualWorker/list.html",
         data: {
-            pageTitle: 'CasualWorkers',
+            pageTitle: 'Workers',
         },
         controller: function ($scope, $stateParams) {
 
@@ -1087,7 +1087,7 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
                 url: "/casualWorkers/branch/:branchId",
                 templateUrl: "/app/views/casualWorker/branchCasualWorkers.html",
                 data: {
-                    pageTitle: 'Branch Casual Workers',
+                    pageTitle: 'Branch  Workers',
                 },
                 controller: function ($scope, $stateParams) {
                     $scope.branchId = $stateParams.branchId;
@@ -1098,7 +1098,7 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
         url: "/casualWorkers/:action/:casualWorkerId",
         templateUrl: "/app/views/casualWorker/edit.html",
         data: {
-            pageTitle: 'CasualWorker edit',
+            pageTitle: 'Worker edit',
             pageDesc: ''
         },
         controller: function ($scope, $stateParams) {
@@ -1112,7 +1112,7 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
                 url: "/casualworker/detail/:casualWorkerId",
                 templateUrl: "/app/views/casualworker/detail.html",
                 data: {
-                    pageTitle: 'Casual Worker Details',
+                    pageTitle: 'Worker Details',
                 },
                 controller: function ($scope, $stateParams) {
                     $scope.casualWorkerId = $stateParams.casualWorkerId;
@@ -1125,7 +1125,7 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
              url: "/casualworkers",
              templateUrl: "/app/views/casualworker/admin-view.html",
              data: {
-                 pageTitle: 'CasualWorkers',
+                 pageTitle: 'Workers',
              },
              controller: function ($scope, $stateParams) {
 
@@ -1558,6 +1558,16 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
              }
          })
 
+          .state('reports.creditorlist', {
+              url: "/reports",
+              templateUrl: "/app/views/report/creditors.html",
+              data: {
+                  pageTitle: 'Creditors',
+              },
+              controller: function ($scope, $stateParams) {
+
+              }
+          })
          .state('reports.deliverylist', {
              url: "/reports",
              templateUrl: "/app/views/report/deliveries.html",
@@ -1859,6 +1869,60 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider) {
               $scope.defaultTab = 'edit';
           }
       })
+
+      .state('cash-branch-transfer', {
+          url: "/cashs/:action/:cashTransferId/:branchId",
+          templateUrl: "/app/views/cashtransfer/cashtransfer.html",
+          data: {
+              pageTitle: 'Branch Cash Transfers',
+              pageDesc: ''
+          },
+          controller: function ($scope, $stateParams) {
+              $scope.action = $stateParams.action;
+              $scope.cashTransferId = $stateParams.cashTransferId;
+              $scope.branchId = $stateParams.branchId;
+              $scope.defaultTab = 'edit';
+          }
+      })
+
+         
+      .state('cashlist-branch-transfer', {
+          url: "/cashs/branch/:branchId",
+          templateUrl: "/app/views/cashtransfer/branchcashtransfers.html",
+          data: {
+              pageTitle: 'Branch Cash Transfers',
+              pageDesc: ''
+          },
+          controller: function ($scope, $stateParams) {
+              $scope.branchId = $stateParams.branchId;
+              $scope.defaultTab = 'edit';
+          }
+      })
+     .state('admin-cashtransfer-list', {
+         url: "/cashs",
+         templateUrl: "/app/views/cashtransfer/adminview.html",
+         data: {
+             pageTitle: 'Cash Transfers',
+         },
+         controller: function ($scope, $stateParams) {
+
+         }
+     })
+     .state('cash-transfer-details', {
+         url: "/cashs/:branchId/:cashTransferId",
+         templateUrl: "/app/views/cashtransfer/cashtransferdetails.html",
+         data: {
+             pageTitle: 'Transfer Cash Details',
+             pageDesc: ''
+         },
+         controller: function ($scope, $stateParams) {
+             $scope.action = 'view';
+             $scope.branchId = $stateParams.branchId;
+             $scope.cashTransferId = $stateParams.cashTransferId;
+
+             $scope.defaultTab = 'edit';
+         }
+     })
     //Search
     $stateProvider
     .state('search', {

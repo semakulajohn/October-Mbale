@@ -35,6 +35,7 @@ namespace Higgs.Mbale.EF.Models
             this.OtherExpenses = new HashSet<OtherExpense>();
             this.Utilities = new HashSet<Utility>();
             this.Deliveries = new HashSet<Delivery>();
+            this.CashTransfers = new HashSet<CashTransfer>();
         }
     
         public long SectorId { get; set; }
@@ -69,5 +70,6 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<OtherExpense> OtherExpenses { get; set; }
         public virtual ICollection<Utility> Utilities { get; set; }
         public virtual ICollection<Delivery> Deliveries { get; set; }
+        public virtual ICollection<CashTransfer> CashTransfers { get; set; }
     }
 }

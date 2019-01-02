@@ -181,5 +181,16 @@ namespace Higgs.Mbale.DAL.Concrete
             }
 
         }
+
+        //public GetOrderToDeliver_Result GetOrderToDeliver(long orderId)
+        //{
+
+        //    using (var dbContext = new MbaleEntities())
+        //    {
+        //        var result = dbContext.GetOrderToDeliver(orderId);
+        //        return result.FirstOrDefault();
+        //    }
+
+        //}
     }
 }

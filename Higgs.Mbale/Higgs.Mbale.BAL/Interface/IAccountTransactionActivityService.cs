@@ -20,6 +20,7 @@ namespace Higgs.Mbale.BAL.Interface
         PaymentMode GetPaymentMode(long paymentModeId);
         IEnumerable<AccountTransactionActivity> GetAllAccountTransactionActivitiesForAParticularSupply(long supplyId);
         bool checkIfSupplyRelatesToAnyAccountTransaction(long supplyId);
+        double GetBalanceForLastAccountAccountTransactionActivityForSupplier(string accountId);
        
 
 

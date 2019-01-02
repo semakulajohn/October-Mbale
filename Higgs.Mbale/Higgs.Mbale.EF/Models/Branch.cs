@@ -48,6 +48,8 @@ namespace Higgs.Mbale.EF.Models
             this.Requistions = new HashSet<Requistion>();
             this.Documents = new HashSet<Document>();
             this.CasualWorkers = new HashSet<CasualWorker>();
+            this.CashTransfers = new HashSet<CashTransfer>();
+            this.CashTransfers1 = new HashSet<CashTransfer>();
         }
     
         public long BranchId { get; set; }
@@ -98,5 +100,7 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<Requistion> Requistions { get; set; }
         public virtual ICollection<Document> Documents { get; set; }
         public virtual ICollection<CasualWorker> CasualWorkers { get; set; }
+        public virtual ICollection<CashTransfer> CashTransfers { get; set; }
+        public virtual ICollection<CashTransfer> CashTransfers1 { get; set; }
     }
 }

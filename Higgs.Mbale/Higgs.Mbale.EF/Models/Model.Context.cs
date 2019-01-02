@@ -99,6 +99,7 @@ namespace Higgs.Mbale.EF.Models
         public virtual DbSet<Document> Documents { get; set; }
         public virtual DbSet<CasualWorker> CasualWorkers { get; set; }
         public virtual DbSet<BatchGradeSize> BatchGradeSizes { get; set; }
+        public virtual DbSet<CashTransfer> CashTransfers { get; set; }
     
         public virtual int Mark_FactoryExpense_AsDeleted(Nullable<long> inPutFactoryExpenseId, string userId)
         {
@@ -358,6 +359,15 @@ namespace Higgs.Mbale.EF.Models
                 new ObjectParameter("balance", typeof(double));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateOrderGradeSizes", orderIdParameter, gradeIdParameter, sizeIdParameter, quantityParameter, balanceParameter);
+        }
+    
+        public virtual ObjectResult<GetOrderToDeliver_Result> GetOrderToDeliver(Nullable<long> orderId)
+        {
+            var orderIdParameter = orderId.HasValue ?
+                new ObjectParameter("orderId", orderId) :
+                new ObjectParameter("orderId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOrderToDeliver_Result>("GetOrderToDeliver", orderIdParameter);
         }
     }
 }

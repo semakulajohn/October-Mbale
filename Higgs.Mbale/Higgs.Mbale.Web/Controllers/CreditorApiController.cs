@@ -44,6 +44,13 @@ namespace Higgs.Mbale.Web.Controllers
             {
                 return _creditorService.GetAllCreditorsForAParticularBranch(branchId);
             }
+
+        [HttpGet]
+        [ActionName("GetCreditorView")]
+            public IEnumerable<CreditorView> GetCreditorView()
+            {
+                return _creditorService.GetCreditorView();
+            }
           
     }
 }

@@ -132,6 +132,22 @@ namespace Higgs.Mbale.BAL.Concrete
             }
         }
 
+        public double GetBalanceForLastAccountAccountTransactionActivityForSupplier(string accountId)
+        {
+            double balance = 0;
+            var isAspNetUser = checkIfUserIsAspNetUser(accountId);
+            if (isAspNetUser)
+            {
+                var result = this._dataService.GetLatestAccountTransactionActivityForAParticularAspNetUser(accountId);
+                if (result.AccountTransactionActivityId > 0)
+                {
+                    balance = result.Balance;
+                }
+
+                return balance;
+            }
+            return balance;
+        }
        
         public long SaveAccountTransactionActivity(AccountTransactionActivity accountTransactionActivity, string userId)
         {

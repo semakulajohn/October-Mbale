@@ -39,7 +39,7 @@
             <a href="#"><span class="nav-label">Batches</span><span class="fa arrow"></span> </a>
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('batches')}">
               <!--  <li ui-sref-active="active"><a ui-sref="batches.list">All Batches</a></li>-->
-                <li ui-sref-active="active"><a ui-sref="admin-batches-list">Admin view</a></li>
+                <li ui-sref-active="active"><a ui-sref="admin-batches-list">Batch view</a></li>
             </ul>
         </li>
 
@@ -51,7 +51,13 @@
             </ul>
         </li>
        
-
+        <li ng-class="{active: $state.includes('cashs')}" ng-show="isAdmin">
+            <a href="#"><span class="nav-label">Cash Transfers</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('cashs')}">
+              
+                <li ui-sref-active="active"><a ui-sref="admin-cashtransfer-list">CashTransfer view</a></li>
+            </ul>
+        </li>
         <li ng-class="{active: $state.includes('transactions')}" ng-show="isAdmin">
             <a href="#"><span class="nav-label">Transactions</span><span class="fa arrow"></span> </a>
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('transactions')}">
@@ -66,10 +72,10 @@
             </ul>
         </li>
         <li ng-class="{active: $state.includes('casualWorkers')}" ng-show="isAdmin">
-            <a href="#"><span class="nav-label">CasualWorkers</span><span class="fa arrow"></span> </a>
+            <a href="#"><span class="nav-label">Workers</span><span class="fa arrow"></span> </a>
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('casualWorkers')}">
                 <!--<li ui-sref-active="active"><a ui-sref="casualWorkers.list">All CasualWorkers</a></li>-->
-                <li ui-sref-active="active"><a ui-sref="admin-casualworkers-list">Casual view</a></li>
+                <li ui-sref-active="active"><a ui-sref="admin-casualworkers-list">worker view</a></li>
             </ul>
         </li>
         <!--<li ng-class="{active: $state.includes('activities')}" ng-show="isAdmin">

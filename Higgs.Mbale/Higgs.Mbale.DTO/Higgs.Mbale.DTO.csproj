@@ -56,6 +56,7 @@
     <Compile Include="BuveraTransferDTO.cs" />
     <Compile Include="BuveraTransferGradeSizeDTO.cs" />
     <Compile Include="CashDTO.cs" />
+    <Compile Include="CashTransferDTO.cs" />
     <Compile Include="CasualActivityDTO.cs" />
     <Compile Include="CasualWorkerDTO.cs" />
     <Compile Include="CreditorDTO.cs" />

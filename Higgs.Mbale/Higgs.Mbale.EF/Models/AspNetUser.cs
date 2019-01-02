@@ -134,6 +134,9 @@ namespace Higgs.Mbale.EF.Models
             this.CasualWorkers = new HashSet<CasualWorker>();
             this.CasualWorkers1 = new HashSet<CasualWorker>();
             this.CasualWorkers2 = new HashSet<CasualWorker>();
+            this.CashTransfers = new HashSet<CashTransfer>();
+            this.CashTransfers1 = new HashSet<CashTransfer>();
+            this.CashTransfers2 = new HashSet<CashTransfer>();
         }
     
         public string Id { get; set; }
@@ -286,5 +289,8 @@ namespace Higgs.Mbale.EF.Models
         public virtual ICollection<CasualWorker> CasualWorkers { get; set; }
         public virtual ICollection<CasualWorker> CasualWorkers1 { get; set; }
         public virtual ICollection<CasualWorker> CasualWorkers2 { get; set; }
+        public virtual ICollection<CashTransfer> CashTransfers { get; set; }
+        public virtual ICollection<CashTransfer> CashTransfers1 { get; set; }
+        public virtual ICollection<CashTransfer> CashTransfers2 { get; set; }
     }
 }

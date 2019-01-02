@@ -350,6 +350,13 @@
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_BatchOutPut_BatchId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_Grade_GradeId" />
         <AssociationConnector Association="Higgs.MbaleModel.FK_dbo_BatchGradeSize_dbo_Size_SizeId" />
+        <EntityTypeShape EntityType="Higgs.MbaleModel.CashTransfer" Width="1.5" PointX="12.75" PointY="30.625" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_CashTransfer_CreatedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_CashTransfer_DeletedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_CashTransfer_UpdatedBy" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_CashTransfer_FromBranchId" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_CashTransfer_ToReceiverBranchId" />
+        <AssociationConnector Association="Higgs.MbaleModel.FK_CashTransfer_SectorId" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

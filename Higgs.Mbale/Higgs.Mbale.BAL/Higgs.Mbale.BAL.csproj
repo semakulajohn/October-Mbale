@@ -73,6 +73,7 @@
     <Compile Include="Concrete\BuveraService.cs" />
     <Compile Include="Concrete\BuveraTransferService.cs" />
     <Compile Include="Concrete\CashService.cs" />
+    <Compile Include="Concrete\CashTransferService.cs" />
     <Compile Include="Concrete\CasualActivityService.cs" />
     <Compile Include="Concrete\CasualWorkerService.cs" />
     <Compile Include="Concrete\CreditorService.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Interface\IBuveraService.cs" />
     <Compile Include="Interface\IBuveraTransferService.cs" />
     <Compile Include="Interface\ICashService.cs" />
+    <Compile Include="Interface\ICashTransferService.cs" />
     <Compile Include="Interface\ICasualActivityService.cs" />
     <Compile Include="Interface\ICreditorService.cs" />
     <Compile Include="Interface\IDebtorService.cs" />

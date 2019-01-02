@@ -31,6 +31,7 @@ namespace Higgs.Mbale.Web.Controllers
         private IUtilityService _utilityService;
         private IRequistionService _requistionService;
         private IDocumentService _documentService;
+        private ICreditorService _creditorService;
 
         public ExcelController()
         {
@@ -42,7 +43,7 @@ namespace Higgs.Mbale.Web.Controllers
             IBatchService batchService,IDeliveryService deliveryService,ICashService cashService,IOrderService orderService,
             ILabourCostService labourCostService, IOtherExpenseService otherExpenseService, IFactoryExpenseService factoryExpenseService,
             IBatchOutPutService batchOutPutService, IFlourTransferService flourTransferService, IMachineRepairService machineRepairService,
-            IUtilityService utilityService,IRequistionService requistionService,IDocumentService documentService)
+            IUtilityService utilityService,IRequistionService requistionService,IDocumentService documentService,ICreditorService creditorService)
         {
             this._transactionService = transactionService;
             this._reportService = reportService;
@@ -61,6 +62,7 @@ namespace Higgs.Mbale.Web.Controllers
             this._utilityService = utilityService;
             this._requistionService = requistionService;
             this._documentService = documentService;
+            this._creditorService = creditorService;
         }
         // GET: Excel
         public ActionResult Index(int id)
@@ -1021,6 +1023,54 @@ namespace Higgs.Mbale.Web.Controllers
             return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
 
+        public ActionResult Creditor(int id)
+        {
+            int reportType = id;
+            string nameOfReport = string.Empty;
+            List<string> headers = new List<string>();
+            headers.Add("Number ");
+            headers.Add("Creditor Name");
+            headers.Add("Amount");
+            
+
+
+            IEnumerable<CreditorView> creditorList;
+            switch (reportType)
+            {
+
+                case 1://all creditors
+                    nameOfReport = "Creditors";
+                    creditorList = _creditorService.GetCreditorView();
+                    break;
+               
+
+                default://Todo:: need to decide which one is the default report data
+                    creditorList = _creditorService.GetCreditorView();
+                    break;
+            }
+            List<List<string>> cellValues = new List<List<string>>();
+            foreach (var w in creditorList)
+            {
+
+                var sxr = new List<string>();
+                sxr.Add(w.CreditorNumber.ToString());
+                sxr.Add(w.CreditorName.ToString());
+              
+                sxr.Add(w.Amount.ToString());
+               
+
+
+                cellValues.Add(sxr);
+            }
+            var data = new ExcelData();
+            data.Headers = headers;
+            data.DataRows = cellValues;
+
+            var file = new ExcelWriter();
+            var excelFileContentInBytes = file.GenerateExcelFile(data);
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + nameOfReport + "_Report_" + DateTime.Now.ToString("yyyy-MM-dd-mm-ss") + ".xlsx");
+            return new FileContentResult(excelFileContentInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
 
         #region generating pdf
         #region Requistion

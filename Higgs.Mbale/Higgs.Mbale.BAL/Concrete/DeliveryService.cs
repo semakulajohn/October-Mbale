@@ -152,98 +152,139 @@ namespace Higgs.Mbale.BAL.Concrete
                 batchOutPut = batchOutPuts.First();
             }
             
-            bool hasGrade = false;
+            //bool hasGrade = false;
            var soldOut = false;
-            foreach (var deliveryGrade in batchOutPut.Grades)
-	            {
+           bool orderHasBalance = false;
+           Grade foundGrade = new Grade();
+           var makeDelivery = new MakeDelivery();
+           #region NewCode
+             if(batchOutPut.Grades.Any())
+                {   
                    
-	              List<OrderGradeSize> orderGradeSizes = new List<OrderGradeSize>();
+                    bool hasGrade = false;
+                  List<OrderGradeSize> orderGradeSizes = new List<OrderGradeSize>();
                   List<BatchGradeSize> batchGradeSizes = new List<BatchGradeSize>();
-                 
-                 double quantityToRemove = 0;
-   
-           var order = _orderService.GetOrder(delivery.OrderId);
-            foreach (var orderGrade in order.Grades)
-	            {
-               hasGrade = CheckIfBatchHasOrderGrade(orderGrade.GradeId,batchOutPut.Grades);
-                if(hasGrade)
-                {
-                     if (deliveryGrade.Denominations != null)
-                        {
-                            if (deliveryGrade.Denominations.Any())
-                            {
-                                foreach (var denominationDelivery in deliveryGrade.Denominations)
-                                {
-                                    foreach (var denom in deliveryGrade.Denominations)
-                                    {
-                                        quantityToRemove = denominationDelivery.QuantityToRemove;
-                                        var batchGradeSizeBalance = denom.Balance - denominationDelivery.QuantityToRemove;
-                                        var batchGradeSize = new BatchGradeSize()
-                                                {
-                                                    BatchOutPutId = batchOutPut.BatchOutPutId,
-                                                    GradeId = deliveryGrade.GradeId,
-                                                    SizeId = denom.DenominationId,
-                                                    Quantity = denom.Quantity,
-                                                    Balance = batchGradeSizeBalance,
-                                                };
+                var order = _orderService.GetOrder(delivery.OrderId);
+#region foreach
+                     foreach (var orderGrade in order.Grades)
+	                         {
+                                 hasGrade = CheckIfBatchHasOrderGrade(orderGrade.GradeId, batchOutPut.Grades);
+                                     if(hasGrade)
+                                     {
+                                  foundGrade =  GetGradeSameAsOrderGrade(batchOutPut.Grades,  orderGrade.GradeId);
+                                  int j = 0;
+                                  foreach (var foundGradeDenom in foundGrade.Denominations)
+                                  {
+                                      //int j = 0;
+                                      //int count = orderGrade.Denominations.Count();
+                                      double quantityToRemove = 0;
+                                      bool flag = false;
+                                      quantityToRemove = foundGradeDenom.QuantityToRemove;
+                                      double balanceValue = 0,quantity = 0;
 
-                                        batchGradeSizes.Add(batchGradeSize);
-                                        var inOrOut = false;
-                                        //Method that removes flour from storeGradeSize table
-                                        var storeGradeSize = new StoreGradeSize()
-                                        {
-                                            StoreId = delivery.StoreId,
-                                            GradeId = orderGrade.GradeId,
-                                            SizeId = denom.DenominationId,
-                                            Quantity = quantityToRemove,
-                                        };
+                                      var batchGradeSizeBalance = foundGradeDenom.Balance - foundGradeDenom.QuantityToRemove;
+                                      var batchGradeSize = new BatchGradeSize()
+                                              {
+                                                  BatchOutPutId = batchOutPut.BatchOutPutId,
+                                                  GradeId = foundGrade.GradeId,
+                                                  SizeId = foundGradeDenom.DenominationId,
+                                                  Quantity = foundGradeDenom.Quantity,
+                                                  Balance = batchGradeSizeBalance,
+                                              };
 
-                                        this._stockService.SaveStoreGradeSize(storeGradeSize, inOrOut);
-                                    }
-                                }
-                                _batchService.UpdateBatchGradeSizes(batchGradeSizes); 
-                                     if(orderGrade.Denominations != null)
+                                      batchGradeSizes.Add(batchGradeSize);
+#region forloop
+                                      for (int i = j; i < orderGrade.Denominations.Count(); i++)
+			                                {
+                                                j = j + 1;
+                                                balanceValue = orderGrade.Denominations[i].Balance;
+                                                quantity = orderGrade.Denominations[i].Quantity;
+			                      
+                                      var orderGradeSizeBalance =balanceValue - quantityToRemove;
+                                          var orderGradeSize = new OrderGradeSize()
                                             {
-                                                 if(orderGrade.Denominations.Any())
-                                                     {
-                                                     foreach (var denom in orderGrade.Denominations)
-	                                                     {
-                                                             var orderGradeBalance = denom.Balance - quantityToRemove;
-		                                             var orderGradeSize = new OrderGradeSize()
-                                                             {
-                                                              OrderId = delivery.OrderId,
-                                                                 GradeId = orderGrade.GradeId,
-                                                                SizeId = denom.DenominationId,
-                                                                 Quantity = denom.Quantity,
-                                                                 Balance = orderGradeBalance,
-                                                              };
+                                                OrderId = delivery.OrderId,
+                                                GradeId = orderGrade.GradeId,
+                                                SizeId = foundGradeDenom.DenominationId,
+                                                Quantity = quantity,
+                                                Balance = orderGradeSizeBalance,
+                                            };
 
-                                                 orderGradeSizes.Add(orderGradeSize);
-                                    if(orderGradeBalance > 0)
-                                    {
-                                        hasBalance = true;
-                                    }
-                                   
-                                            
-	                          }
-                           }
-                         }
-               
-                                _orderService.SaveOrderGradeSizeList(orderGradeSizes);
-                    }
-                    }
+                                          orderGradeSizes.Add(orderGradeSize);
+
+                                          var inOrOut = false;
+                                          //Method that removes flour from storeGradeSize table
+                                          var storeGradeSize = new StoreGradeSize()
+                                          {
+                                              StoreId = delivery.StoreId,
+                                              GradeId = orderGrade.GradeId,
+                                              SizeId = foundGradeDenom.DenominationId,
+                                              Quantity = quantityToRemove,
+                                          };
+
+                                          this._stockService.SaveStoreGradeSize(storeGradeSize, inOrOut);
+                                      //}
+                                          if (i < 6)
+                                          {
+                                              flag = true;
+                                              break;
+                                          }
+                                            }
+                                      if (flag)
+                                      {
+                                          continue;
+                                      }
+                                     }
+#endregion
+                                 orderHasBalance =  FindIfFlourOrderHasBalance(orderGradeSizes);
+                                 _orderService.PurgeOrderGradeSize(delivery.OrderId);
+                                 
+                                 foreach (var item in orderGradeSizes)
+                                 {
+                                     var orderGradeSize = new OrderGradeSize()
+                                     {
+                                         OrderId = item.OrderId,
+                                         GradeId = item.GradeId,
+                                         SizeId = item.SizeId,
+                                         Quantity = item.Quantity,
+                                         Balance = item.Balance
+
+                                     };
+                                     _orderService.UpdateOrderGradeSizes(orderGradeSize.OrderId, orderGradeSize.GradeId, orderGradeSize.SizeId, orderGradeSize.Quantity,Convert.ToDouble(orderGradeSize.Balance));
+                                 }
+                                      }
+                                     _batchService.UpdateBatchGradeSizes(batchGradeSizes); 
+                        
+                                 }
+                                 
+#endregion
+                     if (orderHasBalance)
+                     {
+                         makeDelivery = new MakeDelivery()
+                         {
+                             StockReduced = true,
+                             OrderQuantityBalance = 1,
+                         };
+                         return makeDelivery;
+                     }
+                     else
+                     {
+                         makeDelivery = new MakeDelivery()
+                         {
+                             StockReduced = true,
+                             OrderQuantityBalance = 0,
+                         };
+                         return makeDelivery;
+                     }
+                       
                  }
-                }
-            }
-            if(hasBalance){
-            soldOut = false;   
-            }
-            MakeDelivery makeDelivery = new MakeDelivery()
-            {
-                StockReduced = soldOut,
+             return makeDelivery;
 
-            };
-            return makeDelivery;
+            
+    
+           #endregion
+          
+
         }
 
         private Grade GetGradeSameAsOrderGrade(List<Grade> deliveryGrades, long orderGradeId)
@@ -318,6 +359,7 @@ namespace Higgs.Mbale.BAL.Concrete
             bool orderHasBalance = false;
             Grade foundGrade = new Grade();
             var makeDelivery = new MakeDelivery();
+            #region withoutBatches
             if (delivery.Batches == null || !delivery.Batches.Any())
             {
                 if(delivery.SelectedDeliveryGrades.Any())
@@ -346,13 +388,7 @@ namespace Higgs.Mbale.BAL.Concrete
                                                 j = j + 1;
                                                 balanceValue = orderGrade.Denominations[i].Balance;
                                                 quantity = orderGrade.Denominations[i].Quantity;
-			                                
-                                      
-                                  //}
-                                      //foreach (var denom in orderGrade.Denominations)
-                                      //{
-                                         
-                                          //var orderGradeSizeBalance =denom.Balance- quantityToRemove;
+			                      
                                       var orderGradeSizeBalance =balanceValue - quantityToRemove;
                                           var orderGradeSize = new OrderGradeSize()
                                             {
@@ -390,7 +426,7 @@ namespace Higgs.Mbale.BAL.Concrete
                                      }
                                  orderHasBalance =  FindIfFlourOrderHasBalance(orderGradeSizes);
                                  _orderService.PurgeOrderGradeSize(delivery.OrderId);
-                                 //_orderService.SaveOrderGradeSizeList(orderGradeSizes);
+                                 
                                  foreach (var item in orderGradeSizes)
                                  {
                                      var orderGradeSize = new OrderGradeSize()
@@ -428,16 +464,13 @@ namespace Higgs.Mbale.BAL.Concrete
                  }
 
             }
+            #endregion
+            
+                #region WithBatches
             else
             {
-                List<Batch> batchesList = new List<Batch>();
-                foreach (var deliveryBatch in delivery.Batches)
-                {
-                    var batch = _batchService.GetBatch(deliveryBatch.BatchId);
-                    batchesList.Add(batch);
-                }
-
-                List<Batch> SortedBatchList = batchesList.OrderBy(o => o.CreatedOn).ToList();
+                bool flag = false;
+                List<Batch> SortedBatchList = delivery.Batches.OrderBy(o => o.CreatedOn).ToList();
                 foreach (var batch in SortedBatchList)
                 {
                     makeDelivery = ReduceBatchFlourStock(delivery,batch.BatchOutPuts,userId);
@@ -455,23 +488,35 @@ namespace Higgs.Mbale.BAL.Concrete
 
                         makeDelivery = new MakeDelivery()
                         {
-                            StockReduced = true,
+                            StockReduced = false,
                             OrderQuantityBalance = 0,
                         };
                         return makeDelivery;
                     }
-                    else
+                    else if (makeDelivery.StockReduced && makeDelivery.OrderQuantityBalance > 0)
                     {
-                        if (orderBalance > 0)
+                       
+                        if (makeDelivery.OrderQuantityBalance > 0)
                         {
-                            makeDelivery = ReduceBatchFlourStock(delivery,batch.BatchOutPuts, userId);
+
+                            flag = true;
+                            //break;
+                                          
                         }
+
+                        if (flag)
+                        {
+                            continue;
+                        }             
                     }
+                   
+                   
                 }
+
                 
 
             }
-
+#endregion
 
             return makeDelivery;
         }
@@ -689,7 +734,7 @@ namespace Higgs.Mbale.BAL.Concrete
                             makeDelivery = new MakeDelivery()
                             {
                                 StockReduced = false,
-                                OrderQuantityBalance = 0,
+                                OrderQuantityBalance = makeDelivery.OrderQuantityBalance,
                                 BatchList = batchDeliveryList,
                             };
                             _orderService.UpdateOrderWithBalance(order.OrderId, makeDelivery.OrderQuantityBalance, userId);
@@ -1121,6 +1166,7 @@ namespace Higgs.Mbale.BAL.Concrete
                                     {
                                         BatchId = batch.BatchId,
                                         DeliveryId = deliveryId,
+                                        //BatchQuantity = 0,
 
                                     };
                                     this._dataService.SaveDeliveryBatch(deliveryBatchDTO);
@@ -1132,73 +1178,86 @@ namespace Higgs.Mbale.BAL.Concrete
 
                             
                             List<DeliveryGradeSize> deliveryGradeSizeList = new List<DeliveryGradeSize>();
-                            if (delivery.SelectedDeliveryGrades.Any())
+                            if (delivery.SelectedDeliveryGrades != null)
                             {
-                                foreach (var grade in delivery.SelectedDeliveryGrades)
+                                if (delivery.SelectedDeliveryGrades.Any())
                                 {
-                                    long sizeId = 0;
-                                    double amount = 0, price = 0, quantity = 0;
-
-                                    foreach (var denomination in grade.Denominations)
+                                    foreach (var grade in delivery.SelectedDeliveryGrades)
                                     {
-                                        sizeId = denomination.DenominationId;
-                                        price = denomination.Price;
-                                        quantity = denomination.Quantity;
-                                        amount = (denomination.Quantity * denomination.Price);
+                                        long sizeId = 0;
+                                        double amount = 0, price = 0, quantity = 0;
 
-                                        var deliveryGradeSize = new DeliveryGradeSize()
+                                        foreach (var denomination in grade.Denominations)
                                         {
-                                            DeliveryId = deliveryId,
-                                            GradeId = grade.GradeId,
-                                            SizeId = sizeId,
-                                            Quantity = quantity,
-                                            Price = price,
-                                            Amount = amount,
-                                            TimeStamp = DateTime.Now,
+                                            sizeId = denomination.DenominationId;
+                                            price = denomination.Price;
+                                            quantity = denomination.Quantity;
+                                            amount = (denomination.Quantity * denomination.Price);
 
-                                        };
-                                        deliveryGradeSizeList.Add(deliveryGradeSize);
+                                            var deliveryGradeSize = new DeliveryGradeSize()
+                                            {
+                                                DeliveryId = deliveryId,
+                                                GradeId = grade.GradeId,
+                                                SizeId = sizeId,
+                                                Quantity = quantity,
+                                                Price = price,
+                                                Amount = amount,
+                                                TimeStamp = DateTime.Now,
 
+                                            };
+                                            deliveryGradeSizeList.Add(deliveryGradeSize);
+
+
+                                        }
 
                                     }
-
+                                    this._dataService.PurgeDeliveryGradeSize(deliveryId);
+                                    this.SaveDeliveryGradeSizeList(deliveryGradeSizeList);
                                 }
-                                this._dataService.PurgeDeliveryGradeSize(deliveryId);
-                                this.SaveDeliveryGradeSizeList(deliveryGradeSizeList);
                             }
-                            else{
-                            foreach (var grade in delivery.Grades)
+                            else
                             {
-                                long sizeId = 0;
-                                double amount = 0, price = 0, quantity = 0;
-
-                                foreach (var denomination in grade.Denominations)
+                                if (delivery.Batches != null)
                                 {
-                                    sizeId = denomination.DenominationId;
-                                    price = denomination.Price;
-                                    quantity = denomination.Quantity;
-                                    amount = (denomination.Quantity * denomination.Price);
-
-                                    var deliveryGradeSize = new DeliveryGradeSize()
+                                    if (delivery.SelectedGrades != null)
                                     {
-                                        DeliveryId = deliveryId,
-                                        GradeId = grade.GradeId,
-                                        SizeId = sizeId,
-                                        Quantity = quantity,
-                                        Price = price,
-                                        Amount = amount,
-                                        TimeStamp = DateTime.Now,
+                                        if (delivery.SelectedGrades.Any())
+                                        {
+                                            foreach (var grade in delivery.SelectedGrades)
+                                            {
+                                                long sizeId = 0;
+                                                double amount = 0, price = 0, quantity = 0;
 
-                                    };
-                                    deliveryGradeSizeList.Add(deliveryGradeSize);
+                                                foreach (var denomination in grade.Denominations)
+                                                {
+                                                    sizeId = denomination.DenominationId;
+                                                    price = denomination.Price;
+                                                    quantity = denomination.QuantityToRemove;
+                                                    amount = (denomination.QuantityToRemove * denomination.Price);
+
+                                                    var deliveryGradeSize = new DeliveryGradeSize()
+                                                    {
+                                                        DeliveryId = deliveryId,
+                                                        GradeId = grade.GradeId,
+                                                        SizeId = sizeId,
+                                                        Quantity = quantity,
+                                                        Price = price,
+                                                        Amount = amount,
+                                                        TimeStamp = DateTime.Now,
+
+                                                    };
+                                                    deliveryGradeSizeList.Add(deliveryGradeSize);
 
 
+                                                }
+
+                                            }
+                                            this._dataService.PurgeDeliveryGradeSize(deliveryId);
+                                            this.SaveDeliveryGradeSizeList(deliveryGradeSizeList);
+                                        }
+                                    }
                                 }
-
                             }
-                            this._dataService.PurgeDeliveryGradeSize(deliveryId);
-                            this.SaveDeliveryGradeSizeList(deliveryGradeSizeList);
-                        }
                             #region generate documents
                             if (deliveryDTO.PaymentModeId == 2 || deliveryDTO.PaymentModeId == 1 || deliveryDTO.PaymentModeId == 10004)
                             {
@@ -1280,74 +1339,85 @@ namespace Higgs.Mbale.BAL.Concrete
 
 
                             List<DeliveryGradeSize> deliveryGradeSizeList = new List<DeliveryGradeSize>();
-
-                            if (delivery.SelectedDeliveryGrades.Any())
+                            if (delivery.SelectedDeliveryGrades != null)
                             {
-                                foreach (var grade in delivery.SelectedDeliveryGrades)
+                                if (delivery.SelectedDeliveryGrades.Any())
                                 {
-                                    long sizeId = 0;
-                                    double amount = 0, price = 0, quantity = 0;
-
-                                    foreach (var denomination in grade.Denominations)
+                                    foreach (var grade in delivery.SelectedDeliveryGrades)
                                     {
-                                        sizeId = denomination.DenominationId;
-                                        price = denomination.Price;
-                                        quantity = denomination.Quantity;
-                                        amount = (denomination.Quantity * denomination.Price);
+                                        long sizeId = 0;
+                                        double amount = 0, price = 0, quantity = 0;
 
-                                        var deliveryGradeSize = new DeliveryGradeSize()
+                                        foreach (var denomination in grade.Denominations)
                                         {
-                                            DeliveryId = deliveryId,
-                                            GradeId = grade.GradeId,
-                                            SizeId = sizeId,
-                                            Quantity = quantity,
-                                            Price = price,
-                                            Amount = amount,
-                                            TimeStamp = DateTime.Now,
+                                            sizeId = denomination.DenominationId;
+                                            price = denomination.Price;
+                                            quantity = denomination.Quantity;
+                                            amount = (denomination.Quantity * denomination.Price);
 
-                                        };
-                                        deliveryGradeSizeList.Add(deliveryGradeSize);
+                                            var deliveryGradeSize = new DeliveryGradeSize()
+                                            {
+                                                DeliveryId = deliveryId,
+                                                GradeId = grade.GradeId,
+                                                SizeId = sizeId,
+                                                Quantity = quantity,
+                                                Price = price,
+                                                Amount = amount,
+                                                TimeStamp = DateTime.Now,
 
+                                            };
+                                            deliveryGradeSizeList.Add(deliveryGradeSize);
+
+
+                                        }
 
                                     }
-
+                                    this._dataService.PurgeDeliveryGradeSize(deliveryId);
+                                    this.SaveDeliveryGradeSizeList(deliveryGradeSizeList);
                                 }
-                                this._dataService.PurgeDeliveryGradeSize(deliveryId);
-                                this.SaveDeliveryGradeSizeList(deliveryGradeSizeList);
                             }
                             else
                             {
-                                foreach (var grade in delivery.Grades)
+                                if (delivery.SelectedGrades != null)
                                 {
-                                    long sizeId = 0;
-                                    double amount = 0, price = 0, quantity = 0;
-
-                                    foreach (var denomination in grade.Denominations)
+                                    if (delivery.SelectedGrades.Any())
                                     {
-                                        sizeId = denomination.DenominationId;
-                                        price = denomination.Price;
-                                        quantity = denomination.Quantity;
-                                        amount = (denomination.Quantity * denomination.Price);
 
-                                        var deliveryGradeSize = new DeliveryGradeSize()
+
+                                        foreach (var grade in delivery.SelectedGrades)
                                         {
-                                            DeliveryId = deliveryId,
-                                            GradeId = grade.GradeId,
-                                            SizeId = sizeId,
-                                            Quantity = quantity,
-                                            Price = price,
-                                            Amount = amount,
-                                            TimeStamp = DateTime.Now,
+                                            long sizeId = 0;
+                                            double amount = 0, price = 0, quantity = 0;
 
-                                        };
-                                        deliveryGradeSizeList.Add(deliveryGradeSize);
+                                            foreach (var denomination in grade.Denominations)
+                                            {
+                                                sizeId = denomination.DenominationId;
+                                                price = denomination.Price;
+                                                quantity = denomination.QuantityToRemove;
+                                                amount = (denomination.QuantityToRemove * denomination.Price);
+
+                                                var deliveryGradeSize = new DeliveryGradeSize()
+                                                {
+                                                    DeliveryId = deliveryId,
+                                                    GradeId = grade.GradeId,
+                                                    SizeId = sizeId,
+                                                    Quantity = quantity,
+                                                    Price = price,
+                                                    Amount = amount,
+                                                    TimeStamp = DateTime.Now,
+
+                                                };
+                                                deliveryGradeSizeList.Add(deliveryGradeSize);
 
 
+                                            }
+
+                                        }
+                                        this._dataService.PurgeDeliveryGradeSize(deliveryId);
+                                        this.SaveDeliveryGradeSizeList(deliveryGradeSizeList);
                                     }
-
                                 }
-                                this._dataService.PurgeDeliveryGradeSize(deliveryId);
-                                this.SaveDeliveryGradeSizeList(deliveryGradeSizeList);
+                                   
                             }
                             #region generate documents
                             if (deliveryDTO.PaymentModeId == 2 || deliveryDTO.PaymentModeId == 1 || deliveryDTO.PaymentModeId == 10004)
@@ -1407,6 +1477,10 @@ namespace Higgs.Mbale.BAL.Concrete
                             #endregion
 
                         }
+                        else if (!makeDelivery.StockReduced)
+                        {
+                            return deliveryId = -1;
+                        }
 
                 #endregion
 
@@ -1419,7 +1493,7 @@ namespace Higgs.Mbale.BAL.Concrete
                     if (delivery.ProductId == 1)
                     {
                         transactionSubTypeId = flourTransactionSubTypeId;
-                        notes = "Maize Flour Sale";
+                        notes = "Maize Flour Sale of" + delivery.Quantity.ToString() + " kgs";
                     }
                     else if (delivery.ProductId == 2)
                     {

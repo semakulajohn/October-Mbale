@@ -8,15 +8,14 @@
     <div ng-include="'/app/views/_common/Breadcrumb.html'"></div>
 
     <div class="content">
-        <div class="row" ng-controller="CreditorViewController">
-            <!--<button ng-click="printCreditors('creditors')" class="btn btn-primary2">Print</button>-->
-
-            <div class="col-lg-12" id="creditors">
-                &nbsp;&nbsp;&nbsp;&nbsp;
-
-                <button onclick="window.focus();window.print();" class="btn btn-primary2">Print</button>
+        <div class="row" ng-controller="BranchCashTransferController">
+            <div class="col-lg-12">
+                <div class="text-center">
+                    <a class="btn btn-danger btn-sm">  {{branch.Name | uppercase}} </a>
+                </div>
                 <div class="clear0"></div>
-                <a class="btn btn-danger btn-sm pull-right">Total Credit  : {{ totalCreditBalance |number}}</a>
+                <a ui-sref="cash-branch-transfer({ action: 'create',cashTransferId: 0,branchId : branch.BranchId })" class="btn btn-info btn-sm"><i class="fa fa-plus"></i> Transfer Cash</a>
+
 
                 <span ng-if="loadingSpinner" class="loadingSpinner">
                     <img src="/images/loading-bars.svg" width="45" height="45" /> Loading...
@@ -26,10 +25,11 @@
 
                 <div style="height: 520px" class="grid" ui-grid="gridData" ui-grid-selection></div>
 
-
-
             </div>
 
         </div>
     </div>
 </div>
+
+
+

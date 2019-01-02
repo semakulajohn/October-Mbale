@@ -16,5 +16,6 @@ namespace Higgs.Mbale.BAL.Interface
         IEnumerable<Creditor> GetAllCreditorsForAParticularBranch(long branchId);
         IEnumerable<Creditor> GetAllCreditorRecordsForParticularAccount(string aspNetUserId,long casualWorkerId);
         IEnumerable<Creditor> GetAllDistinctCreditorRecords();
+        IEnumerable<CreditorView> GetCreditorView();
     }
 }

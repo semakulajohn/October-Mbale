@@ -210,6 +210,7 @@
     <Compile Include="Controllers\BuveraApiController.cs" />
     <Compile Include="Controllers\BuveraTransferApiController.cs" />
     <Compile Include="Controllers\CashApiController.cs" />
+    <Compile Include="Controllers\CashTransferApiController.cs" />
     <Compile Include="Controllers\CasualActivityApiController.cs" />
     <Compile Include="Controllers\CasualWorkerApiController.cs" />
     <Compile Include="Controllers\CreditorApiController.cs" />
@@ -266,6 +267,7 @@
     <Content Include="app\scripts\controllers\buvera.js" />
     <Content Include="app\scripts\controllers\buveratransfer.js" />
     <Content Include="app\scripts\controllers\cash.js" />
+    <Content Include="app\scripts\controllers\cashtransfer.js" />
     <Content Include="app\scripts\controllers\casualactivity.js" />
     <Content Include="app\scripts\controllers\casualworker.js" />
     <Content Include="app\scripts\controllers\creditor.js" />
@@ -365,6 +367,10 @@
     <Content Include="app\views\buvera\rebag.html" />
     <Content Include="app\views\buvera\store-buvera-list.html" />
     <Content Include="app\views\buvera\storebuveratransfers.html" />
+    <Content Include="app\views\cashtransfer\adminview.html" />
+    <Content Include="app\views\cashtransfer\branchcashtransfers.html" />
+    <Content Include="app\views\cashtransfer\cashtransfer.html" />
+    <Content Include="app\views\cashtransfer\cashtransferdetails.html" />
     <Content Include="app\views\cash\admin-view.html" />
     <Content Include="app\views\cash\branch-cash.html" />
     <Content Include="app\views\cash\edit.html" />
@@ -419,6 +425,7 @@
     <Content Include="app\views\report\batchoutputs.html" />
     <Content Include="app\views\report\buveras.html" />
     <Content Include="app\views\report\cash.html" />
+    <Content Include="app\views\report\creditors.html" />
     <Content Include="app\views\report\deliveries.html" />
     <Content Include="app\views\report\factoryExpenses.html" />
     <Content Include="app\views\report\flourTransfer.html" />

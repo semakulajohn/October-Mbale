@@ -333,7 +333,10 @@ angular
                   { name: 'AmountInWords', field: 'AmountInWords' },
                 { name: 'Description', field: 'Description' },
                 { name: 'Response', field: 'Response' },
-                { name: 'Status', field: 'StatusName' },
+                //{ name: 'Status', field: 'StatusName' },
+                 //{ name: 'Status', cellTemplate: '<div ng-if="row.entity.Approved ==\'True\'">Approved</div><div ng-if="row.entity.Rejected ==\'True\'">Rejected</div><div ng-if="row.entity.Rejected ==\'False\' || row.entity.Approved ==\'False\'">Open</div>' },
+                 { name: 'Status', cellTemplate: '<div ng-if="row.entity.Approved ==\'true\'">Approved</div><div ng-if="row.entity.Rejected ==\'true\'">Rejected</div><div ng-if="row.entity.Rejected == false || row.entity.Approved == false">Open</div>' },
+
                 { name: 'ApprovedBy', field: 'ApprovedByName' },
                   {
                       name: 'Action', cellTemplate: '<div class="ui-grid-cell-contents"> <a href="#/requistions/edit/{{row.entity.RequistionId}}">Edit</a> </div>',

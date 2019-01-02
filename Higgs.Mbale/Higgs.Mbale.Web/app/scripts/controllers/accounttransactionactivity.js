@@ -7,6 +7,7 @@
             $scope.tab.dashboard = true;
         }
         var accountId = $scope.accountId;
+        var accountType = "";
         var transactionActivityId = $scope.transactionActivityId;
         var action = $scope.action;
         $scope.accountName = "";
@@ -25,15 +26,37 @@
              $scope.sectors = data;
          });
 
-         var promise = $http.get('/webapi/UserApi/GetUser?userId=' + accountId, {});
-         promise.then(
-             function (payload) {
-                 var c = payload.data;
-                 $scope.accountName = c.FirstName + " " + c.LastName;
-             }
+        
+         if (accountId.length < 6) {
+              accountType = "number";
 
-         );
+         }
+         else {
+              accountType = "string";
+         }
 
+         if (accountType == "string") {
+             var promise = $http.get('/webapi/UserApi/GetUser?userId=' + accountId, {});
+             promise.then(
+                 function (payload) {
+                     var c = payload.data;
+                     $scope.accountName = c.FirstName + " " + c.LastName;
+                 }
+
+             );
+
+         }
+         else if (accountType == "number") {
+             var promise = $http.get('/webapi/CasualWorkerApi/GetCasualWorker?casualWorkerId=' + parseInt(accountId), {});
+             promise.then(
+                 function (payload) {
+                     var c = payload.data;
+                     $scope.accountName = c.FirstName + " " + c.LastName;
+                 }
+
+             );
+         }
+        
         if (action == 'create') {
             deliveryId = 0;
             var promise = $http.get('/webapi/UserApi/GetLoggedInUser', {});
@@ -93,8 +116,8 @@
                     Balance: transactionActivity.Balance,
                     PaymentModeId : transactionActivity.PaymentModeId,
                     BranchId: transactionActivity.BranchId,
-                    AspNetUserId: accountId,
-                    CasualWorkerId: accountId,
+                    AspNetUserId: (accountType == "string") ? accountId : null,
+                    CasualWorkerId: (accountType == "number") ? accountId : null,
                     SectorId : transactionActivity.SectorId,
                     Notes: transactionActivity.Notes,
                     Action: transactionActivity.Action,
@@ -233,15 +256,37 @@ angular
             var accountId = $scope.accountId;
             $scope.accountName = "";
             $scope.loadingSpinner = true;
-            
-            var promise = $http.get('/webapi/UserApi/GetUser?userId=' + accountId, {});
-            promise.then(
-                function (payload) {
-                    var c = payload.data;
-                    $scope.accountName = c.FirstName + " " + c.LastName;
-                }
 
-            );
+            if (accountId.length < 6) {
+                var accountType = "number";
+
+            }
+            else {
+                var accountType = "string";
+            }
+           
+            if (accountType == "string") {
+                var promise = $http.get('/webapi/UserApi/GetUser?userId=' + accountId, {});
+                promise.then(
+                    function (payload) {
+                        var c = payload.data;
+                        $scope.accountName = c.FirstName + " " + c.LastName;
+                    }
+
+                );
+
+            }
+            else if (accountType == "number") {
+                var promise = $http.get('/webapi/CasualWorkerApi/GetCasualWorker?casualWorkerId=' + parseInt(accountId), {});
+                promise.then(
+                    function (payload) {
+                        var c = payload.data;
+                        $scope.accountName = c.FirstName + " " + c.LastName;
+                    }
+
+                );
+            }
+
             var promise = $http.get('/webapi/AccountTransactionActivityApi/GetAllAccountTransactionActivitiesForAParticularAccount?accountId=' + accountId, {});
             promise.then(
                 function (payload) {

@@ -64,9 +64,11 @@
     <Compile Include="BuveraTransfer.cs" />
     <Compile Include="BuveraTransferGradeSize.cs" />
     <Compile Include="Cash.cs" />
+    <Compile Include="CashTransfer.cs" />
     <Compile Include="CasualActivity.cs" />
     <Compile Include="CasualWorker.cs" />
     <Compile Include="Creditor.cs" />
+    <Compile Include="CreditorView.cs" />
     <Compile Include="Debtor.cs" />
     <Compile Include="Delivery.cs" />
     <Compile Include="DeliveryBatch.cs" />

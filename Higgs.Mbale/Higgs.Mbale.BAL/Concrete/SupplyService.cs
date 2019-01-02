@@ -329,7 +329,7 @@ namespace Higgs.Mbale.BAL.Concrete
               
            };
            SaveStoreMaizeStock(storeMaizeStock, true);
-           var notes = "Maize supply";
+           var notes = "Maize supply with WNN" +" "+ supply.WeightNoteNumber.ToString();
            var accountActivity = new AccountTransactionActivity()
             {
                 
@@ -350,7 +350,7 @@ namespace Higgs.Mbale.BAL.Concrete
 
            if (supply.BagsOfStones > 0)
            {
-               var stoneBagNotes = "stone bags fee";
+               var stoneBagNotes = "stone bags fee for WNN" +" "+supply.WeightNoteNumber.ToString();
                var accountActivityBagStones = new AccountTransactionActivity()
                {
 
@@ -372,7 +372,7 @@ namespace Higgs.Mbale.BAL.Concrete
 
            }
 
-               var offLoadingNotes = "Offloading fee";
+               var offLoadingNotes = "Offloading fee for WNN"+" "+supply.WeightNoteNumber.ToString();
                var accountActivityOffloading = new AccountTransactionActivity()
                {
 

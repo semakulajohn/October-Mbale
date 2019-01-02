@@ -182,8 +182,8 @@
                     
             //    });
             //}
-            if (delivery.Grades != null && productId == 1 && delivery.SelectedGrades) {
-                angular.forEach(delivery.SelectedGrades, function (value, key) {
+            if (delivery.Grades != null && productId == 1 && delivery.selectedGrades) {
+                angular.forEach(delivery.selectedGrades, function (value, key) {
                     var denominations = value.Denominations;
                     angular.forEach(denominations, function (denominations) {
                         $scope.DenominationAmount = (denominations.Price * denominations.QuantityToRemove) + $scope.DenominationAmount;
@@ -239,7 +239,8 @@
                     Location : delivery.Location,
                     SectorId: delivery.SectorId,
                     StoreId: delivery.StoreId,
-                    SelectedBatchesToDeliver : delivery.SelectedGrades,
+                    SelectedBatchesToDeliver: delivery.selectedGrades,
+                    SelectedGrades : delivery.selectedGrades,
                     TransactionSubTypeId : transactionSubTypeId,
                     DriverName: delivery.DriverName,
                     DriverNIN: delivery.DriverNIN,

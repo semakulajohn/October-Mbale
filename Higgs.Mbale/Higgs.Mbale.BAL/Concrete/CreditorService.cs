@@ -19,15 +19,18 @@ namespace Higgs.Mbale.BAL.Concrete
         private IUserService _userService;
         private ITransactionDataService _transactionDataService;
         private ITransactionSubTypeService _transactionSubTypeService;
+        private IAccountTransactionActivityService _accountTransactionActivityService;
 
         
 
-        public CreditorService(ICreditorDataService dataService,IUserService userService,ITransactionDataService transactionDataService,ITransactionSubTypeService transactionSubTypeService)
+        public CreditorService(ICreditorDataService dataService,IUserService userService,ITransactionDataService transactionDataService,
+            ITransactionSubTypeService transactionSubTypeService,IAccountTransactionActivityService accountTransactionActivityService)
         {
             this._dataService = dataService;
             this._userService = userService;
             this._transactionDataService = transactionDataService;
             this._transactionSubTypeService = transactionSubTypeService;
+            this._accountTransactionActivityService = accountTransactionActivityService;
             
         }
 
@@ -90,6 +93,37 @@ namespace Higgs.Mbale.BAL.Concrete
             var results = this._dataService.GetAllCreditorRecordsForParticularAccount(aspNetUserId,casualWorkerId);
             return MapEFToModel(results);
         }
+
+      public IEnumerable<CreditorView> GetCreditorView()
+      {
+          List<CreditorView> creditorList = new List<CreditorView>();
+        var suppliers =  _userService.GetAllSuppliers();
+        if (suppliers != null)
+        {
+            if (suppliers.Any())
+            {
+                foreach (var supplier in suppliers)
+                {
+                    var balance = _accountTransactionActivityService.GetBalanceForLastAccountAccountTransactionActivityForSupplier(supplier.Id);
+                  
+                    if (balance > 0)
+                    {
+                        var creditorView = new CreditorView()
+                        {
+                            Id = supplier.Id,
+                            Amount = balance,
+                            CreditorName = supplier.FirstName + ' ' + supplier.LastName,
+                            CreditorNumber = supplier.UniqueNumber,
+
+                        };
+                        creditorList.Add(creditorView);
+                    }
+                   
+                }
+            }
+        }
+        return creditorList;
+      }
        
         public long SaveCreditor(Creditor creditor, string userId)
         {

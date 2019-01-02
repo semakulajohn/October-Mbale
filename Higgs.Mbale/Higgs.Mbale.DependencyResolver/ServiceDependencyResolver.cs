@@ -51,6 +51,7 @@ namespace Higgs.Mbale.DependencyResolver
          Bind(typeof(IDocumentService)).To(typeof(DocumentService));
          Bind(typeof(IFlourTransferService)).To(typeof(FlourTransferService));
          Bind(typeof(IBuveraTransferService)).To(typeof(BuveraTransferService));
+         Bind(typeof(ICashTransferService)).To(typeof(CashTransferService));
 
 
          //DAL
@@ -88,6 +89,7 @@ namespace Higgs.Mbale.DependencyResolver
          Bind(typeof(IDocumentDataService)).To(typeof(DocumentDataService));
          Bind(typeof(IFlourTransferDataService)).To(typeof(FlourTransferDataService));
          Bind(typeof(IBuveraTransferDataService)).To(typeof(BuveraTransferDataService));
+         Bind(typeof(ICashTransferDataService)).To(typeof(CashTransferDataService));
      } 
         
           

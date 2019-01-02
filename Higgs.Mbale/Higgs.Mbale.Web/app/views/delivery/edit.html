@@ -211,7 +211,7 @@
                                                                                                 <div ng-repeat="grade in batchOutPut.Grades" class="checkbox col-md-12 col-sm-12">
                                                                                                     <div class="col-sm-12 col-md-12">
                                                                                                         <input id="grade_{{grade.GradeId}}" type="checkbox" name="grade_{{grade.GradeId}}"
-                                                                                                               checklist-model="delivery.SelectedGrades"
+                                                                                                               checklist-model="delivery.selectedGrades"
                                                                                                                checklist-value="grade">
                                                                                                         <label for="grade-{{grade.GradeId}}"> {{grade.Value}} </label>
 
@@ -394,9 +394,9 @@
                                                                             <tr ng-repeat="x in grade.Denominations">
                                                                                 <td width="50%"><p> {{ x.Value }} Kg</p></td>
                                                                                 <td width="50%">
-                                                                                    <input name="amount{{x.DenominationId}}" class="form-controlx" ng-model="x.Quantity" ng-pattern="/^\-?\d+((\.)\d+)?$/" ng-class="{ errorinput: form.amount{{x.DenominationId}}.$invalid }" disabled>
+                                                                                    <input name="amount{{x.DenominationId}}" class="form-controlx" ng-model="x.Balance" ng-pattern="/^\-?\d+((\.)\d+)?$/" ng-class="{ errorinput: form.amount{{x.DenominationId}}.$invalid }" disabled>
                                                                                     <span ng-show="form.amount{{x.DenominationId}}.$invalid">
-                                                                                        <span ng-show="form.amount{{x.DenominationId}}.$error.pattern" class="help-block error"><i class="fa fa-warning"></i> Invalid formart, amount should be double or number</span>
+                                                                                        <span ng-show="form.amount{{x.DenominationId}}.$error.pattern" class="help-block error"><i class="fa fa-warning"></i> Invalid formart, quantity should be double or number</span>
                                                                                     </span>
                                                                                 </td>
                                                                                 <!--<td width="30%">
